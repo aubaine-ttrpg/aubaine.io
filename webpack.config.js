@@ -44,6 +44,12 @@ Encore
     // enable PostCSS support
     .enablePostCssLoader()
 
+    // Copy images
+    .copyFiles({
+    from: './assets/images',
+    to: 'images/[path][name].[hash:8].[ext]'
+    })
+
     // enables hashed filenames (e.g. app.abc123.css)
     .enableSourceMaps(!Encore.isProduction())
     .enableVersioning(Encore.isProduction())
