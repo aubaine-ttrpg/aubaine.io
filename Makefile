@@ -14,7 +14,7 @@ autophony: ## Generate a .PHONY rule for your Makefile using all rules in the Ma
 
 # - Simple workflow
 dev: ## Run Symfony's local server.
-	@symfony server:start
+	@symfony local:server:start --no-tls
 
 clear: ## Clear service's cache. Equivalent to 'cache:clear' using php console.
 	@php bin/console cache:clear
