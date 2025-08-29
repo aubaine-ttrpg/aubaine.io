@@ -1,0 +1,240 @@
+/* -------------- Magical Glow Effect -------------- */
+/*                                                   */
+/* By @cssguy - https://codepen.io/cssguy/pen/VwKYZX */
+/*      Modified by Kori-San for [Aubaine.io].       */
+/*                                                   */
+/* ------------------------------------------------- */
+
+/* Scoped so multiple instances don't clash */
+.gp { 
+  position: relative; 
+  /* Defaults (override from Twig via inline style or a class) */
+  --gp-size: 100px;         /* system size (orbit, fly-out distance) */
+  --gp-dot: calc(var(--gp-size) / 10);  /* particle size */
+  --gp-glow: 1;             /* glow scale: 0.5 = smaller, 2 = larger */
+}
+
+.gp .glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  -webkit-animation: glow 3s linear 0s infinite alternate;
+          animation: glow 3s linear 0s infinite alternate;
+}
+
+.gp .particles {
+  position: absolute;
+  top: calc(50% - (var(--gp-size) / 2));
+  left: calc(50% - (var(--gp-size) / 2));
+  width: var(--gp-size);
+  height: var(--gp-size);
+}
+
+.gp .rotate {
+  position: absolute;
+  top: calc(50% - (var(--gp-dot) / 2));
+  left: calc(50% - (var(--gp-dot) / 2));
+  width: var(--gp-dot);
+  height: var(--gp-dot);
+}
+
+.gp .angle {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.gp .size {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.gp .position {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.gp .pulse {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.gp .particle {
+  position: absolute;
+  top: calc(50% - (var(--gp-dot) / 2));
+  left: calc(50% - (var(--gp-dot) / 2));
+  width: var(--gp-dot);
+  height: var(--gp-dot);
+  border-radius: 50%;
+}
+
+.gp .rotate {
+  -webkit-animation: rotate 20s linear 0s infinite alternate;
+          animation: rotate 20s linear 0s infinite alternate;
+}
+
+.gp .pulse{
+  -webkit-animation: pulse 1.5s linear 0s infinite alternate;
+          animation: pulse 1.5s linear 0s infinite alternate;
+}
+
+/* ===== Keyframes ===== */
+
+/* All px lengths scale with --gp-glow */
+@-webkit-keyframes glow {
+  0% {
+    transform: rotate(0deg);
+    box-shadow:
+      0 0 calc(60px * var(--gp-glow)) calc(20px * var(--gp-glow)) #56bcf9,
+      calc(25px * var(--gp-glow)) calc(15px * var(--gp-glow)) calc(50px * var(--gp-glow)) calc(10px * var(--gp-glow)) #fff,
+      calc(-5px * var(--gp-glow)) calc(-25px * var(--gp-glow)) calc(30px * var(--gp-glow)) calc(5px * var(--gp-glow)) #fff;
+  }
+  100% {
+    transform: rotate(5deg);
+    box-shadow:
+      0 0 calc(90px * var(--gp-glow)) calc(20px * var(--gp-glow)) #56bcf9,
+      calc(35px * var(--gp-glow)) calc(20px * var(--gp-glow)) calc(40px * var(--gp-glow)) calc(10px * var(--gp-glow)) #fff,
+      calc(-30px * var(--gp-glow)) calc(-30px * var(--gp-glow)) calc(40px * var(--gp-glow)) calc(5px * var(--gp-glow)) #fff;
+  }
+}
+@keyframes glow {
+  0% {
+    transform: rotate(0deg);
+    box-shadow:
+      0 0 calc(60px * var(--gp-glow)) calc(20px * var(--gp-glow)) #56bcf9,
+      calc(25px * var(--gp-glow)) calc(15px * var(--gp-glow)) calc(50px * var(--gp-glow)) calc(10px * var(--gp-glow)) #fff,
+      calc(-5px * var(--gp-glow)) calc(-25px * var(--gp-glow)) calc(30px * var(--gp-glow)) calc(5px * var(--gp-glow)) #fff;
+  }
+  100% {
+    transform: rotate(5deg);
+    box-shadow:
+      0 0 calc(90px * var(--gp-glow)) calc(20px * var(--gp-glow)) #56bcf9,
+      calc(35px * var(--gp-glow)) calc(20px * var(--gp-glow)) calc(40px * var(--gp-glow)) calc(10px * var(--gp-glow)) #fff,
+      calc(-30px * var(--gp-glow)) calc(-30px * var(--gp-glow)) calc(40px * var(--gp-glow)) calc(5px * var(--gp-glow)) #fff;
+  }
+}
+
+@-webkit-keyframes rotate {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@-webkit-keyframes angle {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes angle {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@-webkit-keyframes size {
+  0% { -webkit-transform: scale(.2); }
+  100% { -webkit-transform: scale(.6); }
+}
+@keyframes size {
+  0% { transform: scale(.2); }
+  100% { transform: scale(.6); }
+}
+
+@-webkit-keyframes position {
+  0%   { -webkit-transform: translate3d(0,0,0); opacity: 1; }
+  50%  { opacity: 1; }
+  100% { -webkit-transform: translate3d(var(--gp-size), var(--gp-size), 0); opacity: 0; }
+}
+@keyframes position {
+  0%   { transform: translate3d(0,0,0); opacity: 1; }
+  50%  { opacity: 1; }
+  100% { transform: translate3d(var(--gp-size), var(--gp-size), 0); opacity: 0; }
+}
+
+@-webkit-keyframes pulse {
+  0% { -webkit-transform: scale(1); }
+  100% { -webkit-transform: scale(.5); }
+}
+@keyframes pulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(.5); }
+}
+
+@-webkit-keyframes particle {
+  0%     { box-shadow: inset 0 0 20px 20px #0079e8, 0 0 50px 10px #0079e8, inset 0 0 80px 80px #269aff; }
+  33.33% { box-shadow: inset 0 0 20px 20px #0079e8, 0 0 130px 10px #0079e8, inset 0 0 50px 50px #269aff; }
+  33.34% { box-shadow: inset 0 0 20px 20px #2693ff, 0 0 50px 10px #2693ff, inset 0 0 80px 80px #52abff; }
+  66.66% { box-shadow: inset 0 0 20px 20px #2693ff, 0 0 130px 10px #2693ff, inset 0 0 50px 50px #52abff; }
+  66.67% { box-shadow: inset 0 0 20px 20px #485fe8, 0 0 50px 10px #485fe8, inset 0 0 80px 80px #7d71e8; }
+  100%   { box-shadow: inset 0 0 20px 20px #485fe8, 0 0 130px 10px #485fe8, inset 0 0 50px 50px #7d71e8; }
+}
+@keyframes particle {
+  0%     { box-shadow: inset 0 0 20px 20px #0079e8, 0 0 50px 10px #0079e8, inset 0 0 80px 80px #269aff; }
+  33.33% { box-shadow: inset 0 0 20px 20px #0079e8, 0 0 130px 10px #0079e8, inset 0 0 50px 50px #269aff; }
+  33.34% { box-shadow: inset 0 0 20px 20px #2693ff, 0 0 50px 10px #2693ff, inset 0 0 80px 80px #52abff; }
+  66.66% { box-shadow: inset 0 0 20px 20px #2693ff, 0 0 130px 10px #2693ff, inset 0 0 50px 50px #52abff; }
+  66.67% { box-shadow: inset 0 0 20px 20px #485fe8, 0 0 50px 10px #485fe8, inset 0 0 80px 80px #7d71e8; }
+  100%   { box-shadow: inset 0 0 20px 20px #485fe8, 0 0 130px 10px #485fe8, inset 0 0 50px 50px #7d71e8; }
+}
+
+/* Angle-specific timings */
+.gp .rotate .angle:nth-child(1){
+  -webkit-animation: angle 10s steps(5) 0s infinite;
+          animation: angle 10s steps(5) 0s infinite;
+}
+.gp .rotate .angle:nth-child(1) .size{
+  -webkit-animation: size 10s steps(5) 0s infinite;
+          animation: size 10s steps(5) 0s infinite;
+}
+.gp .rotate .angle:nth-child(1) .particle{
+  -webkit-animation: particle 6s linear infinite alternate;
+          animation: particle 6s linear infinite alternate;
+}
+.gp .rotate .angle:nth-child(1) .position{
+  -webkit-animation: position 2s linear 0s infinite;
+          animation: position 2s linear 0s infinite;
+}
+
+.gp .rotate .angle:nth-child(2){
+  -webkit-animation: angle 4.95s steps(3) -1.65s infinite;
+          animation: angle 4.95s steps(3) -1.65s infinite;
+}
+.gp .rotate .angle:nth-child(2) .size{
+  -webkit-animation: size 4.95s steps(3) -1.65s infinite alternate;
+          animation: size 4.95s steps(3) -1.65s infinite alternate;
+}
+.gp .rotate .angle:nth-child(2) .particle{
+  -webkit-animation: particle 4.95s linear -3.3s infinite alternate;
+          animation: particle 4.95s linear -3.3s infinite alternate;
+}
+.gp .rotate .angle:nth-child(2) .position{
+  -webkit-animation: position 1.65s linear 0s infinite;
+          animation: position 1.65s linear 0s infinite;
+}
+
+.gp .rotate .angle:nth-child(3){
+  -webkit-animation: angle 13.76s steps(8) -6.88s infinite;
+          animation: angle 13.76s steps(8) -6.88s infinite;
+}
+.gp .rotate .angle:nth-child(3) .size{
+  -webkit-animation: size 6.88s steps(4) -5.16s infinite alternate;
+          animation: size 6.88s steps(4) -5.16s infinite alternate;
+}
+.gp .rotate .angle:nth-child(3) .particle{
+  -webkit-animation: particle 5.16s linear -1.72s infinite alternate;
+          animation: particle 5.16s linear -1.72s infinite alternate;
+}
+.gp .rotate .angle:nth-child(3) .position{
+  -webkit-animation: position 1.72s linear 0s infinite;
+          animation: position 1.72s linear 0s infinite;
+}
+
+.gp .rotate .angle:nth-child(5) .position{
+  -webkit-animation: position 2.45s linear 0s infinite;
+          animation: position 2.45s linear 0s infinite;
+}

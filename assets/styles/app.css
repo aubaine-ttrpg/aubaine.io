@@ -1,2 +1,4 @@
 @import "tailwindcss";
 @source not "../../public";
+
+@import "./components/Effect/main.css";
