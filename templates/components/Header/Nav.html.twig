@@ -1,0 +1,13 @@
+{% props links = [] %}
+
+<nav class="hidden md:flex items-center gap-6 text-2xl lg:text-lg text-zinc-300">
+  {% for link in links %}
+    <a
+      href="{{ link.href|default('#') }}"
+      class="{{ link.class|default('hover:text-white transition') }}{% if link.active|default(false) %} text-white{% endif %}"
+      {% if link.target is defined %} target="{{ link.target }}" {% endif %}
+      {% if link.rel is defined %} rel="{{ link.rel }}" {% endif %}
+      {% if link.aria_current is defined %} aria-current="{{ link.aria_current }}" {% endif %}
+    >{{ link.label|default('') }}</a>
+  {% endfor %}
+</nav>

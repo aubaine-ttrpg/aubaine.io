@@ -1,0 +1,15 @@
+<header {{ attributes.defaults({ class: 'relative' }) }}>
+  <twig:Header:Backdrop />
+
+  <nav class="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-around lg:justify-between">
+    <twig:Header:Logo :title="title|default('Aubaine')" />
+
+    <twig:block name="right">
+      <twig:Header:Nav :links="[
+            { href: '/about',      label: 'About' },
+            { href: '/contribute', label: 'Contribute' },
+            { href: '/changelog',  label: 'Changelog' }
+        ]" />
+    </twig:block>
+  </nav>
+</header>
