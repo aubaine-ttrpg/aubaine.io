@@ -1,0 +1,7 @@
+workers:
+    # Auto start Docker compose when starting server (available since Symfony CLI 5.7.0)
+    docker_compose: ~ 
+
+http:
+    # Toggle GZIP compression
+    use_gzip: true 
