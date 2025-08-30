@@ -3,7 +3,7 @@
 <nav class="hidden md:flex items-center gap-6 text-2xl lg:text-lg text-zinc-300">
   {% for link in links %}
     <a
-      href="{{ link.href|default('#') }}"
+      href="{{ path(link.path)|default('#') }}"
       class="{{ link.class|default('hover:text-white hover:scale-105 ease-in-out transition duration-200') }}{% if link.active|default(false) %} text-white{% endif %}"
       {% if link.target is defined %} target="{{ link.target }}" {% endif %}
       {% if link.rel is defined %} rel="{{ link.rel }}" {% endif %}

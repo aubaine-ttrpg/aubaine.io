@@ -6,9 +6,10 @@
 
     <twig:block name="right">
       <twig:Header:Nav :links="[
-            { href: '/about',      label: 'nav.about' },
-            { href: '/contribute', label: 'nav.contribute' },
-            { href: '/changelog',  label: 'nav.changelog' }
+            { path: 'app_home',       label: 'nav.home' },
+            { path: 'app_about',      label: 'nav.about' },
+            { path: 'app_contribute', label: 'nav.contribute' },
+            { path: 'app_changelog',  label: 'nav.changelog' }
         ]" />
     </twig:block>
   </nav>
