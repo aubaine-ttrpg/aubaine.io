@@ -1,10 +1,10 @@
 workers:
+#    # Auto start Docker compose when starting server (available since Symfony CLI 5.7.0)
+#    docker_compose: ~ 
+
     # Built-in command that builds and watches front-end assets
     npm_encore_watch:
         cmd: ['npx', 'encore', 'dev', '--watch']
-
-    # Auto start Docker compose when starting server (available since Symfony CLI 5.7.0)
-    docker_compose: ~ 
 
 http:
     # Toggle GZIP compression
