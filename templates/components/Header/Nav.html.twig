@@ -4,10 +4,10 @@
   {% for link in links %}
     <a
       href="{{ link.href|default('#') }}"
-      class="{{ link.class|default('hover:text-white transition') }}{% if link.active|default(false) %} text-white{% endif %}"
+      class="{{ link.class|default('hover:text-white hover:scale-105 ease-in-out transition duration-200') }}{% if link.active|default(false) %} text-white{% endif %}"
       {% if link.target is defined %} target="{{ link.target }}" {% endif %}
       {% if link.rel is defined %} rel="{{ link.rel }}" {% endif %}
       {% if link.aria_current is defined %} aria-current="{{ link.aria_current }}" {% endif %}
-    >{{ link.label|default('') }}</a>
+    >{{ link.label|trans()|default('') }}</a>
   {% endfor %}
 </nav>
