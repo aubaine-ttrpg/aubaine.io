@@ -2,7 +2,7 @@
 
 namespace App\Enum;
 
-enum SkillAbility: string
+enum Ability: string
 {
     case STRENGTH = 'strength';
     case DEXTERITY = 'dexterity';

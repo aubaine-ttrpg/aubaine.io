@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Enum\SkillAbility;
+use App\Enum\Ability;
 use App\Enum\SkillCategory;
 use App\Enum\SkillDuration;
 use App\Enum\SkillRange;
-use App\Enum\SkillSource;
+use App\Enum\Source;
 use App\Enum\SkillTag;
 use App\Enum\SkillType;
 use App\Repository\SkillsRepository;
@@ -46,7 +46,7 @@ class Skills
      * @var list<string>
      */
     #[ORM\Column(type: Types::JSON)]
-    private array $abilities = [SkillAbility::NONE->value];
+    private array $abilities = [Ability::NONE->value];
 
     #[ORM\Column(enumType: SkillRange::class)]
     private SkillRange $range = SkillRange::SPECIAL;
@@ -66,8 +66,8 @@ class Skills
     #[ORM\Column]
     private bool $abilityCheck = false;
 
-    #[ORM\Column(enumType: SkillSource::class)]
-    private SkillSource $source = SkillSource::AUBAINE_BASE_RULES;
+    #[ORM\Column(enumType: Source::class)]
+    private Source $source = Source::AUBAINE_BASE_RULES;
 
     #[ORM\Column]
     private bool $verbal = false;
@@ -169,27 +169,27 @@ class Skills
     }
 
     /**
-     * @return list<SkillAbility>
+     * @return list<Ability>
      */
     public function getAbilities(): array
     {
-        return array_map(static fn (string $ability): SkillAbility => SkillAbility::from($ability), $this->abilities);
+        return array_map(static fn (string $ability): Ability => Ability::from($ability), $this->abilities);
     }
 
     /**
-     * @param list<SkillAbility> $abilities
+     * @param list<Ability> $abilities
      */
     public function setAbilities(array $abilities): self
     {
         $this->abilities = array_values(array_unique(array_map(
-            static fn (SkillAbility $ability): string => $ability->value,
+            static fn (Ability $ability): string => $ability->value,
             $abilities
         )));
 
         return $this;
     }
 
-    public function addAbility(SkillAbility $ability): self
+    public function addAbility(Ability $ability): self
     {
         if (!in_array($ability->value, $this->abilities, true)) {
             $this->abilities[] = $ability->value;
@@ -198,7 +198,7 @@ class Skills
         return $this;
     }
 
-    public function removeAbility(SkillAbility $ability): self
+    public function removeAbility(Ability $ability): self
     {
         $this->abilities = array_values(array_filter(
             $this->abilities,
@@ -280,12 +280,12 @@ class Skills
         return $this;
     }
 
-    public function getSource(): SkillSource
+    public function getSource(): Source
     {
         return $this->source;
     }
 
-    public function setSource(SkillSource $source): self
+    public function setSource(Source $source): self
     {
         $this->source = $source;
 
