@@ -29,10 +29,7 @@ migrations: ## Make Migrations. Equivalent to 'make:migration' using php console
 migrate: ## Apply Migrations. Equivalent to 'doctrine:migrations:migrate' using php console.
 	@php bin/console doctrine:migrations:migrate -n
 
-db: ## Create SQLite database (if needed) and apply migrations.
-	@mkdir -p var
-	@php bin/console doctrine:database:create --if-not-exists
-	@php bin/console doctrine:migrations:migrate -n
+db: migrate ## Apply migrations (creates SQLite database if it does not exist).
 
 phpstan: ## Run PHPStan static analysis.
 	@vendor/bin/phpstan analyse -c phpstan.dist.neon
