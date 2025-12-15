@@ -1,0 +1,3 @@
+workers:
+    encore:
+        command: ["npx", "encore", "dev", "--watch"]
