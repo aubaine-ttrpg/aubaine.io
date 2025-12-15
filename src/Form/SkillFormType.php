@@ -13,8 +13,10 @@ use App\Enum\SkillType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -26,6 +28,7 @@ class SkillFormType extends AbstractType
             ->add('code', TextType::class)
             ->add('name', TextType::class)
             ->add('description', TextareaType::class)
+            ->add('energyCost', IntegerType::class)
             ->add('category', EnumType::class, [
                 'class' => SkillCategory::class,
                 'choice_label' => static fn (SkillCategory $category): string => 'skill.category.' . $category->value,
@@ -39,6 +42,7 @@ class SkillFormType extends AbstractType
             ->add('abilities', EnumType::class, [
                 'class' => Ability::class,
                 'choice_label' => static fn (Ability $ability): string => 'skill.ability.' . $ability->value,
+                'choices' => array_filter(Ability::cases(), static fn (Ability $a): bool => $a !== Ability::NONE),
                 'choice_translation_domain' => 'skills',
                 'multiple' => true,
                 'expanded' => true,
@@ -85,12 +89,14 @@ class SkillFormType extends AbstractType
             ->add('tags', EnumType::class, [
                 'class' => SkillTag::class,
                 'choice_label' => static fn (SkillTag $tag): string => 'skill.tag.' . $tag->value,
+                'choices' => array_filter(SkillTag::cases(), static fn (SkillTag $t): bool => $t !== SkillTag::NONE),
                 'choice_translation_domain' => 'skills',
                 'multiple' => true,
                 'expanded' => true,
             ])
-            ->add('icon', TextType::class, [
+            ->add('icon', FileType::class, [
                 'required' => false,
+                'mapped' => false,
             ])
         ;
     }

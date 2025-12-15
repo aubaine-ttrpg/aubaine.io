@@ -15,10 +15,11 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: SkillsRepository::class)]
 #[ORM\Table(name: 'skills')]
-#[ORM\HasLifecycleCallbacks]
 class Skills
 {
     #[ORM\Id]
@@ -28,13 +29,21 @@ class Skills
     private ?Ulid $id = null;
 
     #[ORM\Column(length: 64)]
+    #[Assert\NotBlank]
+    #[Assert\Regex(pattern: '/^[A-Za-z]{6}(?:-[0-9]+)?$/', message: 'Code must be 6 letters optionally followed by "-<numbers>".')]
     private string $code = '';
 
     #[ORM\Column(length: 120)]
+    #[Assert\NotBlank]
     private string $name = '';
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
     private string $description = '';
+
+    #[ORM\Column(type: Types::INTEGER)]
+    #[Assert\PositiveOrZero]
+    private int $energyCost = 0;
 
     #[ORM\Column(enumType: SkillCategory::class)]
     private SkillCategory $category = SkillCategory::COMMON;
@@ -88,12 +97,15 @@ class Skills
     private array $tags = [SkillTag::NONE->value];
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     private ?string $icon = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    #[Gedmo\Timestampable(on: 'create')]
     private DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    #[Gedmo\Timestampable(on: 'update')]
     private DateTimeImmutable $updatedAt;
 
     public function __construct()
@@ -144,6 +156,18 @@ class Skills
         return $this;
     }
 
+    public function getEnergyCost(): int
+    {
+        return $this->energyCost;
+    }
+
+    public function setEnergyCost(int $energyCost): self
+    {
+        $this->energyCost = $energyCost;
+
+        return $this;
+    }
+
     public function getCategory(): SkillCategory
     {
         return $this->category;
@@ -181,16 +205,42 @@ class Skills
      */
     public function setAbilities(array $abilities): self
     {
-        $this->abilities = array_values(array_unique(array_map(
+        $values = array_values(array_unique(array_map(
             static fn (Ability $ability): string => $ability->value,
             $abilities
         )));
+
+        // If no abilities provided, default to NONE.
+        if ($values === []) {
+            $values = [Ability::NONE->value];
+        }
+
+        // If something other than NONE is selected, drop NONE.
+        if (count($values) > 1) {
+            $values = array_values(array_filter(
+                $values,
+                static fn (string $val): bool => $val !== Ability::NONE->value
+            ));
+        }
+
+        $this->abilities = $values;
 
         return $this;
     }
 
     public function addAbility(Ability $ability): self
     {
+        if ($ability === Ability::NONE) {
+            $this->abilities = [Ability::NONE->value];
+
+            return $this;
+        }
+
+        $this->abilities = array_values(array_filter(
+            $this->abilities,
+            static fn (string $val): bool => $val !== Ability::NONE->value
+        ));
+
         if (!in_array($ability->value, $this->abilities, true)) {
             $this->abilities[] = $ability->value;
         }
@@ -204,6 +254,10 @@ class Skills
             $this->abilities,
             static fn (string $value): bool => $value !== $ability->value
         ));
+
+        if ($this->abilities === []) {
+            $this->abilities = [Ability::NONE->value];
+        }
 
         return $this;
     }
@@ -353,16 +407,40 @@ class Skills
      */
     public function setTags(array $tags): self
     {
-        $this->tags = array_values(array_unique(array_map(
+        $values = array_values(array_unique(array_map(
             static fn (SkillTag $tag): string => $tag->value,
             $tags
         )));
+
+        if ($values === []) {
+            $values = [SkillTag::NONE->value];
+        }
+
+        if (count($values) > 1) {
+            $values = array_values(array_filter(
+                $values,
+                static fn (string $val): bool => $val !== SkillTag::NONE->value
+            ));
+        }
+
+        $this->tags = $values;
 
         return $this;
     }
 
     public function addTag(SkillTag $tag): self
     {
+        if ($tag === SkillTag::NONE) {
+            $this->tags = [SkillTag::NONE->value];
+
+            return $this;
+        }
+
+        $this->tags = array_values(array_filter(
+            $this->tags,
+            static fn (string $val): bool => $val !== SkillTag::NONE->value
+        ));
+
         if (!in_array($tag->value, $this->tags, true)) {
             $this->tags[] = $tag->value;
         }
@@ -376,6 +454,10 @@ class Skills
             $this->tags,
             static fn (string $value): bool => $value !== $tag->value
         ));
+
+        if ($this->tags === []) {
+            $this->tags = [SkillTag::NONE->value];
+        }
 
         return $this;
     }
@@ -414,17 +496,5 @@ class Skills
         $this->updatedAt = $updatedAt;
 
         return $this;
-    }
-
-    #[ORM\PrePersist]
-    #[ORM\PreUpdate]
-    public function refreshTimestamps(): void
-    {
-        $now = new DateTimeImmutable();
-        $this->updatedAt = $now;
-
-        if (!isset($this->createdAt)) {
-            $this->createdAt = $now;
-        }
     }
 }
