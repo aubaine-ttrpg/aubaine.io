@@ -1,4 +1,4 @@
-.PHONY: all help md autophony dev clear migrations migrate phpstan drop-database
+.PHONY: all help md autophony install dev clear migrations migrate db phpstan drop-database
 
 all: help
 
@@ -13,6 +13,10 @@ autophony: ## Generate a .PHONY rule for your Makefile using all rules in the Ma
 	@grep -oE "^[a-zA-Z-]*\:" $(MAKEFILE_LIST) | sed "s/://g" | xargs echo ".PHONY:"
 
 # - Simple workflow
+install: ## Install PHP and JS dependencies.
+	@composer install
+	@npm install
+
 dev: ## Run Symfony's local server.
 	@symfony local:server:start --no-tls
 
@@ -25,9 +29,10 @@ migrations: ## Make Migrations. Equivalent to 'make:migration' using php console
 migrate: ## Apply Migrations. Equivalent to 'doctrine:migrations:migrate' using php console.
 	@php bin/console doctrine:migrations:migrate -n
 
+db: ## Create SQLite database (if needed) and apply migrations.
+	@mkdir -p var
+	@php bin/console doctrine:database:create --if-not-exists
+	@php bin/console doctrine:migrations:migrate -n
+
 phpstan: ## Run PHPStan static analysis.
 	@vendor/bin/phpstan analyse -c phpstan.dist.neon
-
-# - Detailed workflow
-drop-database: ## Drop Database using `doctrine:schema:drop`.
-	@php bin/console doctrine:schema:drop --full-database --force
