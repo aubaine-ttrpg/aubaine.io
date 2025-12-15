@@ -1,4 +1,4 @@
-.PHONY: all help md autophony dev clear migrations migrate drop-database
+.PHONY: all help md autophony dev clear migrations migrate phpstan drop-database
 
 all: help
 
@@ -24,6 +24,9 @@ migrations: ## Make Migrations. Equivalent to 'make:migration' using php console
 
 migrate: ## Apply Migrations. Equivalent to 'doctrine:migrations:migrate' using php console.
 	@php bin/console doctrine:migrations:migrate -n
+
+phpstan: ## Run PHPStan static analysis.
+	@vendor/bin/phpstan analyse -c phpstan.dist.neon
 
 # - Detailed workflow
 drop-database: ## Drop Database using `doctrine:schema:drop`.
