@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Skills{% endblock %}
+
+{% block body %}
+    <main class="container" style="max-width: 960px; margin: 2rem auto; padding: 1rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1>Skills</h1>
+            <a href="{{ path('admin_skill_factory') }}" style="padding: 0.5rem 1rem; background: #4c6fff; color: white; border-radius: 4px; text-decoration: none;">Create</a>
+        </div>
+
+        {% if skills is empty %}
+            <p>No skills yet.</p>
+        {% else %}
+            <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                <thead>
+                    <tr>
+                        <th style="text-align: left; padding: 0.5rem; border-bottom: 1px solid #ccc;">Code</th>
+                        <th style="text-align: left; padding: 0.5rem; border-bottom: 1px solid #ccc;">Name</th>
+                        <th style="text-align: left; padding: 0.5rem; border-bottom: 1px solid #ccc;">Category</th>
+                        <th style="text-align: left; padding: 0.5rem; border-bottom: 1px solid #ccc;">Type</th>
+                        <th style="text-align: left; padding: 0.5rem; border-bottom: 1px solid #ccc;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for skill in skills %}
+                        <tr>
+                            <td style="padding: 0.5rem; border-bottom: 1px solid #eee;">{{ skill.code }}</td>
+                            <td style="padding: 0.5rem; border-bottom: 1px solid #eee;">{{ skill.name }}</td>
+                            <td style="padding: 0.5rem; border-bottom: 1px solid #eee;">{{ skill.category.value }}</td>
+                            <td style="padding: 0.5rem; border-bottom: 1px solid #eee;">{{ skill.type.value }}</td>
+                            <td style="padding: 0.5rem; border-bottom: 1px solid #eee;">
+                                <a href="{{ path('admin_skill_show', { id: skill.id }) }}" style="color: #4c6fff; text-decoration: none;">View</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </main>
+{% endblock %}

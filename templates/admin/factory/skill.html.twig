@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Skill Factory{% endblock %}
+
+{% block body %}
+    <main class="container" style="max-width: 960px; margin: 2rem auto; padding: 1rem;">
+        <h1>Skill Factory</h1>
+
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="flash flash-{{ label }}" style="margin: .5rem 0; padding: .5rem 1rem; background: #f0f4ff; border-left: 4px solid #4c6fff;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <p style="margin: 0 0 1rem;">
+            <a href="{{ path('admin_skill_index') }}" style="text-decoration: none; color: #4c6fff;">← Back to list</a>
+        </p>
+
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button type="submit">Create skill</button>
+        {{ form_end(form) }}
+    </main>
+{% endblock %}

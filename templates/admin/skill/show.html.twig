@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Skill: {{ skill.name }}{% endblock %}
+
+{% block body %}
+    <main class="container" style="max-width: 960px; margin: 2rem auto; padding: 1rem;">
+        <p style="margin: 0 0 1rem;">
+            <a href="{{ path('admin_skill_index') }}" style="text-decoration: none; color: #4c6fff;">← Back to list</a>
+        </p>
+
+        <h1>{{ skill.name }} ({{ skill.code }})</h1>
+
+        <dl style="display: grid; grid-template-columns: max-content 1fr; gap: .5rem 1rem;">
+            <dt>Category</dt><dd>{{ skill.category.value }}</dd>
+            <dt>Type</dt><dd>{{ skill.type.value }}</dd>
+            <dt>Abilities</dt><dd>{{ skill.abilities|map(a => a.value)|join(', ') }}</dd>
+            <dt>Range</dt><dd>{{ skill.range.value }}</dd>
+            <dt>Duration</dt><dd>{{ skill.duration.value }}</dd>
+            <dt>Concentration</dt><dd>{{ skill.hasConcentration ? 'Yes' : 'No' }}</dd>
+            <dt>Attack roll</dt><dd>{{ skill.hasAttackRoll ? 'Yes' : 'No' }}</dd>
+            <dt>Saving throw</dt><dd>{{ skill.hasSavingThrow ? 'Yes' : 'No' }}</dd>
+            <dt>Ability check</dt><dd>{{ skill.hasAbilityCheck ? 'Yes' : 'No' }}</dd>
+            <dt>Source</dt><dd>{{ skill.source.value }}</dd>
+            <dt>Verbal</dt><dd>{{ skill.hasVerbal ? 'Yes' : 'No' }}</dd>
+            <dt>Somatic</dt><dd>{{ skill.hasSomatic ? 'Yes' : 'No' }}</dd>
+            <dt>Material</dt><dd>{{ skill.hasMaterial ? 'Yes' : 'No' }}</dd>
+            <dt>Material string</dt><dd>{{ skill.materialString ?? '—' }}</dd>
+            <dt>Tags</dt><dd>{{ skill.tags|map(t => t.value)|join(', ') }}</dd>
+            <dt>Icon</dt><dd>{{ skill.icon ?? '—' }}</dd>
+            <dt>Description</dt><dd>{{ skill.description }}</dd>
+        </dl>
+    </main>
+{% endblock %}
