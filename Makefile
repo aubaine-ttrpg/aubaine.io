@@ -32,4 +32,4 @@ migrate: ## Apply Migrations. Equivalent to 'doctrine:migrations:migrate' using 
 db: migrate ## Apply migrations (creates SQLite database if it does not exist).
 
 phpstan: ## Run PHPStan static analysis.
-	@vendor/bin/phpstan analyse -c phpstan.dist.neon
+	@vendor/bin/phpstan analyse -c phpstan.dist.neon --memory-limit=-1
