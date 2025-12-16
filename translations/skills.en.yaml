@@ -9,7 +9,7 @@ skill:
 
   type:
     action: "Action"
-    bonus: "Bonus"
+    bonus: "Bonus Action"
     reaction: "Reaction"
     attack: "Attack"
     passive: "Passive"
