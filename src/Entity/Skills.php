@@ -29,7 +29,7 @@ class Skills
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
     private ?Ulid $id = null;
 
-    #[ORM\Column(length: 64)]
+    #[ORM\Column(length: 64, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Regex(pattern: '/^[A-Za-z]{6}(?:-[0-9]+)?$/', message: 'Code must be 6 letters optionally followed by "-<numbers>".')]
     private string $code = '';
