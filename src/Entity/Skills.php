@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Enum\Ability;
 use App\Enum\SkillCategory;
 use App\Enum\SkillDuration;
+use App\Enum\SkillLimitPeriod;
 use App\Enum\SkillRange;
 use App\Enum\Source;
 use App\Enum\SkillTag;
@@ -45,6 +46,13 @@ class Skills
     #[Assert\PositiveOrZero]
     private int $energyCost = 0;
 
+    #[ORM\Column(type: Types::INTEGER)]
+    #[Assert\PositiveOrZero]
+    private int $usageLimitAmount = 0;
+
+    #[ORM\Column(enumType: SkillLimitPeriod::class)]
+    private SkillLimitPeriod $usageLimitPeriod = SkillLimitPeriod::DAY;
+
     #[ORM\Column(enumType: SkillCategory::class)]
     private SkillCategory $category = SkillCategory::COMMON;
 
@@ -65,6 +73,9 @@ class Skills
 
     #[ORM\Column]
     private bool $concentration = false;
+
+    #[ORM\Column]
+    private bool $ritual = false;
 
     #[ORM\Column]
     private bool $attackRoll = false;
@@ -164,6 +175,30 @@ class Skills
     public function setEnergyCost(int $energyCost): self
     {
         $this->energyCost = $energyCost;
+
+        return $this;
+    }
+
+    public function getUsageLimitAmount(): int
+    {
+        return $this->usageLimitAmount;
+    }
+
+    public function setUsageLimitAmount(int $usageLimitAmount): self
+    {
+        $this->usageLimitAmount = $usageLimitAmount;
+
+        return $this;
+    }
+
+    public function getUsageLimitPeriod(): SkillLimitPeriod
+    {
+        return $this->usageLimitPeriod;
+    }
+
+    public function setUsageLimitPeriod(SkillLimitPeriod $usageLimitPeriod): self
+    {
+        $this->usageLimitPeriod = $usageLimitPeriod;
 
         return $this;
     }
@@ -294,6 +329,18 @@ class Skills
     public function setConcentration(bool $concentration): self
     {
         $this->concentration = $concentration;
+
+        return $this;
+    }
+
+    public function hasRitual(): bool
+    {
+        return $this->ritual;
+    }
+
+    public function setRitual(bool $ritual): self
+    {
+        $this->ritual = $ritual;
 
         return $this;
     }
