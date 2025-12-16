@@ -56,6 +56,27 @@ skill:
     aubaine_base_rules: "Aubaine's Base Rules"
     the_tales_of_eden: "The Tales of Eden"
 
+  limit_period:
+    short_rest: "Short rest"
+    long_rest: "Long rest"
+    rest: "Rest"
+    day: "Day"
+    campaign: "Campaign"
+
+  component:
+    verbal: "Verbal"
+    somatic: "Somatic"
+    material: "Material"
+
+  label:
+    type: "Type"
+    energy: "Energy"
+    duration: "Duration"
+    components: "Components"
+    range: "Range"
+    ritual: "Ritual"
+    usage: "Usage"
+
   tag:
     none: "None"
     fire: "Fire"

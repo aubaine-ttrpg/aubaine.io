@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Skills;
 use App\Form\SkillFormType;
+use App\Form\SkillExportFilterType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\SkillsRepository;
 use Symfony\Component\Filesystem\Filesystem;
@@ -13,6 +14,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Uid\Ulid;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/skill', name: 'admin_skill_', env: 'dev')]
 class AdminSkillController extends AdminController
@@ -64,7 +67,11 @@ class AdminSkillController extends AdminController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->handleIconUpload($form->get('icon')->getData(), $skill);
+            $this->handleIconUpload(
+                $form->get('icon')->getData(),
+                $skill,
+                (bool) $form->get('renameIcon')->getData()
+            );
 
             $this->entityManager->flush();
 
@@ -88,14 +95,18 @@ class AdminSkillController extends AdminController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->handleIconUpload($form->get('icon')->getData(), $skill);
+            $this->handleIconUpload(
+                $form->get('icon')->getData(),
+                $skill,
+                (bool) $form->get('renameIcon')->getData()
+            );
 
             $this->entityManager->persist($skill);
             $this->entityManager->flush();
 
             $this->addFlash('success', 'Skill created.');
 
-            return $this->redirectToRoute('admin_skill_factory');
+            return $this->redirectToRoute('admin_skill_show', ['id' => $skill->getId()]);
         }
 
         return $this->render('admin/factory/skill.html.twig', [
@@ -103,13 +114,18 @@ class AdminSkillController extends AdminController
         ]);
     }
 
-    private function handleIconUpload(?UploadedFile $uploadedFile, Skills $skill): void
+    private function handleIconUpload(?UploadedFile $uploadedFile, Skills $skill, bool $rename): void
     {
         if (!$uploadedFile) {
             return;
         }
 
         $safeName = $this->slugger->slug(pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME));
+        if ($rename) {
+            $slugCode = $this->slugger->slug($skill->getCode() ?: 'icon');
+            $ulid = $skill->getId()?->toBase32() ?? (new Ulid())->toBase32();
+            $safeName = $slugCode . '-' . $ulid;
+        }
         $extension = $uploadedFile->guessExtension() ?: 'bin';
         $fileName = sprintf('%s-%s.%s', $safeName, uniqid('', true), $extension);
 
@@ -121,5 +137,162 @@ class AdminSkillController extends AdminController
         $uploadedFile->move($targetDir, $fileName);
 
         $skill->setIcon('/uploads/skills/' . $fileName);
+    }
+
+    #[Route('/export', name: 'export', methods: ['GET'])]
+    public function export(Request $request): Response
+    {
+        $form = $this->createForm(SkillExportFilterType::class, null, ['method' => 'GET']);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $hash = $this->encodeFilters($form->getData());
+
+            return $this->redirectToRoute('admin_skill_export_hash', ['hash' => $hash]);
+        }
+
+        return $this->render('admin/skill/export_form.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/export/{hash}', name: 'export_hash', methods: ['GET'])]
+    public function exportHash(string $hash, Request $request, TranslatorInterface $translator): Response
+    {
+        $decoded = $this->decodeFilters($hash);
+        $initialData = $this->normalizeFilters($decoded);
+        $form = $this->createForm(SkillExportFilterType::class, $initialData, ['method' => 'GET']);
+        $form->handleRequest($request);
+
+        $filters = $initialData;
+        if ($form->isSubmitted() && $form->isValid()) {
+            $filters = $form->getData();
+            $newHash = $this->encodeFilters($filters);
+
+            if ($newHash !== $hash) {
+                return $this->redirectToRoute('admin_skill_export_hash', ['hash' => $newHash]);
+            }
+        }
+
+        $normalizedFilters = $this->normalizeFilters($filters);
+        $exportLocale = $normalizedFilters['locale'] ?? 'en';
+        $translator->setLocale($exportLocale);
+
+        $skills = $this->skillsRepository->findByFilters($normalizedFilters);
+
+        return $this->render('admin/skill/export_result.html.twig', [
+            'skills' => $skills,
+            'export_locale' => $exportLocale,
+            'hash' => $hash,
+        ]);
+    }
+
+    /**
+     * @param array<string,mixed> $filters
+     */
+    private function encodeFilters(array $filters): string
+    {
+        $order = ['category', 'type', 'source', 'range', 'duration', 'abilities', 'tags', 'locale'];
+        $normalized = [];
+        foreach ($order as $key) {
+            $value = $filters[$key] ?? null;
+            if (is_array($value)) {
+                $normalized[$key] = array_values(array_map(
+                    static fn ($item): string => $item instanceof \BackedEnum ? $item->value : (string) $item,
+                    $value
+                ));
+            } elseif ($value !== null) {
+                $normalized[$key] = $value instanceof \BackedEnum ? $value->value : (string) $value;
+            }
+        }
+
+        $json = json_encode($normalized);
+        $base64 = rtrim(strtr(base64_encode($json), '+/', '-_'), '=');
+
+        return $base64;
+    }
+
+    /**
+     * @return array<string,mixed>
+     */
+    private function decodeFilters(string $hash): array
+    {
+        $padded = strtr($hash, '-_', '+/');
+        $padded .= str_repeat('=', (4 - strlen($padded) % 4) % 4);
+
+        $decoded = base64_decode($padded, true);
+        if ($decoded === false) {
+            return [];
+        }
+
+        $data = json_decode($decoded, true);
+        if (!is_array($data)) {
+            return [];
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param array<string,mixed> $filters
+     *
+     * @return array{
+     *     category?: list<\App\Enum\SkillCategory>,
+     *     type?: list<\App\Enum\SkillType>,
+     *     source?: list<\App\Enum\Source>,
+     *     range?: list<\App\Enum\SkillRange>,
+     *     duration?: list<\App\Enum\SkillDuration>,
+     *     abilities?: list<\App\Enum\Ability>,
+     *     tags?: list<\App\Enum\SkillTag>,
+     *     locale?: string
+     * }
+     */
+    private function normalizeFilters(array $filters): array
+    {
+        $mapList = static function (array $values, string $enumClass): array {
+            return array_values(array_filter(array_map(
+                static function ($val) use ($enumClass) {
+                    if ($val instanceof \BackedEnum) {
+                        return $val;
+                    }
+
+                    return $enumClass::tryFrom($val);
+                },
+                $values
+            )));
+        };
+
+        $normalized = [];
+
+        if (!empty($filters['category']) && is_array($filters['category'])) {
+            $normalized['category'] = $mapList($filters['category'], \App\Enum\SkillCategory::class);
+        }
+        if (!empty($filters['type']) && is_array($filters['type'])) {
+            $normalized['type'] = $mapList($filters['type'], \App\Enum\SkillType::class);
+        }
+        if (!empty($filters['source']) && is_array($filters['source'])) {
+            $normalized['source'] = $mapList($filters['source'], \App\Enum\Source::class);
+        }
+        if (!empty($filters['range']) && is_array($filters['range'])) {
+            $normalized['range'] = $mapList($filters['range'], \App\Enum\SkillRange::class);
+        }
+        if (!empty($filters['duration']) && is_array($filters['duration'])) {
+            $normalized['duration'] = $mapList($filters['duration'], \App\Enum\SkillDuration::class);
+        }
+        if (!empty($filters['abilities']) && is_array($filters['abilities'])) {
+            $normalized['abilities'] = $mapList($filters['abilities'], \App\Enum\Ability::class);
+        }
+        if (!empty($filters['tags']) && is_array($filters['tags'])) {
+            $normalized['tags'] = $mapList($filters['tags'], \App\Enum\SkillTag::class);
+        }
+
+        $locale = $filters['locale'] ?? 'en';
+        if (is_string($locale) && in_array($locale, ['en', 'fr'], true)) {
+            $normalized['locale'] = $locale;
+        } else {
+            $normalized['locale'] = 'en';
+        }
+
+        return $normalized;
     }
 }

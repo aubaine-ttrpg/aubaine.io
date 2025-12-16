@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Export Skills{% endblock %}
+
+{% block body %}
+    <main class="max-w-4xl mx-auto px-4 py-8 space-y-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm text-slate-400 space-x-1">
+                    <a href="{{ path('admin_home') }}" class="hover:text-sky-300">Admin</a>
+                    <span>/</span>
+                    <a href="{{ path('admin_skill_index') }}" class="hover:text-sky-300">Skills</a>
+                    <span>/</span>
+                    <span class="text-slate-300">Export</span>
+                </p>
+                <h1 class="text-3xl font-semibold">Export Skills</h1>
+            </div>
+            <a class="btn btn-ghost" href="{{ path('admin_skill_index') }}">← Back to list</a>
+        </div>
+
+        <div class="card p-6 space-y-4">
+            {{ form_start(form, { attr: { class: 'grid grid-cols-1 md:grid-cols-2 gap-4 items-end', 'data-skill-form': '' } }) }}
+                <div>
+                    <label class="label">Categories</label>
+                    {{ form_widget(form.category, { attr: { class: 'input', 'data-multi-select': 'category' } }) }}
+                </div>
+                <div>
+                    <label class="label">Types</label>
+                    {{ form_widget(form.type, { attr: { class: 'input', 'data-multi-select': 'type' } }) }}
+                </div>
+                <div>
+                    <label class="label">Sources</label>
+                    {{ form_widget(form.source, { attr: { class: 'input', 'data-multi-select': 'source' } }) }}
+                </div>
+                <div>
+                    <label class="label">Range</label>
+                    {{ form_widget(form.range, { attr: { class: 'input', 'data-multi-select': 'range' } }) }}
+                </div>
+                <div>
+                    <label class="label">Duration</label>
+                    {{ form_widget(form.duration, { attr: { class: 'input', 'data-multi-select': 'duration' } }) }}
+                </div>
+                <div>
+                    <label class="label">Abilities</label>
+                    {{ form_widget(form.abilities, { attr: { class: 'input', 'data-multi-select': 'abilities' } }) }}
+                </div>
+                <div>
+                    <label class="label">Tags</label>
+                    {{ form_widget(form.tags, { attr: { class: 'input', 'data-multi-select': 'tags' } }) }}
+                </div>
+                <div>
+                    <label class="label">Language</label>
+                    {{ form_widget(form.locale, { attr: { class: 'input' } }) }}
+                </div>
+                <div class="md:col-span-2 flex justify-end">
+                    <button class="btn btn-primary" type="submit">Generate</button>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </main>
+{% endblock %}

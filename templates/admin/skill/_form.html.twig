@@ -1,0 +1,137 @@
+{% set icon_path = iconSrc ?? 'https://placehold.co/90?text=?' %}
+{% set submit_label = submit_label ?? 'Save' %}
+
+{{ form_start(form, { attr: { 'data-skill-form': '' } }) }}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="card p-5 flex flex-col gap-4">
+            <div class="flex items-start gap-4">
+                <div class="icon-edit-wrap" data-icon-preview title="Click to change icon">
+                    <img src="{{ icon_path }}" alt="" onerror="this.onerror=null; this.src='https://placehold.co/90?text=?';">
+                    <div class="icon-edit-overlay">
+                        {{ ux_icon('heroicons:paint-brush', { class: 'w-6 h-6 text-sky-200' }) }}
+                    </div>
+                </div>
+                <div class="flex-1 space-y-3">
+                    <div>
+                        <label class="label" for="{{ form.name.vars.id }}">Name</label>
+                        {{ form_widget(form.name, { attr: { class: 'input' } }) }}
+                    </div>
+                    <label class="inline-flex items-center gap-2 text-slate-200">
+                        {{ form_widget(form.renameIcon, { attr: { class: 'checkbox' } }) }}
+                        <span>Rename icon</span>
+                    </label>
+                </div>
+            </div>
+            {{ form_row(form.icon, { label: 'Icon', row_attr: { class: 'w-full hidden' } }) }}
+            <div class="space-y-3">
+                <div>
+                    <label class="label" for="{{ form.code.vars.id }}">Code</label>
+                    {{ form_widget(form.code, { attr: { class: 'input' } }) }}
+                </div>
+                <div class="space-y-2">
+                    <label class="label" for="{{ form.energyCost.vars.id }}">Energy Cost</label>
+                    {{ form_widget(form.energyCost, { attr: { class: 'input', min: 0 } }) }}
+                    <div class="flex flex-col gap-2">
+                        <label class="inline-flex items-center justify-between gap-2 text-slate-200 w-full">
+                            <span>Concentration</span>
+                            {{ form_widget(form.concentration, { attr: { class: 'checkbox' } }) }}
+                        </label>
+                        <label class="inline-flex items-center justify-between gap-2 text-slate-200 w-full">
+                            <span>Ritual</span>
+                            {{ form_widget(form.ritual, { attr: { class: 'checkbox' } }) }}
+                        </label>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label class="label" for="{{ form.usageLimitAmount.vars.id }}">Usage limit</label>
+                        {{ form_widget(form.usageLimitAmount, { attr: { class: 'input', min: 0 } }) }}
+                    </div>
+                    <div>
+                        <label class="label" for="{{ form.usageLimitPeriod.vars.id }}">Limit period</label>
+                        {{ form_widget(form.usageLimitPeriod, { attr: { class: 'input' } }) }}
+                    </div>
+                </div>
+                <div>
+                    <label class="label" for="{{ form.category.vars.id }}">Category</label>
+                    {{ form_widget(form.category, { attr: { class: 'input' } }) }}
+                </div>
+                <div>
+                    <label class="label" for="{{ form.type.vars.id }}">Type</label>
+                    {{ form_widget(form.type, { attr: { class: 'input' } }) }}
+                </div>
+                <div>
+                    <label class="label" for="{{ form.source.vars.id }}">Source</label>
+                    {{ form_widget(form.source, { attr: { class: 'input' } }) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-5 lg:col-span-2 space-y-4">
+            <div class="space-y-2">
+                <label class="label" for="{{ form.description.vars.id }}">Description</label>
+                {{ form_widget(form.description, { attr: { class: 'input min-h-[200px]' } }) }}
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="label" for="{{ form.range.vars.id }}">Range</label>
+                    {{ form_widget(form.range, { attr: { class: 'input' } }) }}
+                </div>
+                <div>
+                    <label class="label" for="{{ form.duration.vars.id }}">Duration</label>
+                    {{ form_widget(form.duration, { attr: { class: 'input' } }) }}
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <label class="label">Abilities</label>
+                {{ form_widget(form.abilities, { attr: { class: 'input', 'data-multi-select': 'abilities' } }) }}
+            </div>
+
+            <div class="space-y-2">
+                <label class="label">Tags (<span data-tags-count>0</span>)</label>
+                {{ form_widget(form.tags, { attr: { class: 'input', 'data-multi-select': 'tags' } }) }}
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <label class="inline-flex items-center gap-2 text-slate-200">
+                    {{ form_widget(form.attackRoll, { attr: { class: 'checkbox' } }) }}
+                    <span>Attack roll</span>
+                </label>
+                <label class="inline-flex items-center gap-2 text-slate-200">
+                    {{ form_widget(form.savingThrow, { attr: { class: 'checkbox' } }) }}
+                    <span>Saving throw</span>
+                </label>
+                <label class="inline-flex items-center gap-2 text-slate-200">
+                    {{ form_widget(form.abilityCheck, { attr: { class: 'checkbox' } }) }}
+                    <span>Ability check</span>
+                </label>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <label class="inline-flex items-center gap-2 text-slate-200">
+                    {{ form_widget(form.verbal, { attr: { class: 'checkbox' } }) }}
+                    <span>Verbal</span>
+                </label>
+                <label class="inline-flex items-center gap-2 text-slate-200">
+                    {{ form_widget(form.somatic, { attr: { class: 'checkbox' } }) }}
+                    <span>Somatic</span>
+                </label>
+                <label class="inline-flex items-center gap-2 text-slate-200" data-material-toggle>
+                    {{ form_widget(form.material, { attr: { class: 'checkbox' } }) }}
+                    <span>Material</span>
+                </label>
+            </div>
+
+            <div class="space-y-2" data-material-string>
+                <label class="label" for="{{ form.materialString.vars.id }}">Material description</label>
+                {{ form_widget(form.materialString, { attr: { class: 'input' } }) }}
+            </div>
+
+            <div class="flex justify-end">
+                <button type="submit" class="btn btn-primary">{{ submit_label }}</button>
+            </div>
+        </div>
+    </div>
+{{ form_end(form) }}

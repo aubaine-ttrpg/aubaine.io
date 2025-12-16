@@ -6,6 +6,7 @@ use App\Entity\Skills;
 use App\Enum\Ability;
 use App\Enum\SkillCategory;
 use App\Enum\SkillDuration;
+use App\Enum\SkillLimitPeriod;
 use App\Enum\SkillRange;
 use App\Enum\Source;
 use App\Enum\SkillTag;
@@ -29,6 +30,14 @@ class SkillFormType extends AbstractType
             ->add('name', TextType::class)
             ->add('description', TextareaType::class)
             ->add('energyCost', IntegerType::class)
+            ->add('usageLimitAmount', IntegerType::class, [
+                'required' => false,
+            ])
+            ->add('usageLimitPeriod', EnumType::class, [
+                'class' => SkillLimitPeriod::class,
+                'choice_label' => static fn (SkillLimitPeriod $period): string => 'skill.limit_period.' . $period->value,
+                'choice_translation_domain' => 'skills',
+            ])
             ->add('category', EnumType::class, [
                 'class' => SkillCategory::class,
                 'choice_label' => static fn (SkillCategory $category): string => 'skill.category.' . $category->value,
@@ -45,7 +54,11 @@ class SkillFormType extends AbstractType
                 'choices' => array_filter(Ability::cases(), static fn (Ability $a): bool => $a !== Ability::NONE),
                 'choice_translation_domain' => 'skills',
                 'multiple' => true,
-                'expanded' => true,
+                'expanded' => false,
+                'required' => false,
+                'attr' => [
+                    'data-multi-select' => 'abilities',
+                ],
             ])
             ->add('range', EnumType::class, [
                 'class' => SkillRange::class,
@@ -58,6 +71,9 @@ class SkillFormType extends AbstractType
                 'choice_translation_domain' => 'skills',
             ])
             ->add('concentration', CheckboxType::class, [
+                'required' => false,
+            ])
+            ->add('ritual', CheckboxType::class, [
                 'required' => false,
             ])
             ->add('attackRoll', CheckboxType::class, [
@@ -92,11 +108,21 @@ class SkillFormType extends AbstractType
                 'choices' => array_filter(SkillTag::cases(), static fn (SkillTag $t): bool => $t !== SkillTag::NONE),
                 'choice_translation_domain' => 'skills',
                 'multiple' => true,
-                'expanded' => true,
+                'expanded' => false,
+                'required' => false,
+                'attr' => [
+                    'data-multi-select' => 'tags',
+                ],
             ])
             ->add('icon', FileType::class, [
                 'required' => false,
                 'mapped' => false,
+            ])
+            ->add('renameIcon', CheckboxType::class, [
+                'required' => false,
+                'mapped' => false,
+                'data' => true,
+                'label' => 'Rename icon to code-ulid',
             ])
         ;
     }

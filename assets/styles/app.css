@@ -4,6 +4,117 @@
 
 @layer base {
     body {
-        @apply bg-base-200 text-base-content;
+        @apply bg-slate-950 text-slate-100 min-h-screen;
+    }
+
+    a {
+        @apply text-sky-400 underline-offset-4 hover:text-sky-300;
+    }
+
+    @media print {
+        body {
+            background: white !important;
+            color: black !important;
+        }
+    }
+}
+
+.card {
+    @apply text-white bg-slate-900/70 border border-slate-800 rounded-xl shadow-lg shadow-black/30;
+}
+
+@media print {
+    .card {
+        @apply shadow-none;
+    }
+}
+.btn {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors duration-150;
+}
+
+.btn-primary {
+    @apply bg-sky-500 text-slate-950 hover:bg-sky-400;
+}
+
+.btn-ghost {
+    @apply text-sky-300 hover:text-sky-200 hover:bg-slate-800;
+}
+
+.input {
+    @apply w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500;
+}
+
+.label {
+    @apply block text-sm font-medium text-slate-200 mb-1;
+}
+
+.checkbox-grid {
+    @apply grid grid-cols-2 md:grid-cols-3 gap-2;
+}
+
+.badge {
+    @apply inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 text-slate-200 border border-slate-700;
+}
+
+/* Tom Select dark theme tweaks */
+.ts-control {
+    @apply bg-slate-900 border border-slate-800 text-slate-100 rounded-lg min-h-[42px];
+}
+
+.ts-control input {
+    @apply text-slate-100;
+}
+
+.ts-control.multi .item {
+    @apply bg-slate-800 border border-slate-700 text-slate-100 rounded-md;
+}
+
+.ts-dropdown {
+    @apply bg-slate-900 border border-slate-800 text-slate-100 shadow-lg shadow-black/30;
+}
+
+.ts-dropdown .active {
+    @apply bg-slate-800 text-slate-100;
+}
+
+.ts-control:hover,
+.ts-control.focus {
+    @apply border-sky-500 ring-1 ring-sky-500/50;
+}
+
+.icon-edit-wrap {
+    @apply relative w-[90px] h-[90px] rounded-2xl overflow-hidden border border-slate-800 bg-slate-900 shadow-lg shadow-black/30 cursor-pointer transition;
+}
+
+.icon-edit-wrap img {
+    @apply w-full h-full object-cover transition-opacity duration-150;
+}
+
+.icon-edit-overlay {
+    @apply absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity duration-150;
+}
+
+.icon-edit-wrap:hover img {
+    @apply opacity-70;
+}
+
+.icon-edit-wrap:hover .icon-edit-overlay {
+    @apply opacity-100;
+}
+
+.avoid-break {
+    break-inside: avoid;
+}
+
+.hide-print {
+    @media print {
+        display: none !important;
+    }
+}
+
+.print-columns {
+    @media print {
+        columns: 2;
+        column-gap: 1.5rem;
     }
 }

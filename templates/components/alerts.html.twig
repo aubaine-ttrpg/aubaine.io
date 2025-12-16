@@ -1,0 +1,20 @@
+{% set level_class = {
+    'success': 'alert-success',
+    'error': 'alert-error',
+    'warning': 'alert-warning',
+    'info': 'alert-info'
+} %}
+
+{% if app.flashes is not empty %}
+    <div class="fixed top-4 right-4 z-50 space-y-3 w-full max-w-md">
+        {% for label, messages in app.flashes %}
+            {% set cls = level_class[label] ?? 'alert-info' %}
+            {% for message in messages %}
+                <div role="alert" class="alert {{ cls }}" data-alert>
+                    {{ ux_icon('heroicons:information-circle', { class: 'w-5 h-5' }) }}
+                    <span>{{ message|trans }}</span>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endif %}

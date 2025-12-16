@@ -3,41 +3,98 @@
 {% block title %}Skill: {{ skill.name }}{% endblock %}
 
 {% block body %}
-    <main class="container" style="max-width: 960px; margin: 2rem auto; padding: 1rem;">
-        <p style="margin: 0 0 1rem; display: flex; gap: 1rem;">
-            <a href="{{ path('admin_skill_index') }}" style="text-decoration: none; color: #4c6fff;">← Back to list</a>
-            <a href="{{ path('admin_skill_edit', { id: skill.id }) }}" style="text-decoration: none; color: #4c6fff;">✏️ Edit</a>
-        </p>
-
-        <div style="display: flex; align-items: center; gap: 1rem;">
-            {% set iconPath = skill.icon ?? null %}
-            {% if iconPath %}
-                <img src="{{ iconPath }}" alt="" style="width: 75px; height: 75px; object-fit: cover;">
-            {% else %}
-                <div style="width: 75px; height: 75px; background: #f0f0f0; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; color: #999;">No image</div>
-            {% endif %}
-            <h1 style="margin: 0;">{{ skill.name }} ({{ skill.code }})</h1>
+    <main class="max-w-6xl mx-auto px-4 py-8 space-y-6">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                {% set iconPath = skill.icon ?? null %}
+                <div class="rounded-2xl overflow-hidden border border-slate-800 bg-slate-900 w-[75px] h-[75px]">
+                    <img src="{{ iconPath ?: 'https://placehold.co/75?text=?' }}" alt="" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/75?text=?';">
+                </div>
+                <div>
+                    <p class="text-sm text-slate-400 space-x-1">
+                        <a href="{{ path('admin_home') }}" class="hover:text-sky-300">Admin</a>
+                        <span>/</span>
+                        <a href="{{ path('admin_skill_index') }}" class="hover:text-sky-300">Skills</a>
+                        <span>/</span>
+                        <span class="text-slate-300">{{ skill.name }}</span>
+                    </p>
+                    <h1 class="text-3xl font-semibold">{{ skill.name }} ({{ skill.code }})</h1>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <a class="btn btn-ghost" href="{{ path('admin_skill_index') }}">← Back to list</a>
+                <a class="btn btn-primary" href="{{ path('admin_skill_edit', { id: skill.id }) }}">✏️ Edit</a>
+            </div>
         </div>
 
-        <dl style="display: grid; grid-template-columns: max-content 1fr; gap: .5rem 1rem;">
-            <dt>Category</dt><dd>{{ skill.category.value }}</dd>
-            <dt>Type</dt><dd>{{ skill.type.value }}</dd>
-            <dt>Energy cost</dt><dd>{{ skill.energyCost }}</dd>
-            <dt>Abilities</dt><dd>{{ skill.abilities|map(a => a.value)|join(', ') }}</dd>
-            <dt>Range</dt><dd>{{ skill.range.value }}</dd>
-            <dt>Duration</dt><dd>{{ skill.duration.value }}</dd>
-            <dt>Concentration</dt><dd>{{ skill.hasConcentration ? 'Yes' : 'No' }}</dd>
-            <dt>Attack roll</dt><dd>{{ skill.hasAttackRoll ? 'Yes' : 'No' }}</dd>
-            <dt>Saving throw</dt><dd>{{ skill.hasSavingThrow ? 'Yes' : 'No' }}</dd>
-            <dt>Ability check</dt><dd>{{ skill.hasAbilityCheck ? 'Yes' : 'No' }}</dd>
-            <dt>Source</dt><dd>{{ skill.source.value }}</dd>
-            <dt>Verbal</dt><dd>{{ skill.hasVerbal ? 'Yes' : 'No' }}</dd>
-            <dt>Somatic</dt><dd>{{ skill.hasSomatic ? 'Yes' : 'No' }}</dd>
-            <dt>Material</dt><dd>{{ skill.hasMaterial ? 'Yes' : 'No' }}</dd>
-            <dt>Material string</dt><dd>{{ skill.materialString ?? '—' }}</dd>
-            <dt>Tags</dt><dd>{{ skill.tags|map(t => t.value)|join(', ') }}</dd>
-            <dt>Icon</dt><dd>{{ skill.icon ?? '—' }}</dd>
-            <dt>Description</dt><dd>{{ skill.description }}</dd>
-        </dl>
+        <div class="card p-6">
+            <h2 class="text-xl font-semibold mb-3">Description</h2>
+            <p class="text-slate-200 leading-relaxed whitespace-pre-line">{{ skill.description }}</p>
+        </div>
+
+        <div class="card p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <dl class="space-y-3">
+                <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <dt class="text-slate-400">Category</dt><dd class="font-semibold">{{ ('skill.category.' ~ skill.category.value)|trans({}, 'skills') }}</dd>
+                </div>
+                <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <dt class="text-slate-400">Type</dt><dd class="font-semibold">{{ ('skill.type.' ~ skill.type.value)|trans({}, 'skills') }}</dd>
+                </div>
+                <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <dt class="text-slate-400">Energy</dt><dd class="font-semibold">{{ skill.energyCost }}</dd>
+                </div>
+                <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <dt class="text-slate-400">Usage limit</dt>
+                    <dd class="font-semibold">
+                        {{ skill.usageLimitAmount }} / {{ ('skill.limit_period.' ~ skill.usageLimitPeriod.value)|trans({}, 'skills') }}
+                    </dd>
+                </div>
+                <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <dt class="text-slate-400">Range</dt><dd class="font-semibold">{{ ('skill.range.' ~ skill.range.value)|trans({}, 'skills') }}</dd>
+                </div>
+                <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <dt class="text-slate-400">Duration</dt><dd class="font-semibold">{{ ('skill.duration.' ~ skill.duration.value)|trans({}, 'skills') }}</dd>
+                </div>
+                <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <dt class="text-slate-400">Source</dt><dd class="font-semibold">{{ ('skill.source.' ~ skill.source.value)|trans({}, 'skills') }}</dd>
+                </div>
+                <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <dt class="text-slate-400">Abilities</dt><dd class="font-semibold">{{ skill.abilities|map(a => ('skill.ability.' ~ a.value)|trans({}, 'skills'))|join(', ') }}</dd>
+                </div>
+                <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <dt class="text-slate-400">Tags</dt><dd class="font-semibold">{{ skill.tags|map(t => ('skill.tag.' ~ t.value)|trans({}, 'skills'))|join(', ') }}</dd>
+                </div>
+            </dl>
+
+            <dl class="space-y-3">
+                <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <dt class="text-slate-400">Concentration</dt><dd class="font-semibold">{{ skill.hasConcentration ? 'Yes' : 'No' }}</dd>
+                </div>
+                <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <dt class="text-slate-400">Ritual</dt><dd class="font-semibold">{{ skill.hasRitual ? 'Yes' : 'No' }}</dd>
+                </div>
+                <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <dt class="text-slate-400">Attack roll</dt><dd class="font-semibold">{{ skill.hasAttackRoll ? 'Yes' : 'No' }}</dd>
+                </div>
+                <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <dt class="text-slate-400">Saving throw</dt><dd class="font-semibold">{{ skill.hasSavingThrow ? 'Yes' : 'No' }}</dd>
+                </div>
+                <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <dt class="text-slate-400">Ability check</dt><dd class="font-semibold">{{ skill.hasAbilityCheck ? 'Yes' : 'No' }}</dd>
+                </div>
+                <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <dt class="text-slate-400">Verbal</dt><dd class="font-semibold">{{ skill.hasVerbal ? 'Yes' : 'No' }}</dd>
+                </div>
+                <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <dt class="text-slate-400">Somatic</dt><dd class="font-semibold">{{ skill.hasSomatic ? 'Yes' : 'No' }}</dd>
+                </div>
+                <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <dt class="text-slate-400">Material</dt><dd class="font-semibold">{{ skill.hasMaterial ? 'Yes' : 'No' }}</dd>
+                </div>
+                <div class="flex justify-between border-b border-slate-800 pb-2">
+                    <dt class="text-slate-400">Material string</dt><dd class="font-semibold">{{ skill.materialString ?? '—' }}</dd>
+                </div>
+            </dl>
+        </div>
     </main>
 {% endblock %}

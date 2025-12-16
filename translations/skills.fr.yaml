@@ -56,6 +56,27 @@ skill:
     aubaine_base_rules: "Base des règles d'Aubaine"
     the_tales_of_eden: "Les Contes d'Eden"
 
+  limit_period:
+    short_rest: "Repos court"
+    long_rest: "Repos long"
+    rest: "Repos"
+    day: "Jour"
+    campaign: "Campagne"
+
+  component:
+    verbal: "Verbal"
+    somatic: "Somatique"
+    material: "Matériel"
+
+  label:
+    type: "Type"
+    energy: "Énergie"
+    duration: "Durée"
+    components: "Composants"
+    range: "Portée"
+    ritual: "Rituel"
+    usage: "Usage"
+
   tag:
     none: "Aucun"
     fire: "Feu"

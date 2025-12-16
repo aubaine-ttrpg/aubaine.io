@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Export Skills{% endblock %}
+
+{% block body %}
+    <main class="max-w-6xl mx-auto px-4 py-8 space-y-6">
+        <div class="flex items-center justify-between hide-print">
+            <div>
+                <p class="text-sm text-slate-400 space-x-1">
+                    <a href="{{ path('admin_home') }}" class="hover:text-sky-300">Admin</a>
+                    <span>/</span>
+                    <a href="{{ path('admin_skill_index') }}" class="hover:text-sky-300">Skills</a>
+                    <span>/</span>
+                    <span class="text-slate-300">Export</span>
+                </p>
+                <h1 class="text-3xl font-semibold">Export Result</h1>
+            </div>
+            <a class="btn btn-ghost" href="{{ path('admin_skill_export') }}">← New export</a>
+        </div>
+
+        {% if hash %}
+            <div class="card p-4 text-sm text-slate-300 break-all hide-print">
+                Export link: {{ path('admin_skill_export_hash', { hash: hash }) }}
+            </div>
+        {% endif %}
+
+        {% if skills is not empty %}
+            <div class="gap-6 print:gap-2 space-y-6 print:space-y-2 print-columns">
+                {% set comp_verbal = 'skill.component.verbal'|trans({}, 'skills', export_locale)|u.slice(0,1)|upper %}
+                {% set comp_somatic = 'skill.component.somatic'|trans({}, 'skills', export_locale)|u.slice(0,1)|upper %}
+                {% set comp_material = 'skill.component.material'|trans({}, 'skills', export_locale)|u.slice(0,1)|upper %}
+
+                {# -- Loop through skills --#}
+                {% for skill in skills %}
+                    {% set abilities = skill.abilities
+                        |filter(a => a.value != 'none')
+                        |map(a => ('skill.ability.' ~ a.value)|trans({}, 'skills', export_locale))
+                        |map(label => (label|u).slice(0, 3)|upper)
+                        |join(', ')
+                    %}
+                    {% set tags = skill.tags|filter(t => t.value != 'none') %}
+                    {% set translated_tags = tags|map(t => ('skill.tag.' ~ t.value)|trans({}, 'skills', export_locale)) %}
+
+                    <div class="card p-6 print:p-2 space-y-3 print:space-y-1 mb-4 print:mb-1 inline-block w-full avoid-break">
+                        {#-- Skill name and abilities --#}
+                        <div class="flex items-center gap-2">
+                            <image alt="" src="{{ skill.icon ?: 'https://placehold.co/90?text=?' }}" class="w-12 h-12 object-cover rounded-xl border border-slate-800" onerror="this.onerror=null; this.src='https://placehold.co/90?text=?';">
+                            <h2 class="text-2xl print:text-sm font-semibold">{{ skill.name }}{% if abilities %} [{{ abilities }}]{% endif %}</h2>
+                            <!-- DISPLAY ICON -->
+                        </div>
+
+                        {#-- Skill details --#}
+                        <div class="p-1 rounded-lg text-slate-900 bg-slate-100 space-y-2 print:space-y-0 text-sm print:text-xs leading-relaxed print:leading-none">
+                            <div class="flex flex-wrap gap-3 print:gap-1">
+                                {#-- Energy Cost / Duration --#}
+                                <span class="flex items-center gap-1">
+                                    {{ ux_icon('mdi:thunder') }}
+                                    {{ skill.energyCost }}
+                                </span>
+                                <span>|</span>
+                                <span class="flex items-center gap-1">
+                                    {{ ux_icon('mdi:clock') }}
+                                    {{ ('skill.duration.' ~ skill.duration.value)|trans({}, 'skills', export_locale) }}
+                                </span>
+
+                                {#-- Components --#}
+                                {% set components = [] %}
+                                {% if skill.hasVerbal %}{% set components = components|merge([comp_verbal]) %}{% endif %}
+                                {% if skill.hasSomatic %}{% set components = components|merge([comp_somatic]) %}{% endif %}
+                                {% if skill.hasMaterial %}
+                                    {% set materialLabel = comp_material ~ (skill.materialString ? ' (' ~ skill.materialString ~ ')' : '') %}
+                                    {% set components = components|merge([materialLabel]) %}
+                                {% endif %}
+                                {% if components is not empty %}
+                                    <span>|</span>
+                                    <span class="flex items-center gap-1">
+                                        {{ ux_icon('mdi:tools') }}
+                                        {{ components|join(', ') }}
+                                    </span>
+                                {% endif %}
+
+                                {#-- Range --#}
+                                <span>|</span>
+                                <span class="flex items-center gap-1">
+                                    {{ ux_icon('game-icons:arrow-dunk') }}
+                                    {{ ('skill.range.' ~ skill.range.value)|trans({}, 'skills', export_locale) }}
+                                </span>
+
+                                {#-- Ritual --#}
+                                {% if skill.hasRitual %}
+                                    <span>|</span>
+                                    <span class="flex items-center gap-1">
+                                        {{ ux_icon('game-icons:campfire') }}
+                                        {{ 'skill.label.ritual'|trans({}, 'skills', export_locale) }}
+                                    </span>
+                                {% endif %}
+
+                                {#-- Usage Limit --#}
+                                {% if skill.usageLimitAmount > 0 %}
+                                    <span>|</span>
+                                    <span>{{ skill.usageLimitAmount }} p. {{ ('skill.limit_period.' ~ skill.usageLimitPeriod.value)|trans({}, 'skills', export_locale) }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        {#-- Skill description --#}
+                        <div class="whitespace-pre-line print:text-xs">{{ skill.description }}</div>
+                        
+                        {#-- Skill tags --#}
+                        {# {% if translated_tags is not empty %}
+                            <hr class="border-slate-800">
+                            <div class="flex flex-wrap gap-2 text-sm">
+                                {% for tag in translated_tags %}
+                                    <span class="badge">{{ tag }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %} #}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="card p-6 text-slate-300">No skills match the current filters.</div>
+        {% endif %}
+    </main>
+{% endblock %}
