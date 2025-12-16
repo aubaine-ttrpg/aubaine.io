@@ -30,6 +30,10 @@ class SkillFormType extends AbstractType
             ->add('name', TextType::class)
             ->add('description', TextareaType::class)
             ->add('energyCost', IntegerType::class)
+            ->add('ultimate', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Ultimate',
+            ])
             ->add('usageLimitAmount', IntegerType::class, [
                 'required' => false,
             ])

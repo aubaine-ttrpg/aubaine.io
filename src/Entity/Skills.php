@@ -46,6 +46,9 @@ class Skills
     #[Assert\PositiveOrZero]
     private int $energyCost = 0;
 
+    #[ORM\Column]
+    private bool $ultimate = false;
+
     #[ORM\Column(type: Types::INTEGER)]
     #[Assert\PositiveOrZero]
     private int $usageLimitAmount = 0;
@@ -175,6 +178,18 @@ class Skills
     public function setEnergyCost(int $energyCost): self
     {
         $this->energyCost = $energyCost;
+
+        return $this;
+    }
+
+    public function isUltimate(): bool
+    {
+        return $this->ultimate;
+    }
+
+    public function setUltimate(bool $ultimate): self
+    {
+        $this->ultimate = $ultimate;
 
         return $this;
     }

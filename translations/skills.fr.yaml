@@ -4,7 +4,6 @@ skill:
     general: "Générale"
     exclusive: "Exclusive"
     racial: "Raciale"
-    ultimate: "Ultime"
     signature: "Signature"
 
   type:
@@ -78,6 +77,7 @@ skill:
     ritual: "Rituel"
     usage: "Usage"
     concentration: "Concentration"
+    ultimate: "Ultime"
 
   tag:
     none: "Aucun"

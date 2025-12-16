@@ -8,6 +8,5 @@ enum SkillCategory: string
     case GENERAL = 'general';
     case EXCLUSIVE = 'exclusive';
     case RACIAL = 'racial';
-    case ULTIMATE = 'ultimate';
     case SIGNATURE = 'signature';
 }

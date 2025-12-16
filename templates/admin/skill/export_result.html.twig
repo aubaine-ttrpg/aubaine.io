@@ -60,9 +60,9 @@
                                     {% endif %}
                                 </h2>
                                 <span class="flex items-center gap-1 text-sm text-{{ color }}-900">
-                                    {% if skill.category.value == 'ultimate' %}
+                                    {% if skill.isUltimate %}
                                         {{ ux_icon('game-icons:evil-wings') }}
-                                        <p>{{ ('skill.category.' ~ skill.category.value)|trans({}, 'skills', export_locale) }}</p>
+                                        <p>{{ ('skill.label.ultimate')|trans({}, 'skills', export_locale) }}</p>
                                         <span>{{ separator }}</span>
                                     {% endif %}
                                     <p>{{ ('skill.type.' ~ skill.type.value)|trans({}, 'skills', export_locale) }}</p>
