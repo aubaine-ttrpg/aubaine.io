@@ -22,6 +22,7 @@ skill:
     intelligence: "Intelligence"
     perception: "Perception"
     charisma: "Charisme"
+    luck: "Chance"
     any: "Au choix"
     weapon: "Arme"
     none: "Aucune"
@@ -76,6 +77,7 @@ skill:
     range: "Portée"
     ritual: "Rituel"
     usage: "Usage"
+    concentration: "Concentration"
 
   tag:
     none: "Aucun"

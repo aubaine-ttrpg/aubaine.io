@@ -10,6 +10,7 @@ enum Ability: string
     case INTELLIGENCE = 'intelligence';
     case PERCEPTION = 'perception';
     case CHARISMA = 'charisma';
+    case LUCK = 'luck';
     case ANY = 'any';
     case WEAPON = 'weapon';
     case NONE = 'none';
@@ -17,15 +18,16 @@ enum Ability: string
     public function icon(): string
     {
         return match ($this) {
-            self::STRENGTH => 'tabler:arm-biceps',
-            self::DEXTERITY => 'tabler:feather',
-            self::ENDURANCE => 'tabler:shield',
-            self::INTELLIGENCE => 'tabler:brain',
-            self::PERCEPTION => 'tabler:eye',
-            self::CHARISMA => 'tabler:message',
-            self::ANY => 'tabler:asterisk',
-            self::WEAPON => 'tabler:sword',
-            self::NONE => 'tabler:ban',
+            self::STRENGTH => 'game-icons:biceps',
+            self::DEXTERITY => 'game-icons:walking-boot',
+            self::LUCK => 'mdi:clover',
+            self::CHARISMA => 'game-icons:duality-mask',
+            self::INTELLIGENCE => 'game-icons:brain',
+            self::PERCEPTION => 'mdi:eye',
+            self::ENDURANCE => 'game-icons:heart-organ',
+            self::WEAPON => 'game-icons:axe-sword',
+            self::ANY => 'mynaui:asterisk-hexagon-solid',
+            self::NONE => '',
         };
     }
 }

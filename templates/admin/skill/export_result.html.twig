@@ -36,12 +36,6 @@
                     {% set color = skill.type.color() %}
                     {% set iconKey = skill.type.icon() %}
                     {% set iconClass = skill.type.iconClass() %}
-                    {% set abilities = skill.abilities
-                        |filter(a => a.value != 'none')
-                        |map(a => ('skill.ability.' ~ a.value)|trans({}, 'skills', export_locale))
-                        |map(label => (label|u).slice(0, 3)|upper)
-                        |join(', ')
-                    %}
                     {% set tags = skill.tags|filter(t => t.value != 'none') %}
                     {% set translated_tags = tags|map(t => ('skill.tag.' ~ t.value)|trans({}, 'skills', export_locale)) %}
 
@@ -51,8 +45,19 @@
                         <div class="flex items-center gap-3">
                             <img alt="" src="{{ skill.icon ?: 'https://placehold.co/90?text=?' }}" class="w-12 h-12 object-cover rounded-xl border border-slate-800" onerror="this.onerror=null; this.src='https://placehold.co/90?text=?';">
                             <div class="flex-1">
-                                <h2 class="text-2xl print:text-sm font-semibold">
-                                    {{ skill.name }}{% if abilities %} [{{ abilities }}]{% endif %}
+                                <h2 class="text-2xl print:text-sm font-semibold flex items-center gap-1">
+                                    {{ skill.name }}
+                                    {% if skill.abilities is not empty and enum('App\\Enum\\Ability').NONE not in skill.abilities %}
+                                        <span>{{ separator }}</span>
+                                            <span class="flex items-center gap-1">
+                                                {% for ability in skill.abilities %}
+                                                    {% set aIcon = ability.icon() %}
+                                                    {% if aIcon is not empty %}
+                                                        {{ ux_icon(aIcon, {class: 'w-6 h-6 print:w-4 print:h-4'}) }}
+                                                    {% endif %}
+                                                {% endfor %}
+                                        </span>
+                                    {% endif %}
                                 </h2>
                                 <span class="flex items-center gap-1 text-sm text-{{ color }}-900">
                                     {% if skill.category.value == 'ultimate' %}
@@ -69,21 +74,19 @@
                         {#-- Skill details --#}
                         <div class="p-1 rounded-lg text-black bg-white space-y-2 print:space-y-0 text-sm print:text-xs leading-relaxed print:leading-none">
                             <div class="flex flex-wrap gap-3 print:gap-1">
+                                {# Usage Limit #}
                                 {% if skill.usageLimitAmount > 0 %}
                                     <span>{{ skill.usageLimitAmount }} p. {{ ('skill.limit_period.' ~ skill.usageLimitPeriod.value)|trans({}, 'skills', export_locale) }}</span>
                                     <span>{{ separator }}</span>
                                 {% endif %}
 
+                                {# Energy Cost #}
                                 <span class="flex items-center gap-1">
                                     {{ ux_icon('mdi:thunder') }}
                                     {{ skill.energyCost }}
                                 </span>
-                                <span>{{ separator }}</span>
-                                <span class="flex items-center gap-1">
-                                    {{ ux_icon('mdi:clock') }}
-                                    {{ ('skill.duration.' ~ skill.duration.value)|trans({}, 'skills', export_locale) }}
-                                </span>
 
+                                {# Components #}
                                 {% set components = [] %}
                                 {% if skill.hasVerbal %}{% set components = components|merge([comp_verbal]) %}{% endif %}
                                 {% if skill.hasSomatic %}{% set components = components|merge([comp_somatic]) %}{% endif %}
@@ -99,12 +102,27 @@
                                     </span>
                                 {% endif %}
 
+                                {# Duration #}
+                                <span>{{ separator }}</span>
+                                <span class="flex items-center gap-1">
+                                    {{ ux_icon('mdi:clock') }}
+                                    {{ ('skill.duration.' ~ skill.duration.value)|trans({}, 'skills', export_locale) }}
+                                </span>
+
                                 <span>{{ separator }}</span>
                                 <span class="flex items-center gap-1">
                                     {{ ux_icon('game-icons:arrow-dunk') }}
                                     {{ ('skill.range.' ~ skill.range.value)|trans({}, 'skills', export_locale) }}
                                 </span>
 
+                                {% if skill.hasConcentration %}
+                                    <span>{{ separator }}</span>
+                                    <span class="flex items-center gap-1">
+                                        {{ ux_icon('game-icons:eyeball') }}
+                                        {{ 'skill.label.concentration'|trans({}, 'skills', export_locale) }}
+                                    </span>
+                                {% endif %}
+                                
                                 {% if skill.hasRitual %}
                                     <span>{{ separator }}</span>
                                     <span class="flex items-center gap-1">
@@ -112,7 +130,6 @@
                                         {{ 'skill.label.ritual'|trans({}, 'skills', export_locale) }}
                                     </span>
                                 {% endif %}
-
                             </div>
                         </div>
 
