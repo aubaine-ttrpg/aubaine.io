@@ -86,6 +86,40 @@ class AdminSkillController extends AdminController
         ]);
     }
 
+    #[Route(
+        '/{id}/clone',
+        name: 'clone',
+        methods: ['GET', 'POST'],
+        requirements: ['id' => '[0-9A-Za-z]{26}']
+    )]
+    public function clone(Request $request, Skills $skill): Response
+    {
+        $clone = $this->cloneSkill($skill);
+
+        $form = $this->createForm(SkillFormType::class, $clone);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->handleIconUpload(
+                $form->get('icon')->getData(),
+                $clone,
+                (bool) $form->get('renameIcon')->getData()
+            );
+
+            $this->entityManager->persist($clone);
+            $this->entityManager->flush();
+
+            $this->addFlash('success', 'Skill cloned.');
+
+            return $this->redirectToRoute('admin_skill_show', ['id' => $clone->getId()]);
+        }
+
+        return $this->render('admin/factory/skill.html.twig', [
+            'form' => $form->createView(),
+            'iconSrc' => $clone->getIcon(),
+        ]);
+    }
+
     #[Route('/factory', name: 'factory', methods: ['GET', 'POST'])]
     public function factory(Request $request): Response
     {
@@ -137,6 +171,39 @@ class AdminSkillController extends AdminController
         $uploadedFile->move($targetDir, $fileName);
 
         $skill->setIcon('/uploads/skills/' . $fileName);
+    }
+
+    private function cloneSkill(Skills $skill): Skills
+    {
+        $clone = new Skills();
+
+        $clone
+            ->setName($skill->getName())
+            ->setCode($skill->getCode())
+            ->setDescription($skill->getDescription())
+            ->setEnergyCost($skill->getEnergyCost())
+            ->setUltimate($skill->isUltimate())
+            ->setUsageLimitAmount($skill->getUsageLimitAmount())
+            ->setUsageLimitPeriod($skill->getUsageLimitPeriod())
+            ->setCategory($skill->getCategory())
+            ->setType($skill->getType())
+            ->setAbilities($skill->getAbilities())
+            ->setRange($skill->getRange())
+            ->setDuration($skill->getDuration())
+            ->setConcentration($skill->hasConcentration())
+            ->setRitual($skill->hasRitual())
+            ->setAttackRoll($skill->hasAttackRoll())
+            ->setSavingThrow($skill->hasSavingThrow())
+            ->setAbilityCheck($skill->hasAbilityCheck())
+            ->setSource($skill->getSource())
+            ->setVerbal($skill->hasVerbal())
+            ->setSomatic($skill->hasSomatic())
+            ->setMaterial($skill->hasMaterial())
+            ->setMaterialString($skill->getMaterialString())
+            ->setTags($skill->getTags())
+            ->setIcon($skill->getIcon());
+
+        return $clone;
     }
 
     #[Route('/export', name: 'export', methods: ['GET'])]

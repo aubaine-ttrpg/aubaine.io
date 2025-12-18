@@ -54,6 +54,7 @@
                                 <td class="px-4 py-3 space-x-2">
                                     <a href="{{ path('admin_skill_show', { id: skill.id }) }}" class="btn btn-ghost text-sm">View</a>
                                     <a href="{{ path('admin_skill_edit', { id: skill.id }) }}" class="btn btn-ghost text-sm">Edit</a>
+                                    <a href="{{ path('admin_skill_clone', { id: skill.id }) }}" class="btn btn-ghost text-sm">Clone</a>
                                 </td>
                             </tr>
                         {% endfor %}
