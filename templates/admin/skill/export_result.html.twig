@@ -31,12 +31,16 @@
                 {% set comp_verbal = 'skill.component.verbal'|trans({}, 'skills', export_locale)|u.slice(0,1)|upper %}
                 {% set comp_somatic = 'skill.component.somatic'|trans({}, 'skills', export_locale)|u.slice(0,1)|upper %}
                 {% set comp_material = 'skill.component.material'|trans({}, 'skills', export_locale)|u.slice(0,1)|upper %}
-                {% set hasLimitDetails = false %}
 
                 {% for skill in skills %}
+                    {% set hasLimitDetails = false %}
+                    {% set hasEnergyDetails = false %}
+                    {% set hasComponentDetails = false %}
+
                     {% set color = skill.type.color() %}
                     {% set iconKey = skill.type.icon() %}
                     {% set iconClass = skill.type.iconClass() %}
+
                     {% set tags = skill.tags|filter(t => t.value != 'none') %}
                     {% set translated_tags = tags|map(t => ('skill.tag.' ~ t.value)|trans({}, 'skills', export_locale)) %}
 
@@ -89,8 +93,10 @@
                         <div class="p-1 rounded-md text-black bg-white space-y-2 print:space-y-0 text-sm print:text-[10px] leading-relaxed print:leading-none avoid-break">
                             <div class="flex flex-wrap gap-3 print:gap-1">
                                 {# Usage Limit #}
-                                {% if skill.usageLimitAmount > 0 or skill.usageLimitPeriod != enum('App\\Enum\\SkillLimitPeriod').NONE %}
-                                    <span>{{ skill.usageLimitAmount }} p. {{ ('skill.limit_period.' ~ skill.usageLimitPeriod.value)|trans({}, 'skills', export_locale) }}</span>
+                                {% if skill.usageLimitAmount != 0 and skill.usageLimitPeriod != enum('App\\Enum\\SkillLimitPeriod').NONE %}
+                                    <span>
+                                        {{ skill.usageLimitAmount }} / {{ ('skill.limit_period.' ~ skill.usageLimitPeriod.value)|trans({}, 'skills', export_locale) }}
+                                    </span>
 
                                     {% set hasLimitDetails = true %}
                                 {% endif %}
@@ -104,10 +110,13 @@
                                         {% if hasLimitDetails %}
                                             <span>{{ separator }}</span>
                                         {% endif %}
+
                                         <span class="flex items-center gap-1">
                                             {{ ux_icon('mdi:thunder') }}
                                             {{ skill.energyCost }}
                                         </span>
+
+                                        {% set hasEnergyDetails = true %}
                                     {% endif %}
 
                                     {# Components #}
@@ -119,16 +128,24 @@
                                         {% set components = components|merge([materialLabel]) %}
                                     {% endif %}
                                     {% if components is not empty %}
-                                        <span>{{ separator }}</span>
+                                        {% if hasLimitDetails or hasEnergyDetails %}
+                                            <span>{{ separator }}</span>
+                                        {% endif %}
+
                                         <span class="flex items-center gap-1">
                                             {{ ux_icon('mdi:tools') }}
                                             {{ components|join(', ') }}
                                         </span>
+
+                                        {% set hasComponentDetails = true %}
                                     {% endif %}
 
                                     {# Duration #}
                                     {% if skill.duration != enum('App\\Enum\\SkillDuration').NONE %}
-                                        <span>{{ separator }}</span>
+                                        {% if hasLimitDetails or hasEnergyDetails or hasComponentDetails %}
+                                            <span>{{ separator }}</span>
+                                        {% endif %}
+
                                         <span class="flex items-center gap-1">
                                             {{ ux_icon('mdi:clock') }}
                                             {{ ('skill.duration.' ~ skill.duration.value)|trans({}, 'skills', export_locale) }}
