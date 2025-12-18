@@ -116,7 +116,7 @@ skill:
     utility: "Utility"
     crowd_control: "Crowd control"
     warrior: "Warrior"
-    mage: "Mage"
+    wizard: "Wizard"
     rogue: "Rogue"
     hp_upgrade: "HP Upgrade"
     energy_upgrade: "Energy Upgrade"
