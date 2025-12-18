@@ -27,10 +27,11 @@
         {% endif %}
 
         {% if skills is not empty %}
-            <div class="gap-6 print:gap-2 print-columns my-4 print:my-0 print:align-middle">
+            <div class="gap-6 print:gap-0 print-columns my-4 print:my-0">
                 {% set comp_verbal = 'skill.component.verbal'|trans({}, 'skills', export_locale)|u.slice(0,1)|upper %}
                 {% set comp_somatic = 'skill.component.somatic'|trans({}, 'skills', export_locale)|u.slice(0,1)|upper %}
                 {% set comp_material = 'skill.component.material'|trans({}, 'skills', export_locale)|u.slice(0,1)|upper %}
+                {% set hasLimitDetails = false %}
 
                 {% for skill in skills %}
                     {% set color = skill.type.color() %}
@@ -39,12 +40,21 @@
                     {% set tags = skill.tags|filter(t => t.value != 'none') %}
                     {% set translated_tags = tags|map(t => ('skill.tag.' ~ t.value)|trans({}, 'skills', export_locale)) %}
 
+                    {#-- Skill Card --#}
+                    <div class="avoid-break bg-{{ color }}-50 border-2 border-{{ color }}-900 text-{{ color }}-950 rounded-xl print:rounded-none p-6 w-full flex mb-2 flex-col gap-2 print:p-2 print:mb-0 print:border-0"> {# might add avoid-break #}
+                        {#-- Exclusive skill code --#}
+                        {% if skill.category == enum('App\\Enum\\SkillCategory').EXCLUSIVE %}
+                            <span class="font-mono text-xs font-light">{{ skill.code }}</span>
+                        {% endif %}
 
-                    <div class="bg-{{ color }}-50 border-2 border-{{ color }}-900 text-{{ color }}-950 rounded-xl p-6 print:p-2 mb-2 w-full avoid-break flex flex-col gap-2">
-                        {# Header #}
-                        <div class="flex items-center gap-3">
-                            <img alt="" src="{{ skill.icon ?: 'https://placehold.co/90?text=?' }}" class="w-12 h-12 object-cover rounded-xl border border-slate-800" onerror="this.onerror=null; this.src='https://placehold.co/90?text=?';">
+                        {#-- Header --#}
+                        <div class="flex items-center gap-3 avoid-break">
+                            {#-- Skill icon --#}
+                            <img alt="" src="{{ skill.icon ?: 'https://placehold.co/90?text=?' }}" class="w-12 h-12 print:w-10 print:h-10 object-cover rounded-xl border border-slate-800" onerror="this.onerror=null; this.src='https://placehold.co/90?text=?';">
+
+                            {#-- Skill name and type --#}
                             <div class="flex-1">
+                                {#-- Skill name and abilities --#}
                                 <h2 class="text-2xl print:text-sm font-semibold flex items-center gap-1">
                                     {{ skill.name }}
                                     {% if skill.abilities is not empty and enum('App\\Enum\\Ability').NONE not in skill.abilities %}
@@ -59,7 +69,9 @@
                                         </span>
                                     {% endif %}
                                 </h2>
-                                <span class="flex items-center gap-1 text-sm text-{{ color }}-900">
+
+                                {#-- Skill type and ultimate --#}
+                                <span class="flex items-center gap-1 text-xs text-{{ color }}-900">
                                     {% if skill.isUltimate %}
                                         {{ ux_icon('game-icons:evil-wings') }}
                                         <p>{{ ('skill.label.ultimate')|trans({}, 'skills', export_locale) }}</p>
@@ -68,84 +80,104 @@
                                     <p>{{ ('skill.type.' ~ skill.type.value)|trans({}, 'skills', export_locale) }}</p>
                                 </span>
                             </div>
-                            {{ ux_icon(iconKey, {class: 'w-10 h-10 text-' ~ color ~ '-900 ' ~ (iconClass|default('')) }) }}
+
+                            {#-- Skill type icon --#}
+                            {{ ux_icon(iconKey, {class: 'w-8 h-8 print:w-6 print:h-6 text-' ~ color ~ '-900 ' ~ (iconClass|default('')) }) }}
                         </div>
 
                         {#-- Skill details --#}
-                        <div class="p-1 rounded-lg text-black bg-white space-y-2 print:space-y-0 text-sm print:text-xs leading-relaxed print:leading-none">
+                        <div class="p-1 rounded-md text-black bg-white space-y-2 print:space-y-0 text-sm print:text-[10px] leading-relaxed print:leading-none avoid-break">
                             <div class="flex flex-wrap gap-3 print:gap-1">
                                 {# Usage Limit #}
-                                {% if skill.usageLimitAmount > 0 %}
+                                {% if skill.usageLimitAmount > 0 or skill.usageLimitPeriod != enum('App\\Enum\\SkillLimitPeriod').NONE %}
                                     <span>{{ skill.usageLimitAmount }} p. {{ ('skill.limit_period.' ~ skill.usageLimitPeriod.value)|trans({}, 'skills', export_locale) }}</span>
-                                    <span>{{ separator }}</span>
+
+                                    {% set hasLimitDetails = true %}
                                 {% endif %}
 
-                                {# Energy Cost #}
-                                <span class="flex items-center gap-1">
-                                    {{ ux_icon('mdi:thunder') }}
-                                    {{ skill.energyCost }}
-                                </span>
+                                {% if skill.type != enum('App\\Enum\\SkillType').PASSIVE
+                                    or skill.type != enum('App\\Enum\\SkillType').UPGRADE
+                                    or skill.type != enum('App\\Enum\\SkillType').EVOLUTION
+                                %}
+                                    {# Energy Cost #}
+                                    {% if skill.energyCost > 0 %}
+                                        {% if hasLimitDetails %}
+                                            <span>{{ separator }}</span>
+                                        {% endif %}
+                                        <span class="flex items-center gap-1">
+                                            {{ ux_icon('mdi:thunder') }}
+                                            {{ skill.energyCost }}
+                                        </span>
+                                    {% endif %}
 
-                                {# Components #}
-                                {% set components = [] %}
-                                {% if skill.hasVerbal %}{% set components = components|merge([comp_verbal]) %}{% endif %}
-                                {% if skill.hasSomatic %}{% set components = components|merge([comp_somatic]) %}{% endif %}
-                                {% if skill.hasMaterial %}
-                                    {% set materialLabel = comp_material ~ (skill.materialString ? ' (' ~ skill.materialString ~ ')' : '') %}
-                                    {% set components = components|merge([materialLabel]) %}
-                                {% endif %}
-                                {% if components is not empty %}
-                                    <span>{{ separator }}</span>
-                                    <span class="flex items-center gap-1">
-                                        {{ ux_icon('mdi:tools') }}
-                                        {{ components|join(', ') }}
-                                    </span>
-                                {% endif %}
+                                    {# Components #}
+                                    {% set components = [] %}
+                                    {% if skill.hasVerbal %}{% set components = components|merge([comp_verbal]) %}{% endif %}
+                                    {% if skill.hasSomatic %}{% set components = components|merge([comp_somatic]) %}{% endif %}
+                                    {% if skill.hasMaterial %}
+                                        {% set materialLabel = comp_material ~ (skill.materialString ? ' (' ~ skill.materialString ~ ')' : '') %}
+                                        {% set components = components|merge([materialLabel]) %}
+                                    {% endif %}
+                                    {% if components is not empty %}
+                                        <span>{{ separator }}</span>
+                                        <span class="flex items-center gap-1">
+                                            {{ ux_icon('mdi:tools') }}
+                                            {{ components|join(', ') }}
+                                        </span>
+                                    {% endif %}
 
-                                {# Duration #}
-                                <span>{{ separator }}</span>
-                                <span class="flex items-center gap-1">
-                                    {{ ux_icon('mdi:clock') }}
-                                    {{ ('skill.duration.' ~ skill.duration.value)|trans({}, 'skills', export_locale) }}
-                                </span>
+                                    {# Duration #}
+                                    {% if skill.duration != enum('App\\Enum\\SkillDuration').NONE %}
+                                        <span>{{ separator }}</span>
+                                        <span class="flex items-center gap-1">
+                                            {{ ux_icon('mdi:clock') }}
+                                            {{ ('skill.duration.' ~ skill.duration.value)|trans({}, 'skills', export_locale) }}
+                                        </span>
+                                    {% endif %}
 
-                                <span>{{ separator }}</span>
-                                <span class="flex items-center gap-1">
-                                    {{ ux_icon('game-icons:arrow-dunk') }}
-                                    {{ ('skill.range.' ~ skill.range.value)|trans({}, 'skills', export_locale) }}
-                                </span>
+                                    {# Range #}
+                                    {% if skill.range != enum('App\\Enum\\SkillRange').NONE %}
+                                        <span>{{ separator }}</span>
+                                        <span class="flex items-center gap-1">
+                                            {{ ux_icon('game-icons:arrow-dunk') }}
+                                            {{ ('skill.range.' ~ skill.range.value)|trans({}, 'skills', export_locale) }}
+                                        </span>
+                                    {% endif %}
 
-                                {% if skill.hasConcentration %}
-                                    <span>{{ separator }}</span>
-                                    <span class="flex items-center gap-1">
-                                        {{ ux_icon('game-icons:eyeball') }}
-                                        {{ 'skill.label.concentration'|trans({}, 'skills', export_locale) }}
-                                    </span>
-                                {% endif %}
-                                
-                                {% if skill.hasRitual %}
-                                    <span>{{ separator }}</span>
-                                    <span class="flex items-center gap-1">
-                                        {{ ux_icon('game-icons:campfire') }}
-                                        {{ 'skill.label.ritual'|trans({}, 'skills', export_locale) }}
-                                    </span>
+                                    {% if skill.hasConcentration %}
+                                        <span>{{ separator }}</span>
+                                        <span class="flex items-center gap-1">
+                                            {{ ux_icon('game-icons:eyeball') }}
+                                            {{ 'skill.label.concentration'|trans({}, 'skills', export_locale) }}
+                                        </span>
+                                    {% endif %}
+                                    
+                                    {% if skill.hasRitual %}
+                                        <span>{{ separator }}</span>
+                                        <span class="flex items-center gap-1">
+                                            {{ ux_icon('game-icons:campfire') }}
+                                            {{ 'skill.label.ritual'|trans({}, 'skills', export_locale) }}
+                                        </span>
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         </div>
 
                         {# Description #}
-                        <div class="whitespace-pre-line print:text-xs">{{ skill.description }}</div>
+                        <div class="mt-2 print:mt-1 avoid-break flex flex-col gap-2">
+                            <div class="whitespace-pre-line print:text-[10px]">{{ skill.description }}</div>
 
-                        {#-- Skill tags --#}
-                        {% if translated_tags is not empty %}
-                            <div class="flex flex-wrap gap-1 text-xs">
-                                {% for tag in translated_tags|sort %}
-                                    <span class="px-2 py-1 bg-white text-{{ color }}-800 rounded-full">
-                                        {{ tag }}
-                                    </span>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
+                            {#-- Skill tags --#}
+                            {% if translated_tags is not empty %}
+                                <div class="flex flex-wrap gap-1 text-xs">
+                                    {% for tag in translated_tags|sort %}
+                                        <span class="px-2 py-1 bg-white text-{{ color }}-800 rounded-lg">
+                                            {{ tag }}
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
                 {% endfor %}
             </div>

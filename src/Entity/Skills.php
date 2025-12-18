@@ -54,10 +54,10 @@ class Skills
     private int $usageLimitAmount = 0;
 
     #[ORM\Column(enumType: SkillLimitPeriod::class)]
-    private SkillLimitPeriod $usageLimitPeriod = SkillLimitPeriod::DAY;
+    private SkillLimitPeriod $usageLimitPeriod = SkillLimitPeriod::NONE;
 
     #[ORM\Column(enumType: SkillCategory::class)]
-    private SkillCategory $category = SkillCategory::COMMON;
+    private SkillCategory $category = SkillCategory::GENERAL;
 
     #[ORM\Column(enumType: SkillType::class)]
     private SkillType $type = SkillType::NONE;
@@ -69,10 +69,10 @@ class Skills
     private array $abilities = [Ability::NONE->value];
 
     #[ORM\Column(enumType: SkillRange::class)]
-    private SkillRange $range = SkillRange::SPECIAL;
+    private SkillRange $range = SkillRange::NONE;
 
     #[ORM\Column(enumType: SkillDuration::class)]
-    private SkillDuration $duration = SkillDuration::SPECIAL;
+    private SkillDuration $duration = SkillDuration::NONE;
 
     #[ORM\Column]
     private bool $concentration = false;

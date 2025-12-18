@@ -32,4 +32,9 @@ enum SkillTag: string
     case TRAP = 'trap';
     case UTILITY = 'utility';
     case CROWD_CONTROL = 'crowd_control';
+    case WARRIOR = 'warrior';
+    case MAGE = 'mage';
+    case ROGUE = 'rogue';
+    case HP_UPGRADE = 'hp_upgrade';
+    case ENERGY_UPGRADE = 'energy_upgrade';
 }

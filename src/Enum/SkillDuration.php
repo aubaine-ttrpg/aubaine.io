@@ -4,7 +4,7 @@ namespace App\Enum;
 
 enum SkillDuration: string
 {
-    case SPECIAL = 'special';
+    case NONE = 'none';
     case INSTANTANEOUS = 'instantaneous';
     case ONE_ROUND = '1_round';
     case ONE_MINUTE = '1_minute';
@@ -14,4 +14,5 @@ enum SkillDuration: string
     case EIGHT_HOURS = '8_hours';
     case SIXTEEN_HOURS = '16_hours';
     case TWENTY_FOUR_HOURS = '24_hours';
+    case SPECIAL = 'special';
 }

@@ -4,7 +4,7 @@ namespace App\Enum;
 
 enum SkillRange: string
 {
-    case SPECIAL = 'special';
+    case NONE = 'none';
     case PERSONAL = 'personal';
     case WEAPONS_REACH = 'weapons_reach';
     case TOUCH = 'touch';
@@ -16,4 +16,5 @@ enum SkillRange: string
     case THIRTY_SIX_M = '36m';
     case FORTY_FIVE_M = '45m';
     case NINETY_SIX_M = '96m';
+    case SPECIAL = 'special';
 }

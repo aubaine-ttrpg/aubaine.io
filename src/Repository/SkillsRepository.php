@@ -92,11 +92,12 @@ class SkillsRepository extends ServiceEntityRepository
         }
 
         if (!empty($filters['tags'])) {
+            $tagExpr = $qb->expr()->orX();
             foreach ($filters['tags'] as $idx => $tag) {
-                $qb
-                    ->andWhere(sprintf('s.tags LIKE :tag_%d', $idx))
-                    ->setParameter(sprintf('tag_%d', $idx), '%"' . $tag->value . '"%');
+                $tagExpr->add(sprintf('s.tags LIKE :tag_%d', $idx));
+                $qb->setParameter(sprintf('tag_%d', $idx), '%"' . $tag->value . '"%');
             }
+            $qb->andWhere($tagExpr);
         }
 
         return $qb

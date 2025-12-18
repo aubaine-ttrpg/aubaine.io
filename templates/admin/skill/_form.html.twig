@@ -31,7 +31,7 @@
                 <div class="space-y-2">
                     <label class="label" for="{{ form.energyCost.vars.id }}">Energy Cost</label>
                     {{ form_widget(form.energyCost, { attr: { class: 'input', min: 0 } }) }}
-                    <div class="flex flex-col gap-2">
+                    <div class="col-span-1 grid grid-cols-1 md:grid-cols-2 gap-3">
                         <label class="inline-flex items-center justify-between gap-2 text-slate-200 w-full">
                             <span>Concentration</span>
                             {{ form_widget(form.concentration, { attr: { class: 'checkbox' } }) }}
@@ -39,6 +39,10 @@
                         <label class="inline-flex items-center justify-between gap-2 text-slate-200 w-full">
                             <span>Ritual</span>
                             {{ form_widget(form.ritual, { attr: { class: 'checkbox' } }) }}
+                        </label>
+                        <label class="inline-flex items-center justify-between gap-2 text-slate-200 w-full">
+                            <span>Ultimate</span>
+                            {{ form_widget(form.ultimate, { attr: { class: 'checkbox' } }) }}
                         </label>
                     </div>
                 </div>
