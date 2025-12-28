@@ -6,6 +6,7 @@
 
 {% block body %}
     <main class="max-w-6xl mx-auto px-4 py-8 print:max-w-full print:p-0">
+        {#-- Header --#}
         <div class="flex items-center justify-between hide-print">
             <div>
                 <p class="text-sm text-slate-400">
@@ -15,16 +16,21 @@
                     <span>/</span>
                     <span class="text-slate-300">Export</span>
                 </p>
-                <h1 class="text-3xl font-semibold">Export Result</h1>
+                <h1 class="text-3xl font-semibold">Export Result {% if skills is not empty %}({{ skills|length }} skills){% endif %}</h1>
+                <p class="text-mono text-sm">Export filters: {{ export_filters|json_encode() }}</p>
             </div>
-            <a class="btn btn-ghost" href="{{ path('admin_skill_export') }}">← New export</a>
-        </div>
 
-        {% if hash %}
-            <div class="card p-4 text-sm text-slate-300 break-all hide-print">
-                Export link: {{ path('admin_skill_export_hash', { hash: hash }) }}
+            {#-- Actions --#}
+            <div>
+                <a class="btn btn-ghost" href="{{ path('admin_skill_export') }}">← New export</a>
+                {% if hash %}
+                    <button class="btn btn-info" onclick="navigator.clipboard.writeText('{{ url('admin_skill_export_hash', { hash: hash }) }}');" title="Copy export link to clipboard">
+                        {{ ux_icon('heroicons:clipboard-document') }}
+                        <span>Copy to clipboard</span>
+                    </button>
+                {% endif %}
             </div>
-        {% endif %}
+        </div>
 
         {% if skills is not empty %}
             <div class="gap-6 print:gap-0 print-columns my-4 print:my-0">

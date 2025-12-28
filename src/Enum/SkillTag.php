@@ -37,4 +37,5 @@ enum SkillTag: string
     case ROGUE = 'rogue';
     case HP_UPGRADE = 'hp_upgrade';
     case ENERGY_UPGRADE = 'energy_upgrade';
+    case COMMON_UPGRADE = 'common_upgrade';
 }

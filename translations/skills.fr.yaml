@@ -120,3 +120,4 @@ skill:
     rogue: "Roublard"
     hp_upgrade: "Amélioration PV"
     energy_upgrade: "Amélioration Énergie"
+    common_upgrade: "Amélioration Commune"

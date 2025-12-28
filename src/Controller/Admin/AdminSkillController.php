@@ -250,6 +250,7 @@ class AdminSkillController extends AdminController
         return $this->render('admin/skill/export_result.html.twig', [
             'skills' => $skills,
             'export_locale' => $exportLocale,
+            'export_filters' => $filters,
             'hash' => $hash,
         ]);
     }

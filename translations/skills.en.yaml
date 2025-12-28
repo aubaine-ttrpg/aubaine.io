@@ -120,3 +120,4 @@ skill:
     rogue: "Rogue"
     hp_upgrade: "HP Upgrade"
     energy_upgrade: "Energy Upgrade"
+    common_upgrade: "Common Upgrade"
