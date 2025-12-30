@@ -1,4 +1,4 @@
-.PHONY: all help md autophony install dev clear migrations migrate db phpstan drop-database export
+.PHONY: all help md autophony install dev clear migrations migrate db phpstan drop-database export import
 
 all: help
 
@@ -36,3 +36,6 @@ phpstan: ## Run PHPStan static analysis.
 
 export: ## Export all database tables to JSON files (data/json) via aubaine:database:export.
 	@php bin/console aubaine:database:export
+
+import: ## Import database content from JSON files in data/ via aubaine:database:import.
+	@php bin/console aubaine:database:import
