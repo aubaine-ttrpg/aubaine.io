@@ -1,4 +1,4 @@
-.PHONY: all help md autophony install dev clear migrations migrate db phpstan drop-database
+.PHONY: all help md autophony install dev clear migrations migrate db phpstan drop-database export
 
 all: help
 
@@ -33,3 +33,6 @@ db: migrate ## Apply migrations (creates SQLite database if it does not exist).
 
 phpstan: ## Run PHPStan static analysis.
 	@vendor/bin/phpstan analyse -c phpstan.dist.neon --memory-limit=-1
+
+export: ## Export all database tables to JSON files (data/json) via aubaine:database:export.
+	@php bin/console aubaine:database:export
