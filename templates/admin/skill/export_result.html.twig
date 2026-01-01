@@ -127,10 +127,10 @@
 
                                     {# Components #}
                                     {% set components = [] %}
-                                    {% if skill.hasVerbal %}{% set components = components|merge([comp_verbal]) %}{% endif %}
-                                    {% if skill.hasSomatic %}{% set components = components|merge([comp_somatic]) %}{% endif %}
-                                    {% if skill.hasMaterial %}
-                                        {% set materialLabel = comp_material ~ (skill.materialString ? ' (' ~ skill.materialString ~ ')' : '') %}
+                                    {% if skill.hasTag(enum('App\\Enum\\SkillTag').VERBAL) %}{% set components = components|merge([comp_verbal]) %}{% endif %}
+                                    {% if skill.hasTag(enum('App\\Enum\\SkillTag').SOMATIC) %}{% set components = components|merge([comp_somatic]) %}{% endif %}
+                                    {% if skill.hasTag(enum('App\\Enum\\SkillTag').MATERIAL) %}
+                                        {% set materialLabel = comp_material ~ (skill.materials ? ' (' ~ skill.materials ~ ')' : '') %}
                                         {% set components = components|merge([materialLabel]) %}
                                     {% endif %}
                                     {% if components is not empty %}

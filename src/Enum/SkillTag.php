@@ -38,4 +38,7 @@ enum SkillTag: string
     case HP_UPGRADE = 'hp_upgrade';
     case ENERGY_UPGRADE = 'energy_upgrade';
     case COMMON_UPGRADE = 'common_upgrade';
+    case VERBAL = 'verbal';
+    case SOMATIC = 'somatic';
+    case MATERIAL = 'material';
 }

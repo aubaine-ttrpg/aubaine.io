@@ -113,24 +113,9 @@
                 </label>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <label class="inline-flex items-center gap-2 text-slate-200">
-                    {{ form_widget(form.verbal, { attr: { class: 'checkbox' } }) }}
-                    <span>Verbal</span>
-                </label>
-                <label class="inline-flex items-center gap-2 text-slate-200">
-                    {{ form_widget(form.somatic, { attr: { class: 'checkbox' } }) }}
-                    <span>Somatic</span>
-                </label>
-                <label class="inline-flex items-center gap-2 text-slate-200" data-material-toggle>
-                    {{ form_widget(form.material, { attr: { class: 'checkbox' } }) }}
-                    <span>Material</span>
-                </label>
-            </div>
-
-            <div class="space-y-2" data-material-string>
-                <label class="label" for="{{ form.materialString.vars.id }}">Material description</label>
-                {{ form_widget(form.materialString, { attr: { class: 'input' } }) }}
+            <div class="space-y-2">
+                <label class="label" for="{{ form.materials.vars.id }}">Materials</label>
+                {{ form_widget(form.materials, { attr: { class: 'input' } }) }}
             </div>
 
             <div class="flex justify-end">

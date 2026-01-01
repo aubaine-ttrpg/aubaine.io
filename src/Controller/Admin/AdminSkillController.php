@@ -196,10 +196,7 @@ class AdminSkillController extends AdminController
             ->setSavingThrow($skill->hasSavingThrow())
             ->setAbilityCheck($skill->hasAbilityCheck())
             ->setSource($skill->getSource())
-            ->setVerbal($skill->hasVerbal())
-            ->setSomatic($skill->hasSomatic())
-            ->setMaterial($skill->hasMaterial())
-            ->setMaterialString($skill->getMaterialString())
+            ->setMaterials($skill->getMaterials())
             ->setTags($skill->getTags())
             ->setIcon($skill->getIcon());
 

@@ -94,17 +94,9 @@ class SkillFormType extends AbstractType
                 'choice_label' => static fn (Source $source): string => 'skill.source.' . $source->value,
                 'choice_translation_domain' => 'skills',
             ])
-            ->add('verbal', CheckboxType::class, [
+            ->add('materials', TextareaType::class, [
                 'required' => false,
-            ])
-            ->add('somatic', CheckboxType::class, [
-                'required' => false,
-            ])
-            ->add('material', CheckboxType::class, [
-                'required' => false,
-            ])
-            ->add('materialString', TextareaType::class, [
-                'required' => false,
+                'label' => 'Materials',
             ])
             ->add('tags', EnumType::class, [
                 'class' => SkillTag::class,

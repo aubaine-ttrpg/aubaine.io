@@ -18,6 +18,8 @@
             <a class="btn btn-ghost" href="{{ path('admin_skill_show', { id: skill.id }) }}">← Back to detail</a>
         </div>
 
+        {% include 'admin/skill/template_buttons.html.twig' %}
+
         {% include 'admin/skill/_form.html.twig' with {
             form: form,
             iconSrc: skill.icon,

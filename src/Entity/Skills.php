@@ -92,17 +92,8 @@ class Skills
     #[ORM\Column(enumType: Source::class)]
     private Source $source = Source::AUBAINE_BASE_RULES;
 
-    #[ORM\Column]
-    private bool $verbal = false;
-
-    #[ORM\Column]
-    private bool $somatic = false;
-
-    #[ORM\Column]
-    private bool $material = false;
-
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $materialString = null;
+    private ?string $materials = null;
 
     /**
      * @var list<string>
@@ -408,54 +399,6 @@ class Skills
         return $this;
     }
 
-    public function hasVerbal(): bool
-    {
-        return $this->verbal;
-    }
-
-    public function setVerbal(bool $verbal): self
-    {
-        $this->verbal = $verbal;
-
-        return $this;
-    }
-
-    public function hasSomatic(): bool
-    {
-        return $this->somatic;
-    }
-
-    public function setSomatic(bool $somatic): self
-    {
-        $this->somatic = $somatic;
-
-        return $this;
-    }
-
-    public function hasMaterial(): bool
-    {
-        return $this->material;
-    }
-
-    public function setMaterial(bool $material): self
-    {
-        $this->material = $material;
-
-        return $this;
-    }
-
-    public function getMaterialString(): ?string
-    {
-        return $this->materialString;
-    }
-
-    public function setMaterialString(?string $materialString): self
-    {
-        $this->materialString = $materialString;
-
-        return $this;
-    }
-
     /**
      * @return list<SkillTag>
      */
@@ -520,6 +463,23 @@ class Skills
         if ($this->tags === []) {
             $this->tags = [SkillTag::NONE->value];
         }
+
+        return $this;
+    }
+
+    public function hasTag(SkillTag $tag): bool
+    {
+        return in_array($tag->value, $this->tags, true);
+    }
+
+    public function getMaterials(): ?string
+    {
+        return $this->materials;
+    }
+
+    public function setMaterials(?string $materials): self
+    {
+        $this->materials = $materials;
 
         return $this;
     }
