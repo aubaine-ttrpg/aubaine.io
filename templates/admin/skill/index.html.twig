@@ -50,7 +50,7 @@
                                 <td class="px-4 py-3">{{ skill.isUltimate ? 'Yes' : 'No' }}</td>
                                 <td class="px-4 py-3">{{ ('skill.category.' ~ skill.category.value)|trans({}, 'skills') }}</td>
                                 <td class="px-4 py-3">{{ ('skill.type.' ~ skill.type.value)|trans({}, 'skills') }}</td>
-                                <td class="px-4 py-3">{{ skill.energyCost }}</td>
+                                <td class="px-4 py-3">{{ skill.isActionLike ? (skill.energyCost ?? '—') : '—' }}</td>
                                 <td class="px-4 py-3 space-x-2">
                                     <a href="{{ path('admin_skill_show', { id: skill.id }) }}" class="btn btn-ghost text-sm">View</a>
                                     <a href="{{ path('admin_skill_edit', { id: skill.id }) }}" class="btn btn-ghost text-sm">Edit</a>

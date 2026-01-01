@@ -29,7 +29,9 @@ class SkillFormType extends AbstractType
             ->add('code', TextType::class)
             ->add('name', TextType::class)
             ->add('description', TextareaType::class)
-            ->add('energyCost', IntegerType::class)
+            ->add('energyCost', IntegerType::class, [
+                'required' => false,
+            ])
             ->add('ultimate', CheckboxType::class, [
                 'required' => false,
                 'label' => 'Ultimate',
@@ -51,6 +53,14 @@ class SkillFormType extends AbstractType
                 'class' => SkillType::class,
                 'choice_label' => static fn (SkillType $type): string => 'skill.type.' . $type->value,
                 'choice_translation_domain' => 'skills',
+                'attr' => [
+                    'data-action-types' => json_encode([
+                        SkillType::ACTION->value,
+                        SkillType::BONUS->value,
+                        SkillType::REACTION->value,
+                        SkillType::ATTACK->value,
+                    ]),
+                ],
             ])
             ->add('abilities', EnumType::class, [
                 'class' => Ability::class,

@@ -67,7 +67,11 @@
                                 {#-- Skill name and abilities --#}
                                 <h2 class="text-2xl print:text-sm font-semibold flex items-center gap-1">
                                     {{ skill.name }}
-                                    {% if skill.abilities is not empty and enum('App\\Enum\\Ability').NONE not in skill.abilities %}
+                                    {% if skill.isActionLike
+                                        and skill.abilities is not null
+                                        and skill.abilities is not empty
+                                        and enum('App\\Enum\\Ability').NONE not in skill.abilities
+                                    %}
                                         <span>{{ separator }}</span>
                                             <span class="flex items-center gap-1">
                                                 {% for ability in skill.abilities %}
@@ -98,34 +102,29 @@
                         {#-- Skill details --#}
                         <div class="p-1 rounded-md text-black bg-white space-y-2 print:space-y-0 text-sm print:text-[10px] leading-relaxed print:leading-none avoid-break">
                             <div class="flex flex-wrap gap-3 print:gap-1">
+                                {% set detailsPrinted = 0 %}
+                                {% set isAction = skill.isActionLike %}
+
                                 {# Usage Limit #}
                                 {% if skill.usageLimitAmount != 0 and skill.usageLimitPeriod != enum('App\\Enum\\SkillLimitPeriod').NONE %}
                                     <span>
                                         {{ skill.usageLimitAmount }} / {{ ('skill.limit_period.' ~ skill.usageLimitPeriod.value)|trans({}, 'skills', export_locale) }}
                                     </span>
-
-                                    {% set hasLimitDetails = true %}
+                                    {% set detailsPrinted = detailsPrinted + 1 %}
                                 {% endif %}
 
-                                {% if skill.type != enum('App\\Enum\\SkillType').PASSIVE
-                                    or skill.type != enum('App\\Enum\\SkillType').UPGRADE
-                                    or skill.type != enum('App\\Enum\\SkillType').EVOLUTION
-                                %}
-                                    {# Energy Cost #}
-                                    {% if skill.energyCost > 0 %}
-                                        {% if hasLimitDetails %}
-                                            <span>{{ separator }}</span>
-                                        {% endif %}
+                                {# Energy Cost #}
+                                {% if isAction and skill.energyCost is not null %}
+                                    {% if detailsPrinted > 0 %}<span>{{ separator }}</span>{% endif %}
+                                    <span class="flex items-center gap-1">
+                                        {{ ux_icon('mdi:thunder') }}
+                                        {{ skill.energyCost }}
+                                    </span>
+                                    {% set detailsPrinted = detailsPrinted + 1 %}
+                                {% endif %}
 
-                                        <span class="flex items-center gap-1">
-                                            {{ ux_icon('mdi:thunder') }}
-                                            {{ skill.energyCost }}
-                                        </span>
-
-                                        {% set hasEnergyDetails = true %}
-                                    {% endif %}
-
-                                    {# Components #}
+                                {# Components #}
+                                {% if isAction %}
                                     {% set components = [] %}
                                     {% if skill.hasTag(enum('App\\Enum\\SkillTag').VERBAL) %}{% set components = components|merge([comp_verbal]) %}{% endif %}
                                     {% if skill.hasTag(enum('App\\Enum\\SkillTag').SOMATIC) %}{% set components = components|merge([comp_somatic]) %}{% endif %}
@@ -134,54 +133,54 @@
                                         {% set components = components|merge([materialLabel]) %}
                                     {% endif %}
                                     {% if components is not empty %}
-                                        {% if hasLimitDetails or hasEnergyDetails %}
-                                            <span>{{ separator }}</span>
-                                        {% endif %}
+                                        {% if detailsPrinted > 0 %}<span>{{ separator }}</span>{% endif %}
 
                                         <span class="flex items-center gap-1">
                                             {{ ux_icon('mdi:tools') }}
                                             {{ components|join(', ') }}
                                         </span>
 
-                                        {% set hasComponentDetails = true %}
+                                        {% set detailsPrinted = detailsPrinted + 1 %}
                                     {% endif %}
+                                {% endif %}
 
-                                    {# Duration #}
-                                    {% if skill.duration != enum('App\\Enum\\SkillDuration').NONE %}
-                                        {% if hasLimitDetails or hasEnergyDetails or hasComponentDetails %}
-                                            <span>{{ separator }}</span>
-                                        {% endif %}
+                                {# Duration #}
+                                {% if skill.duration != enum('App\\Enum\\SkillDuration').NONE %}
+                                    {% if detailsPrinted > 0 %}<span>{{ separator }}</span>{% endif %}
 
-                                        <span class="flex items-center gap-1">
-                                            {{ ux_icon('mdi:clock') }}
-                                            {{ ('skill.duration.' ~ skill.duration.value)|trans({}, 'skills', export_locale) }}
-                                        </span>
-                                    {% endif %}
+                                    <span class="flex items-center gap-1">
+                                        {{ ux_icon('mdi:clock') }}
+                                        {{ ('skill.duration.' ~ skill.duration.value)|trans({}, 'skills', export_locale) }}
+                                    </span>
+                                    {% set detailsPrinted = detailsPrinted + 1 %}
+                                {% endif %}
 
-                                    {# Range #}
-                                    {% if skill.range != enum('App\\Enum\\SkillRange').NONE %}
-                                        <span>{{ separator }}</span>
-                                        <span class="flex items-center gap-1">
-                                            {{ ux_icon('game-icons:arrow-dunk') }}
-                                            {{ ('skill.range.' ~ skill.range.value)|trans({}, 'skills', export_locale) }}
-                                        </span>
-                                    {% endif %}
+                                {# Range #}
+                                {% if skill.range != enum('App\\Enum\\SkillRange').NONE %}
+                                    {% if detailsPrinted > 0 %}<span>{{ separator }}</span>{% endif %}
+                                    <span class="flex items-center gap-1">
+                                        {{ ux_icon('game-icons:arrow-dunk') }}
+                                        {{ ('skill.range.' ~ skill.range.value)|trans({}, 'skills', export_locale) }}
+                                    </span>
+                                    {% set detailsPrinted = detailsPrinted + 1 %}
+                                {% endif %}
 
-                                    {% if skill.hasConcentration %}
-                                        <span>{{ separator }}</span>
-                                        <span class="flex items-center gap-1">
-                                            {{ ux_icon('game-icons:eyeball') }}
-                                            {{ 'skill.label.concentration'|trans({}, 'skills', export_locale) }}
-                                        </span>
-                                    {% endif %}
-                                    
-                                    {% if skill.hasRitual %}
-                                        <span>{{ separator }}</span>
-                                        <span class="flex items-center gap-1">
-                                            {{ ux_icon('game-icons:campfire') }}
-                                            {{ 'skill.label.ritual'|trans({}, 'skills', export_locale) }}
-                                        </span>
-                                    {% endif %}
+                                {% if isAction and skill.hasConcentration %}
+                                    {% if detailsPrinted > 0 %}<span>{{ separator }}</span>{% endif %}
+                                    <span class="flex items-center gap-1">
+                                        {{ ux_icon('game-icons:eyeball') }}
+                                        {{ 'skill.label.concentration'|trans({}, 'skills', export_locale) }}
+                                    </span>
+                                    {% set detailsPrinted = detailsPrinted + 1 %}
+                                {% endif %}
+                                
+                                {% if isAction and skill.hasRitual %}
+                                    {% if detailsPrinted > 0 %}<span>{{ separator }}</span>{% endif %}
+                                    <span class="flex items-center gap-1">
+                                        {{ ux_icon('game-icons:campfire') }}
+                                        {{ 'skill.label.ritual'|trans({}, 'skills', export_locale) }}
+                                    </span>
+                                    {% set detailsPrinted = detailsPrinted + 1 %}
                                 {% endif %}
                             </div>
                         </div>

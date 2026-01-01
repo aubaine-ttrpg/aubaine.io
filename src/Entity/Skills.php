@@ -21,6 +21,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: SkillsRepository::class)]
 #[ORM\Table(name: 'skills')]
+#[ORM\HasLifecycleCallbacks]
 class Skills
 {
     #[ORM\Id]
@@ -42,9 +43,21 @@ class Skills
     #[Assert\NotBlank]
     private string $description = '';
 
-    #[ORM\Column(type: Types::INTEGER)]
-    #[Assert\PositiveOrZero]
-    private int $energyCost = 0;
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[Assert\When(
+        expression: 'this.isActionLike()',
+        constraints: [
+            new Assert\NotNull(message: 'Energy cost is required for actions.'),
+            new Assert\PositiveOrZero(),
+        ],
+    )]
+    #[Assert\When(
+        expression: '!this.isActionLike()',
+        constraints: [
+            new Assert\IsNull(message: 'Energy cost must be empty for non-action skills.'),
+        ],
+    )]
+    private ?int $energyCost = null;
 
     #[ORM\Column]
     private bool $ultimate = false;
@@ -63,10 +76,22 @@ class Skills
     private SkillType $type = SkillType::NONE;
 
     /**
-     * @var list<string>
+     * @var list<string>|null
      */
-    #[ORM\Column(type: Types::JSON)]
-    private array $abilities = [Ability::NONE->value];
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    #[Assert\When(
+        expression: 'this.isActionLike()',
+        constraints: [
+            new Assert\NotNull(message: 'Abilities are required for actions.'),
+        ],
+    )]
+    #[Assert\When(
+        expression: '!this.isActionLike()',
+        constraints: [
+            new Assert\IsNull(message: 'Abilities must be empty for non-action skills.'),
+        ],
+    )]
+    private ?array $abilities = null;
 
     #[ORM\Column(enumType: SkillRange::class)]
     private SkillRange $range = SkillRange::NONE;
@@ -74,20 +99,80 @@ class Skills
     #[ORM\Column(enumType: SkillDuration::class)]
     private SkillDuration $duration = SkillDuration::NONE;
 
-    #[ORM\Column]
-    private bool $concentration = false;
+    #[ORM\Column(nullable: true)]
+    #[Assert\When(
+        expression: 'this.isActionLike()',
+        constraints: [
+            new Assert\NotNull(message: 'Concentration is required for actions.'),
+        ],
+    )]
+    #[Assert\When(
+        expression: '!this.isActionLike()',
+        constraints: [
+            new Assert\IsNull(message: 'Concentration must be empty for non-action skills.'),
+        ],
+    )]
+    private ?bool $concentration = null;
 
-    #[ORM\Column]
-    private bool $ritual = false;
+    #[ORM\Column(nullable: true)]
+    #[Assert\When(
+        expression: 'this.isActionLike()',
+        constraints: [
+            new Assert\NotNull(message: 'Ritual is required for actions.'),
+        ],
+    )]
+    #[Assert\When(
+        expression: '!this.isActionLike()',
+        constraints: [
+            new Assert\IsNull(message: 'Ritual must be empty for non-action skills.'),
+        ],
+    )]
+    private ?bool $ritual = null;
 
-    #[ORM\Column]
-    private bool $attackRoll = false;
+    #[ORM\Column(nullable: true)]
+    #[Assert\When(
+        expression: 'this.isActionLike()',
+        constraints: [
+            new Assert\NotNull(message: 'Attack roll is required for actions.'),
+        ],
+    )]
+    #[Assert\When(
+        expression: '!this.isActionLike()',
+        constraints: [
+            new Assert\IsNull(message: 'Attack roll must be empty for non-action skills.'),
+        ],
+    )]
+    private ?bool $attackRoll = null;
 
-    #[ORM\Column]
-    private bool $savingThrow = false;
+    #[ORM\Column(nullable: true)]
+    #[Assert\When(
+        expression: 'this.isActionLike()',
+        constraints: [
+            new Assert\NotNull(message: 'Saving throw is required for actions.'),
+        ],
+    )]
+    #[Assert\When(
+        expression: '!this.isActionLike()',
+        constraints: [
+            new Assert\IsNull(message: 'Saving throw must be empty for non-action skills.'),
+        ],
+    )]
+    private ?bool $savingThrow = null;
 
-    #[ORM\Column]
-    private bool $abilityCheck = false;
+    #[ORM\Column(nullable: true)]
+    #[Assert\When(
+        expression: 'this.isActionLike()',
+        constraints: [
+            new Assert\NotNull(message: 'Ability check is required for actions.'),
+        ],
+    )]
+    #[Assert\When(
+        expression: '!this.isActionLike()',
+        constraints: [
+            new Assert\IsNull(message: 'Ability check must be empty for non-action skills.'),
+        ],
+    )]
+    private ?bool $abilityCheck = null;
 
     #[ORM\Column(enumType: Source::class)]
     private Source $source = Source::AUBAINE_BASE_RULES;
@@ -161,12 +246,12 @@ class Skills
         return $this;
     }
 
-    public function getEnergyCost(): int
+    public function getEnergyCost(): ?int
     {
         return $this->energyCost;
     }
 
-    public function setEnergyCost(int $energyCost): self
+    public function setEnergyCost(?int $energyCost): self
     {
         $this->energyCost = $energyCost;
 
@@ -230,39 +315,40 @@ class Skills
     {
         $this->type = $type;
 
+        if (!$this->isActionLike()) {
+            $this->clearActionOnlyFields();
+        }
+
         return $this;
     }
 
     /**
-     * @return list<Ability>
+     * @return list<Ability>|null
      */
-    public function getAbilities(): array
+    public function getAbilities(): ?array
     {
+        if ($this->abilities === null) {
+            return null;
+        }
+
         return array_map(static fn (string $ability): Ability => Ability::from($ability), $this->abilities);
     }
 
     /**
-     * @param list<Ability> $abilities
+     * @param list<Ability>|null $abilities
      */
-    public function setAbilities(array $abilities): self
+    public function setAbilities(?array $abilities): self
     {
+        if ($abilities === null) {
+            $this->abilities = null;
+
+            return $this;
+        }
+
         $values = array_values(array_unique(array_map(
             static fn (Ability $ability): string => $ability->value,
             $abilities
         )));
-
-        // If no abilities provided, default to NONE.
-        if ($values === []) {
-            $values = [Ability::NONE->value];
-        }
-
-        // If something other than NONE is selected, drop NONE.
-        if (count($values) > 1) {
-            $values = array_values(array_filter(
-                $values,
-                static fn (string $val): bool => $val !== Ability::NONE->value
-            ));
-        }
 
         $this->abilities = $values;
 
@@ -271,16 +357,7 @@ class Skills
 
     public function addAbility(Ability $ability): self
     {
-        if ($ability === Ability::NONE) {
-            $this->abilities = [Ability::NONE->value];
-
-            return $this;
-        }
-
-        $this->abilities = array_values(array_filter(
-            $this->abilities,
-            static fn (string $val): bool => $val !== Ability::NONE->value
-        ));
+        $this->abilities ??= [];
 
         if (!in_array($ability->value, $this->abilities, true)) {
             $this->abilities[] = $ability->value;
@@ -291,14 +368,14 @@ class Skills
 
     public function removeAbility(Ability $ability): self
     {
+        if ($this->abilities === null) {
+            return $this;
+        }
+
         $this->abilities = array_values(array_filter(
             $this->abilities,
             static fn (string $value): bool => $value !== $ability->value
         ));
-
-        if ($this->abilities === []) {
-            $this->abilities = [Ability::NONE->value];
-        }
 
         return $this;
     }
@@ -327,60 +404,60 @@ class Skills
         return $this;
     }
 
-    public function hasConcentration(): bool
+    public function hasConcentration(): ?bool
     {
         return $this->concentration;
     }
 
-    public function setConcentration(bool $concentration): self
+    public function setConcentration(?bool $concentration): self
     {
         $this->concentration = $concentration;
 
         return $this;
     }
 
-    public function hasRitual(): bool
+    public function hasRitual(): ?bool
     {
         return $this->ritual;
     }
 
-    public function setRitual(bool $ritual): self
+    public function setRitual(?bool $ritual): self
     {
         $this->ritual = $ritual;
 
         return $this;
     }
 
-    public function hasAttackRoll(): bool
+    public function hasAttackRoll(): ?bool
     {
         return $this->attackRoll;
     }
 
-    public function setAttackRoll(bool $attackRoll): self
+    public function setAttackRoll(?bool $attackRoll): self
     {
         $this->attackRoll = $attackRoll;
 
         return $this;
     }
 
-    public function hasSavingThrow(): bool
+    public function hasSavingThrow(): ?bool
     {
         return $this->savingThrow;
     }
 
-    public function setSavingThrow(bool $savingThrow): self
+    public function setSavingThrow(?bool $savingThrow): self
     {
         $this->savingThrow = $savingThrow;
 
         return $this;
     }
 
-    public function hasAbilityCheck(): bool
+    public function hasAbilityCheck(): ?bool
     {
         return $this->abilityCheck;
     }
 
-    public function setAbilityCheck(bool $abilityCheck): self
+    public function setAbilityCheck(?bool $abilityCheck): self
     {
         $this->abilityCheck = $abilityCheck;
 
@@ -519,4 +596,38 @@ class Skills
 
         return $this;
     }
+
+    public function isActionLike(): bool
+    {
+        return in_array($this->type, [
+            SkillType::ACTION,
+            SkillType::BONUS,
+            SkillType::REACTION,
+            SkillType::ATTACK,
+        ], true);
+    }
+
+    private function clearActionOnlyFields(): void
+    {
+        $this->energyCost = null;
+        $this->abilities = null;
+        $this->concentration = null;
+        $this->ritual = null;
+        $this->attackRoll = null;
+        $this->savingThrow = null;
+        $this->abilityCheck = null;
+        $this->materials = null;
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function normalizeForType(): void
+    {
+        if ($this->isActionLike()) {
+            return;
+        }
+
+        $this->clearActionOnlyFields();
+    }
+
 }

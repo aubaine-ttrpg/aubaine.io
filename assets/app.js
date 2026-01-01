@@ -6,6 +6,8 @@ import './styles/app.css';
 const placeholderImg = 'https://placehold.co/90?text=?';
 
 document.addEventListener('DOMContentLoaded', () => {
+    const tomSelectInstances = new Map();
+
     // Tom Select for multi-selects
     document.querySelectorAll('[data-multi-select]').forEach((el) => {
         const instance = new TomSelect(el, {
@@ -16,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
             hideSelected: true,
             closeAfterSelect: false,
         });
+        tomSelectInstances.set(el, instance);
 
         // Update tags count if applicable
         if (el.dataset.multiSelect === 'tags') {
@@ -78,4 +81,47 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => alert.remove(), 300);
         }, 5000);
     });
+
+    // Toggle action-only fields based on selected type
+    const typeSelect = document.querySelector('[name$="[type]"]');
+    const actionCard = document.querySelector('[data-action-card]');
+    const actionFields = document.querySelectorAll('[data-action-only]');
+    const actionTypes = typeSelect?.dataset.actionTypes
+        ? JSON.parse(typeSelect.dataset.actionTypes)
+        : ['action', 'bonus', 'reaction', 'attack'];
+
+    const toggleActionFields = () => {
+        const currentType = typeSelect ? typeSelect.value : '';
+        const isAction = actionTypes.includes(currentType);
+
+        if (actionCard) {
+            actionCard.classList.toggle('hidden', !isAction);
+        }
+
+        actionFields.forEach((field) => {
+            const instance = tomSelectInstances.get(field);
+            if (!isAction) {
+                if (instance) {
+                    instance.clear();
+                    instance.disable();
+                }
+                if (field.type === 'checkbox') {
+                    field.checked = false;
+                } else {
+                    field.value = '';
+                }
+                field.setAttribute('disabled', 'disabled');
+            } else {
+                field.removeAttribute('disabled');
+                if (instance) {
+                    instance.enable();
+                }
+            }
+        });
+    };
+
+    if (typeSelect) {
+        typeSelect.addEventListener('change', toggleActionFields);
+        toggleActionFields();
+    }
 });

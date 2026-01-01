@@ -181,24 +181,28 @@ class AdminSkillController extends AdminController
             ->setName($skill->getName())
             ->setCode($skill->getCode())
             ->setDescription($skill->getDescription())
-            ->setEnergyCost($skill->getEnergyCost())
             ->setUltimate($skill->isUltimate())
             ->setUsageLimitAmount($skill->getUsageLimitAmount())
             ->setUsageLimitPeriod($skill->getUsageLimitPeriod())
             ->setCategory($skill->getCategory())
             ->setType($skill->getType())
-            ->setAbilities($skill->getAbilities())
             ->setRange($skill->getRange())
             ->setDuration($skill->getDuration())
-            ->setConcentration($skill->hasConcentration())
-            ->setRitual($skill->hasRitual())
-            ->setAttackRoll($skill->hasAttackRoll())
-            ->setSavingThrow($skill->hasSavingThrow())
-            ->setAbilityCheck($skill->hasAbilityCheck())
             ->setSource($skill->getSource())
-            ->setMaterials($skill->getMaterials())
             ->setTags($skill->getTags())
             ->setIcon($skill->getIcon());
+
+        if ($clone->isActionLike()) {
+            $clone
+                ->setEnergyCost($skill->getEnergyCost())
+                ->setAbilities($skill->getAbilities())
+                ->setConcentration($skill->hasConcentration())
+                ->setRitual($skill->hasRitual())
+                ->setAttackRoll($skill->hasAttackRoll())
+                ->setSavingThrow($skill->hasSavingThrow())
+                ->setAbilityCheck($skill->hasAbilityCheck())
+                ->setMaterials($skill->getMaterials());
+        }
 
         return $clone;
     }
