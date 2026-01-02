@@ -21,8 +21,9 @@
                         <span>Rename icon</span>
                     </label>
                 </div>
+
+                {{ form_widget(form.icon, { attr: { class: 'hidden', 'data-icon-preview-target': 'input', 'data-action': 'change->icon-preview#updatePreview' } }) }}
             </div>
-            {{ form_widget(form.icon, { attr: { class: 'hidden', 'data-icon-preview-target': 'input', 'data-action': 'change->icon-preview#updatePreview' } }) }}
             <div class="space-y-3">
                 <div>
                     <label class="label" for="{{ form.code.vars.id }}">Code</label>
