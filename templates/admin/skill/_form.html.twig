@@ -1,11 +1,11 @@
 {% set icon_path = iconSrc ?? 'https://placehold.co/90?text=?' %}
 {% set submit_label = submit_label ?? 'Save' %}
 
-{{ form_start(form, { attr: { 'data-skill-form': '' } }) }}
+{{ form_start(form, { attr: { 'data-skill-form': '', 'data-controller': 'action-fields' } }) }}
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div class="card p-5 flex flex-col gap-4">
-            <div class="flex items-start gap-4">
-                <div class="icon-edit-wrap" data-icon-preview title="Click to change icon">
+            <div class="flex items-start gap-4" data-controller="icon-preview" data-icon-preview-placeholder-value="{{ icon_path }}">
+                <div class="icon-edit-wrap" data-icon-preview-target="preview" title="Click to change icon" data-action="click->icon-preview#triggerUpload">
                     <img src="{{ icon_path }}" alt="" onerror="this.onerror=null; this.src='https://placehold.co/90?text=?';">
                     <div class="icon-edit-overlay">
                         {{ ux_icon('heroicons:paint-brush', { class: 'w-6 h-6 text-sky-200' }) }}
@@ -22,7 +22,7 @@
                     </label>
                 </div>
             </div>
-            {{ form_row(form.icon, { label: 'Icon', row_attr: { class: 'w-full hidden' } }) }}
+            {{ form_widget(form.icon, { attr: { class: 'hidden', 'data-icon-preview-target': 'input', 'data-action': 'change->icon-preview#updatePreview' } }) }}
             <div class="space-y-3">
                 <div>
                     <label class="label" for="{{ form.code.vars.id }}">Code</label>
@@ -48,7 +48,7 @@
                 </div>
                 <div>
                     <label class="label" for="{{ form.type.vars.id }}">Type</label>
-                    {{ form_widget(form.type, { attr: { class: 'input' } }) }}
+                    {{ form_widget(form.type, { attr: { class: 'input', 'data-action-fields-target': 'type' } }) }}
                 </div>
                 <div>
                     <label class="label" for="{{ form.source.vars.id }}">Source</label>
@@ -76,11 +76,11 @@
 
             <div class="space-y-2">
                 <label class="label">Tags (<span data-tags-count>0</span>)</label>
-                {{ form_widget(form.tags, { attr: { class: 'input', 'data-multi-select': 'tags' } }) }}
+                {{ form_widget(form.tags, { attr: { class: 'input', 'data-controller': 'multi-select', 'data-multi-select-type-value': 'tags' } }) }}
             </div>
         </div>
 
-        <div class="card p-5 lg:col-span-3 space-y-4" data-action-card>
+        <div class="card p-5 lg:col-span-3 space-y-4" data-action-fields-target="card">
             <div class="flex items-start justify-between gap-2">
                 <div>
                     <h3 class="text-lg font-semibold">Action specifications</h3>
@@ -92,43 +92,43 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="space-y-2">
                     <label class="label" for="{{ form.energyCost.vars.id }}">Energy Cost</label>
-                    {{ form_widget(form.energyCost, { attr: { class: 'input', min: 0, 'data-action-only': 'true' } }) }}
+                    {{ form_widget(form.energyCost, { attr: { class: 'input', min: 0, 'data-action-fields-target': 'actionField' } }) }}
                 </div>
                 <div class="col-span-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     <label class="inline-flex items-center justify-between gap-2 text-slate-200">
                         <span>Concentration</span>
-                        {{ form_widget(form.concentration, { attr: { class: 'checkbox', 'data-action-only': 'true' } }) }}
+                        {{ form_widget(form.concentration, { attr: { class: 'checkbox', 'data-action-fields-target': 'actionField' } }) }}
                     </label>
                     <label class="inline-flex items-center justify-between gap-2 text-slate-200">
                         <span>Ritual</span>
-                        {{ form_widget(form.ritual, { attr: { class: 'checkbox', 'data-action-only': 'true' } }) }}
+                        {{ form_widget(form.ritual, { attr: { class: 'checkbox', 'data-action-fields-target': 'actionField' } }) }}
                     </label>
                 </div>
             </div>
 
             <div class="space-y-2">
                 <label class="label">Abilities</label>
-                {{ form_widget(form.abilities, { attr: { class: 'input', 'data-multi-select': 'abilities', 'data-action-only': 'true' } }) }}
+                {{ form_widget(form.abilities, { attr: { class: 'input', 'data-controller': 'multi-select', 'data-multi-select-type-value': 'abilities', 'data-action-fields-target': 'actionField' } }) }}
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <label class="inline-flex items-center gap-2 text-slate-200">
-                    {{ form_widget(form.attackRoll, { attr: { class: 'checkbox', 'data-action-only': 'true' } }) }}
+                    {{ form_widget(form.attackRoll, { attr: { class: 'checkbox', 'data-action-fields-target': 'actionField' } }) }}
                     <span>Attack roll</span>
                 </label>
                 <label class="inline-flex items-center gap-2 text-slate-200">
-                    {{ form_widget(form.savingThrow, { attr: { class: 'checkbox', 'data-action-only': 'true' } }) }}
+                    {{ form_widget(form.savingThrow, { attr: { class: 'checkbox', 'data-action-fields-target': 'actionField' } }) }}
                     <span>Saving throw</span>
                 </label>
                 <label class="inline-flex items-center gap-2 text-slate-200">
-                    {{ form_widget(form.abilityCheck, { attr: { class: 'checkbox', 'data-action-only': 'true' } }) }}
+                    {{ form_widget(form.abilityCheck, { attr: { class: 'checkbox', 'data-action-fields-target': 'actionField' } }) }}
                     <span>Ability check</span>
                 </label>
             </div>
 
             <div class="space-y-2">
                 <label class="label" for="{{ form.materials.vars.id }}">Materials</label>
-                {{ form_widget(form.materials, { attr: { class: 'input', 'data-action-only': 'true' } }) }}
+                {{ form_widget(form.materials, { attr: { class: 'input', 'data-action-fields-target': 'actionField' } }) }}
             </div>
         </div>
 

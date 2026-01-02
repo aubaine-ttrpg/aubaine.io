@@ -22,31 +22,31 @@
             {{ form_start(form, { attr: { class: 'grid grid-cols-1 md:grid-cols-2 gap-4 items-end', 'data-skill-form': '' } }) }}
                 <div>
                     <label class="label">Categories</label>
-                    {{ form_widget(form.category, { attr: { class: 'input', 'data-multi-select': 'category' } }) }}
+                    {{ form_widget(form.category, { attr: { class: 'input', 'data-controller': 'multi-select' } }) }}
                 </div>
                 <div>
                     <label class="label">Types</label>
-                    {{ form_widget(form.type, { attr: { class: 'input', 'data-multi-select': 'type' } }) }}
+                    {{ form_widget(form.type, { attr: { class: 'input', 'data-controller': 'multi-select' } }) }}
                 </div>
                 <div>
                     <label class="label">Sources</label>
-                    {{ form_widget(form.source, { attr: { class: 'input', 'data-multi-select': 'source' } }) }}
+                    {{ form_widget(form.source, { attr: { class: 'input', 'data-controller': 'multi-select' } }) }}
                 </div>
                 <div>
                     <label class="label">Range</label>
-                    {{ form_widget(form.range, { attr: { class: 'input', 'data-multi-select': 'range' } }) }}
+                    {{ form_widget(form.range, { attr: { class: 'input', 'data-controller': 'multi-select' } }) }}
                 </div>
                 <div>
                     <label class="label">Duration</label>
-                    {{ form_widget(form.duration, { attr: { class: 'input', 'data-multi-select': 'duration' } }) }}
+                    {{ form_widget(form.duration, { attr: { class: 'input', 'data-controller': 'multi-select' } }) }}
                 </div>
                 <div>
                     <label class="label">Abilities</label>
-                    {{ form_widget(form.abilities, { attr: { class: 'input', 'data-multi-select': 'abilities' } }) }}
+                    {{ form_widget(form.abilities, { attr: { class: 'input', 'data-controller': 'multi-select' } }) }}
                 </div>
                 <div>
                     <label class="label">Tags</label>
-                    {{ form_widget(form.tags, { attr: { class: 'input', 'data-multi-select': 'tags' } }) }}
+                    {{ form_widget(form.tags, { attr: { class: 'input', 'data-controller': 'multi-select' } }) }}
                 </div>
                 <div>
                     <label class="label">Language</label>
