@@ -124,12 +124,6 @@ class SkillFormType extends AbstractType
                 'required' => false,
                 'mapped' => false,
             ])
-            ->add('renameIcon', CheckboxType::class, [
-                'required' => false,
-                'mapped' => false,
-                'data' => true,
-                'label' => 'Rename icon to code-ulid',
-            ])
         ;
     }
 

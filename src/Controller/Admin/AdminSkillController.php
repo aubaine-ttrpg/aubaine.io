@@ -69,8 +69,7 @@ class AdminSkillController extends AdminController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->handleIconUpload(
                 $form->get('icon')->getData(),
-                $skill,
-                (bool) $form->get('renameIcon')->getData()
+                $skill
             );
 
             $this->entityManager->flush();
@@ -102,8 +101,7 @@ class AdminSkillController extends AdminController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->handleIconUpload(
                 $form->get('icon')->getData(),
-                $clone,
-                (bool) $form->get('renameIcon')->getData()
+                $clone
             );
 
             $this->entityManager->persist($clone);
@@ -131,8 +129,7 @@ class AdminSkillController extends AdminController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->handleIconUpload(
                 $form->get('icon')->getData(),
-                $skill,
-                (bool) $form->get('renameIcon')->getData()
+                $skill
             );
 
             $this->entityManager->persist($skill);
@@ -148,18 +145,16 @@ class AdminSkillController extends AdminController
         ]);
     }
 
-    private function handleIconUpload(?UploadedFile $uploadedFile, Skills $skill, bool $rename): void
+    private function handleIconUpload(?UploadedFile $uploadedFile, Skills $skill, bool $rename = true): void
     {
         if (!$uploadedFile) {
             return;
         }
 
         $safeName = $this->slugger->slug(pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME));
-        if ($rename) {
-            $slugCode = $this->slugger->slug($skill->getCode() ?: 'icon');
-            $ulid = $skill->getId()?->toBase32() ?? (new Ulid())->toBase32();
-            $safeName = $slugCode . '-' . $ulid;
-        }
+        $slugCode = $this->slugger->slug($skill->getCode() ?: 'icon');
+        $ulid = $skill->getId()?->toBase32() ?? (new Ulid())->toBase32();
+        $safeName = $slugCode . '-' . $ulid;
         $extension = $uploadedFile->guessExtension() ?: 'bin';
         $fileName = sprintf('%s-%s.%s', $safeName, uniqid('', true), $extension);
 
