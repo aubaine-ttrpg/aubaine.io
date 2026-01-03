@@ -4,6 +4,7 @@ namespace App\Enum;
 
 enum SkillType: string
 {
+    case NONE = 'none';
     case ACTION = 'action';
     case BONUS = 'bonus';
     case REACTION = 'reaction';
@@ -11,11 +12,11 @@ enum SkillType: string
     case PASSIVE = 'passive';
     case EVOLUTION = 'evolution';
     case UPGRADE = 'upgrade';
-    case NONE = 'none';
 
     public function icon(): string
     {
         return match ($this) {
+            self::NONE => 'tabler:hexagon-filled',
             self::ACTION => 'material-symbols:circle',
             self::BONUS => 'mdi:triangle', # 'carbon:circle-filled'
             self::REACTION => 'material-symbols:square-rounded',
@@ -23,13 +24,13 @@ enum SkillType: string
             self::PASSIVE => 'tabler:hexagon-filled',
             self::EVOLUTION => 'icomoon-free:arrow-up',
             self::UPGRADE => 'mdi:sparkles',
-            self::NONE => 'tabler:hexagon-filled',
         };
     }
 
     public function color(): string
     {
         return match ($this) {
+            self::NONE => 'stone',
             self::ACTION => 'red',
             self::BONUS => 'yellow',
             self::REACTION => 'indigo',
@@ -37,7 +38,6 @@ enum SkillType: string
             self::PASSIVE => 'emerald',
             self::EVOLUTION => 'purple',
             self::UPGRADE => 'pink',
-            self::NONE => 'stone',
         };
     }
 

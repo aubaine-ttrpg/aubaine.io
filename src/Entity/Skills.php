@@ -70,7 +70,7 @@ class Skills
     private SkillLimitPeriod $usageLimitPeriod = SkillLimitPeriod::NONE;
 
     #[ORM\Column(enumType: SkillCategory::class)]
-    private SkillCategory $category = SkillCategory::GENERAL;
+    private SkillCategory $category = SkillCategory::NONE;
 
     #[ORM\Column(enumType: SkillType::class)]
     private SkillType $type = SkillType::NONE;

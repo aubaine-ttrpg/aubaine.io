@@ -1,5 +1,6 @@
 skill:
   category:
+    none: 'None'
     common: "Common"
     general: "General"
     exclusive: "Exclusive"
