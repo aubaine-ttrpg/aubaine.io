@@ -2,7 +2,19 @@
 {% set submit_label = submit_label ?? 'Save' %}
 
 {{ form_start(form, { attr: { 'data-skill-form': '', 'data-controller': 'action-fields' } }) }}
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div data-controller="locale-toggle" data-locale-toggle-active-value="fr" class="space-y-4">
+        <div class="flex justify-end gap-2">
+            <button type="button" class="btn btn-primary flex justify-center items-center gap-2" data-locale-toggle-target="tab" data-locale="fr" data-action="click->locale-toggle#switch">
+                {{ ux_icon('flagpack:fr', { class: 'w-5 h-5' }) }}
+                <span>Français</span>
+            </button>
+            <button type="button" class="btn btn-ghost flex justify-center items-center gap-2" data-locale-toggle-target="tab" data-locale="en" data-action="click->locale-toggle#switch">
+                {{ ux_icon('flagpack:gb-ukm', { class: 'w-5 h-5' }) }}
+                <span>English</span>
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {# Basic info card #}
         <div class="card p-5 flex flex-col gap-4">
             {# Name and icon #}
@@ -15,11 +27,18 @@
                     </div>
                 </div>
 
-                {# Name #}
-                <div class="flex-1 space-y-3">
+                {# Name (FR base) #}
+                <div class="flex-1 space-y-3" data-locale-toggle-target="panel" data-locale="fr">
                     <div>
-                        <label class="label" for="{{ form.name.vars.id }}">Name</label>
+                        <label class="label" for="{{ form.name.vars.id }}">Name (FR)</label>
                         {{ form_widget(form.name, { attr: { class: 'input' } }) }}
+                    </div>
+                </div>
+                {# Name (EN) #}
+                <div class="flex-1 space-y-3 hidden" data-locale-toggle-target="panel" data-locale="en">
+                    <div>
+                        <label class="label" for="{{ form.name_en.vars.id }}">Name (EN)</label>
+                        {{ form_widget(form.name_en, { attr: { class: 'input' } }) }}
                     </div>
                 </div>
 
@@ -84,9 +103,15 @@
 
         {# Additional info card #}
         <div class="card p-5 lg:col-span-2 space-y-4">
-            <div class="space-y-2">
-                <label class="label" for="{{ form.description.vars.id }}">Description</label>
-                {{ form_widget(form.description, { attr: { class: 'input min-h-[200px]' } }) }}
+            <div class="relative">
+                <div class="space-y-2" data-locale-toggle-target="panel" data-locale="fr">
+                    <label class="label" for="{{ form.description.vars.id }}">Description (FR)</label>
+                    {{ form_widget(form.description, { attr: { class: 'input min-h-[200px]' } }) }}
+                </div>
+                <div class="space-y-2 hidden" data-locale-toggle-target="panel" data-locale="en">
+                    <label class="label" for="{{ form.description_en.vars.id }}">Description (EN)</label>
+                    {{ form_widget(form.description_en, { attr: { class: 'input min-h-[200px]' } }) }}
+                </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -153,14 +178,21 @@
                 </label>
             </div>
 
-            <div class="space-y-2">
-                <label class="label" for="{{ form.materials.vars.id }}">Materials</label>
-                {{ form_widget(form.materials, { attr: { class: 'input', 'data-action-fields-target': 'actionField' } }) }}
+            <div class="relative">
+                <div class="space-y-2" data-locale-toggle-target="panel" data-locale="fr">
+                    <label class="label" for="{{ form.materials.vars.id }}">Materials (FR)</label>
+                    {{ form_widget(form.materials, { attr: { class: 'input', 'data-action-fields-target': 'actionField' } }) }}
+                </div>
+                <div class="space-y-2 hidden" data-locale-toggle-target="panel" data-locale="en">
+                    <label class="label" for="{{ form.materials_en.vars.id }}">Materials (EN)</label>
+                    {{ form_widget(form.materials_en, { attr: { class: 'input', 'data-action-fields-target': 'actionField' } }) }}
+                </div>
             </div>
         </div>
 
         <div class="lg:col-span-3 flex justify-end">
             <button type="submit" class="btn btn-primary">{{ submit_label }}</button>
         </div>
-    </div>
+        </div> {# grid #}
+    </div> {# locale toggle wrapper #}
 {{ form_end(form) }}

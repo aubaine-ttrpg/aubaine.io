@@ -10,6 +10,7 @@ use App\Enum\SkillRange;
 use App\Enum\Source;
 use App\Enum\SkillTag;
 use App\Enum\SkillType;
+use App\Entity\SkillsTranslation;
 use App\Repository\SkillsRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
@@ -22,6 +23,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 #[ORM\Entity(repositoryClass: SkillsRepository::class)]
 #[ORM\Table(name: 'skills')]
 #[ORM\HasLifecycleCallbacks]
+#[Gedmo\TranslationEntity(class: SkillsTranslation::class)]
 class Skills
 {
     #[ORM\Id]
@@ -37,10 +39,12 @@ class Skills
 
     #[ORM\Column(length: 120)]
     #[Assert\NotBlank]
+    #[Gedmo\Translatable]
     private string $name = '';
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank]
+    #[Gedmo\Translatable]
     private string $description = '';
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
@@ -178,6 +182,7 @@ class Skills
     private Source $source = Source::AUBAINE_BASE_RULES;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Gedmo\Translatable]
     private ?string $materials = null;
 
     /**
@@ -197,6 +202,9 @@ class Skills
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Gedmo\Timestampable(on: 'update')]
     private DateTimeImmutable $updatedAt;
+
+    #[Gedmo\Locale]
+    private ?string $locale = null;
 
     public function __construct()
     {
@@ -628,6 +636,13 @@ class Skills
         }
 
         $this->clearActionOnlyFields();
+    }
+
+    public function setTranslatableLocale(?string $locale): self
+    {
+        $this->locale = $locale;
+
+        return $this;
     }
 
 }

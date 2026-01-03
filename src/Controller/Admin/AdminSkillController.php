@@ -3,11 +3,15 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Skills;
+use App\Entity\SkillsTranslation;
 use App\Form\SkillFormType;
 use App\Form\SkillExportFilterType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\SkillsRepository;
+use Gedmo\Translatable\Entity\Repository\TranslationRepository;
+use Gedmo\Translatable\TranslatableListener;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -25,6 +29,7 @@ class AdminSkillController extends AdminController
         private readonly SkillsRepository $skillsRepository,
         private readonly SluggerInterface $slugger,
         private readonly Filesystem $filesystem,
+        private readonly TranslatableListener $translatableListener,
         KernelInterface $kernel,
     ) {
         $this->projectDir = $kernel->getProjectDir();
@@ -63,7 +68,11 @@ class AdminSkillController extends AdminController
     )]
     public function edit(Request $request, Skills $skill): Response
     {
+        $this->useDefaultLocale();
+        $skill->setTranslatableLocale('fr');
+
         $form = $this->createForm(SkillFormType::class, $skill);
+        $this->prefillTranslationFields($form, $skill);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -72,6 +81,7 @@ class AdminSkillController extends AdminController
                 $skill
             );
 
+            $this->applyTranslations($skill, $form);
             $this->entityManager->flush();
 
             $this->addFlash('success', 'Skill updated.');
@@ -93,9 +103,12 @@ class AdminSkillController extends AdminController
     )]
     public function clone(Request $request, Skills $skill): Response
     {
+        $this->useDefaultLocale();
         $clone = $this->cloneSkill($skill);
+        $clone->setTranslatableLocale('fr');
 
         $form = $this->createForm(SkillFormType::class, $clone);
+        $this->prefillTranslationFields($form, $skill);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -105,6 +118,7 @@ class AdminSkillController extends AdminController
             );
 
             $this->entityManager->persist($clone);
+            $this->applyTranslations($clone, $form);
             $this->entityManager->flush();
 
             $this->addFlash('success', 'Skill cloned.');
@@ -122,8 +136,11 @@ class AdminSkillController extends AdminController
     public function factory(Request $request): Response
     {
         $skill = new Skills();
+        $this->useDefaultLocale();
+        $skill->setTranslatableLocale('fr');
 
         $form = $this->createForm(SkillFormType::class, $skill);
+        $this->prefillTranslationFields($form, $skill);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -133,6 +150,7 @@ class AdminSkillController extends AdminController
             );
 
             $this->entityManager->persist($skill);
+            $this->applyTranslations($skill, $form);
             $this->entityManager->flush();
 
             $this->addFlash('success', 'Skill created.');
@@ -202,6 +220,76 @@ class AdminSkillController extends AdminController
         return $clone;
     }
 
+    private function useDefaultLocale(): void
+    {
+        $this->translatableListener->setDefaultLocale('fr');
+        $this->translatableListener->setTranslatableLocale('fr');
+        $this->translatableListener->setTranslationFallback(true);
+    }
+
+    private function getTranslationRepository(): TranslationRepository
+    {
+        /** @var TranslationRepository $repository */
+        $repository = $this->entityManager->getRepository(SkillsTranslation::class);
+
+        return $repository;
+    }
+
+    private function prefillTranslationFields(FormInterface $form, Skills $skill): void
+    {
+        if ($skill->getId() === null) {
+            $form->get('name_en')->setData(null);
+            $form->get('description_en')->setData(null);
+            $form->get('materials_en')->setData(null);
+
+            return;
+        }
+
+        $translations = $this->getTranslationRepository()->findTranslations($skill);
+
+        $form->get('name_en')->setData($translations['en']['name'] ?? null);
+        $form->get('description_en')->setData($translations['en']['description'] ?? null);
+        $form->get('materials_en')->setData($translations['en']['materials'] ?? null);
+    }
+
+    private function applyTranslations(Skills $skill, FormInterface $form): void
+    {
+        $repository = $this->getTranslationRepository();
+
+        $this->setTranslationValue($repository, $skill, 'name', 'en', $form->get('name_en')->getData());
+        $this->setTranslationValue($repository, $skill, 'description', 'en', $form->get('description_en')->getData());
+        $this->setTranslationValue($repository, $skill, 'materials', 'en', $form->get('materials_en')->getData());
+    }
+
+    private function setTranslationValue(TranslationRepository $repository, Skills $skill, string $field, string $locale, mixed $value): void
+    {
+        $value = is_string($value) ? trim($value) : $value;
+
+        if ($value === null || $value === '') {
+            $this->removeTranslation($skill, $field, $locale);
+
+            return;
+        }
+
+        $repository->translate($skill, $field, $locale, $value);
+    }
+
+    private function removeTranslation(Skills $skill, string $field, string $locale): void
+    {
+        if ($skill->getId() === null) {
+            return;
+        }
+
+        $this->entityManager->createQuery(
+            'DELETE FROM App\Entity\SkillsTranslation t WHERE t.field = :field AND t.locale = :locale AND t.objectClass = :objectClass AND t.foreignKey = :foreignKey'
+        )
+            ->setParameter('field', $field)
+            ->setParameter('locale', $locale)
+            ->setParameter('objectClass', Skills::class)
+            ->setParameter('foreignKey', (string) $skill->getId())
+            ->execute();
+    }
+
     #[Route('/export', name: 'export', methods: ['GET'])]
     public function export(Request $request): Response
     {
@@ -240,6 +328,9 @@ class AdminSkillController extends AdminController
         $normalizedFilters = $this->normalizeFilters($filters);
         $exportLocale = $normalizedFilters['locale'] ?? 'en';
         $translator->setLocale($exportLocale);
+        $this->translatableListener->setDefaultLocale('fr');
+        $this->translatableListener->setTranslatableLocale($exportLocale);
+        $this->translatableListener->setTranslationFallback(true);
 
         $skills = $this->skillsRepository->findByFilters($normalizedFilters);
 

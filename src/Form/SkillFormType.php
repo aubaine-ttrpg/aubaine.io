@@ -28,7 +28,15 @@ class SkillFormType extends AbstractType
         $builder
             ->add('code', TextType::class)
             ->add('name', TextType::class)
+            ->add('name_en', TextType::class, [
+                'mapped' => false,
+                'required' => false,
+            ])
             ->add('description', TextareaType::class)
+            ->add('description_en', TextareaType::class, [
+                'mapped' => false,
+                'required' => false,
+            ])
             ->add('energyCost', IntegerType::class, [
                 'required' => false,
             ])
@@ -107,6 +115,11 @@ class SkillFormType extends AbstractType
             ->add('materials', TextareaType::class, [
                 'required' => false,
                 'label' => 'Materials',
+            ])
+            ->add('materials_en', TextareaType::class, [
+                'mapped' => false,
+                'required' => false,
+                'label' => 'Materials (EN)',
             ])
             ->add('tags', EnumType::class, [
                 'class' => SkillTag::class,
