@@ -4,10 +4,12 @@ namespace App\Controller\Admin;
 
 use App\Entity\Skills;
 use App\Entity\SkillsTranslation;
+use App\Entity\Tag;
 use App\Form\SkillFormType;
 use App\Form\SkillExportFilterType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\SkillsRepository;
+use App\Repository\TagRepository;
 use Gedmo\Translatable\Entity\Repository\TranslationRepository;
 use Gedmo\Translatable\TranslatableListener;
 use Symfony\Component\Filesystem\Filesystem;
@@ -27,6 +29,7 @@ class AdminSkillController extends AdminController
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly SkillsRepository $skillsRepository,
+        private readonly TagRepository $tagRepository,
         private readonly SluggerInterface $slugger,
         private readonly Filesystem $filesystem,
         private readonly TranslatableListener $translatableListener,
@@ -337,7 +340,7 @@ class AdminSkillController extends AdminController
         return $this->render('admin/skill/export_result.html.twig', [
             'skills' => $skills,
             'export_locale' => $exportLocale,
-            'export_filters' => $filters,
+            'export_filters' => $this->formatFiltersForView($filters),
             'hash' => $hash,
         ]);
     }
@@ -351,13 +354,8 @@ class AdminSkillController extends AdminController
         $normalized = [];
         foreach ($order as $key) {
             $value = $filters[$key] ?? null;
-            if (is_array($value)) {
-                $normalized[$key] = array_values(array_map(
-                    static fn ($item): string => $item instanceof \BackedEnum ? $item->value : (string) $item,
-                    $value
-                ));
-            } elseif ($value !== null) {
-                $normalized[$key] = $value instanceof \BackedEnum ? $value->value : (string) $value;
+            if ($value !== null) {
+                $normalized[$key] = $this->normalizeFilterValue($value);
             }
         }
 
@@ -391,6 +389,45 @@ class AdminSkillController extends AdminController
     /**
      * @param array<string,mixed> $filters
      *
+     * @return array<string,mixed>
+     */
+    private function formatFiltersForView(array $filters): array
+    {
+        $normalized = [];
+        foreach ($filters as $key => $value) {
+            $normalized[$key] = $this->normalizeFilterValue($value);
+        }
+
+        return $normalized;
+    }
+
+    private function normalizeFilterValue(mixed $value): mixed
+    {
+        if (is_array($value)) {
+            return array_values(array_map(
+                fn ($item) => $this->normalizeFilterValue($item),
+                $value
+            ));
+        }
+
+        if ($value instanceof \BackedEnum) {
+            return $value->value;
+        }
+
+        if ($value instanceof Tag) {
+            return $value->getCode();
+        }
+
+        if (is_scalar($value) || $value === null) {
+            return $value;
+        }
+
+        return (string) $value;
+    }
+
+    /**
+     * @param array<string,mixed> $filters
+     *
      * @return array{
      *     category?: list<\App\Enum\SkillCategory>,
      *     type?: list<\App\Enum\SkillType>,
@@ -398,7 +435,7 @@ class AdminSkillController extends AdminController
      *     range?: list<\App\Enum\SkillRange>,
      *     duration?: list<\App\Enum\SkillDuration>,
      *     abilities?: list<\App\Enum\Ability>,
-     *     tags?: list<\App\Enum\SkillTag>,
+     *     tags?: list<\App\Entity\Tag>,
      *     locale?: string
      * }
      */
@@ -438,7 +475,7 @@ class AdminSkillController extends AdminController
             $normalized['abilities'] = $mapList($filters['abilities'], \App\Enum\Ability::class);
         }
         if (!empty($filters['tags']) && is_array($filters['tags'])) {
-            $normalized['tags'] = $mapList($filters['tags'], \App\Enum\SkillTag::class);
+            $normalized['tags'] = $this->normalizeTags($filters['tags']);
         }
 
         $locale = $filters['locale'] ?? 'en';
@@ -449,5 +486,32 @@ class AdminSkillController extends AdminController
         }
 
         return $normalized;
+    }
+
+    /**
+     * @param array<int, string|Tag> $tags
+     *
+     * @return list<Tag>
+     */
+    private function normalizeTags(array $tags): array
+    {
+        $entitiesByCode = [];
+        $codes = [];
+
+        foreach ($tags as $tag) {
+            if ($tag instanceof Tag) {
+                $entitiesByCode[$tag->getCode()] = $tag;
+            } elseif (is_string($tag)) {
+                $codes[] = $tag;
+            }
+        }
+
+        if ($codes !== []) {
+            foreach ($this->tagRepository->findByCodes($codes) as $tagEntity) {
+                $entitiesByCode[$tagEntity->getCode()] = $tagEntity;
+            }
+        }
+
+        return array_values($entitiesByCode);
     }
 }

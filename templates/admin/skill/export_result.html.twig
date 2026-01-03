@@ -47,8 +47,7 @@
                     {% set iconKey = skill.type.icon() %}
                     {% set iconClass = skill.type.iconClass() %}
 
-                    {% set tags = skill.tags|filter(t => t.value != 'none') %}
-                    {% set translated_tags = tags|map(t => ('skill.tag.' ~ t.value)|trans({}, 'skills', export_locale)) %}
+                    {% set ordered_tags = skill.tags %}
 
                     {#-- Skill Card --#}
                     <div class="avoid-break bg-{{ color }}-50 border-2 border-{{ color }}-900 text-{{ color }}-950 rounded-xl print:rounded-none p-6 w-full flex mb-2 flex-col gap-2 print:p-2 print:mb-0 print:border-0"> {# might add avoid-break #}
@@ -126,9 +125,9 @@
                                 {# Components #}
                                 {% if isAction %}
                                     {% set components = [] %}
-                                    {% if skill.hasTag(enum('App\\Enum\\SkillTag').VERBAL) %}{% set components = components|merge([comp_verbal]) %}{% endif %}
-                                    {% if skill.hasTag(enum('App\\Enum\\SkillTag').SOMATIC) %}{% set components = components|merge([comp_somatic]) %}{% endif %}
-                                    {% if skill.hasTag(enum('App\\Enum\\SkillTag').MATERIAL) %}
+                                    {% if skill.hasTagCode('verbal') %}{% set components = components|merge([comp_verbal]) %}{% endif %}
+                                    {% if skill.hasTagCode('somatic') %}{% set components = components|merge([comp_somatic]) %}{% endif %}
+                                    {% if skill.hasTagCode('material') %}
                                         {% set materialLabel = comp_material ~ (skill.materials ? ' (' ~ skill.materials ~ ')' : '') %}
                                         {% set components = components|merge([materialLabel]) %}
                                     {% endif %}
@@ -190,11 +189,11 @@
                             <div class="whitespace-pre-line print:text-[10px]">{{ skill.description }}</div>
 
                             {#-- Skill tags --#}
-                            {% if translated_tags is not empty %}
+                            {% if ordered_tags|length > 0 %}
                                 <div class="flex flex-wrap gap-1 text-xs">
-                                    {% for tag in translated_tags|sort %}
+                                    {% for tag in ordered_tags %}
                                         <span class="px-2 py-1 bg-white text-{{ color }}-800 rounded-lg">
-                                            {{ tag }}
+                                            {{ tag.label }}
                                         </span>
                                     {% endfor %}
                                 </div>

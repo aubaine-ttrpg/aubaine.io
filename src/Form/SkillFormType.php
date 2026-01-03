@@ -3,16 +3,18 @@
 namespace App\Form;
 
 use App\Entity\Skills;
+use App\Entity\Tag;
 use App\Enum\Ability;
 use App\Enum\SkillCategory;
 use App\Enum\SkillDuration;
 use App\Enum\SkillLimitPeriod;
 use App\Enum\SkillRange;
 use App\Enum\Source;
-use App\Enum\SkillTag;
 use App\Enum\SkillType;
+use App\Repository\TagRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -121,11 +123,10 @@ class SkillFormType extends AbstractType
                 'required' => false,
                 'label' => 'Materials (EN)',
             ])
-            ->add('tags', EnumType::class, [
-                'class' => SkillTag::class,
-                'choice_label' => static fn (SkillTag $tag): string => 'skill.tag.' . $tag->value,
-                'choices' => array_filter(SkillTag::cases(), static fn (SkillTag $t): bool => $t !== SkillTag::NONE),
-                'choice_translation_domain' => 'skills',
+            ->add('tags', EntityType::class, [
+                'class' => Tag::class,
+                'choice_label' => static fn (Tag $tag): string => $tag->getLabel(),
+                'query_builder' => static fn (TagRepository $tagRepository) => $tagRepository->createOrderedQueryBuilder(),
                 'multiple' => true,
                 'expanded' => false,
                 'required' => false,

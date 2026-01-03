@@ -1,0 +1,31 @@
+{% set submit_label = submit_label ?? 'Save' %}
+
+{{ form_start(form, { attr: { 'data-turbo': 'false' } }) }}
+    <div class="card p-5 space-y-4 max-w-2xl">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="label" for="{{ form.code.vars.id }}">Code</label>
+                {{ form_widget(form.code, { attr: { class: 'input' } }) }}
+            </div>
+            <div>
+                <label class="label" for="{{ form.category.vars.id }}">Category</label>
+                {{ form_widget(form.category, { attr: { class: 'input' } }) }}
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="label" for="{{ form.label.vars.id }}">Label (FR)</label>
+                {{ form_widget(form.label, { attr: { class: 'input' } }) }}
+            </div>
+            <div>
+                <label class="label" for="{{ form.label_en.vars.id }}">Label (EN)</label>
+                {{ form_widget(form.label_en, { attr: { class: 'input' } }) }}
+            </div>
+        </div>
+
+        <div class="flex justify-end">
+            <button type="submit" class="btn btn-primary">{{ submit_label }}</button>
+        </div>
+    </div>
+{{ form_end(form) }}

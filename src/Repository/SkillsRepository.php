@@ -9,7 +9,7 @@ use App\Enum\SkillRange;
 use App\Enum\SkillType;
 use App\Enum\Source;
 use App\Enum\SkillDuration;
-use App\Enum\SkillTag;
+use App\Entity\Tag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -49,7 +49,7 @@ class SkillsRepository extends ServiceEntityRepository
      *     range?: list<SkillRange>,
      *     duration?: list<SkillDuration>,
      *     abilities?: list<Ability>,
-     *     tags?: list<SkillTag>
+     *     tags?: list<Tag>
      * } $filters
      *
      * @return list<Skills>
@@ -92,12 +92,12 @@ class SkillsRepository extends ServiceEntityRepository
         }
 
         if (!empty($filters['tags'])) {
-            $tagExpr = $qb->expr()->orX();
-            foreach ($filters['tags'] as $idx => $tag) {
-                $tagExpr->add(sprintf('s.tags LIKE :tag_%d', $idx));
-                $qb->setParameter(sprintf('tag_%d', $idx), '%"' . $tag->value . '"%');
-            }
-            $qb->andWhere($tagExpr);
+            $qb
+                ->leftJoin('s.tags', 'tags')
+                ->andWhere('tags IN (:tags)')
+                ->setParameter('tags', $filters['tags'])
+                ->addSelect('tags')
+                ->distinct();
         }
 
         return $qb

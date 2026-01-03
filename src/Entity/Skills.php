@@ -8,10 +8,11 @@ use App\Enum\SkillDuration;
 use App\Enum\SkillLimitPeriod;
 use App\Enum\SkillRange;
 use App\Enum\Source;
-use App\Enum\SkillTag;
 use App\Enum\SkillType;
 use App\Entity\SkillsTranslation;
 use App\Repository\SkillsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -186,10 +187,12 @@ class Skills
     private ?string $materials = null;
 
     /**
-     * @var list<string>
+     * @var Collection<int, Tag>
      */
-    #[ORM\Column(type: Types::JSON)]
-    private array $tags = [SkillTag::NONE->value];
+    #[ORM\ManyToMany(targetEntity: Tag::class)]
+    #[ORM\JoinTable(name: 'skills_tags')]
+    #[ORM\OrderBy(['category' => 'ASC', 'label' => 'ASC'])]
+    private Collection $tags;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
@@ -211,6 +214,7 @@ class Skills
         $now = new DateTimeImmutable();
         $this->createdAt = $now;
         $this->updatedAt = $now;
+        $this->tags = new ArrayCollection();
     }
 
     public function getId(): ?Ulid
@@ -485,76 +489,57 @@ class Skills
     }
 
     /**
-     * @return list<SkillTag>
+     * @return Collection<int, Tag>
      */
-    public function getTags(): array
+    public function getTags(): Collection
     {
-        return array_map(static fn (string $tag): SkillTag => SkillTag::from($tag), $this->tags);
+        return $this->tags;
     }
 
     /**
-     * @param list<SkillTag> $tags
+     * @param iterable<Tag> $tags
      */
-    public function setTags(array $tags): self
+    public function setTags(iterable $tags): self
     {
-        $values = array_values(array_unique(array_map(
-            static fn (SkillTag $tag): string => $tag->value,
-            $tags
-        )));
+        $this->tags->clear();
 
-        if ($values === []) {
-            $values = [SkillTag::NONE->value];
-        }
-
-        if (count($values) > 1) {
-            $values = array_values(array_filter(
-                $values,
-                static fn (string $val): bool => $val !== SkillTag::NONE->value
-            ));
-        }
-
-        $this->tags = $values;
-
-        return $this;
-    }
-
-    public function addTag(SkillTag $tag): self
-    {
-        if ($tag === SkillTag::NONE) {
-            $this->tags = [SkillTag::NONE->value];
-
-            return $this;
-        }
-
-        $this->tags = array_values(array_filter(
-            $this->tags,
-            static fn (string $val): bool => $val !== SkillTag::NONE->value
-        ));
-
-        if (!in_array($tag->value, $this->tags, true)) {
-            $this->tags[] = $tag->value;
+        foreach ($tags as $tag) {
+            $this->addTag($tag);
         }
 
         return $this;
     }
 
-    public function removeTag(SkillTag $tag): self
+    public function addTag(Tag $tag): self
     {
-        $this->tags = array_values(array_filter(
-            $this->tags,
-            static fn (string $value): bool => $value !== $tag->value
-        ));
-
-        if ($this->tags === []) {
-            $this->tags = [SkillTag::NONE->value];
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
         }
 
         return $this;
     }
 
-    public function hasTag(SkillTag $tag): bool
+    public function removeTag(Tag $tag): self
     {
-        return in_array($tag->value, $this->tags, true);
+        $this->tags->removeElement($tag);
+
+        return $this;
+    }
+
+    public function hasTag(Tag $tag): bool
+    {
+        return $this->tags->contains($tag);
+    }
+
+    public function hasTagCode(string $code): bool
+    {
+        foreach ($this->tags as $tag) {
+            if ($tag->getCode() === $code) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getMaterials(): ?string

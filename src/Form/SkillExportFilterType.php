@@ -2,13 +2,15 @@
 
 namespace App\Form;
 
+use App\Entity\Tag;
 use App\Enum\Ability;
 use App\Enum\SkillCategory;
 use App\Enum\SkillDuration;
 use App\Enum\SkillRange;
-use App\Enum\SkillTag;
 use App\Enum\SkillType;
 use App\Enum\Source;
+use App\Repository\TagRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
@@ -75,11 +77,10 @@ class SkillExportFilterType extends AbstractType
                 'expanded' => false,
                 'attr' => ['data-multi-select' => 'abilities'],
             ])
-            ->add('tags', EnumType::class, [
-                'class' => SkillTag::class,
-                'choice_label' => static fn (SkillTag $tag): string => 'skill.tag.' . $tag->value,
-                'choices' => array_filter(SkillTag::cases(), static fn (SkillTag $t): bool => $t !== SkillTag::NONE),
-                'choice_translation_domain' => 'skills',
+            ->add('tags', EntityType::class, [
+                'class' => Tag::class,
+                'choice_label' => static fn (Tag $tag): string => $tag->getLabel(),
+                'query_builder' => static fn (TagRepository $tagRepository) => $tagRepository->createOrderedQueryBuilder(),
                 'required' => false,
                 'multiple' => true,
                 'expanded' => false,
