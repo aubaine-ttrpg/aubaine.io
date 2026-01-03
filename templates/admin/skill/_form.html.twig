@@ -1,7 +1,7 @@
 {% set icon_path = iconSrc ?? 'https://placehold.co/90?text=?' %}
 {% set submit_label = submit_label ?? 'Save' %}
 
-{{ form_start(form, { attr: { 'data-skill-form': '', 'data-controller': 'action-fields' } }) }}
+{{ form_start(form, { attr: { 'data-skill-form': '', 'data-controller': 'action-fields', 'data-turbo': 'false' } }) }}
     <div data-controller="locale-toggle" data-locale-toggle-active-value="fr" class="space-y-4">
         <div class="flex justify-end gap-2">
             <button type="button" class="btn btn-primary flex justify-center items-center gap-2" data-locale-toggle-target="tab" data-locale="fr" data-action="click->locale-toggle#switch">
