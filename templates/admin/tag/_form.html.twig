@@ -1,5 +1,6 @@
 {% set submit_label = submit_label ?? 'Save' %}
-{% set icon_path = iconSrc ?? 'https://placehold.co/90?text=?' %}
+{% set icon_identifier = iconSrc ?? null %}
+{% set placeholder = 'https://placehold.co/90?text=?' %}
 
 {{ form_start(form, { attr: { 'data-turbo': 'false', 'data-controller': 'locale-toggle', 'data-locale-toggle-active-value': 'fr' } }) }}
     <div class="space-y-4">
@@ -15,9 +16,19 @@
         </div>
 
         <div class="card p-5 space-y-4 max-w-3xl">
-            <div class="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-4 items-center" data-controller="icon-preview" data-icon-preview-placeholder-value="{{ icon_path }}">
+            <div class="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-4 items-center" data-controller="icon-preview" data-icon-preview-placeholder-value="{{ placeholder }}">
                 <div class="icon-edit-wrap w-[96px] h-[96px]" data-icon-preview-target="preview" title="Click to change icon" data-action="click->icon-preview#triggerUpload">
-                    <img src="{{ icon_path }}" alt="" class="w-full h-full object-cover rounded-lg" onerror="this.onerror=null; this.src='https://placehold.co/90?text=?';">
+                    {% if icon_identifier %}
+                        {% if icon_identifier matches '/:/' %}
+                            <div class="w-full h-full flex items-center justify-center rounded-lg bg-slate-900/80">
+                                {{ ux_icon(icon_identifier, { class: 'w-10 h-10 text-slate-200' }) }}
+                            </div>
+                        {% else %}
+                            <img src="{{ icon_identifier }}" alt="" class="w-full h-full object-cover rounded-lg" onerror="this.onerror=null; this.src='{{ placeholder }}';">
+                        {% endif %}
+                    {% else %}
+                        <img src="{{ placeholder }}" alt="" class="w-full h-full object-cover rounded-lg">
+                    {% endif %}
                     <div class="icon-edit-overlay">
                         {{ ux_icon('heroicons:paint-brush', { class: 'w-6 h-6 text-sky-200' }) }}
                     </div>

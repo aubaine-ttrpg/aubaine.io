@@ -23,7 +23,11 @@
                 <dt class="text-slate-400">Icon</dt>
                 <dd class="font-semibold">
                     {% if tag.icon %}
-                        <img src="{{ tag.icon }}" alt="" class="w-10 h-10 object-cover rounded-lg border border-slate-800" onerror="this.onerror=null; this.remove();">
+                        {% if tag.icon matches '/:/' %}
+                            {{ ux_icon(tag.icon, { class: 'w-10 h-10 text-slate-200' }) }}
+                        {% else %}
+                            <img src="{{ tag.icon }}" alt="" class="w-10 h-10 object-cover rounded-lg border border-slate-800" onerror="this.onerror=null; this.remove();">
+                        {% endif %}
                     {% else %}
                         {{ ux_icon(tag.category.icon(), { class: 'w-6 h-6 text-slate-200' }) }}
                     {% endif %}

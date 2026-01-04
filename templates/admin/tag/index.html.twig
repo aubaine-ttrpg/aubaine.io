@@ -36,7 +36,11 @@
                                 {% set iconPath = tag.icon %}
                                 <td class="px-4 py-3">
                                     {% if iconPath %}
-                                        <img src="{{ iconPath }}" alt="" class="w-8 h-8 object-cover rounded-md border border-slate-800" onerror="this.onerror=null; this.remove();">
+                                        {% if iconPath matches '/:/' %}
+                                            {{ ux_icon(iconPath, { class: 'w-8 h-8 text-slate-200' }) }}
+                                        {% else %}
+                                            <img src="{{ iconPath }}" alt="" class="w-8 h-8 object-cover rounded-md border border-slate-800" onerror="this.onerror=null; this.remove();">
+                                        {% endif %}
                                     {% else %}
                                         {{ ux_icon(tag.category.icon(), { class: 'w-6 h-6 text-slate-200' }) }}
                                     {% endif %}

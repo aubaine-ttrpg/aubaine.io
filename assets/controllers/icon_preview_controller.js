@@ -7,7 +7,7 @@ export default class extends Controller {
     };
 
     connect() {
-        if (this.previewTarget && !this.previewTarget.querySelector('img')) {
+        if (this.previewTarget && !this.previewTarget.innerHTML.trim()) {
             this.setPlaceholder();
         }
     }

@@ -187,16 +187,30 @@ class AdminTagController extends AdminController
             return;
         }
 
-        $safeName = $this->slugger->slug($tag->getCode() ?: ($tag->getLabel() ?: 'tag'));
-        $extension = $uploadedFile->guessExtension() ?: 'bin';
-        $fileName = sprintf('%s-%s.%s', $safeName, uniqid('', true), $extension);
+        $iconPrefix = (string) $this->getParameter('app.tag_icon_prefix');
+        $iconRootDir = rtrim((string) $this->getParameter('app.tag_icon_root_dir'), '/');
 
-        $targetDir = $this->getParameter('kernel.project_dir') . '/public/uploads/tags';
-        if (!$this->filesystem->exists($targetDir)) {
-            $this->filesystem->mkdir($targetDir, 0775);
+        $safeName = $this->slugger->slug($tag->getCode() ?: ($tag->getLabel() ?: 'tag'))->lower()->toString();
+        $relativeDir = str_replace(':', '/', $iconPrefix);
+        $targetDir = $iconRootDir . '/' . $relativeDir;
+        $targetPath = sprintf('%s/%s.svg', $targetDir, $safeName);
+
+        $this->filesystem->mkdir($targetDir, 0775);
+
+        $existingIcon = $tag->getIcon();
+        if ($existingIcon && str_starts_with($existingIcon, $iconPrefix . ':')) {
+            $previousPath = $iconRootDir . '/' . str_replace(':', '/', $existingIcon) . '.svg';
+            if ($this->filesystem->exists($previousPath) && $previousPath !== $targetPath) {
+                $this->filesystem->remove($previousPath);
+            }
         }
 
-        $uploadedFile->move($targetDir, $fileName);
-        $tag->setIcon('/uploads/tags/' . $fileName);
+        $fileContents = @file_get_contents($uploadedFile->getPathname());
+        if (false === $fileContents) {
+            throw new \RuntimeException('Unable to read the uploaded icon file.');
+        }
+
+        $this->filesystem->dumpFile($targetPath, $fileContents);
+        $tag->setIcon(sprintf('%s:%s', $iconPrefix, $safeName));
     }
 }

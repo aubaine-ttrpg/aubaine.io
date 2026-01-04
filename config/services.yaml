@@ -8,6 +8,8 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     app.data_dir: '%kernel.project_dir%/data'
+    app.tag_icon_root_dir: '%kernel.project_dir%/assets/icons'
+    app.tag_icon_prefix: 'aubaine'
 
 services:
     # default configuration for services in *this* file

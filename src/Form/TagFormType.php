@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Constraints\File;
 
 class TagFormType extends AbstractType
 {
@@ -44,7 +45,19 @@ class TagFormType extends AbstractType
             ->add('icon', FileType::class, [
                 'required' => false,
                 'mapped' => false,
-                'label' => 'Icon (image)',
+                'label' => 'Icon (SVG)',
+                'attr' => [
+                    'accept' => 'image/svg+xml',
+                ],
+                'constraints' => [
+                    new File(
+                        mimeTypes: [
+                            'image/svg',
+                            'image/svg+xml',
+                        ],
+                        mimeTypesMessage: 'Please upload an SVG file.',
+                    ),
+                ],
             ])
             ->add('category', EnumType::class, [
                 'class' => TagCategory::class,

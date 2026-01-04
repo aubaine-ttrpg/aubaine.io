@@ -11,6 +11,10 @@ ux_icons:
         height: '1em'
         width: '1em'
 
+    icon_sets:
+        aubaine:
+            path: '%app.tag_icon_root_dir%/aubaine'
+
     # Throw an exception if an icon is not
     ignore_not_found: false
 
