@@ -13,6 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class TagFormType extends AbstractType
 {
@@ -24,7 +25,18 @@ class TagFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('code', TextType::class)
+            ->add('code', TextType::class, [
+                'attr' => [
+                    'pattern' => '[A-Za-z]+',
+                    'title' => 'Only letters (A-Z) are allowed.',
+                ],
+                'constraints' => [
+                    new Regex(
+                        pattern: '/^[A-Za-z]+$/',
+                        message: 'Only letters (A-Z) are allowed.'
+                    ),
+                ],
+            ])
             ->add('label', TextType::class, [
                 'label' => 'Label (FR)',
             ])

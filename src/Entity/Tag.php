@@ -66,7 +66,7 @@ class Tag
 
     public function setCode(string $code): self
     {
-        $this->code = $code;
+        $this->code = strtolower(trim($code));
 
         return $this;
     }

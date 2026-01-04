@@ -33,7 +33,7 @@ enum TagCategory: int
     {
         return match ($this) {
             self::MAIN => 'game-icons:scroll-quill',
-            self::ELEMENT => 'game-icons:rune-stone',
+            self::ELEMENT => 'aubaine:element',
             self::ARCANE_SCHOOL => 'game-icons:spell-book',
             self::MARTIAL_DISCIPLINE => 'game-icons:sword-spin',
             self::CRAFT_TRADITION => 'game-icons:stone-crafting',
