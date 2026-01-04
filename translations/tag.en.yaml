@@ -20,3 +20,9 @@ tag:
     effect: "Buff / Debuff / Control / Movement / Summon"
     components: "Material / Somatic / Verbal"
     other: "Reptiloid / Bloodline: Drake / Totem / etc."
+
+  form:
+    label_fr: "Label (FR)"
+    label_en: "Label (EN)"
+    description_fr: "Description (FR)"
+    description_en: "Description (EN)"

@@ -9,10 +9,13 @@ use App\Repository\TagRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Gedmo\Translatable\Entity\Repository\TranslationRepository;
 use Gedmo\Translatable\TranslatableListener;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/admin/tag', name: 'admin_tag_', env: 'dev')]
 class AdminTagController extends AdminController
@@ -21,6 +24,8 @@ class AdminTagController extends AdminController
         private readonly EntityManagerInterface $entityManager,
         private readonly TagRepository $tagRepository,
         private readonly TranslatableListener $translatableListener,
+        private readonly Filesystem $filesystem,
+        private readonly SluggerInterface $slugger,
     ) {
     }
 
@@ -47,6 +52,7 @@ class AdminTagController extends AdminController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->handleIconUpload($form->get('icon')->getData(), $tag);
             $this->entityManager->persist($tag);
             $this->applyTranslations($tag, $form);
             $this->entityManager->flush();
@@ -58,6 +64,7 @@ class AdminTagController extends AdminController
 
         return $this->render('admin/tag/new.html.twig', [
             'form' => $form->createView(),
+            'iconSrc' => $tag->getIcon(),
         ]);
     }
 
@@ -90,6 +97,7 @@ class AdminTagController extends AdminController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->handleIconUpload($form->get('icon')->getData(), $tag);
             $this->applyTranslations($tag, $form);
             $this->entityManager->flush();
 
@@ -101,6 +109,7 @@ class AdminTagController extends AdminController
         return $this->render('admin/tag/edit.html.twig', [
             'form' => $form->createView(),
             'tag' => $tag,
+            'iconSrc' => $tag->getIcon(),
         ]);
     }
 
@@ -123,20 +132,24 @@ class AdminTagController extends AdminController
     {
         if ($tag->getId() === null) {
             $form->get('label_en')->setData(null);
+            $form->get('description_en')->setData(null);
 
             return;
         }
 
         $translations = $this->getTranslationRepository()->findTranslations($tag);
         $form->get('label_en')->setData($translations['en']['label'] ?? null);
+        $form->get('description_en')->setData($translations['en']['description'] ?? null);
     }
 
     private function applyTranslations(Tag $tag, FormInterface $form): void
     {
         $repository = $this->getTranslationRepository();
         $labelEn = $form->get('label_en')->getData();
+        $descriptionEn = $form->get('description_en')->getData();
 
         $this->setTranslationValue($repository, $tag, 'label', 'en', $labelEn);
+        $this->setTranslationValue($repository, $tag, 'description', 'en', $descriptionEn);
     }
 
     private function setTranslationValue(TranslationRepository $repository, Tag $tag, string $field, string $locale, mixed $value): void
@@ -166,5 +179,24 @@ class AdminTagController extends AdminController
             ->setParameter('objectClass', Tag::class)
             ->setParameter('foreignKey', (string) $tag->getId())
             ->execute();
+    }
+
+    private function handleIconUpload(?UploadedFile $uploadedFile, Tag $tag): void
+    {
+        if ($uploadedFile === null) {
+            return;
+        }
+
+        $safeName = $this->slugger->slug($tag->getCode() ?: ($tag->getLabel() ?: 'tag'));
+        $extension = $uploadedFile->guessExtension() ?: 'bin';
+        $fileName = sprintf('%s-%s.%s', $safeName, uniqid('', true), $extension);
+
+        $targetDir = $this->getParameter('kernel.project_dir') . '/public/uploads/tags';
+        if (!$this->filesystem->exists($targetDir)) {
+            $this->filesystem->mkdir($targetDir, 0775);
+        }
+
+        $uploadedFile->move($targetDir, $fileName);
+        $tag->setIcon('/uploads/tags/' . $fileName);
     }
 }

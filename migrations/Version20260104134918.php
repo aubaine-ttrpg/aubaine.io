@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260104130117 extends AbstractMigration
+final class Version20260104134918 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -76,6 +76,7 @@ final class Version20260104130117 extends AbstractMigration
               id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
               code VARCHAR(64) NOT NULL,
               label VARCHAR(120) NOT NULL,
+              description CLOB DEFAULT NULL,
               category INTEGER NOT NULL,
               created_at DATETIME NOT NULL,
               updated_at DATETIME NOT NULL

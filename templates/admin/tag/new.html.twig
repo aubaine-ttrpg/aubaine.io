@@ -17,6 +17,6 @@
             </div>
         </div>
 
-        {% include 'admin/tag/_form.html.twig' with { form: form, submit_label: 'Create' } %}
+        {% include 'admin/tag/_form.html.twig' with { form: form, submit_label: 'Create', iconSrc: iconSrc ?? null } %}
     </main>
 {% endblock %}

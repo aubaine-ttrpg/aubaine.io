@@ -18,6 +18,6 @@
             <a href="{{ path('admin_tag_show', { id: tag.id }) }}" class="btn btn-ghost">Back</a>
         </div>
 
-        {% include 'admin/tag/_form.html.twig' with { form: form, submit_label: 'Update' } %}
+        {% include 'admin/tag/_form.html.twig' with { form: form, submit_label: 'Update', iconSrc: iconSrc ?? tag.icon } %}
     </main>
 {% endblock %}

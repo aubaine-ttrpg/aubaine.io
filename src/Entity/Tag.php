@@ -26,8 +26,15 @@ class Tag
     #[Gedmo\Translatable]
     private string $label = '';
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Gedmo\Translatable]
+    private ?string $description = null;
+
     #[ORM\Column(type: Types::INTEGER, enumType: TagCategory::class)]
     private TagCategory $category = TagCategory::OTHER;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $icon = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Gedmo\Timestampable(on: 'create')]
@@ -101,6 +108,30 @@ class Tag
     public function __toString(): string
     {
         return $this->label ?: $this->code;
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(?string $icon): self
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
     }
 
     public function setTranslatableLocale(?string $locale): self

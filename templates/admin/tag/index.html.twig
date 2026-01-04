@@ -23,6 +23,7 @@
                 <table class="min-w-full divide-y divide-slate-800">
                     <thead class="bg-slate-900/60">
                         <tr class="text-left text-sm text-slate-400">
+                            <th class="px-4 py-3">Icon</th>
                             <th class="px-4 py-3">Code</th>
                             <th class="px-4 py-3">Label</th>
                             <th class="px-4 py-3">Category</th>
@@ -32,6 +33,14 @@
                     <tbody class="divide-y divide-slate-800">
                         {% for tag in tags %}
                             <tr class="hover:bg-slate-900/40">
+                                {% set iconPath = tag.icon %}
+                                <td class="px-4 py-3">
+                                    {% if iconPath %}
+                                        <img src="{{ iconPath }}" alt="" class="w-8 h-8 object-cover rounded-md border border-slate-800" onerror="this.onerror=null; this.remove();">
+                                    {% else %}
+                                        {{ ux_icon(tag.category.icon(), { class: 'w-6 h-6 text-slate-200' }) }}
+                                    {% endif %}
+                                </td>
                                 <td class="px-4 py-3 font-mono text-sm">{{ tag.code }}</td>
                                 <td class="px-4 py-3 font-semibold">{{ tag.label }}</td>
                                 <td class="px-4 py-3">{{ tag.category.labelKey()|trans({}, 'tag') }}</td>

@@ -20,3 +20,9 @@ tag:
     effect: "Renforcement / Affaiblissement / Contrôle / Mouvement / Invocation"
     components: "Matériel / Somatique / Verbal"
     other: "Reptiloïde / Lignée: Drake / Totem / etc."
+
+  form:
+    label_fr: "Libellé (FR)"
+    label_en: "Libellé (EN)"
+    description_fr: "Description (FR)"
+    description_en: "Description (EN)"
