@@ -34,7 +34,7 @@
                             <tr class="hover:bg-slate-900/40">
                                 <td class="px-4 py-3 font-mono text-sm">{{ tag.code }}</td>
                                 <td class="px-4 py-3 font-semibold">{{ tag.label }}</td>
-                                <td class="px-4 py-3">{{ tag.category.name }}</td>
+                                <td class="px-4 py-3">{{ tag.category.labelKey()|trans({}, 'tag') }}</td>
                                 <td class="px-4 py-3 space-x-2">
                                     <a href="{{ path('admin_tag_show', { id: tag.id }) }}" class="btn btn-ghost text-sm">View</a>
                                     <a href="{{ path('admin_tag_edit', { id: tag.id }) }}" class="btn btn-ghost text-sm">Edit</a>

@@ -26,7 +26,8 @@ class TagFormType extends AbstractType
             ])
             ->add('category', EnumType::class, [
                 'class' => TagCategory::class,
-                'choice_label' => static fn (TagCategory $category): string => $category->name,
+                'choice_label' => static fn (TagCategory $category): string => $category->labelKey(),
+                'choice_translation_domain' => 'tag',
             ])
         ;
     }

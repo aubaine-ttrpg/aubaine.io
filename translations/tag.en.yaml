@@ -1,0 +1,22 @@
+tag:
+  category:
+    main: "Main"
+    element: "Element"
+    arcane_school: "Arcane school"
+    martial_discipline: "Martial discipline"
+    craft_tradition: "Craft tradition"
+    size: "Size / shape"
+    effect: "Effect"
+    components: "Components"
+    other: "Other"
+
+  category_placeholder:
+    main: "Spell / Maneuver / Shout / Ritual / Stance / Reaction / etc."
+    element: "Fire / Water / Ice / Holy / Shadow / etc."
+    arcane_school: "Evocation / Illusion / etc."
+    martial_discipline: "Stealth / Swordplay / Archery / etc."
+    craft_tradition: "Alchemy / Engineering / Runes / etc."
+    size: "Self / Single target / Line / Cone / Circle / Square / Cleave / Aura / etc."
+    effect: "Buff / Debuff / Control / Movement / Summon"
+    components: "Material / Somatic / Verbal"
+    other: "Reptiloid / Bloodline: Drake / Totem / etc."

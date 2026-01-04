@@ -1,0 +1,22 @@
+tag:
+  category:
+    main: "Principale"
+    element: "Élément"
+    arcane_school: "École arcanique"
+    martial_discipline: "Discipline martiale"
+    craft_tradition: "Tradition d'artisanat"
+    size: "Taille / forme"
+    effect: "Effet"
+    components: "Composants"
+    other: "Autre"
+
+  category_placeholder:
+    main: "Sort / Manoeuvre / Cri / Rituel / Posture / Réaction / etc."
+    element: "Feu / Eau / Glace / Sacré / Ombre / etc."
+    arcane_school: "Évocation / Illusion / etc."
+    martial_discipline: "Discrétion / Escrime / Tir à l'arc / etc."
+    craft_tradition: "Alchimie / Ingénierie / Runes / etc."
+    size: "Personnel / Cible unique / Ligne / Cône / Cercle / Carré / Balayage / Aura / etc."
+    effect: "Renforcement / Affaiblissement / Contrôle / Mouvement / Invocation"
+    components: "Matériel / Somatique / Verbal"
+    other: "Reptiloïde / Lignée: Drake / Totem / etc."
