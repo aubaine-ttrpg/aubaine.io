@@ -76,8 +76,26 @@ class AdminTagController extends AdminController
     )]
     public function show(Tag $tag): Response
     {
+        $this->useDefaultLocale();
+        $translations = $this->getTranslationRepository()->findTranslations($tag);
+
+        $frLabel = $translations['fr']['label'] ?? $tag->getLabel();
+        $frDescription = $translations['fr']['description'] ?? $tag->getDescription();
+        $enLabel = $translations['en']['label'] ?? null;
+        $enDescription = $translations['en']['description'] ?? null;
+
         return $this->render('admin/tag/show.html.twig', [
             'tag' => $tag,
+            'translations' => [
+                'fr' => [
+                    'label' => $frLabel,
+                    'description' => $frDescription,
+                ],
+                'en' => [
+                    'label' => $enLabel,
+                    'description' => $enDescription,
+                ],
+            ],
         ]);
     }
 
