@@ -39,6 +39,7 @@
         "symfony/uid": "8.0.*",
         "symfony/ux-icons": "^2.31",
         "symfony/ux-turbo": "^2.31",
+        "symfony/ux-twig-component": "^2.31",
         "symfony/validator": "8.0.*",
         "symfony/web-link": "8.0.*",
         "symfony/webpack-encore-bundle": "^2.4",

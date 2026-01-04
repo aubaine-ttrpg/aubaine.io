@@ -1533,6 +1533,15 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *     },
  *     ignore_not_found?: bool, // Ignore error when an icon is not found. Set to 'true' to fail silently. // Default: false
  * }
+ * @psalm-type TwigComponentConfig = array{
+ *     defaults?: array<string, string|array{ // Default: ["__deprecated__use_old_naming_behavior"]
+ *         template_directory?: scalar|null, // Default: "components"
+ *         name_prefix?: scalar|null, // Default: ""
+ *     }>,
+ *     anonymous_template_directory?: scalar|null, // Defaults to `components`
+ *     profiler?: bool, // Enables the profiler for Twig Component (in debug mode) // Default: "%kernel.debug%"
+ *     controllers_json?: scalar|null, // Deprecated: The "twig_component.controllers_json" config option is deprecated, and will be removed in 3.0. // Default: null
+ * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
@@ -1549,6 +1558,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *     webpack_encore?: WebpackEncoreConfig,
  *     stof_doctrine_extensions?: StofDoctrineExtensionsConfig,
  *     ux_icons?: UxIconsConfig,
+ *     twig_component?: TwigComponentConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -1568,6 +1578,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         webpack_encore?: WebpackEncoreConfig,
  *         stof_doctrine_extensions?: StofDoctrineExtensionsConfig,
  *         ux_icons?: UxIconsConfig,
+ *         twig_component?: TwigComponentConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -1585,6 +1596,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         webpack_encore?: WebpackEncoreConfig,
  *         stof_doctrine_extensions?: StofDoctrineExtensionsConfig,
  *         ux_icons?: UxIconsConfig,
+ *         twig_component?: TwigComponentConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -1603,6 +1615,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         webpack_encore?: WebpackEncoreConfig,
  *         stof_doctrine_extensions?: StofDoctrineExtensionsConfig,
  *         ux_icons?: UxIconsConfig,
+ *         twig_component?: TwigComponentConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,
