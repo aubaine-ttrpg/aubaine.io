@@ -1,60 +1,33 @@
 page:
-  title: "Comment creer une competence"
-  subtitle: "Utilisez cette liste pour garder les competences simples coherentes et faciles a lire."
-  breadcrumb: "Aide"
-  toc: "Sur cette page"
+  title: "How to create a Skill"
+  subtitle: "Guidance for writing consistent, clear skills."
+  breadcrumb: "Help"
+  toc: "On this page"
 
 sections:
-  overview:
-    title: "Apercu"
-    body: "Les competences simples sont des fiches legeres pour la reference, la planification et la consultation rapide. Visez la clarte et la coherence."
-  identity:
-    title: "Identite"
-    code:
-      title: "Code"
-      body: "Utilisez un code de 6 lettres, suivi eventuellement de -<nombre>. Il doit etre unique et stable."
-    name:
-      title: "Nom"
-      body: "Ecrivez le nom affiche dans la langue principale et renseignez le champ EN si possible."
-    icon:
-      title: "Icone"
-      body: "Chargez une icone carree. Elle suit les memes regles de stockage que les competences."
-    category:
-      title: "Categorie"
-      body: "Choisissez la categorie la plus proche. Utilisez Aucune si cela ne s'applique pas."
-  mechanics:
-    title: "Mecanique"
-    ultimate:
-      title: "Ultime"
-      body: "Cochez Ultime pour les competences de fin d'arbre ou signatures."
-    ability:
-      title: "Aptitude"
-      body: "Choisissez la caracteristique principale. Aucune et Au choix sont possibles, Arme et Chance sont des options speciales."
-    aptitude:
-      title: "Talent"
-      body: "Choisissez le talent le plus pertinent. Aucune et Au choix sont possibles."
-  details:
-    title: "Details"
-    limitations:
-      title: "Limitations"
-      body: "Contraintes ou restrictions optionnelles. Restez concis."
-    energy_timing:
-      title: "Energie et timing"
-      body: "Decrivez le cout et le timing en phrases courtes."
-    range_duration:
-      title: "Portee et duree"
-      body: "Indiquez portee et duree avec un texte concis."
-  content:
-    title: "Contenu"
-    prerequisites:
-      title: "Prerequis"
-      body: "Exigences optionnelles pour debloquer ou utiliser la competence."
-    description:
-      title: "Description"
-      body: "Expliquez l'effet de la competence avec un langage clair et actionnable."
-    tags:
-      title: "Tags"
-      body: "Ajoutez des tags separes par des virgules pour faciliter la recherche."
-  translations:
-    title: "Traductions"
-    body: "Gardez les contenus FR et EN alignes pour transmettre la meme intention."
+  understanding:
+    title: "Understanding skills"
+    what_is:
+      title: "What a Skill is"
+      body: "A Skill is a supernatural, exceptional, or specialized capability that provides rules support beyond what anyone could normally attempt. If an action is something \"anyone can try\" (jumping, shoving, basic weapon swing, intimidation speech), it should not require a Skill; it's resolved through normal rolls."
+    families:
+      title: "Aubaine Skills are designed in two meta-families:"
+      unleashed: "Unleashed Skills: flexible, imagination-driven tools (e.g. Kindle the Flames). They are weaker baseline and become competitive through dedicated trees."
+      specific: "Specific Skills: focused, efficient effects with clearer outputs (damage/control/mobility). They are stronger baseline and cost efficiency is better."
+    resolution:
+      title: "How Skills are resolved"
+      body: "A Skill lists (explicitly or implicitly via design intent) how it is resolved."
+    attack:
+      title: "Attack Roll"
+      formula: "Attack Roll = d20 + Ability + Aptitude\nvs target AC"
+    check:
+      title: "Check"
+      formula: "Check = d20 + Ability + Aptitude\nvs DC (set by the DM)"
+    saving:
+      title: "Saving Throw"
+      formula: "Skill Save DC = 8 + (caster's Ability) + (caster's chosen Aptitude)"
+      body: "Targets do NOT roll the caster's Ability/Aptitude. The Skill must specify what targets roll (e.g. Dexterity + Finesse, Constitution + Discipline, Spirit + Willpower, etc.)."
+    rule_of_thumb:
+      title: "Rule of thumb:"
+      attack: "thrown/directed = Attack Roll"
+      saving: "hazards/areas/lingering = Saving Throw"

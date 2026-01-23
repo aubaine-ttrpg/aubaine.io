@@ -23,82 +23,56 @@
             {% include 'components/content_nav.html.twig' with { title: 'page.toc'|trans({}, 'simple_skill_help') } %}
 
             <article class="space-y-10" data-content-nav-target="content">
-                <section class="space-y-3">
-                    <h2 class="text-2xl font-semibold">{{ 'sections.overview.title'|trans({}, 'simple_skill_help') }}</h2>
-                    <p class="text-slate-300">{{ 'sections.overview.body'|trans({}, 'simple_skill_help') }}</p>
-                </section>
+                <section class="space-y-6">
+                    <h2 class="text-2xl font-semibold">{{ 'sections.understanding.title'|trans({}, 'simple_skill_help') }}</h2>
 
-                <section class="space-y-4">
-                    <h2 class="text-2xl font-semibold">{{ 'sections.identity.title'|trans({}, 'simple_skill_help') }}</h2>
                     <div class="space-y-3">
-                        <h3 class="text-lg font-semibold text-slate-200">{{ 'sections.identity.code.title'|trans({}, 'simple_skill_help') }}</h3>
-                        <p class="text-slate-300">{{ 'sections.identity.code.body'|trans({}, 'simple_skill_help') }}</p>
+                        <h3 class="text-lg font-semibold text-slate-200">{{ 'sections.understanding.what_is.title'|trans({}, 'simple_skill_help') }}</h3>
+                        <p class="text-slate-300">{{ 'sections.understanding.what_is.body'|trans({}, 'simple_skill_help') }}</p>
                     </div>
-                    <div class="space-y-3">
-                        <h3 class="text-lg font-semibold text-slate-200">{{ 'sections.identity.name.title'|trans({}, 'simple_skill_help') }}</h3>
-                        <p class="text-slate-300">{{ 'sections.identity.name.body'|trans({}, 'simple_skill_help') }}</p>
-                    </div>
-                    <div class="space-y-3">
-                        <h3 class="text-lg font-semibold text-slate-200">{{ 'sections.identity.icon.title'|trans({}, 'simple_skill_help') }}</h3>
-                        <p class="text-slate-300">{{ 'sections.identity.icon.body'|trans({}, 'simple_skill_help') }}</p>
-                    </div>
-                    <div class="space-y-3">
-                        <h3 class="text-lg font-semibold text-slate-200">{{ 'sections.identity.category.title'|trans({}, 'simple_skill_help') }}</h3>
-                        <p class="text-slate-300">{{ 'sections.identity.category.body'|trans({}, 'simple_skill_help') }}</p>
-                    </div>
-                </section>
 
-                <section class="space-y-4">
-                    <h2 class="text-2xl font-semibold">{{ 'sections.mechanics.title'|trans({}, 'simple_skill_help') }}</h2>
                     <div class="space-y-3">
-                        <h3 class="text-lg font-semibold text-slate-200">{{ 'sections.mechanics.ultimate.title'|trans({}, 'simple_skill_help') }}</h3>
-                        <p class="text-slate-300">{{ 'sections.mechanics.ultimate.body'|trans({}, 'simple_skill_help') }}</p>
+                        <p class="text-slate-300">{{ 'sections.understanding.families.title'|trans({}, 'simple_skill_help') }}</p>
+                        <ul class="list-disc pl-6 text-slate-300 space-y-2">
+                            <li>{{ 'sections.understanding.families.unleashed'|trans({}, 'simple_skill_help') }}</li>
+                            <li>{{ 'sections.understanding.families.specific'|trans({}, 'simple_skill_help') }}</li>
+                        </ul>
                     </div>
-                    <div class="space-y-3">
-                        <h3 class="text-lg font-semibold text-slate-200">{{ 'sections.mechanics.ability.title'|trans({}, 'simple_skill_help') }}</h3>
-                        <p class="text-slate-300">{{ 'sections.mechanics.ability.body'|trans({}, 'simple_skill_help') }}</p>
-                    </div>
-                    <div class="space-y-3">
-                        <h3 class="text-lg font-semibold text-slate-200">{{ 'sections.mechanics.aptitude.title'|trans({}, 'simple_skill_help') }}</h3>
-                        <p class="text-slate-300">{{ 'sections.mechanics.aptitude.body'|trans({}, 'simple_skill_help') }}</p>
-                    </div>
-                </section>
 
-                <section class="space-y-4">
-                    <h2 class="text-2xl font-semibold">{{ 'sections.details.title'|trans({}, 'simple_skill_help') }}</h2>
                     <div class="space-y-3">
-                        <h3 class="text-lg font-semibold text-slate-200">{{ 'sections.details.limitations.title'|trans({}, 'simple_skill_help') }}</h3>
-                        <p class="text-slate-300">{{ 'sections.details.limitations.body'|trans({}, 'simple_skill_help') }}</p>
+                        <h3 class="text-lg font-semibold text-slate-200">{{ 'sections.understanding.resolution.title'|trans({}, 'simple_skill_help') }}</h3>
+                        <p class="text-slate-300">{{ 'sections.understanding.resolution.body'|trans({}, 'simple_skill_help') }}</p>
                     </div>
-                    <div class="space-y-3">
-                        <h3 class="text-lg font-semibold text-slate-200">{{ 'sections.details.energy_timing.title'|trans({}, 'simple_skill_help') }}</h3>
-                        <p class="text-slate-300">{{ 'sections.details.energy_timing.body'|trans({}, 'simple_skill_help') }}</p>
-                    </div>
-                    <div class="space-y-3">
-                        <h3 class="text-lg font-semibold text-slate-200">{{ 'sections.details.range_duration.title'|trans({}, 'simple_skill_help') }}</h3>
-                        <p class="text-slate-300">{{ 'sections.details.range_duration.body'|trans({}, 'simple_skill_help') }}</p>
-                    </div>
-                </section>
 
-                <section class="space-y-4">
-                    <h2 class="text-2xl font-semibold">{{ 'sections.content.title'|trans({}, 'simple_skill_help') }}</h2>
                     <div class="space-y-3">
-                        <h3 class="text-lg font-semibold text-slate-200">{{ 'sections.content.prerequisites.title'|trans({}, 'simple_skill_help') }}</h3>
-                        <p class="text-slate-300">{{ 'sections.content.prerequisites.body'|trans({}, 'simple_skill_help') }}</p>
+                        <h3 class="text-lg font-semibold text-slate-200">{{ 'sections.understanding.attack.title'|trans({}, 'simple_skill_help') }}</h3>
+                        <div class="rounded-lg border border-slate-800 bg-slate-900/60 p-3 text-sm text-slate-200 whitespace-pre-line">
+                            {{ 'sections.understanding.attack.formula'|trans({}, 'simple_skill_help') }}
+                        </div>
                     </div>
-                    <div class="space-y-3">
-                        <h3 class="text-lg font-semibold text-slate-200">{{ 'sections.content.description.title'|trans({}, 'simple_skill_help') }}</h3>
-                        <p class="text-slate-300">{{ 'sections.content.description.body'|trans({}, 'simple_skill_help') }}</p>
-                    </div>
-                    <div class="space-y-3">
-                        <h3 class="text-lg font-semibold text-slate-200">{{ 'sections.content.tags.title'|trans({}, 'simple_skill_help') }}</h3>
-                        <p class="text-slate-300">{{ 'sections.content.tags.body'|trans({}, 'simple_skill_help') }}</p>
-                    </div>
-                </section>
 
-                <section class="space-y-3">
-                    <h2 class="text-2xl font-semibold">{{ 'sections.translations.title'|trans({}, 'simple_skill_help') }}</h2>
-                    <p class="text-slate-300">{{ 'sections.translations.body'|trans({}, 'simple_skill_help') }}</p>
+                    <div class="space-y-3">
+                        <h3 class="text-lg font-semibold text-slate-200">{{ 'sections.understanding.check.title'|trans({}, 'simple_skill_help') }}</h3>
+                        <div class="rounded-lg border border-slate-800 bg-slate-900/60 p-3 text-sm text-slate-200 whitespace-pre-line">
+                            {{ 'sections.understanding.check.formula'|trans({}, 'simple_skill_help') }}
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h3 class="text-lg font-semibold text-slate-200">{{ 'sections.understanding.saving.title'|trans({}, 'simple_skill_help') }}</h3>
+                        <div class="rounded-lg border border-slate-800 bg-slate-900/60 p-3 text-sm text-slate-200 whitespace-pre-line">
+                            {{ 'sections.understanding.saving.formula'|trans({}, 'simple_skill_help') }}
+                        </div>
+                        <p class="text-slate-300">{{ 'sections.understanding.saving.body'|trans({}, 'simple_skill_help') }}</p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <p class="text-slate-300">{{ 'sections.understanding.rule_of_thumb.title'|trans({}, 'simple_skill_help') }}</p>
+                        <ul class="list-disc pl-6 text-slate-300 space-y-1">
+                            <li>{{ 'sections.understanding.rule_of_thumb.attack'|trans({}, 'simple_skill_help') }}</li>
+                            <li>{{ 'sections.understanding.rule_of_thumb.saving'|trans({}, 'simple_skill_help') }}</li>
+                        </ul>
+                    </div>
                 </section>
             </article>
         </div>
