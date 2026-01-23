@@ -45,6 +45,12 @@ class AdminSimpleSkillController extends AdminController
         ]);
     }
 
+    #[Route('/help', name: 'help', methods: ['GET'])]
+    public function help(): Response
+    {
+        return $this->render('admin/simple_skill/help.html.twig');
+    }
+
     #[Route(
         '/{id}',
         name: 'show',
@@ -58,6 +64,7 @@ class AdminSimpleSkillController extends AdminController
 
         $frName = $translations['fr']['name'] ?? $simpleSkill->getName();
         $frDescription = $translations['fr']['description'] ?? $simpleSkill->getDescription();
+        $frLimitations = $translations['fr']['limitations'] ?? $simpleSkill->getLimitations();
         $frEnergy = $translations['fr']['energy'] ?? $simpleSkill->getEnergy();
         $frPrerequisites = $translations['fr']['prerequisites'] ?? $simpleSkill->getPrerequisites();
         $frTiming = $translations['fr']['timing'] ?? $simpleSkill->getTiming();
@@ -66,6 +73,7 @@ class AdminSimpleSkillController extends AdminController
         $frTags = $translations['fr']['tags'] ?? $simpleSkill->getTags();
         $enName = $translations['en']['name'] ?? null;
         $enDescription = $translations['en']['description'] ?? null;
+        $enLimitations = $translations['en']['limitations'] ?? null;
         $enEnergy = $translations['en']['energy'] ?? null;
         $enPrerequisites = $translations['en']['prerequisites'] ?? null;
         $enTiming = $translations['en']['timing'] ?? null;
@@ -79,6 +87,7 @@ class AdminSimpleSkillController extends AdminController
                 'fr' => [
                     'name' => $frName,
                     'description' => $frDescription,
+                    'limitations' => $frLimitations,
                     'energy' => $frEnergy,
                     'prerequisites' => $frPrerequisites,
                     'timing' => $frTiming,
@@ -89,6 +98,7 @@ class AdminSimpleSkillController extends AdminController
                 'en' => [
                     'name' => $enName,
                     'description' => $enDescription,
+                    'limitations' => $enLimitations,
                     'energy' => $enEnergy,
                     'prerequisites' => $enPrerequisites,
                     'timing' => $enTiming,
@@ -232,6 +242,11 @@ class AdminSimpleSkillController extends AdminController
             ->setName($simpleSkill->getName())
             ->setCode($simpleSkill->getCode())
             ->setDescription($simpleSkill->getDescription())
+            ->setUltimate($simpleSkill->isUltimate())
+            ->setCategory($simpleSkill->getCategory())
+            ->setAbility($simpleSkill->getAbility())
+            ->setAptitude($simpleSkill->getAptitude())
+            ->setLimitations($simpleSkill->getLimitations())
             ->setEnergy($simpleSkill->getEnergy())
             ->setPrerequisites($simpleSkill->getPrerequisites())
             ->setTiming($simpleSkill->getTiming())
@@ -286,6 +301,7 @@ class AdminSimpleSkillController extends AdminController
         if ($simpleSkill->getId() === null) {
             $form->get('name_en')->setData(null);
             $form->get('description_en')->setData(null);
+            $form->get('limitations_en')->setData(null);
             $form->get('energy_en')->setData(null);
             $form->get('prerequisites_en')->setData(null);
             $form->get('timing_en')->setData(null);
@@ -299,6 +315,7 @@ class AdminSimpleSkillController extends AdminController
         $translations = $this->getTranslationRepository()->findTranslations($simpleSkill);
         $form->get('name_en')->setData($translations['en']['name'] ?? null);
         $form->get('description_en')->setData($translations['en']['description'] ?? null);
+        $form->get('limitations_en')->setData($translations['en']['limitations'] ?? null);
         $form->get('energy_en')->setData($translations['en']['energy'] ?? null);
         $form->get('prerequisites_en')->setData($translations['en']['prerequisites'] ?? null);
         $form->get('timing_en')->setData($translations['en']['timing'] ?? null);
@@ -312,6 +329,7 @@ class AdminSimpleSkillController extends AdminController
         $repository = $this->getTranslationRepository();
         $this->setTranslationValue($repository, $simpleSkill, 'name', 'en', $form->get('name_en')->getData());
         $this->setTranslationValue($repository, $simpleSkill, 'description', 'en', $form->get('description_en')->getData());
+        $this->setTranslationValue($repository, $simpleSkill, 'limitations', 'en', $form->get('limitations_en')->getData());
         $this->setTranslationValue($repository, $simpleSkill, 'energy', 'en', $form->get('energy_en')->getData());
         $this->setTranslationValue($repository, $simpleSkill, 'prerequisites', 'en', $form->get('prerequisites_en')->getData());
         $this->setTranslationValue($repository, $simpleSkill, 'timing', 'en', $form->get('timing_en')->getData());

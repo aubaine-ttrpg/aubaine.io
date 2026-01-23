@@ -1,0 +1,8 @@
+{% set title = title ?? 'On this page' %}
+
+<aside class="card p-5 lg:sticky lg:top-8 h-fit">
+    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">{{ title }}</p>
+    <nav class="mt-4">
+        <ul class="space-y-2" data-content-nav-target="list" data-action="click->content-nav#onListClick"></ul>
+    </nav>
+</aside>

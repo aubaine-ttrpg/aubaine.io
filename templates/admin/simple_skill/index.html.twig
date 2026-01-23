@@ -13,7 +13,10 @@
                 </p>
                 <h1 class="text-3xl font-semibold">Simple Skills</h1>
             </div>
-            <a href="{{ path('admin_simple_skill_factory') }}" class="btn btn-primary">Create</a>
+            <div class="flex gap-2">
+                <a href="{{ path('admin_simple_skill_help') }}" class="btn btn-ghost">{{ 'page.title'|trans({}, 'simple_skill_help') }}</a>
+                <a href="{{ path('admin_simple_skill_factory') }}" class="btn btn-primary">Create</a>
+            </div>
         </div>
 
         {% if simple_skills is empty %}

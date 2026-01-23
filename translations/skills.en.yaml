@@ -18,6 +18,8 @@ skill:
     none: "None"
 
   ability:
+    none: "None"
+    any: "Any"
     strength: "Strength"
     dexterity: "Dexterity"
     endurance: "Constitution"
@@ -25,10 +27,8 @@ skill:
     perception: "Perception"
     charisma: "Charisma"
     spirit: "Spirit"
-    luck: "Luck"
-    any: "Any"
     weapon: "Weapon"
-    none: "None"
+    luck: "Luck"
 
   aptitude:
     none: "None"

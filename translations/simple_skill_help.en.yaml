@@ -1,0 +1,60 @@
+page:
+  title: "How to create a Skill"
+  subtitle: "Use this checklist to keep simple skills consistent and easy to read."
+  breadcrumb: "Help"
+  toc: "On this page"
+
+sections:
+  overview:
+    title: "Overview"
+    body: "Simple skills are lightweight entries for references, planning, and quick browsing. Focus on clarity and consistency."
+  identity:
+    title: "Identity"
+    code:
+      title: "Code"
+      body: "Use a 6-letter code, optionally followed by -<number>. Keep it unique and stable."
+    name:
+      title: "Name"
+      body: "Write the display name in the main language, and fill the EN field when possible."
+    icon:
+      title: "Icon"
+      body: "Upload a square icon. It uses the same storage rules as the main skills."
+    category:
+      title: "Category"
+      body: "Pick the closest Skill Category. Use None if it does not apply."
+  mechanics:
+    title: "Mechanics"
+    ultimate:
+      title: "Ultimate"
+      body: "Mark as Ultimate for capstone or signature skills."
+    ability:
+      title: "Ability"
+      body: "Choose the governing ability. None and Any are allowed; Weapon and Luck are special options."
+    aptitude:
+      title: "Aptitude"
+      body: "Choose the aptitude that best matches the skill. None and Any are allowed."
+  details:
+    title: "Details"
+    limitations:
+      title: "Limitations"
+      body: "Optional short constraints or restrictions. Keep it brief."
+    energy_timing:
+      title: "Energy and Timing"
+      body: "Describe cost and timing as short phrases."
+    range_duration:
+      title: "Range and Duration"
+      body: "Provide range and duration as concise text."
+  content:
+    title: "Content"
+    prerequisites:
+      title: "Prerequisites"
+      body: "Optional requirements to unlock or use the skill."
+    description:
+      title: "Description"
+      body: "Explain what the skill does. Use clear, actionable language."
+    tags:
+      title: "Tags"
+      body: "Add comma-separated tags to improve search and grouping."
+  translations:
+    title: "Translations"
+    body: "Keep FR and EN content aligned so users see the same intent in both languages."
