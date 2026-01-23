@@ -4,16 +4,17 @@ namespace App\Enum;
 
 enum Ability: string
 {
+    case NONE = 'none';
+    case ANY = 'any';
     case STRENGTH = 'strength';
     case DEXTERITY = 'dexterity';
-    case ENDURANCE = 'endurance';
+    case CONSTITUTION = 'endurance';
     case INTELLIGENCE = 'intelligence';
     case PERCEPTION = 'perception';
     case CHARISMA = 'charisma';
-    case LUCK = 'luck';
-    case ANY = 'any';
+    case SPIRIT = 'spirit';
     case WEAPON = 'weapon';
-    case NONE = 'none';
+    case LUCK = 'luck';
 
     public function icon(): string
     {
@@ -24,9 +25,10 @@ enum Ability: string
             self::CHARISMA => 'game-icons:duality-mask',
             self::INTELLIGENCE => 'game-icons:brain',
             self::PERCEPTION => 'mdi:eye',
-            self::ENDURANCE => 'game-icons:heart-organ',
+            self::CONSTITUTION => 'game-icons:heart-organ',
             self::WEAPON => 'game-icons:axe-sword',
             self::ANY => 'mynaui:asterisk-hexagon-solid',
+            self::SPIRIT => 'game-icons:spirit',
             self::NONE => '',
         };
     }

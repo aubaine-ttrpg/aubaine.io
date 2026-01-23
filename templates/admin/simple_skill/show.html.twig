@@ -1,0 +1,163 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Simple Skill: {{ simple_skill.name }}{% endblock %}
+
+{% block body %}
+    <main class="max-w-5xl mx-auto px-4 py-8 space-y-6">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                {% set iconPath = simple_skill.icon ?? null %}
+                <div class="rounded-2xl overflow-hidden border border-slate-800 bg-slate-900 w-[75px] h-[75px]">
+                    <img src="{{ iconPath ?: 'https://placehold.co/75?text=?' }}" alt="" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/75?text=?';">
+                </div>
+                <div>
+                    <p class="text-sm text-slate-400 space-x-1">
+                        <a href="{{ path('admin_home') }}" class="hover:text-sky-300">Admin</a>
+                        <span>/</span>
+                        <a href="{{ path('admin_simple_skill_index') }}" class="hover:text-sky-300">Simple Skills</a>
+                        <span>/</span>
+                        <span class="text-slate-300">{{ simple_skill.name }}</span>
+                    </p>
+                    <h1 class="text-3xl font-semibold">{{ simple_skill.name }} ({{ simple_skill.code }})</h1>
+                </div>
+            </div>
+            <div class="flex flex-wrap gap-2">
+                <a class="btn btn-ghost" href="{{ path('admin_simple_skill_index') }}">&larr; Back to list</a>
+                <a class="btn btn-primary" href="{{ path('admin_simple_skill_edit', { id: simple_skill.id }) }}">Edit</a>
+                <a class="btn btn-ghost" href="{{ path('admin_simple_skill_clone', { id: simple_skill.id }) }}">Clone</a>
+                <form method="post" action="{{ path('admin_simple_skill_delete', { id: simple_skill.id }) }}" class="inline" onsubmit="return confirm('Delete this simple skill?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_simple_skill_' ~ simple_skill.id) }}">
+                    <button type="submit" class="btn btn-ghost text-red-300">Delete</button>
+                </form>
+            </div>
+        </div>
+
+        <div data-controller="locale-toggle" data-locale-toggle-active-value="fr" class="space-y-3">
+            <div class="flex justify-end gap-2">
+                <button type="button" class="btn btn-primary flex items-center gap-2" data-locale-toggle-target="tab" data-locale="fr" data-action="click->locale-toggle#switch">
+                    {{ ux_icon('flagpack:fr', { class: 'w-5 h-5' }) }}
+                    <span>Francais</span>
+                </button>
+                <button type="button" class="btn btn-ghost flex items-center gap-2" data-locale-toggle-target="tab" data-locale="en" data-action="click->locale-toggle#switch">
+                    {{ ux_icon('flagpack:gb-ukm', { class: 'w-5 h-5' }) }}
+                    <span>English</span>
+                </button>
+            </div>
+
+            <div class="card p-5 space-y-3">
+                <div data-locale-toggle-target="panel" data-locale="fr" class="space-y-2">
+                    <div class="flex justify-between border-b border-slate-800 pb-2">
+                        <dt class="text-slate-400">Name</dt>
+                        <dd class="font-semibold">{{ translations.fr.name ?: '-' }}</dd>
+                    </div>
+                    <div class="space-y-1 border-b border-slate-800 pb-2">
+                        <dt class="text-slate-400">Description</dt>
+                        <dd class="font-semibold whitespace-pre-line">{{ translations.fr.description ?: '-' }}</dd>
+                    </div>
+                    <div class="space-y-1 border-b border-slate-800 pb-2">
+                        <dt class="text-slate-400">Limitations</dt>
+                        <dd class="font-semibold whitespace-pre-line">{{ translations.fr.limitations ?: '-' }}</dd>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 border-b border-slate-800 pb-2">
+                        <div class="flex justify-between">
+                            <dt class="text-slate-400">Energy</dt>
+                            <dd class="font-semibold">{{ translations.fr.energy ?: '-' }}</dd>
+                        </div>
+                        <div class="flex justify-between">
+                            <dt class="text-slate-400">Timing</dt>
+                            <dd class="font-semibold">{{ translations.fr.timing ?: '-' }}</dd>
+                        </div>
+                        <div class="flex justify-between">
+                            <dt class="text-slate-400">Range</dt>
+                            <dd class="font-semibold">{{ translations.fr.range ?: '-' }}</dd>
+                        </div>
+                        <div class="flex justify-between">
+                            <dt class="text-slate-400">Duration</dt>
+                            <dd class="font-semibold">{{ translations.fr.duration ?: '-' }}</dd>
+                        </div>
+                    </div>
+                    <div class="space-y-1 border-b border-slate-800 pb-2">
+                        <dt class="text-slate-400">Tags</dt>
+                        <dd class="font-semibold whitespace-pre-line">{{ translations.fr.tags ?: '-' }}</dd>
+                    </div>
+                    <div class="space-y-1">
+                        <dt class="text-slate-400">Prerequisites</dt>
+                        <dd class="font-semibold whitespace-pre-line">{{ translations.fr.prerequisites ?: '-' }}</dd>
+                    </div>
+                </div>
+
+                <div class="space-y-2 hidden" data-locale-toggle-target="panel" data-locale="en">
+                    <div class="flex justify-between border-b border-slate-800 pb-2">
+                        <dt class="text-slate-400">Name</dt>
+                        <dd class="font-semibold">{{ translations.en.name ?: '-' }}</dd>
+                    </div>
+                    <div class="space-y-1 border-b border-slate-800 pb-2">
+                        <dt class="text-slate-400">Description</dt>
+                        <dd class="font-semibold whitespace-pre-line">{{ translations.en.description ?: '-' }}</dd>
+                    </div>
+                    <div class="space-y-1 border-b border-slate-800 pb-2">
+                        <dt class="text-slate-400">Limitations</dt>
+                        <dd class="font-semibold whitespace-pre-line">{{ translations.en.limitations ?: '-' }}</dd>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 border-b border-slate-800 pb-2">
+                        <div class="flex justify-between">
+                            <dt class="text-slate-400">Energy</dt>
+                            <dd class="font-semibold">{{ translations.en.energy ?: '-' }}</dd>
+                        </div>
+                        <div class="flex justify-between">
+                            <dt class="text-slate-400">Timing</dt>
+                            <dd class="font-semibold">{{ translations.en.timing ?: '-' }}</dd>
+                        </div>
+                        <div class="flex justify-between">
+                            <dt class="text-slate-400">Range</dt>
+                            <dd class="font-semibold">{{ translations.en.range ?: '-' }}</dd>
+                        </div>
+                        <div class="flex justify-between">
+                            <dt class="text-slate-400">Duration</dt>
+                            <dd class="font-semibold">{{ translations.en.duration ?: '-' }}</dd>
+                        </div>
+                    </div>
+                    <div class="space-y-1 border-b border-slate-800 pb-2">
+                        <dt class="text-slate-400">Tags</dt>
+                        <dd class="font-semibold whitespace-pre-line">{{ translations.en.tags ?: '-' }}</dd>
+                    </div>
+                    <div class="space-y-1">
+                        <dt class="text-slate-400">Prerequisites</dt>
+                        <dd class="font-semibold whitespace-pre-line">{{ translations.en.prerequisites ?: '-' }}</dd>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-6 space-y-4">
+            <div class="flex justify-between border-b border-slate-800 pb-2">
+                <dt class="text-slate-400">Code</dt>
+                <dd class="font-semibold">{{ simple_skill.code }}</dd>
+            </div>
+            <div class="flex justify-between border-b border-slate-800 pb-2">
+                <dt class="text-slate-400">Category</dt>
+                <dd class="font-semibold">{{ ('skill.category.' ~ simple_skill.category.value)|trans({}, 'skills') }}</dd>
+            </div>
+            <div class="flex justify-between border-b border-slate-800 pb-2">
+                <dt class="text-slate-400">Ability</dt>
+                <dd class="font-semibold">{{ ('skill.ability.' ~ simple_skill.ability.value)|trans({}, 'skills') }}</dd>
+            </div>
+            <div class="flex justify-between border-b border-slate-800 pb-2">
+                <dt class="text-slate-400">Aptitude</dt>
+                <dd class="font-semibold">{{ ('skill.aptitude.' ~ simple_skill.aptitude.value)|trans({}, 'skills') }}</dd>
+            </div>
+            <div class="flex justify-between border-b border-slate-800 pb-2">
+                <dt class="text-slate-400">Ultimate</dt>
+                <dd class="font-semibold">{{ simple_skill.isUltimate ? 'Yes' : 'No' }}</dd>
+            </div>
+            <div class="flex justify-between border-b border-slate-800 pb-2">
+                <dt class="text-slate-400">Created</dt>
+                <dd class="font-semibold">{{ simple_skill.createdAt|date('Y-m-d H:i') }}</dd>
+            </div>
+            <div class="flex justify-between">
+                <dt class="text-slate-400">Updated</dt>
+                <dd class="font-semibold">{{ simple_skill.updatedAt|date('Y-m-d H:i') }}</dd>
+            </div>
+        </div>
+    </main>
+{% endblock %}
