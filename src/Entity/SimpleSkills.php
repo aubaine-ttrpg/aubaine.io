@@ -29,7 +29,7 @@ class SimpleSkills
 
     #[ORM\Column(length: 64, unique: true)]
     #[Assert\NotBlank]
-    #[Assert\Regex(pattern: '/^[A-Za-z]{6}(?:-[0-9]+)?$/', message: 'Code must be 6 letters optionally followed by "-<numbers>".')]
+    #[Assert\Regex(pattern: '/^[A-Za-z0-9]{6}(?:-[0-9]+)?$/', message: 'Code must be 6 letters or numbers optionally followed by "-<numbers>".')]
     private string $code = '';
 
     #[ORM\Column(length: 120)]
@@ -57,6 +57,10 @@ class SimpleSkills
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Gedmo\Translatable]
     private ?string $limitations = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Gedmo\Translatable]
+    private ?string $requirements = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Gedmo\Translatable]
@@ -201,6 +205,18 @@ class SimpleSkills
     public function setLimitations(?string $limitations): self
     {
         $this->limitations = $limitations;
+
+        return $this;
+    }
+
+    public function getRequirements(): ?string
+    {
+        return $this->requirements;
+    }
+
+    public function setRequirements(?string $requirements): self
+    {
+        $this->requirements = $requirements;
 
         return $this;
     }

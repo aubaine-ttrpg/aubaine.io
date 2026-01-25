@@ -65,6 +65,7 @@ class AdminSimpleSkillController extends AdminController
         $frName = $translations['fr']['name'] ?? $simpleSkill->getName();
         $frDescription = $translations['fr']['description'] ?? $simpleSkill->getDescription();
         $frLimitations = $translations['fr']['limitations'] ?? $simpleSkill->getLimitations();
+        $frRequirements = $translations['fr']['requirements'] ?? $simpleSkill->getRequirements();
         $frEnergy = $translations['fr']['energy'] ?? $simpleSkill->getEnergy();
         $frPrerequisites = $translations['fr']['prerequisites'] ?? $simpleSkill->getPrerequisites();
         $frTiming = $translations['fr']['timing'] ?? $simpleSkill->getTiming();
@@ -74,6 +75,7 @@ class AdminSimpleSkillController extends AdminController
         $enName = $translations['en']['name'] ?? null;
         $enDescription = $translations['en']['description'] ?? null;
         $enLimitations = $translations['en']['limitations'] ?? null;
+        $enRequirements = $translations['en']['requirements'] ?? null;
         $enEnergy = $translations['en']['energy'] ?? null;
         $enPrerequisites = $translations['en']['prerequisites'] ?? null;
         $enTiming = $translations['en']['timing'] ?? null;
@@ -88,6 +90,7 @@ class AdminSimpleSkillController extends AdminController
                     'name' => $frName,
                     'description' => $frDescription,
                     'limitations' => $frLimitations,
+                    'requirements' => $frRequirements,
                     'energy' => $frEnergy,
                     'prerequisites' => $frPrerequisites,
                     'timing' => $frTiming,
@@ -99,6 +102,7 @@ class AdminSimpleSkillController extends AdminController
                     'name' => $enName,
                     'description' => $enDescription,
                     'limitations' => $enLimitations,
+                    'requirements' => $enRequirements,
                     'energy' => $enEnergy,
                     'prerequisites' => $enPrerequisites,
                     'timing' => $enTiming,
@@ -247,6 +251,7 @@ class AdminSimpleSkillController extends AdminController
             ->setAbility($simpleSkill->getAbility())
             ->setAptitude($simpleSkill->getAptitude())
             ->setLimitations($simpleSkill->getLimitations())
+            ->setRequirements($simpleSkill->getRequirements())
             ->setEnergy($simpleSkill->getEnergy())
             ->setPrerequisites($simpleSkill->getPrerequisites())
             ->setTiming($simpleSkill->getTiming())
@@ -302,6 +307,7 @@ class AdminSimpleSkillController extends AdminController
             $form->get('name_en')->setData(null);
             $form->get('description_en')->setData(null);
             $form->get('limitations_en')->setData(null);
+            $form->get('requirements_en')->setData(null);
             $form->get('energy_en')->setData(null);
             $form->get('prerequisites_en')->setData(null);
             $form->get('timing_en')->setData(null);
@@ -316,6 +322,7 @@ class AdminSimpleSkillController extends AdminController
         $form->get('name_en')->setData($translations['en']['name'] ?? null);
         $form->get('description_en')->setData($translations['en']['description'] ?? null);
         $form->get('limitations_en')->setData($translations['en']['limitations'] ?? null);
+        $form->get('requirements_en')->setData($translations['en']['requirements'] ?? null);
         $form->get('energy_en')->setData($translations['en']['energy'] ?? null);
         $form->get('prerequisites_en')->setData($translations['en']['prerequisites'] ?? null);
         $form->get('timing_en')->setData($translations['en']['timing'] ?? null);
@@ -330,6 +337,7 @@ class AdminSimpleSkillController extends AdminController
         $this->setTranslationValue($repository, $simpleSkill, 'name', 'en', $form->get('name_en')->getData());
         $this->setTranslationValue($repository, $simpleSkill, 'description', 'en', $form->get('description_en')->getData());
         $this->setTranslationValue($repository, $simpleSkill, 'limitations', 'en', $form->get('limitations_en')->getData());
+        $this->setTranslationValue($repository, $simpleSkill, 'requirements', 'en', $form->get('requirements_en')->getData());
         $this->setTranslationValue($repository, $simpleSkill, 'energy', 'en', $form->get('energy_en')->getData());
         $this->setTranslationValue($repository, $simpleSkill, 'prerequisites', 'en', $form->get('prerequisites_en')->getData());
         $this->setTranslationValue($repository, $simpleSkill, 'timing', 'en', $form->get('timing_en')->getData());

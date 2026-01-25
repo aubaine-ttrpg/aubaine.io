@@ -57,6 +57,13 @@ class SimpleSkillFormType extends AbstractType
                 'mapped' => false,
                 'required' => false,
             ])
+            ->add('requirements', TextType::class, [
+                'required' => false,
+            ])
+            ->add('requirements_en', TextType::class, [
+                'mapped' => false,
+                'required' => false,
+            ])
             ->add('energy', TextType::class, [
                 'required' => false,
             ])

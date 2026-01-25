@@ -74,6 +74,10 @@
                         <label class="label" for="{{ form.limitations.vars.id }}">Limitations (FR)</label>
                         {{ form_widget(form.limitations, { attr: { class: 'input' } }) }}
                     </div>
+                    <div>
+                        <label class="label" for="{{ form.requirements.vars.id }}">Requirements (FR)</label>
+                        {{ form_widget(form.requirements, { attr: { class: 'input' } }) }}
+                    </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="label" for="{{ form.energy.vars.id }}">Energy (FR)</label>
@@ -100,6 +104,10 @@
                     <div>
                         <label class="label" for="{{ form.limitations_en.vars.id }}">Limitations (EN)</label>
                         {{ form_widget(form.limitations_en, { attr: { class: 'input' } }) }}
+                    </div>
+                    <div>
+                        <label class="label" for="{{ form.requirements_en.vars.id }}">Requirements (EN)</label>
+                        {{ form_widget(form.requirements_en, { attr: { class: 'input' } }) }}
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>

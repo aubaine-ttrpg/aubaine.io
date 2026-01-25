@@ -27,6 +27,7 @@ final class Version20260405000000 extends AbstractMigration
               ability VARCHAR(255) NOT NULL,
               aptitude VARCHAR(255) NOT NULL,
               limitations CLOB DEFAULT NULL,
+              requirements CLOB DEFAULT NULL,
               energy CLOB DEFAULT NULL,
               prerequisites CLOB DEFAULT NULL,
               timing CLOB DEFAULT NULL,
