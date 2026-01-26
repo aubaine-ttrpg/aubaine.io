@@ -2,7 +2,7 @@
 
 {% set separator = '•' %}
 
-{% block title %}Export Skills{% endblock %}
+{% block title %}Export Old Skills{% endblock %}
 
 {% block body %}
     <main class="max-w-6xl mx-auto px-4 py-8 print:max-w-full print:p-0">
@@ -12,7 +12,7 @@
                 <p class="text-sm text-slate-400">
                     <a href="{{ path('admin_home') }}" class="hover:text-sky-300">Admin</a>
                     <span>/</span>
-                    <a href="{{ path('admin_skill_index') }}" class="hover:text-sky-300">Skills</a>
+                    <a href="{{ path('admin_old_skill_index') }}" class="hover:text-sky-300">Old Skills</a>
                     <span>/</span>
                     <span class="text-slate-300">Export</span>
                 </p>
@@ -22,9 +22,9 @@
 
             {#-- Actions --#}
             <div>
-                <a class="btn btn-ghost" href="{{ path('admin_skill_export') }}">← New export</a>
+                <a class="btn btn-ghost" href="{{ path('admin_old_skill_export') }}">← New export</a>
                 {% if hash %}
-                    <button class="btn btn-info" onclick="navigator.clipboard.writeText('{{ url('admin_skill_export_hash', { hash: hash }) }}');" title="Copy export link to clipboard">
+                    <button class="btn btn-info" onclick="navigator.clipboard.writeText('{{ url('admin_old_skill_export_hash', { hash: hash }) }}');" title="Copy export link to clipboard">
                         {{ ux_icon('heroicons:clipboard-document') }}
                         <span>Copy to clipboard</span>
                     </button>

@@ -1,12 +1,12 @@
 {% set icon_path = iconSrc ?? 'https://placehold.co/90?text=?' %}
 {% set submit_label = submit_label ?? 'Save' %}
 
-{{ form_start(form, { attr: { 'data-skill-form': '', 'data-controller': 'action-fields', 'data-turbo': 'false' } }) }}
-    <div data-controller="locale-toggle" data-locale-toggle-active-value="fr" class="space-y-4">
+{{ form_start(form, { attr: { 'data-turbo': 'false', 'data-controller': 'locale-toggle', 'data-locale-toggle-active-value': 'fr' } }) }}
+    <div class="space-y-4">
         <div class="flex justify-end gap-2">
             <button type="button" class="btn btn-primary flex justify-center items-center gap-2" data-locale-toggle-target="tab" data-locale="fr" data-action="click->locale-toggle#switch">
                 {{ ux_icon('flagpack:fr', { class: 'w-5 h-5' }) }}
-                <span>Français</span>
+                <span>Francais</span>
             </button>
             <button type="button" class="btn btn-ghost flex justify-center items-center gap-2" data-locale-toggle-target="tab" data-locale="en" data-action="click->locale-toggle#switch">
                 {{ ux_icon('flagpack:gb-ukm', { class: 'w-5 h-5' }) }}
@@ -15,184 +15,158 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {# Basic info card #}
-        <div class="card p-5 flex flex-col gap-4">
-            {# Name and icon #}
-            <div class="flex items-end gap-4" data-controller="icon-preview" data-icon-preview-placeholder-value="{{ icon_path }}">
-                {# Icon preview and upload #}
-                <div class="icon-edit-wrap" data-icon-preview-target="preview" title="Click to change icon" data-action="click->icon-preview#triggerUpload">
-                    <img src="{{ icon_path }}" alt="" onerror="this.onerror=null; this.src='https://placehold.co/90?text=?';">
-                    <div class="icon-edit-overlay">
-                        {{ ux_icon('heroicons:paint-brush', { class: 'w-6 h-6 text-sky-200' }) }}
+            <div class="card p-5 space-y-4 lg:col-span-1">
+                <div class="flex items-end gap-4" data-controller="icon-preview" data-icon-preview-placeholder-value="{{ icon_path }}">
+                    <div class="icon-edit-wrap" data-icon-preview-target="preview" title="Click to change icon" data-action="click->icon-preview#triggerUpload">
+                        <img src="{{ icon_path }}" alt="" onerror="this.onerror=null; this.src='https://placehold.co/90?text=?';">
+                        <div class="icon-edit-overlay">
+                            {{ ux_icon('heroicons:paint-brush', { class: 'w-6 h-6 text-sky-200' }) }}
+                        </div>
+                    </div>
+                    {{ form_widget(form.icon, { attr: { class: 'hidden', 'data-icon-preview-target': 'input', 'data-action': 'change->icon-preview#updatePreview' } }) }}
+
+                    <div class="flex-1 space-y-3" data-locale-toggle-target="panel" data-locale="fr">
+                        <div>
+                            <label class="label" for="{{ form.name.vars.id }}">Name (FR)</label>
+                            {{ form_widget(form.name, { attr: { class: 'input' } }) }}
+                        </div>
+                    </div>
+                    <div class="flex-1 space-y-3 hidden" data-locale-toggle-target="panel" data-locale="en">
+                        <div>
+                            <label class="label" for="{{ form.name_en.vars.id }}">Name (EN)</label>
+                            {{ form_widget(form.name_en, { attr: { class: 'input' } }) }}
+                        </div>
                     </div>
                 </div>
 
-                {# Name (FR base) #}
-                <div class="flex-1 space-y-3" data-locale-toggle-target="panel" data-locale="fr">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="label" for="{{ form.name.vars.id }}">Name (FR)</label>
-                        {{ form_widget(form.name, { attr: { class: 'input' } }) }}
+                        <label class="label" for="{{ form.code.vars.id }}">Code</label>
+                        {{ form_widget(form.code, { attr: { class: 'input' } }) }}
                     </div>
-                </div>
-                {# Name (EN) #}
-                <div class="flex-1 space-y-3 hidden" data-locale-toggle-target="panel" data-locale="en">
-                    <div>
-                        <label class="label" for="{{ form.name_en.vars.id }}">Name (EN)</label>
-                        {{ form_widget(form.name_en, { attr: { class: 'input' } }) }}
-                    </div>
-                </div>
-
-                {# Hidden icon file input #}
-                {{ form_widget(form.icon, { attr: { class: 'hidden', 'data-icon-preview-target': 'input', 'data-action': 'change->icon-preview#updatePreview' } }) }}
-            </div>
-
-            {# Code, Type, Category, Usage limit, Ultimate, Source #}
-            <div class="space-y-3">
-                {# Code #}
-                <div>
-                    <label class="label" for="{{ form.code.vars.id }}">Code</label>
-                    {{ form_widget(form.code, { attr: { class: 'input' } }) }}
-                </div>
-
-                {# Type and Category #}
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {# Type #}
-                    <div>
-                        <label class="label" for="{{ form.type.vars.id }}">Type</label>
-                        {{ form_widget(form.type, { attr: { class: 'input', 'data-action-fields-target': 'type' } }) }}
-                    </div>
-                    {# Category #}
                     <div>
                         <label class="label" for="{{ form.category.vars.id }}">Category</label>
                         {{ form_widget(form.category, { attr: { class: 'input' } }) }}
                     </div>
                 </div>
 
-                {# Ultimate #}
-                <div class="input flex items-center justify-between gap-3">
-                    <label class="flex items-center gap-2" for="{{ form.ultimate.vars.id }}">
-                        <span class="flex items-center gap-1 text-slate-200">
-                            {{ ux_icon('game-icons:evil-wings', { class: 'w-5 h-5' }) }}
-                            <span>Ultimate</span>
-                        </span>
-                    </label>
+                <label class="input flex items-center justify-between gap-3" for="{{ form.ultimate.vars.id }}">
+                    <span class="flex items-center gap-1 text-slate-200">
+                        {{ ux_icon('game-icons:evil-wings', { class: 'w-5 h-5' }) }}
+                        <span>Ultimate</span>
+                    </span>
                     {{ form_widget(form.ultimate) }}
-                </div>
+                </label>
 
-                {# Usage limit #}
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {# Usage limit amount #}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="label" for="{{ form.usageLimitAmount.vars.id }}">Usage limit</label>
-                        {{ form_widget(form.usageLimitAmount, { attr: { class: 'input', min: 0 } }) }}
+                        <label class="label" for="{{ form.ability.vars.id }}">Ability</label>
+                        {{ form_widget(form.ability, { attr: { class: 'input' } }) }}
                     </div>
-                    {# Usage limit period #}
                     <div>
-                        <label class="label" for="{{ form.usageLimitPeriod.vars.id }}">Limit period</label>
-                        {{ form_widget(form.usageLimitPeriod, { attr: { class: 'input' } }) }}
+                        <label class="label" for="{{ form.aptitude.vars.id }}">Aptitude</label>
+                        {{ form_widget(form.aptitude, { attr: { class: 'input' } }) }}
                     </div>
                 </div>
 
-                {# Source #}
-                <div>
-                    <label class="label" for="{{ form.source.vars.id }}">Source</label>
-                    {{ form_widget(form.source, { attr: { class: 'input' } }) }}
+                <div class="space-y-4" data-locale-toggle-target="panel" data-locale="fr">
+                    <div>
+                        <label class="label" for="{{ form.limitations.vars.id }}">Limitations (FR)</label>
+                        {{ form_widget(form.limitations, { attr: { class: 'input' } }) }}
+                    </div>
+                    <div>
+                        <label class="label" for="{{ form.requirements.vars.id }}">Requirements (FR)</label>
+                        {{ form_widget(form.requirements, { attr: { class: 'input' } }) }}
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="label" for="{{ form.energy.vars.id }}">Energy (FR)</label>
+                            {{ form_widget(form.energy, { attr: { class: 'input' } }) }}
+                        </div>
+                        <div>
+                            <label class="label" for="{{ form.timing.vars.id }}">Timing (FR)</label>
+                            {{ form_widget(form.timing, { attr: { class: 'input' } }) }}
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="label" for="{{ form.range.vars.id }}">Range (FR)</label>
+                            {{ form_widget(form.range, { attr: { class: 'input' } }) }}
+                        </div>
+                        <div>
+                            <label class="label" for="{{ form.duration.vars.id }}">Duration (FR)</label>
+                            {{ form_widget(form.duration, { attr: { class: 'input' } }) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4 hidden" data-locale-toggle-target="panel" data-locale="en">
+                    <div>
+                        <label class="label" for="{{ form.limitations_en.vars.id }}">Limitations (EN)</label>
+                        {{ form_widget(form.limitations_en, { attr: { class: 'input' } }) }}
+                    </div>
+                    <div>
+                        <label class="label" for="{{ form.requirements_en.vars.id }}">Requirements (EN)</label>
+                        {{ form_widget(form.requirements_en, { attr: { class: 'input' } }) }}
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="label" for="{{ form.energy_en.vars.id }}">Energy (EN)</label>
+                            {{ form_widget(form.energy_en, { attr: { class: 'input' } }) }}
+                        </div>
+                        <div>
+                            <label class="label" for="{{ form.timing_en.vars.id }}">Timing (EN)</label>
+                            {{ form_widget(form.timing_en, { attr: { class: 'input' } }) }}
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="label" for="{{ form.range_en.vars.id }}">Range (EN)</label>
+                            {{ form_widget(form.range_en, { attr: { class: 'input' } }) }}
+                        </div>
+                        <div>
+                            <label class="label" for="{{ form.duration_en.vars.id }}">Duration (EN)</label>
+                            {{ form_widget(form.duration_en, { attr: { class: 'input' } }) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-5 lg:col-span-2">
+                <div class="space-y-4" data-locale-toggle-target="panel" data-locale="fr">
+                    <div>
+                        <label class="label" for="{{ form.prerequisites.vars.id }}">Prerequisites (FR)</label>
+                        {{ form_widget(form.prerequisites, { attr: { class: 'input' } }) }}
+                    </div>
+                    <div>
+                        <label class="label" for="{{ form.description.vars.id }}">Description (FR)</label>
+                        {{ form_widget(form.description, { attr: { class: 'input min-h-[240px]' } }) }}
+                    </div>
+                    <div>
+                        <label class="label" for="{{ form.tags.vars.id }}">Tags (FR)</label>
+                        {{ form_widget(form.tags, { attr: { class: 'input min-h-[80px]' } }) }}
+                    </div>
+                </div>
+
+                <div class="space-y-4 hidden" data-locale-toggle-target="panel" data-locale="en">
+                    <div>
+                        <label class="label" for="{{ form.prerequisites_en.vars.id }}">Prerequisites (EN)</label>
+                        {{ form_widget(form.prerequisites_en, { attr: { class: 'input' } }) }}
+                    </div>
+                    <div>
+                        <label class="label" for="{{ form.description_en.vars.id }}">Description (EN)</label>
+                        {{ form_widget(form.description_en, { attr: { class: 'input min-h-[240px]' } }) }}
+                    </div>
+                    <div>
+                        <label class="label" for="{{ form.tags_en.vars.id }}">Tags (EN)</label>
+                        {{ form_widget(form.tags_en, { attr: { class: 'input min-h-[80px]' } }) }}
+                    </div>
                 </div>
             </div>
         </div>
 
-        {# Additional info card #}
-        <div class="card p-5 lg:col-span-2 space-y-4">
-            <div class="relative">
-                <div class="space-y-2" data-locale-toggle-target="panel" data-locale="fr">
-                    <label class="label" for="{{ form.description.vars.id }}">Description (FR)</label>
-                    {{ form_widget(form.description, { attr: { class: 'input min-h-[200px]' } }) }}
-                </div>
-                <div class="space-y-2 hidden" data-locale-toggle-target="panel" data-locale="en">
-                    <label class="label" for="{{ form.description_en.vars.id }}">Description (EN)</label>
-                    {{ form_widget(form.description_en, { attr: { class: 'input min-h-[200px]' } }) }}
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="label" for="{{ form.range.vars.id }}">Range</label>
-                    {{ form_widget(form.range, { attr: { class: 'input' } }) }}
-                </div>
-                <div>
-                    <label class="label" for="{{ form.duration.vars.id }}">Duration</label>
-                    {{ form_widget(form.duration, { attr: { class: 'input' } }) }}
-                </div>
-            </div>
-
-            <div class="space-y-2">
-                <label class="label">Tags (<span data-tags-count>0</span>)</label>
-                {{ form_widget(form.tags, { attr: { class: 'input', 'data-controller': 'multi-select', 'data-multi-select-type-value': 'tags' } }) }}
-            </div>
-        </div>
-
-        {# Action specifics card #}
-        <div class="card p-5 lg:col-span-3 space-y-4" data-action-fields-target="card">
-            <div class="flex items-start justify-between gap-2">
-                <div>
-                    <h3 class="text-lg font-semibold">Action specifics</h3>
-                    <p class="text-sm text-slate-400">Only for Action / Bonus Action / Reaction / Attack.</p>
-                </div>
-                <span class="text-xs text-slate-500" data-action-card-hint>Disabled for non-action types</span>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="space-y-2">
-                    <label class="label" for="{{ form.energyCost.vars.id }}">Energy Cost</label>
-                    {{ form_widget(form.energyCost, { attr: { class: 'input', min: 0, 'data-action-fields-target': 'actionField' } }) }}
-                </div>
-                <div class="col-span-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                    <label class="inline-flex items-center justify-between gap-2 text-slate-200">
-                        <span>Concentration</span>
-                        {{ form_widget(form.concentration, { attr: { class: 'checkbox', 'data-action-fields-target': 'actionField' } }) }}
-                    </label>
-                    <label class="inline-flex items-center justify-between gap-2 text-slate-200">
-                        <span>Ritual</span>
-                        {{ form_widget(form.ritual, { attr: { class: 'checkbox', 'data-action-fields-target': 'actionField' } }) }}
-                    </label>
-                </div>
-            </div>
-
-            <div class="space-y-2">
-                <label class="label">Abilities</label>
-                {{ form_widget(form.abilities, { attr: { class: 'input', 'data-controller': 'multi-select', 'data-multi-select-type-value': 'abilities', 'data-action-fields-target': 'actionField' } }) }}
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <label class="inline-flex items-center gap-2 text-slate-200">
-                    {{ form_widget(form.attackRoll, { attr: { class: 'checkbox', 'data-action-fields-target': 'actionField' } }) }}
-                    <span>Attack roll</span>
-                </label>
-                <label class="inline-flex items-center gap-2 text-slate-200">
-                    {{ form_widget(form.savingThrow, { attr: { class: 'checkbox', 'data-action-fields-target': 'actionField' } }) }}
-                    <span>Saving throw</span>
-                </label>
-                <label class="inline-flex items-center gap-2 text-slate-200">
-                    {{ form_widget(form.abilityCheck, { attr: { class: 'checkbox', 'data-action-fields-target': 'actionField' } }) }}
-                    <span>Ability check</span>
-                </label>
-            </div>
-
-            <div class="relative">
-                <div class="space-y-2" data-locale-toggle-target="panel" data-locale="fr">
-                    <label class="label" for="{{ form.materials.vars.id }}">Materials (FR)</label>
-                    {{ form_widget(form.materials, { attr: { class: 'input', 'data-action-fields-target': 'actionField' } }) }}
-                </div>
-                <div class="space-y-2 hidden" data-locale-toggle-target="panel" data-locale="en">
-                    <label class="label" for="{{ form.materials_en.vars.id }}">Materials (EN)</label>
-                    {{ form_widget(form.materials_en, { attr: { class: 'input', 'data-action-fields-target': 'actionField' } }) }}
-                </div>
-            </div>
-        </div>
-
-        <div class="lg:col-span-3 flex justify-end">
+        <div class="flex justify-end">
             <button type="submit" class="btn btn-primary">{{ submit_label }}</button>
         </div>
-        </div> {# grid #}
-    </div> {# locale toggle wrapper #}
+    </div>
 {{ form_end(form) }}

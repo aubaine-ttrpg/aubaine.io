@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Simple Skills{% endblock %}
+{% block title %}Old Skills{% endblock %}
 
 {% block body %}
     <main class="max-w-6xl mx-auto px-4 py-8 space-y-6">
@@ -9,18 +9,18 @@
                 <p class="text-sm text-slate-400 space-x-1">
                     <a href="{{ path('admin_home') }}" class="hover:text-sky-300">Admin</a>
                     <span>/</span>
-                    <span class="text-slate-300">Simple Skills</span>
+                    <span class="text-slate-300">Old Skills</span>
                 </p>
-                <h1 class="text-3xl font-semibold">Simple Skills</h1>
+                <h1 class="text-3xl font-semibold">Old Skills</h1>
             </div>
             <div class="flex gap-2">
-                <a href="{{ path('admin_simple_skill_help') }}" class="btn btn-ghost">{{ 'page.title'|trans({}, 'simple_skill_help') }}</a>
-                <a href="{{ path('admin_simple_skill_factory') }}" class="btn btn-primary">Create</a>
+                <a href="{{ path('admin_old_skill_export') }}" class="btn btn-ghost">Export</a>
+                <a href="{{ path('admin_old_skill_factory') }}" class="btn btn-primary">Create</a>
             </div>
         </div>
 
-        {% if simple_skills is empty %}
-            <div class="card p-6 text-slate-300">No simple skills yet.</div>
+        {% if skills is empty %}
+            <div class="card p-6 text-slate-300">No old skills yet.</div>
         {% else %}
             <div class="overflow-hidden rounded-xl border border-slate-800 card">
                 <table class="min-w-full divide-y divide-slate-800">
@@ -29,34 +29,32 @@
                             <th class="px-4 py-3">Icon</th>
                             <th class="px-4 py-3">Code</th>
                             <th class="px-4 py-3">Name</th>
+                            <th class="px-4 py-3">Ultimate</th>
+                            <th class="px-4 py-3">Category</th>
+                            <th class="px-4 py-3">Type</th>
                             <th class="px-4 py-3">Energy</th>
-                            <th class="px-4 py-3">Timing</th>
-                            <th class="px-4 py-3">Range</th>
-                            <th class="px-4 py-3">Duration</th>
-                            <th class="px-4 py-3">Tags</th>
                             <th class="px-4 py-3">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-800">
-                        {% for simple_skill in simple_skills %}
+                        {% for skill in skills %}
                             <tr class="hover:bg-slate-900/40">
                                 <td class="px-4 py-3">
-                                    {% set iconPath = simple_skill.icon ?? null %}
+                                    {% set iconPath = skill.icon ?? null %}
                                     <div class="rounded-2xl overflow-hidden border border-slate-800 bg-slate-900 w-[75px] h-[75px] shadow-lg">
                                         <img src="{{ iconPath ?: 'https://placehold.co/75?text=?' }}" alt="" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/75?text=?';">
                                     </div>
                                 </td>
-                                <td class="px-4 py-3 font-mono text-sm">{{ simple_skill.code }}</td>
-                                <td class="px-4 py-3 font-semibold">{{ simple_skill.name }}</td>
-                                <td class="px-4 py-3">{{ simple_skill.energy ?: '-' }}</td>
-                                <td class="px-4 py-3">{{ simple_skill.timing ?: '-' }}</td>
-                                <td class="px-4 py-3">{{ simple_skill.range ?: '-' }}</td>
-                                <td class="px-4 py-3">{{ simple_skill.duration ?: '-' }}</td>
-                                <td class="px-4 py-3">{{ simple_skill.tags ?: '-' }}</td>
+                                <td class="px-4 py-3 font-mono text-sm">{{ skill.code }}</td>
+                                <td class="px-4 py-3 font-semibold">{{ skill.name }}</td>
+                                <td class="px-4 py-3">{{ skill.isUltimate ? 'Yes' : 'No' }}</td>
+                                <td class="px-4 py-3">{{ ('skill.category.' ~ skill.category.value)|trans({}, 'skills') }}</td>
+                                <td class="px-4 py-3">{{ ('skill.type.' ~ skill.type.value)|trans({}, 'skills') }}</td>
+                                <td class="px-4 py-3">{{ skill.isActionLike ? (skill.energyCost ?? '—') : '—' }}</td>
                                 <td class="px-4 py-3 space-x-2">
-                                    <a href="{{ path('admin_simple_skill_show', { id: simple_skill.id }) }}" class="btn btn-ghost text-sm">View</a>
-                                    <a href="{{ path('admin_simple_skill_edit', { id: simple_skill.id }) }}" class="btn btn-ghost text-sm">Edit</a>
-                                    <a href="{{ path('admin_simple_skill_clone', { id: simple_skill.id }) }}" class="btn btn-ghost text-sm">Clone</a>
+                                    <a href="{{ path('admin_old_skill_show', { id: skill.id }) }}" class="btn btn-ghost text-sm">View</a>
+                                    <a href="{{ path('admin_old_skill_edit', { id: skill.id }) }}" class="btn btn-ghost text-sm">Edit</a>
+                                    <a href="{{ path('admin_old_skill_clone', { id: skill.id }) }}" class="btn btn-ghost text-sm">Clone</a>
                                 </td>
                             </tr>
                         {% endfor %}

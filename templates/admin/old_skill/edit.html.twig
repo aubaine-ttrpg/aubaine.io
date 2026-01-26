@@ -1,24 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Skill: {{ skill.name }}{% endblock %}
+{% block title %}Edit Old Skill: {{ skill.name }}{% endblock %}
 
 {% block body %}
-    <main class="max-w-5xl mx-auto px-4 py-8 space-y-6">
+    <main class="max-w-6xl mx-auto px-4 py-8 space-y-6">
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm text-slate-400 space-x-1">
                     <a href="{{ path('admin_home') }}" class="hover:text-sky-300">Admin</a>
                     <span>/</span>
-                    <a href="{{ path('admin_skill_index') }}" class="hover:text-sky-300">Skills</a>
+                    <a href="{{ path('admin_old_skill_index') }}" class="hover:text-sky-300">Old Skills</a>
                     <span>/</span>
                     <span class="text-slate-300">Edit</span>
                 </p>
                 <h1 class="text-3xl font-semibold">Edit {{ skill.name }}</h1>
             </div>
-            <a class="btn btn-ghost" href="{{ path('admin_skill_show', { id: skill.id }) }}">&larr; Back to detail</a>
+            <a class="btn btn-ghost" href="{{ path('admin_old_skill_show', { id: skill.id }) }}">← Back to detail</a>
         </div>
 
-        {% include 'admin/skill/_form.html.twig' with {
+        {% include 'admin/old_skill/_form.html.twig' with {
             form: form,
             iconSrc: skill.icon,
             submit_label: 'Save'

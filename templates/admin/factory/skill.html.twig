@@ -3,7 +3,7 @@
 {% block title %}Skill Factory{% endblock %}
 
 {% block body %}
-    <main class="max-w-6xl mx-auto px-4 py-8 space-y-6">
+    <main class="max-w-5xl mx-auto px-4 py-8 space-y-6">
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm text-slate-400 space-x-1">
@@ -15,9 +15,13 @@
                 </p>
                 <h1 class="text-3xl font-semibold">Create Skill</h1>
             </div>
-            <a class="btn btn-ghost" href="{{ path('admin_skill_index') }}">← Back to list</a>
+            <a class="btn btn-ghost" href="{{ path('admin_skill_index') }}">&larr; Back to list</a>
         </div>
 
-        {% include 'admin/skill/_form.html.twig' with { form: form, submit_label: 'Create skill' } %}
+        {% include 'admin/skill/_form.html.twig' with {
+            form: form,
+            iconSrc: iconSrc ?? null,
+            submit_label: 'Create skill'
+        } %}
     </main>
 {% endblock %}

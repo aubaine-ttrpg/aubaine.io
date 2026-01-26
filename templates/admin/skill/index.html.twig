@@ -14,7 +14,7 @@
                 <h1 class="text-3xl font-semibold">Skills</h1>
             </div>
             <div class="flex gap-2">
-                <a href="{{ path('admin_skill_export') }}" class="btn btn-ghost">Export</a>
+                <a href="{{ path('admin_skill_help') }}" class="btn btn-ghost">{{ 'page.title'|trans({}, 'simple_skill_help') }}</a>
                 <a href="{{ path('admin_skill_factory') }}" class="btn btn-primary">Create</a>
             </div>
         </div>
@@ -29,10 +29,11 @@
                             <th class="px-4 py-3">Icon</th>
                             <th class="px-4 py-3">Code</th>
                             <th class="px-4 py-3">Name</th>
-                            <th class="px-4 py-3">Ultimate</th>
-                            <th class="px-4 py-3">Category</th>
-                            <th class="px-4 py-3">Type</th>
                             <th class="px-4 py-3">Energy</th>
+                            <th class="px-4 py-3">Timing</th>
+                            <th class="px-4 py-3">Range</th>
+                            <th class="px-4 py-3">Duration</th>
+                            <th class="px-4 py-3">Tags</th>
                             <th class="px-4 py-3">Actions</th>
                         </tr>
                     </thead>
@@ -47,10 +48,11 @@
                                 </td>
                                 <td class="px-4 py-3 font-mono text-sm">{{ skill.code }}</td>
                                 <td class="px-4 py-3 font-semibold">{{ skill.name }}</td>
-                                <td class="px-4 py-3">{{ skill.isUltimate ? 'Yes' : 'No' }}</td>
-                                <td class="px-4 py-3">{{ ('skill.category.' ~ skill.category.value)|trans({}, 'skills') }}</td>
-                                <td class="px-4 py-3">{{ ('skill.type.' ~ skill.type.value)|trans({}, 'skills') }}</td>
-                                <td class="px-4 py-3">{{ skill.isActionLike ? (skill.energyCost ?? '—') : '—' }}</td>
+                                <td class="px-4 py-3">{{ skill.energy ?: '-' }}</td>
+                                <td class="px-4 py-3">{{ skill.timing ?: '-' }}</td>
+                                <td class="px-4 py-3">{{ skill.range ?: '-' }}</td>
+                                <td class="px-4 py-3">{{ skill.duration ?: '-' }}</td>
+                                <td class="px-4 py-3">{{ skill.tags ?: '-' }}</td>
                                 <td class="px-4 py-3 space-x-2">
                                     <a href="{{ path('admin_skill_show', { id: skill.id }) }}" class="btn btn-ghost text-sm">View</a>
                                     <a href="{{ path('admin_skill_edit', { id: skill.id }) }}" class="btn btn-ghost text-sm">Edit</a>

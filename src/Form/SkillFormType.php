@@ -2,24 +2,16 @@
 
 namespace App\Form;
 
-use App\Entity\Skills;
-use App\Entity\Tag;
 use App\Enum\Ability;
+use App\Enum\Aptitude;
 use App\Enum\SkillCategory;
-use App\Enum\SkillDuration;
-use App\Enum\SkillLimitPeriod;
-use App\Enum\SkillRange;
-use App\Enum\Source;
-use App\Enum\SkillType;
-use App\Repository\TagRepository;
+use App\Entity\Skills;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -29,6 +21,25 @@ class SkillFormType extends AbstractType
     {
         $builder
             ->add('code', TextType::class)
+            ->add('category', EnumType::class, [
+                'class' => SkillCategory::class,
+                'choice_label' => static fn (SkillCategory $category): string => 'skill.category.' . $category->value,
+                'choice_translation_domain' => 'skills',
+            ])
+            ->add('ability', EnumType::class, [
+                'class' => Ability::class,
+                'choice_label' => static fn (Ability $ability): string => 'skill.ability.' . $ability->value,
+                'choice_translation_domain' => 'skills',
+            ])
+            ->add('aptitude', EnumType::class, [
+                'class' => Aptitude::class,
+                'choice_label' => static fn (Aptitude $aptitude): string => 'skill.aptitude.' . $aptitude->value,
+                'choice_translation_domain' => 'skills',
+            ])
+            ->add('ultimate', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Ultimate',
+            ])
             ->add('name', TextType::class)
             ->add('name_en', TextType::class, [
                 'mapped' => false,
@@ -39,100 +50,61 @@ class SkillFormType extends AbstractType
                 'mapped' => false,
                 'required' => false,
             ])
-            ->add('energyCost', IntegerType::class, [
+            ->add('limitations', TextType::class, [
                 'required' => false,
             ])
-            ->add('ultimate', CheckboxType::class, [
-                'required' => false,
-                'label' => 'Ultimate',
-            ])
-            ->add('usageLimitAmount', IntegerType::class, [
-                'required' => false,
-            ])
-            ->add('usageLimitPeriod', EnumType::class, [
-                'class' => SkillLimitPeriod::class,
-                'choice_label' => static fn (SkillLimitPeriod $period): string => 'skill.limit_period.' . $period->value,
-                'choice_translation_domain' => 'skills',
-            ])
-            ->add('category', EnumType::class, [
-                'class' => SkillCategory::class,
-                'choice_label' => static fn (SkillCategory $category): string => 'skill.category.' . $category->value,
-                'choice_translation_domain' => 'skills',
-            ])
-            ->add('type', EnumType::class, [
-                'class' => SkillType::class,
-                'choice_label' => static fn (SkillType $type): string => 'skill.type.' . $type->value,
-                'choice_translation_domain' => 'skills',
-                'attr' => [
-                    'data-action-types' => json_encode([
-                        SkillType::ACTION->value,
-                        SkillType::BONUS->value,
-                        SkillType::REACTION->value,
-                        SkillType::ATTACK->value,
-                    ]),
-                ],
-            ])
-            ->add('abilities', EnumType::class, [
-                'class' => Ability::class,
-                'choice_label' => static fn (Ability $ability): string => 'skill.ability.' . $ability->value,
-                'choices' => array_filter(Ability::cases(), static fn (Ability $a): bool => $a !== Ability::NONE),
-                'choice_translation_domain' => 'skills',
-                'multiple' => true,
-                'expanded' => false,
-                'required' => false,
-                'attr' => [
-                    'data-multi-select' => 'abilities',
-                ],
-            ])
-            ->add('range', EnumType::class, [
-                'class' => SkillRange::class,
-                'choice_label' => static fn (SkillRange $range): string => 'skill.range.' . $range->value,
-                'choice_translation_domain' => 'skills',
-            ])
-            ->add('duration', EnumType::class, [
-                'class' => SkillDuration::class,
-                'choice_label' => static fn (SkillDuration $duration): string => 'skill.duration.' . $duration->value,
-                'choice_translation_domain' => 'skills',
-            ])
-            ->add('concentration', CheckboxType::class, [
-                'required' => false,
-            ])
-            ->add('ritual', CheckboxType::class, [
-                'required' => false,
-            ])
-            ->add('attackRoll', CheckboxType::class, [
-                'required' => false,
-            ])
-            ->add('savingThrow', CheckboxType::class, [
-                'required' => false,
-            ])
-            ->add('abilityCheck', CheckboxType::class, [
-                'required' => false,
-            ])
-            ->add('source', EnumType::class, [
-                'class' => Source::class,
-                'choice_label' => static fn (Source $source): string => 'skill.source.' . $source->value,
-                'choice_translation_domain' => 'skills',
-            ])
-            ->add('materials', TextareaType::class, [
-                'required' => false,
-                'label' => 'Materials',
-            ])
-            ->add('materials_en', TextareaType::class, [
+            ->add('limitations_en', TextType::class, [
                 'mapped' => false,
                 'required' => false,
-                'label' => 'Materials (EN)',
             ])
-            ->add('tags', EntityType::class, [
-                'class' => Tag::class,
-                'choice_label' => static fn (Tag $tag): string => $tag->getLabel(),
-                'query_builder' => static fn (TagRepository $tagRepository) => $tagRepository->createOrderedQueryBuilder(),
-                'multiple' => true,
-                'expanded' => false,
+            ->add('requirements', TextType::class, [
                 'required' => false,
-                'attr' => [
-                    'data-multi-select' => 'tags',
-                ],
+            ])
+            ->add('requirements_en', TextType::class, [
+                'mapped' => false,
+                'required' => false,
+            ])
+            ->add('energy', TextType::class, [
+                'required' => false,
+            ])
+            ->add('energy_en', TextType::class, [
+                'mapped' => false,
+                'required' => false,
+            ])
+            ->add('prerequisites', TextType::class, [
+                'required' => false,
+            ])
+            ->add('prerequisites_en', TextType::class, [
+                'mapped' => false,
+                'required' => false,
+            ])
+            ->add('timing', TextType::class, [
+                'required' => false,
+            ])
+            ->add('timing_en', TextType::class, [
+                'mapped' => false,
+                'required' => false,
+            ])
+            ->add('range', TextType::class, [
+                'required' => false,
+            ])
+            ->add('range_en', TextType::class, [
+                'mapped' => false,
+                'required' => false,
+            ])
+            ->add('duration', TextType::class, [
+                'required' => false,
+            ])
+            ->add('duration_en', TextType::class, [
+                'mapped' => false,
+                'required' => false,
+            ])
+            ->add('tags', TextareaType::class, [
+                'required' => false,
+            ])
+            ->add('tags_en', TextareaType::class, [
+                'mapped' => false,
+                'required' => false,
             ])
             ->add('icon', FileType::class, [
                 'required' => false,
@@ -145,7 +117,6 @@ class SkillFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Skills::class,
-            'translation_domain' => 'skills',
         ]);
     }
 }

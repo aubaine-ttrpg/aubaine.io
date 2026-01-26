@@ -3,23 +3,17 @@
 namespace App\Entity;
 
 use App\Enum\Ability;
+use App\Enum\Aptitude;
 use App\Enum\SkillCategory;
-use App\Enum\SkillDuration;
-use App\Enum\SkillLimitPeriod;
-use App\Enum\SkillRange;
-use App\Enum\Source;
-use App\Enum\SkillType;
 use App\Entity\SkillsTranslation;
 use App\Repository\SkillsRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: SkillsRepository::class)]
 #[ORM\Table(name: 'skills')]
@@ -35,7 +29,7 @@ class Skills
 
     #[ORM\Column(length: 64, unique: true)]
     #[Assert\NotBlank]
-    #[Assert\Regex(pattern: '/^[A-Za-z]{6}(?:-[0-9]+)?$/', message: 'Code must be 6 letters optionally followed by "-<numbers>".')]
+    #[Assert\Regex(pattern: '/^[A-Za-z0-9]{6}(?:-[0-9]+)?$/', message: 'Code must be 6 letters or numbers optionally followed by "-<numbers>".')]
     private string $code = '';
 
     #[ORM\Column(length: 120)]
@@ -48,151 +42,49 @@ class Skills
     #[Gedmo\Translatable]
     private string $description = '';
 
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
-    #[Assert\When(
-        expression: 'this.isActionLike()',
-        constraints: [
-            new Assert\NotNull(message: 'Energy cost is required for actions.'),
-            new Assert\PositiveOrZero(),
-        ],
-    )]
-    #[Assert\When(
-        expression: '!this.isActionLike()',
-        constraints: [
-            new Assert\IsNull(message: 'Energy cost must be empty for non-action skills.'),
-        ],
-    )]
-    private ?int $energyCost = null;
-
     #[ORM\Column]
     private bool $ultimate = false;
-
-    #[ORM\Column(type: Types::INTEGER)]
-    #[Assert\PositiveOrZero]
-    private int $usageLimitAmount = 0;
-
-    #[ORM\Column(enumType: SkillLimitPeriod::class)]
-    private SkillLimitPeriod $usageLimitPeriod = SkillLimitPeriod::NONE;
 
     #[ORM\Column(enumType: SkillCategory::class)]
     private SkillCategory $category = SkillCategory::NONE;
 
-    #[ORM\Column(enumType: SkillType::class)]
-    private SkillType $type = SkillType::NONE;
+    #[ORM\Column(enumType: Ability::class)]
+    private Ability $ability = Ability::NONE;
 
-    /**
-     * @var list<string>|null
-     */
-    #[ORM\Column(type: Types::JSON, nullable: true)]
-    #[Assert\When(
-        expression: 'this.isActionLike()',
-        constraints: [
-            new Assert\NotNull(message: 'Abilities are required for actions.'),
-        ],
-    )]
-    #[Assert\When(
-        expression: '!this.isActionLike()',
-        constraints: [
-            new Assert\IsNull(message: 'Abilities must be empty for non-action skills.'),
-        ],
-    )]
-    private ?array $abilities = null;
-
-    #[ORM\Column(enumType: SkillRange::class)]
-    private SkillRange $range = SkillRange::NONE;
-
-    #[ORM\Column(enumType: SkillDuration::class)]
-    private SkillDuration $duration = SkillDuration::NONE;
-
-    #[ORM\Column(nullable: true)]
-    #[Assert\When(
-        expression: 'this.isActionLike()',
-        constraints: [
-            new Assert\NotNull(message: 'Concentration is required for actions.'),
-        ],
-    )]
-    #[Assert\When(
-        expression: '!this.isActionLike()',
-        constraints: [
-            new Assert\IsNull(message: 'Concentration must be empty for non-action skills.'),
-        ],
-    )]
-    private ?bool $concentration = null;
-
-    #[ORM\Column(nullable: true)]
-    #[Assert\When(
-        expression: 'this.isActionLike()',
-        constraints: [
-            new Assert\NotNull(message: 'Ritual is required for actions.'),
-        ],
-    )]
-    #[Assert\When(
-        expression: '!this.isActionLike()',
-        constraints: [
-            new Assert\IsNull(message: 'Ritual must be empty for non-action skills.'),
-        ],
-    )]
-    private ?bool $ritual = null;
-
-    #[ORM\Column(nullable: true)]
-    #[Assert\When(
-        expression: 'this.isActionLike()',
-        constraints: [
-            new Assert\NotNull(message: 'Attack roll is required for actions.'),
-        ],
-    )]
-    #[Assert\When(
-        expression: '!this.isActionLike()',
-        constraints: [
-            new Assert\IsNull(message: 'Attack roll must be empty for non-action skills.'),
-        ],
-    )]
-    private ?bool $attackRoll = null;
-
-    #[ORM\Column(nullable: true)]
-    #[Assert\When(
-        expression: 'this.isActionLike()',
-        constraints: [
-            new Assert\NotNull(message: 'Saving throw is required for actions.'),
-        ],
-    )]
-    #[Assert\When(
-        expression: '!this.isActionLike()',
-        constraints: [
-            new Assert\IsNull(message: 'Saving throw must be empty for non-action skills.'),
-        ],
-    )]
-    private ?bool $savingThrow = null;
-
-    #[ORM\Column(nullable: true)]
-    #[Assert\When(
-        expression: 'this.isActionLike()',
-        constraints: [
-            new Assert\NotNull(message: 'Ability check is required for actions.'),
-        ],
-    )]
-    #[Assert\When(
-        expression: '!this.isActionLike()',
-        constraints: [
-            new Assert\IsNull(message: 'Ability check must be empty for non-action skills.'),
-        ],
-    )]
-    private ?bool $abilityCheck = null;
-
-    #[ORM\Column(enumType: Source::class)]
-    private Source $source = Source::AUBAINE_BASE_RULES;
+    #[ORM\Column(enumType: Aptitude::class)]
+    private Aptitude $aptitude = Aptitude::NONE;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Gedmo\Translatable]
-    private ?string $materials = null;
+    private ?string $limitations = null;
 
-    /**
-     * @var Collection<int, Tag>
-     */
-    #[ORM\ManyToMany(targetEntity: Tag::class)]
-    #[ORM\JoinTable(name: 'skills_tags')]
-    #[ORM\OrderBy(['category' => 'ASC', 'label' => 'ASC'])]
-    private Collection $tags;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Gedmo\Translatable]
+    private ?string $requirements = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Gedmo\Translatable]
+    private ?string $energy = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Gedmo\Translatable]
+    private ?string $prerequisites = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Gedmo\Translatable]
+    private ?string $timing = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Gedmo\Translatable]
+    private ?string $range = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Gedmo\Translatable]
+    private ?string $duration = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Gedmo\Translatable]
+    private ?string $tags = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
@@ -214,7 +106,6 @@ class Skills
         $now = new DateTimeImmutable();
         $this->createdAt = $now;
         $this->updatedAt = $now;
-        $this->tags = new ArrayCollection();
     }
 
     public function getId(): ?Ulid
@@ -258,18 +149,6 @@ class Skills
         return $this;
     }
 
-    public function getEnergyCost(): ?int
-    {
-        return $this->energyCost;
-    }
-
-    public function setEnergyCost(?int $energyCost): self
-    {
-        $this->energyCost = $energyCost;
-
-        return $this;
-    }
-
     public function isUltimate(): bool
     {
         return $this->ultimate;
@@ -278,30 +157,6 @@ class Skills
     public function setUltimate(bool $ultimate): self
     {
         $this->ultimate = $ultimate;
-
-        return $this;
-    }
-
-    public function getUsageLimitAmount(): int
-    {
-        return $this->usageLimitAmount;
-    }
-
-    public function setUsageLimitAmount(int $usageLimitAmount): self
-    {
-        $this->usageLimitAmount = $usageLimitAmount;
-
-        return $this;
-    }
-
-    public function getUsageLimitPeriod(): SkillLimitPeriod
-    {
-        return $this->usageLimitPeriod;
-    }
-
-    public function setUsageLimitPeriod(SkillLimitPeriod $usageLimitPeriod): self
-    {
-        $this->usageLimitPeriod = $usageLimitPeriod;
 
         return $this;
     }
@@ -318,238 +173,122 @@ class Skills
         return $this;
     }
 
-    public function getType(): SkillType
+    public function getAbility(): Ability
     {
-        return $this->type;
+        return $this->ability;
     }
 
-    public function setType(SkillType $type): self
+    public function setAbility(Ability $ability): self
     {
-        $this->type = $type;
-
-        if (!$this->isActionLike()) {
-            $this->clearActionOnlyFields();
-        }
+        $this->ability = $ability;
 
         return $this;
     }
 
-    /**
-     * @return list<Ability>|null
-     */
-    public function getAbilities(): ?array
+    public function getAptitude(): Aptitude
     {
-        if ($this->abilities === null) {
-            return null;
-        }
-
-        return array_map(static fn (string $ability): Ability => Ability::from($ability), $this->abilities);
+        return $this->aptitude;
     }
 
-    /**
-     * @param list<Ability>|null $abilities
-     */
-    public function setAbilities(?array $abilities): self
+    public function setAptitude(Aptitude $aptitude): self
     {
-        if ($abilities === null) {
-            $this->abilities = null;
-
-            return $this;
-        }
-
-        $values = array_values(array_unique(array_map(
-            static fn (Ability $ability): string => $ability->value,
-            $abilities
-        )));
-
-        $this->abilities = $values;
+        $this->aptitude = $aptitude;
 
         return $this;
     }
 
-    public function addAbility(Ability $ability): self
+    public function getLimitations(): ?string
     {
-        $this->abilities ??= [];
+        return $this->limitations;
+    }
 
-        if (!in_array($ability->value, $this->abilities, true)) {
-            $this->abilities[] = $ability->value;
-        }
+    public function setLimitations(?string $limitations): self
+    {
+        $this->limitations = $limitations;
 
         return $this;
     }
 
-    public function removeAbility(Ability $ability): self
+    public function getRequirements(): ?string
     {
-        if ($this->abilities === null) {
-            return $this;
-        }
+        return $this->requirements;
+    }
 
-        $this->abilities = array_values(array_filter(
-            $this->abilities,
-            static fn (string $value): bool => $value !== $ability->value
-        ));
+    public function setRequirements(?string $requirements): self
+    {
+        $this->requirements = $requirements;
 
         return $this;
     }
 
-    public function getRange(): SkillRange
+    public function getEnergy(): ?string
+    {
+        return $this->energy;
+    }
+
+    public function setEnergy(?string $energy): self
+    {
+        $this->energy = $energy;
+
+        return $this;
+    }
+
+    public function getPrerequisites(): ?string
+    {
+        return $this->prerequisites;
+    }
+
+    public function setPrerequisites(?string $prerequisites): self
+    {
+        $this->prerequisites = $prerequisites;
+
+        return $this;
+    }
+
+    public function getTiming(): ?string
+    {
+        return $this->timing;
+    }
+
+    public function setTiming(?string $timing): self
+    {
+        $this->timing = $timing;
+
+        return $this;
+    }
+
+    public function getRange(): ?string
     {
         return $this->range;
     }
 
-    public function setRange(SkillRange $range): self
+    public function setRange(?string $range): self
     {
         $this->range = $range;
 
         return $this;
     }
 
-    public function getDuration(): SkillDuration
+    public function getDuration(): ?string
     {
         return $this->duration;
     }
 
-    public function setDuration(SkillDuration $duration): self
+    public function setDuration(?string $duration): self
     {
         $this->duration = $duration;
 
         return $this;
     }
 
-    public function hasConcentration(): ?bool
-    {
-        return $this->concentration;
-    }
-
-    public function setConcentration(?bool $concentration): self
-    {
-        $this->concentration = $concentration;
-
-        return $this;
-    }
-
-    public function hasRitual(): ?bool
-    {
-        return $this->ritual;
-    }
-
-    public function setRitual(?bool $ritual): self
-    {
-        $this->ritual = $ritual;
-
-        return $this;
-    }
-
-    public function hasAttackRoll(): ?bool
-    {
-        return $this->attackRoll;
-    }
-
-    public function setAttackRoll(?bool $attackRoll): self
-    {
-        $this->attackRoll = $attackRoll;
-
-        return $this;
-    }
-
-    public function hasSavingThrow(): ?bool
-    {
-        return $this->savingThrow;
-    }
-
-    public function setSavingThrow(?bool $savingThrow): self
-    {
-        $this->savingThrow = $savingThrow;
-
-        return $this;
-    }
-
-    public function hasAbilityCheck(): ?bool
-    {
-        return $this->abilityCheck;
-    }
-
-    public function setAbilityCheck(?bool $abilityCheck): self
-    {
-        $this->abilityCheck = $abilityCheck;
-
-        return $this;
-    }
-
-    public function getSource(): Source
-    {
-        return $this->source;
-    }
-
-    public function setSource(Source $source): self
-    {
-        $this->source = $source;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Tag>
-     */
-    public function getTags(): Collection
+    public function getTags(): ?string
     {
         return $this->tags;
     }
 
-    /**
-     * @param iterable<Tag> $tags
-     */
-    public function setTags(iterable $tags): self
+    public function setTags(?string $tags): self
     {
-        $this->tags->clear();
-
-        foreach ($tags as $tag) {
-            $this->addTag($tag);
-        }
-
-        return $this;
-    }
-
-    public function addTag(Tag $tag): self
-    {
-        if (!$this->tags->contains($tag)) {
-            $this->tags->add($tag);
-        }
-
-        return $this;
-    }
-
-    public function removeTag(Tag $tag): self
-    {
-        $this->tags->removeElement($tag);
-
-        return $this;
-    }
-
-    public function hasTag(Tag $tag): bool
-    {
-        return $this->tags->contains($tag);
-    }
-
-    public function hasTagCode(string $code): bool
-    {
-        foreach ($this->tags as $tag) {
-            if ($tag->getCode() === $code) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function getMaterials(): ?string
-    {
-        return $this->materials;
-    }
-
-    public function setMaterials(?string $materials): self
-    {
-        $this->materials = $materials;
+        $this->tags = $tags;
 
         return $this;
     }
@@ -571,56 +310,9 @@ class Skills
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTimeImmutable $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
     public function getUpdatedAt(): DateTimeImmutable
     {
         return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(DateTimeImmutable $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    public function isActionLike(): bool
-    {
-        return in_array($this->type, [
-            SkillType::ACTION,
-            SkillType::BONUS,
-            SkillType::REACTION,
-            SkillType::ATTACK,
-        ], true);
-    }
-
-    private function clearActionOnlyFields(): void
-    {
-        $this->energyCost = null;
-        $this->abilities = null;
-        $this->concentration = null;
-        $this->ritual = null;
-        $this->attackRoll = null;
-        $this->savingThrow = null;
-        $this->abilityCheck = null;
-        $this->materials = null;
-    }
-
-    #[ORM\PrePersist]
-    #[ORM\PreUpdate]
-    public function normalizeForType(): void
-    {
-        if ($this->isActionLike()) {
-            return;
-        }
-
-        $this->clearActionOnlyFields();
     }
 
     public function setTranslatableLocale(?string $locale): self
@@ -629,5 +321,4 @@ class Skills
 
         return $this;
     }
-
 }
