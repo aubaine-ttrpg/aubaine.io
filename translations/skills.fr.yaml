@@ -1,8 +1,8 @@
 skill:
   category:
     none: "Aucune"
+    basic: "Basique"
     common: "Commune"
-    general: "Générale"
     exclusive: "Exclusive"
     racial: "Raciale"
     signature: "Signature"

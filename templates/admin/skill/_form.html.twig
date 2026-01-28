@@ -75,8 +75,8 @@
                         {{ form_widget(form.limitations, { attr: { class: 'input' } }) }}
                     </div>
                     <div>
-                        <label class="label" for="{{ form.requirements.vars.id }}">Requirements (FR)</label>
-                        {{ form_widget(form.requirements, { attr: { class: 'input' } }) }}
+                        <label class="label" for="{{ form.prerequisites.vars.id }}">Prerequisites (FR)</label>
+                        {{ form_widget(form.prerequisites, { attr: { class: 'input' } }) }}
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -106,8 +106,8 @@
                         {{ form_widget(form.limitations_en, { attr: { class: 'input' } }) }}
                     </div>
                     <div>
-                        <label class="label" for="{{ form.requirements_en.vars.id }}">Requirements (EN)</label>
-                        {{ form_widget(form.requirements_en, { attr: { class: 'input' } }) }}
+                        <label class="label" for="{{ form.prerequisites_en.vars.id }}">Prerequisites (EN)</label>
+                        {{ form_widget(form.prerequisites_en, { attr: { class: 'input' } }) }}
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -135,8 +135,8 @@
             <div class="card p-5 lg:col-span-2">
                 <div class="space-y-4" data-locale-toggle-target="panel" data-locale="fr">
                     <div>
-                        <label class="label" for="{{ form.prerequisites.vars.id }}">Prerequisites (FR)</label>
-                        {{ form_widget(form.prerequisites, { attr: { class: 'input' } }) }}
+                        <label class="label" for="{{ form.requirements.vars.id }}">Requirements (FR)</label>
+                        {{ form_widget(form.requirements, { attr: { class: 'input' } }) }}
                     </div>
                     <div>
                         <label class="label" for="{{ form.description.vars.id }}">Description (FR)</label>
@@ -150,8 +150,8 @@
 
                 <div class="space-y-4 hidden" data-locale-toggle-target="panel" data-locale="en">
                     <div>
-                        <label class="label" for="{{ form.prerequisites_en.vars.id }}">Prerequisites (EN)</label>
-                        {{ form_widget(form.prerequisites_en, { attr: { class: 'input' } }) }}
+                        <label class="label" for="{{ form.requirements_en.vars.id }}">Requirements (EN)</label>
+                        {{ form_widget(form.requirements_en, { attr: { class: 'input' } }) }}
                     </div>
                     <div>
                         <label class="label" for="{{ form.description_en.vars.id }}">Description (EN)</label>

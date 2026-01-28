@@ -29,7 +29,7 @@ class Skills
 
     #[ORM\Column(length: 64, unique: true)]
     #[Assert\NotBlank]
-    #[Assert\Regex(pattern: '/^[A-Za-z0-9]{6}(?:-[0-9]+)?$/', message: 'Code must be 6 letters or numbers optionally followed by "-<numbers>".')]
+    #[Assert\Regex(pattern: '/^[A-Za-z0-9]{4,6}(?:-[0-9]+)?$/', message: 'Code must be 4 to 6 letters or numbers optionally followed by "-<numbers>".')]
     private string $code = '';
 
     #[ORM\Column(length: 120)]
