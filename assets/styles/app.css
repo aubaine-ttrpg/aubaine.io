@@ -113,8 +113,8 @@
 }
 
 .print-columns {
-    @media print {
-        columns: 2;
-        column-gap: 1.5rem;
-    }
+    column-count: 2;
+    width: 990px;
+    margin-left: auto;
+    margin-right: auto;
 }

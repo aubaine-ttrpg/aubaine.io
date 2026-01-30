@@ -1,4 +1,7 @@
 skill:
+  common:
+    none: 'None'
+
   category:
     none: 'None'
     basic: "Basic"
@@ -111,10 +114,16 @@ skill:
     duration: "Duration"
     components: "Components"
     range: "Range"
+    prerequisites: "Prerequisites"
+    limitations: "Limitations"
+    requirements: "Requirements"
+    time: "Time"
+    tags: "Tags"
     ritual: "Ritual"
     usage: "Usage"
     concentration: "Concentration"
     ultimate: "Ultimate"
+    technique: "Technique"
 
   tag:
     none: "None"

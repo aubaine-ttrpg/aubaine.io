@@ -1,4 +1,7 @@
 skill:
+  common:
+    none: 'Aucun'
+
   category:
     none: "Aucune"
     basic: "Basique"
@@ -111,10 +114,16 @@ skill:
     duration: "Durée"
     components: "Composants"
     range: "Portée"
+    prerequisites: "Pré-requis"
+    limitations: "Limitations"
+    requirements: "Conditions"
+    time: "Temps"
+    tags: "Tags"
     ritual: "Rituel"
     usage: "Usage"
     concentration: "Concentration"
     ultimate: "Ultime"
+    technique: "Technique"
 
   tag:
     none: "Aucun"
