@@ -1,6 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Export Skills{% endblock %}
+{% if export_name is not empty %}
+    {% set export_title = export_name %}
+{% else %}
+    {% set export_title = 'Export Skills' %}
+{% endif %}
+{% set export_title = export_title ~ ' - ' ~ ('now'|date('d/m/Y H\\hi\\ms\\s')) %}
+
+{% block title %}{{ export_title }}{% endblock %}
 
 {% block body %}
     <main class="max-w-6xl mx-auto px-4 py-8 print:max-w-full print:p-0 flex flex-col gap-6">
@@ -29,9 +36,16 @@
             </div>
         </div>
 
-        {# PRINT: Skill Export Cards #}
+        {# PRINT: Export Title + Skill Export Cards #}
         {% if skills is not empty %}
-            <div class="print-columns gap-6 print:gap-0 p-4 print:p-0 bg-white rounded-sm print:rounded-none">
+        <div class="bg-white rounded-sm print:rounded-none shadow-sm print:shadow-none">
+            {% if export_name is not empty %}
+            <div class="print-title py-[10px] px-[20px] text-black">
+                <div class="text-left text-lg font-semibold">Aubaine · {{ export_name }}</div>
+                <hr class="h-1 w-full bg-black border-0">
+            </div>
+            {% endif %}
+            <div class="print-columns gap-6 print:gap-0">
                 {% for skill in skills %}
                     {{ component('SkillExportCard', { skill: skill, displayCode: display_code, exportLocale: export_locale }) }}
                 {% endfor %}

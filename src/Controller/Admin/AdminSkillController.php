@@ -278,18 +278,23 @@ class AdminSkillController extends AdminController
         $normalizedFilters = $this->normalizeFilters($filters);
         $exportLocale = $normalizedFilters['locale'] ?? 'en';
         $displayCode = (bool) ($normalizedFilters['displayCode'] ?? false);
+        $exportName = $normalizedFilters['exportName'] ?? null;
+        $sortBy = $normalizedFilters['sortBy'] ?? 'name';
+        $sortOrder = $normalizedFilters['sortOrder'] ?? 'asc';
         $translator->setLocale($exportLocale);
         $this->translatableListener->setDefaultLocale('fr');
         $this->translatableListener->setTranslatableLocale($exportLocale);
         $this->translatableListener->setTranslationFallback(true);
 
         $skills = $this->skillsRepository->findByFilters($normalizedFilters);
+        $this->sortSkills($skills, $sortBy, $sortOrder);
 
         return $this->render('admin/skill/export_result.html.twig', [
             'skills' => $skills,
             'export_locale' => $exportLocale,
             'export_filters' => $this->formatFiltersForView($filters),
             'display_code' => $displayCode,
+            'export_name' => $exportName,
             'hash' => $hash,
         ]);
     }
@@ -455,7 +460,7 @@ class AdminSkillController extends AdminController
      */
     private function encodeFilters(array $filters): string
     {
-        $order = ['category', 'ability', 'aptitude', 'ultimate', 'displayCode', 'locale'];
+        $order = ['category', 'ability', 'aptitude', 'ultimate', 'displayCode', 'exportName', 'sortBy', 'sortOrder', 'locale'];
         $normalized = [];
         foreach ($order as $key) {
             $value = $filters[$key] ?? null;
@@ -535,6 +540,9 @@ class AdminSkillController extends AdminController
      *     aptitude?: list<\App\Enum\Aptitude>,
      *     ultimate?: bool,
      *     displayCode?: bool,
+     *     exportName?: string,
+     *     sortBy?: string,
+     *     sortOrder?: string,
      *     locale?: string
      * }
      */
@@ -573,6 +581,37 @@ class AdminSkillController extends AdminController
             $normalized['displayCode'] = true;
         }
 
+        if (!empty($filters['exportName']) && is_string($filters['exportName'])) {
+            $normalized['exportName'] = $filters['exportName'];
+        }
+
+        $sortBy = $filters['sortBy'] ?? 'name';
+        $allowedSortBy = [
+            'name',
+            'code',
+            'energy',
+            'tags',
+            'category',
+            'ability',
+            'aptitude',
+            'timing',
+            'range',
+            'duration',
+            'ultimate',
+        ];
+        if (is_string($sortBy) && in_array($sortBy, $allowedSortBy, true)) {
+            $normalized['sortBy'] = $sortBy;
+        } else {
+            $normalized['sortBy'] = 'name';
+        }
+
+        $sortOrder = $filters['sortOrder'] ?? 'asc';
+        if (is_string($sortOrder) && in_array($sortOrder, ['asc', 'desc'], true)) {
+            $normalized['sortOrder'] = $sortOrder;
+        } else {
+            $normalized['sortOrder'] = 'asc';
+        }
+
         $locale = $filters['locale'] ?? 'en';
         if (is_string($locale) && in_array($locale, ['en', 'fr'], true)) {
             $normalized['locale'] = $locale;
@@ -581,5 +620,37 @@ class AdminSkillController extends AdminController
         }
 
         return $normalized;
+    }
+
+    /**
+     * @param list<Skills> $skills
+     */
+    private function sortSkills(array &$skills, string $sortBy, string $sortOrder): void
+    {
+        $direction = $sortOrder === 'desc' ? -1 : 1;
+
+        usort($skills, function (Skills $a, Skills $b) use ($sortBy, $direction): int {
+            $valueFor = static function (Skills $skill, string $key): string {
+                return match ($key) {
+                    'code' => $skill->getCode(),
+                    'energy' => $skill->getEnergy() ?? '',
+                    'tags' => $skill->getTags() ?? '',
+                    'category' => $skill->getCategory()->value,
+                    'ability' => $skill->getAbility()->value,
+                    'aptitude' => $skill->getAptitude()->value,
+                    'timing' => $skill->getTiming() ?? '',
+                    'range' => $skill->getRange() ?? '',
+                    'duration' => $skill->getDuration() ?? '',
+                    'ultimate' => $skill->isUltimate() ? '1' : '0',
+                    default => $skill->getName(),
+                };
+            };
+
+            $left = $valueFor($a, $sortBy);
+            $right = $valueFor($b, $sortBy);
+            $cmp = strnatcasecmp($left, $right);
+
+            return $cmp * $direction;
+        });
     }
 }

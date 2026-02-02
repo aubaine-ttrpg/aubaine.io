@@ -112,6 +112,12 @@
     }
 }
 
+.print-title {
+    width: 990px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .print-columns {
     column-count: 2;
     width: 990px;

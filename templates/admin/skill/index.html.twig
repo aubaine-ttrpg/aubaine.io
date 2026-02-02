@@ -23,6 +23,27 @@
         {% if skills is empty %}
             <div class="card p-6 text-slate-300">No skills yet.</div>
         {% else %}
+            {% set categories = [] %}
+            {% for skill in skills %}
+                {% set cat = skill.category %}
+                {% if cat != enum('App\\Enum\\SkillCategory').NONE and cat.value not in categories %}
+                    {% set categories = categories|merge([cat.value]) %}
+                {% endif %}
+            {% endfor %}
+
+            {% if categories is not empty %}
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" class="px-3 py-1 rounded-full border border-slate-800 text-xs uppercase tracking-wide bg-white text-slate-900" data-skill-category="__all">
+                        All
+                    </button>
+                    {% for category in categories %}
+                        <button type="button" class="px-3 py-1 rounded-full border border-slate-800 text-xs uppercase tracking-wide bg-white text-slate-900" data-skill-category="{{ category }}">
+                            {{ ('skill.category.' ~ category)|trans({}, 'skills') }}
+                        </button>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
             <div class="overflow-hidden rounded-xl border border-slate-800 card">
                 <table class="min-w-full divide-y divide-slate-800">
                     <thead class="bg-slate-900/60">
@@ -40,7 +61,7 @@
                     </thead>
                     <tbody class="divide-y divide-slate-800">
                         {% for skill in skills %}
-                            <tr class="hover:bg-slate-900/40">
+                            <tr class="hover:bg-slate-900/40" data-category="{{ skill.category.value }}">
                                 <td class="px-4 py-3">
                                     {% set iconPath = skill.icon ?? null %}
                                     <div class="rounded-2xl overflow-hidden border border-slate-800 bg-slate-900 w-[75px] h-[75px] shadow-lg">
@@ -64,6 +85,52 @@
                     </tbody>
                 </table>
             </div>
+
+            {% if categories is not empty %}
+                <script>
+                    (function () {
+                        const badges = Array.from(document.querySelectorAll('[data-skill-category]'));
+                        const rows = Array.from(document.querySelectorAll('tbody [data-category]'));
+                        if (!badges.length || !rows.length) {
+                            return;
+                        }
+
+                        const setActive = (btn) => {
+                            badges.forEach((badge) => {
+                                badge.classList.remove('bg-slate-900', 'text-white');
+                                badge.classList.add('bg-white', 'text-slate-900');
+                            });
+                            if (btn) {
+                                btn.classList.add('bg-slate-900', 'text-white');
+                                btn.classList.remove('bg-white', 'text-slate-900');
+                            }
+                        };
+
+                        const applyFilter = (category) => {
+                            rows.forEach((row) => {
+                                const match = !category || row.dataset.category === category;
+                                row.style.display = match ? '' : 'none';
+                            });
+                        };
+
+                        badges.forEach((badge) => {
+                            badge.addEventListener('click', () => {
+                                const category = badge.dataset.skillCategory;
+                                const isActive = badge.classList.contains('bg-slate-900');
+
+                                if (category === '__all' || isActive) {
+                                    setActive(null);
+                                    applyFilter(null);
+                                    return;
+                                }
+
+                                setActive(badge);
+                                applyFilter(category);
+                            });
+                        });
+                    })();
+                </script>
+            {% endif %}
         {% endif %}
     </main>
 {% endblock %}

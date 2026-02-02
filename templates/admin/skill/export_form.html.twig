@@ -36,6 +36,18 @@
                     <label class="label">Language</label>
                     {{ form_widget(form.locale, { attr: { class: 'input' } }) }}
                 </div>
+                <div class="md:col-span-2">
+                    <label class="label">Export name</label>
+                    {{ form_widget(form.exportName, { attr: { class: 'input' } }) }}
+                </div>
+                <div>
+                    <label class="label">Sort by</label>
+                    {{ form_widget(form.sortBy, { attr: { class: 'input' } }) }}
+                </div>
+                <div>
+                    <label class="label">Order</label>
+                    {{ form_widget(form.sortOrder, { attr: { class: 'input' } }) }}
+                </div>
                 <div class="md:col-span-2 flex flex-wrap gap-6">
                     <label class="inline-flex items-center gap-2 text-sm text-slate-300" for="{{ form.ultimate.vars.id }}">
                         {{ form_widget(form.ultimate) }}

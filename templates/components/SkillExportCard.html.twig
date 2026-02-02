@@ -9,24 +9,24 @@
 {% set timing = skill.timing ? skill.timing|trim : '' %}
 {% set range = skill.range ? skill.range|trim : '' %}
 {% set duration = skill.duration ? skill.duration|trim : '' %}
-{% set energyValue = this.energyValue %}
-{% set tagsList = this.tagsList %}
+{% set energyValue = skill.energy ? skill.energy|trim : '' %}
+{% set tagsLine = this.tagsLine %}
 
-<article class="py-[10px] px-[20px] text-[1rem] text-left text-black font-['Georgia','Times New Roman',serif] inline-block leading-normal min-w-full">
+<article class="py-[10px] px-[20px] text-[1rem] text-left text-black font-['Georgia','Times New Roman'] inline-block leading-normal min-w-full">
     {# Skill Name and Meta #}
     <div class="text-[1.4rem] leading-none flex items-center gap-1 break-after-avoid p-0">
-        {% if displayCode %}
-            <span class="font-mono font-light text-[0.9rem] text-gray-600">[{{ skill.code }}]</span>
-        {% endif %}
-
         {% if skill.isUltimate %}
             <span>{{ ux_icon('game-icons:crystal-shine', { class: 'w-6 h-6 text-[#003A6D]' }) }}</span>
+        {% endif %}
+        
+        {% if displayCode %}
+            <span class="font-mono font-light text-gray-500">[{{ skill.code }}]</span>
         {% endif %}
 
         <div class="gap-2 flex flex-row w-full items-center">
             <h1 class="font-semibold [font-variant-caps:small-caps] tracking-wide text-[#EFBF04]">{{ skill.name }}</h1>
             {% if showMeta %}
-                <span class="font-serif text-[0.7rem] text-white italic bg-[#6D0000] py-px px-1 rounded-sm">
+                <span class="font-serif font-medium text-[12px] text-white italic bg-[#6D0000] py-[2px] px-1 rounded-sm">
                     {{ abilityLabel }}{% if abilityLabel and aptitudeLabel %} / {% endif %}{{ aptitudeLabel }}
                 </span>
             {% endif %}
@@ -34,7 +34,7 @@
     </div>
 
     {# Prerequisites #}
-    <div class="font-serif text-[12px] italic text-gray-900 pb-1">
+    <div class="font-serif text-[12px] italic text-gray-800 pb-1">
         {{ 'skill.label.prerequisites'|trans({}, 'skills', exportLocale) }}:
         {% if prerequisites %}
             {{ prerequisites }}
@@ -44,7 +44,7 @@
     </div>
 
     {# Skill Details #}
-    <div class="text-[10px] pb-1">
+    <div class="text-[12px] pb-1">
         {% if limitations %}
             <div>
                 <span class="font-semibold">{{ 'skill.label.limitations'|trans({}, 'skills', exportLocale) }}:</span>
@@ -89,10 +89,10 @@
 
         <div>
             <span class="font-semibold">{{ 'skill.label.tags'|trans({}, 'skills', exportLocale) }}:</span>
-            {{ tagsList|join(', ') }}
+            {{ tagsLine }}
         </div>
     </div>
 
     {# Description #}
-    <div class="whitespace-pre-line text-[10px] leading-none text-justify">{{ skill.description }}</div>
+    <div class="whitespace-pre-line text-[12px] leading-none text-justify">{{ skill.description }}</div>
 </article>

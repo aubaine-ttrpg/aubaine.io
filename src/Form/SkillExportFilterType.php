@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -51,6 +52,37 @@ class SkillExportFilterType extends AbstractType
             ->add('displayCode', CheckboxType::class, [
                 'required' => false,
                 'label' => 'Display code',
+            ])
+            ->add('exportName', TextType::class, [
+                'required' => false,
+                'label' => 'Export name',
+            ])
+            ->add('sortBy', ChoiceType::class, [
+                'choices' => [
+                    'Name' => 'name',
+                    'Code' => 'code',
+                    'Energy' => 'energy',
+                    'Tags' => 'tags',
+                    'Category' => 'category',
+                    'Ability' => 'ability',
+                    'Aptitude' => 'aptitude',
+                    'Timing' => 'timing',
+                    'Range' => 'range',
+                    'Duration' => 'duration',
+                    'Ultimate' => 'ultimate',
+                ],
+                'data' => 'name',
+                'required' => true,
+                'label' => 'Sort by',
+            ])
+            ->add('sortOrder', ChoiceType::class, [
+                'choices' => [
+                    'Ascending' => 'asc',
+                    'Descending' => 'desc',
+                ],
+                'data' => 'asc',
+                'required' => true,
+                'label' => 'Order',
             ])
             ->add('locale', ChoiceType::class, [
                 'choices' => [
