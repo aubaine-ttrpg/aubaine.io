@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Export Skill Tree · {{ tree.name }}{% endblock %}
+
+{% block body %}
+    <main class="grid-test max-w-6xl mx-auto px-4 py-8 print:max-w-full print:p-0 flex flex-col gap-6">
+        <div class="hide-print flex items-center justify-between">
+            <div>
+                <p class="text-sm text-slate-400 space-x-1">
+                    <a href="{{ path('admin_home') }}" class="hover:text-sky-300">Admin</a>
+                    <span>/</span>
+                    <a href="{{ path('admin_skill_tree_index') }}" class="hover:text-sky-300">Skill Trees</a>
+                    <span>/</span>
+                    <span class="text-slate-300">Export</span>
+                </p>
+                <h1 class="text-3xl font-semibold">Export Skill Tree</h1>
+                <p class="text-mono text-sm">{{ tree.name }} ({{ tree.code }})</p>
+            </div>
+            <div class="flex gap-2">
+                <a class="btn btn-ghost" href="{{ path('admin_skill_tree_show', { id: tree.id }) }}">← Back to tree</a>
+                <button class="btn btn-primary" onclick="window.print()">Print</button>
+            </div>
+        </div>
+
+        <section class="grid-test__wrap rounded-sm print:rounded-none shadow-sm print:shadow-none">
+            <div class="print-title py-[10px] px-[20px] text-black">
+                <div class="text-left text-lg font-semibold">Aubaine · {{ tree.name }}</div>
+                <hr class="h-1 w-full bg-black border-0">
+            </div>
+            <div class="grid-test__stage">
+                <div
+                    class="skill-tree-builder__canvas"
+                    data-controller="skill-tree-builder"
+                    data-skill-tree-builder-readonly-value="true"
+                    data-skill-tree-builder-placeholder-value="https://placehold.co/120?text=?"
+                    data-skill-tree-builder-initial-value="{{ initialPayload|json_encode|e('html_attr') }}"
+                >
+                    <svg class="skill-tree-builder__links" data-skill-tree-builder-target="links"></svg>
+                    <div
+                        class="grid-test__grid skill-tree-builder__grid"
+                        data-skill-tree-builder-target="grid"
+                        style="--cols: {{ columns }}; --rows: {{ rows }};"
+                    >
+                        {% for row in 1..rows %}
+                            {% for col in 1..columns %}
+                                <button
+                                    class="grid-test__cell skill-tree__cell"
+                                    type="button"
+                                    aria-label="Cell {{ row }}-{{ col }}"
+                                    aria-pressed="false"
+                                    data-row="{{ row }}"
+                                    data-col="{{ col }}"
+                                >
+                                    <span class="grid-test__nameplate" aria-hidden="true">
+                                        {{ component('SkillPlate', {
+                                            code: 'NAME',
+                                            image: 'https://placehold.co/120?text=?',
+                                            cost: 0,
+                                            isStarter: true
+                                        }) }}
+                                    </span>
+                                </button>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="skill-tree-export__skills print-page-break">
+            <div class="print-title py-[10px] px-[20px] text-black">
+                <div class="text-left text-lg font-semibold">Aubaine · {{ tree.name }}</div>
+                <hr class="h-1 w-full bg-black border-0">
+            </div>
+
+            {% if starterSkills is empty and otherSkills is empty %}
+                <div class="card p-6 text-slate-300">No skills found in this tree.</div>
+            {% else %}
+                <div class="print-columns gap-6 print:gap-0">
+                    {% for skill in starterSkills %}
+                        {{ component('SkillExportCard', { skill: skill, displayCode: displayCode, exportLocale: exportLocale }) }}
+                    {% endfor %}
+                    {% for skill in otherSkills %}
+                        {{ component('SkillExportCard', { skill: skill, displayCode: displayCode, exportLocale: exportLocale }) }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </section>
+    </main>
+{% endblock %}

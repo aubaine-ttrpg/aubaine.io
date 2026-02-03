@@ -1,0 +1,19 @@
+{% set code = code|default('NAME') %}
+{% set image = image|default('https://placehold.co/120?text=?') %}
+{% set cost = cost|default(0) %}
+{% set isStarter = isStarter|default(false) %}
+
+<div class="skill-plate">
+    {% if isStarter %}
+        <span class="skill-plate__star">
+            {{ ux_icon('solar:star-bold', { class: 'text-gray-500' }) }}
+        </span>
+    {% endif %}
+    <img class="skill-plate__image" src="{{ image }}" alt="">
+    <div class="skill-plate__label">
+        <span class="skill-plate__cost">
+            <span class="skill-plate__cost-text">{{ cost }}</span>
+        </span>
+        <span class="skill-plate__code">{{ code }}</span>
+    </div>
+</div>

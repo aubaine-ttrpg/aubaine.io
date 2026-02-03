@@ -1,6 +1,6 @@
 {% set ability = skill.ability %}
 {% set aptitude = skill.aptitude %}
-{% set abilityLabel = ability != enum('App\\Enum\\Ability').NONE ? ('skill.ability.' ~ ability.value)|trans({}, 'skills', exportLocale) : null %}
+{% set abilityLabel = ('skill.ability.' ~ ability.value)|trans({}, 'skills', exportLocale) %}
 {% set aptitudeLabel = aptitude != enum('App\\Enum\\Aptitude').NONE ? ('skill.aptitude.' ~ aptitude.value)|trans({}, 'skills', exportLocale) : null %}
 {% set showMeta = abilityLabel or aptitudeLabel %}
 {% set prerequisites = skill.prerequisites ? skill.prerequisites|trim : '' %}
@@ -34,7 +34,7 @@
     </div>
 
     {# Prerequisites #}
-    <div class="font-serif text-[12px] italic text-gray-800 pb-1">
+    <div class="font-serif text-[11px] italic text-gray-800 pb-1">
         {{ 'skill.label.prerequisites'|trans({}, 'skills', exportLocale) }}:
         {% if prerequisites %}
             {{ prerequisites }}
@@ -44,7 +44,7 @@
     </div>
 
     {# Skill Details #}
-    <div class="text-[12px] pb-1">
+    <div class="text-[11px] pb-1">
         {% if limitations %}
             <div>
                 <span class="font-semibold">{{ 'skill.label.limitations'|trans({}, 'skills', exportLocale) }}:</span>
@@ -94,5 +94,5 @@
     </div>
 
     {# Description #}
-    <div class="whitespace-pre-line text-[12px] leading-none text-justify">{{ skill.description }}</div>
+    <div class="whitespace-pre-line text-[11px] leading-none text-justify">{{ skill.description }}</div>
 </article>

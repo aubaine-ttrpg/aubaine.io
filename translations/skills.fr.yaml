@@ -21,8 +21,9 @@ skill:
     none: "Aucune"
 
   ability:
-    none: "Aucune"
+    none: "Aucun jet"
     any: "Au choix"
+    special: "Spécial"
     strength: "Force"
     dexterity: "Dextérité"
     endurance: "Constitution"

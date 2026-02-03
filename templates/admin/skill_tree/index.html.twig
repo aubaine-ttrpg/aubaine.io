@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Skill Trees{% endblock %}
+
+{% block body %}
+    <main class="max-w-6xl mx-auto px-4 py-8 space-y-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm text-slate-400 space-x-1">
+                    <a href="{{ path('admin_home') }}" class="hover:text-sky-300">Admin</a>
+                    <span>/</span>
+                    <span class="text-slate-300">Skill Trees</span>
+                </p>
+                <h1 class="text-3xl font-semibold">Skill Trees</h1>
+            </div>
+            <div class="flex gap-2">
+                <a href="{{ path('admin_skill_tree_new') }}" class="btn btn-primary">Create</a>
+            </div>
+        </div>
+
+        {% if trees is empty %}
+            <div class="card p-6 text-slate-300">No skill trees yet.</div>
+        {% else %}
+            <div class="overflow-hidden rounded-xl border border-slate-800 card">
+                <table class="min-w-full divide-y divide-slate-800">
+                    <thead class="bg-slate-900/60">
+                        <tr class="text-left text-sm text-slate-400">
+                            <th class="px-4 py-3">Code</th>
+                            <th class="px-4 py-3">Name</th>
+                            <th class="px-4 py-3">Grid</th>
+                            <th class="px-4 py-3">Nodes</th>
+                            <th class="px-4 py-3">Links</th>
+                            <th class="px-4 py-3">Updated</th>
+                            <th class="px-4 py-3">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800">
+                        {% for tree in trees %}
+                            <tr class="hover:bg-slate-900/40">
+                                <td class="px-4 py-3 font-mono text-sm">{{ tree.code }}</td>
+                                <td class="px-4 py-3 font-semibold">{{ tree.name }}</td>
+                                <td class="px-4 py-3">{{ tree.columns }} x {{ tree.rows }}</td>
+                                <td class="px-4 py-3">{{ tree.nodes|length }}</td>
+                                <td class="px-4 py-3">{{ tree.links|length }}</td>
+                                <td class="px-4 py-3">{{ tree.updatedAt|date('Y-m-d H:i') }}</td>
+                                <td class="px-4 py-3 space-x-2">
+                                    <a href="{{ path('admin_skill_tree_show', { id: tree.id }) }}" class="btn btn-ghost text-sm">View</a>
+                                    <a href="{{ path('admin_skill_tree_edit', { id: tree.id }) }}" class="btn btn-ghost text-sm">Edit</a>
+                                    <a href="{{ path('admin_skill_tree_export', { id: tree.id }) }}" class="btn btn-ghost text-sm">Export</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </main>
+{% endblock %}

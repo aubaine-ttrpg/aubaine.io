@@ -1,0 +1,113 @@
+.grid-test {
+    --grid-max-width: 990px;
+    --page-width: 210mm;
+    --page-height: 297mm;
+    --print-margin: 10mm;
+    --plate-size: 120px;
+    --plate-label-height: 28px;
+    --grid-gap: 2rem;
+}
+
+.grid-test__wrap {
+    background: #fff;
+    color: #111;
+}
+
+.grid-test__stage {
+    display: flex;
+    justify-content: center;
+    padding: 16px 20px 24px;
+}
+
+.grid-test__grid {
+    --cols: var(--cols, 7);
+    --rows: var(--rows, 10);
+    display: grid;
+    grid-template-columns: repeat(var(--cols), var(--plate-size));
+    grid-template-rows: repeat(var(--rows), calc(var(--plate-size) + var(--plate-label-height)));
+    gap: var(--grid-gap);
+    width: max-content;
+    height: max-content;
+    background: #fff;
+}
+
+.grid-test__cell {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+.grid-test__nameplate {
+    width: var(--plate-size);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    opacity: 0;
+    transition: opacity 120ms ease-in-out;
+    pointer-events: none;
+}
+
+.grid-test__cell.is-filled .grid-test__nameplate {
+    opacity: 1;
+}
+
+@media print {
+    @page {
+        size: A4;
+        margin: 0;
+    }
+
+    html,
+    body {
+        background: #fff !important;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        min-height: 0 !important;
+    }
+
+    .grid-test .hide-print {
+        display: none !important;
+    }
+
+    .grid-test {
+        width: 100%;
+        height: 95%;
+        box-sizing: border-box;
+        padding: var(--print-margin) !important;
+        margin: 0 !important;
+        gap: 0;
+    }
+
+    .grid-test__wrap {
+        box-shadow: none !important;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .grid-test__stage {
+        padding: 0;
+        width: 100%;
+        flex: 1 1 auto;
+        align-items: center;
+    }
+
+    .grid-test__grid {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+        box-shadow: none;
+    }
+}

@@ -77,4 +77,28 @@ class SkillsRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @return list<Skills>
+     */
+    public function searchByCodeOrName(string $term, int $limit = 10, ?SkillCategory $category = null): array
+    {
+        $term = mb_strtolower(trim($term));
+        if ($term === '') {
+            return [];
+        }
+
+        $qb = $this->createQueryBuilder('s')
+            ->andWhere('LOWER(s.code) LIKE :term OR LOWER(s.name) LIKE :term')
+            ->setParameter('term', '%' . $term . '%')
+            ->orderBy('s.name', 'ASC')
+            ->setMaxResults($limit);
+
+        if ($category !== null) {
+            $qb->andWhere('s.category = :category')
+                ->setParameter('category', $category->value);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }

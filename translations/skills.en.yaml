@@ -23,6 +23,7 @@ skill:
   ability:
     none: "None"
     any: "Any"
+    special: "Special"
     strength: "Strength"
     dexterity: "Dexterity"
     endurance: "Constitution"

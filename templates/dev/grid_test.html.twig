@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% set columns = columns|default(7) %}
+{% set rows = rows|default(10) %}
+{% set placeholder_image = 'https://placehold.co/120?text=?' %}
+
+{% block title %}Grid Test{% endblock %}
+
+{% block body %}
+    <main class="grid-test max-w-6xl mx-auto px-4 py-8 print:max-w-full print:p-0 flex flex-col gap-6">
+        <div class="hide-print flex items-center justify-between">
+            <div>
+                <p class="text-sm text-slate-400">Dev / Grid Test</p>
+                <h1 class="text-3xl font-semibold">Grid Test</h1>
+                <p class="text-mono text-sm">Grid size: {{ columns }} x {{ rows }}</p>
+            </div>
+        </div>
+
+        <section class="grid-test__wrap rounded-sm print:rounded-none shadow-sm print:shadow-none">
+            <div class="print-title py-[10px] px-[20px] text-black">
+                <div class="text-left text-lg font-semibold">Aubaine · Grid Test</div>
+                <hr class="h-1 w-full bg-black border-0">
+            </div>
+            <div class="grid-test__stage">
+                <div class="grid-test__grid" style="--cols: {{ columns }}; --rows: {{ rows }};">
+                    {% for i in 1..(columns * rows) %}
+                        <button class="grid-test__cell" type="button" aria-label="Cell {{ i }}" aria-pressed="false">
+                            <span class="grid-test__nameplate" aria-hidden="true">
+                                {{ component('SkillPlate', {
+                                    code: 'NAME',
+                                    image: placeholder_image,
+                                    cost: i % 5,
+                                    isStarter: i % 3 == 0
+                                }) }}
+                            </span>
+                        </button>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.querySelectorAll('.grid-test__cell').forEach((cell) => {
+            cell.addEventListener('click', () => {
+                const isFilled = cell.classList.toggle('is-filled');
+                cell.setAttribute('aria-pressed', isFilled ? 'true' : 'false');
+            });
+        });
+    </script>
+{% endblock %}

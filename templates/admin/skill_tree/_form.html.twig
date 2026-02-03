@@ -1,0 +1,185 @@
+{% set submit_label = submit_label ?? 'Save' %}
+{% set placeholder_image = 'https://placehold.co/120?text=?' %}
+
+{{ form_start(form, {
+    attr: {
+        'class': 'grid-test',
+        'data-turbo': 'false',
+        'data-controller': 'locale-toggle skill-tree-builder',
+        'data-locale-toggle-active-value': 'fr',
+        'data-skill-tree-builder-placeholder-value': placeholder_image,
+        'data-skill-tree-builder-initial-value': initialPayload|json_encode,
+        'data-skill-tree-builder-search-url-value': path('admin_skill_tree_search_skills')
+    }
+}) }}
+    {{ form_widget(form.tree_payload, { attr: { 'data-skill-tree-builder-target': 'payload' } }) }}
+
+    <div class="space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <div class="text-sm text-slate-300 max-w-md">
+                Click a cell to edit a node. Hold <strong>Shift</strong> and click two nodes to toggle a link.
+            </div>
+            <span class="text-sm text-slate-400" data-skill-tree-builder-target="status">Ready.</span>
+        </div>
+
+        <div class="card p-5 space-y-4">
+            <div class="flex justify-end gap-2">
+                <button type="button" class="btn btn-primary flex items-center gap-2" data-locale-toggle-target="tab" data-locale="fr" data-action="click->locale-toggle#switch">
+                    {{ ux_icon('flagpack:fr', { class: 'w-5 h-5' }) }}
+                    <span>Francais</span>
+                </button>
+                <button type="button" class="btn btn-ghost flex items-center gap-2" data-locale-toggle-target="tab" data-locale="en" data-action="click->locale-toggle#switch">
+                    {{ ux_icon('flagpack:gb-ukm', { class: 'w-5 h-5' }) }}
+                    <span>English</span>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="label" for="{{ form.code.vars.id }}">Code</label>
+                    {{ form_widget(form.code, { attr: { class: 'input' } }) }}
+                </div>
+                <div data-locale-toggle-target="panel" data-locale="fr">
+                    <label class="label" for="{{ form.name.vars.id }}">Name (FR)</label>
+                    {{ form_widget(form.name, { attr: { class: 'input' } }) }}
+                </div>
+                <div class="hidden" data-locale-toggle-target="panel" data-locale="en">
+                    <label class="label" for="{{ form.name_en.vars.id }}">Name (EN)</label>
+                    {{ form_widget(form.name_en, { attr: { class: 'input' } }) }}
+                </div>
+                <div>
+                    <label class="label" for="{{ form.columns.vars.id }}">Columns</label>
+                    {{ form_widget(form.columns, { attr: { class: 'input' } }) }}
+                </div>
+                <div>
+                    <label class="label" for="{{ form.rows.vars.id }}">Rows</label>
+                    {{ form_widget(form.rows, { attr: { class: 'input' } }) }}
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <div data-locale-toggle-target="panel" data-locale="fr">
+                    <label class="label" for="{{ form.description.vars.id }}">Description (FR)</label>
+                    {{ form_widget(form.description, { attr: { class: 'input min-h-[120px]' } }) }}
+                </div>
+                <div class="hidden" data-locale-toggle-target="panel" data-locale="en">
+                    <label class="label" for="{{ form.description_en.vars.id }}">Description (EN)</label>
+                    {{ form_widget(form.description_en, { attr: { class: 'input min-h-[120px]' } }) }}
+                </div>
+            </div>
+        </div>
+
+        <section class="grid-test__wrap rounded-sm print:rounded-none shadow-sm print:shadow-none">
+            <div class="print-title py-[10px] px-[20px] text-black">
+                <div class="text-left text-lg font-semibold">Aubaine - Skill Tree</div>
+                <hr class="h-1 w-full bg-black border-0">
+            </div>
+            <div class="grid-test__stage">
+                <div class="skill-tree-builder__canvas">
+                    <svg class="skill-tree-builder__links" data-skill-tree-builder-target="links"></svg>
+                    <div
+                        class="grid-test__grid skill-tree-builder__grid"
+                        data-skill-tree-builder-target="grid"
+                        style="--cols: {{ columns }}; --rows: {{ rows }};"
+                    >
+                        {% for row in 1..rows %}
+                            {% for col in 1..columns %}
+                                <button
+                                    class="grid-test__cell skill-tree__cell"
+                                    type="button"
+                                    aria-label="Cell {{ row }}-{{ col }}"
+                                    aria-pressed="false"
+                                    data-row="{{ row }}"
+                                    data-col="{{ col }}"
+                                    data-action="click->skill-tree-builder#handleCellClick"
+                                >
+                                    <span class="skill-tree__coords" aria-hidden="true">C{{ col }} R{{ row }}</span>
+                                    <span class="grid-test__nameplate" aria-hidden="true">
+                                        {{ component('SkillPlate', {
+                                            code: 'NAME',
+                                            image: placeholder_image,
+                                            cost: 0,
+                                            isStarter: true
+                                        }) }}
+                                    </span>
+                                </button>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="flex justify-end">
+            <button type="submit" class="btn btn-primary">{{ submit_label }}</button>
+        </div>
+    </div>
+
+    <div class="skill-tree-builder__editor" data-skill-tree-builder-target="editor" aria-hidden="true" hidden>
+        <div class="skill-tree-builder__editor-panel">
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-semibold text-slate-900">Edit Node</h2>
+                <button class="text-slate-500" type="button" data-action="skill-tree-builder#closeEditor">Close</button>
+            </div>
+            <div class="grid gap-3 text-sm text-slate-700">
+                <label class="flex flex-col gap-1">
+                    Mode
+                    <select
+                        class="rounded border border-slate-300 px-3 py-2"
+                        data-skill-tree-builder-target="modeSelect"
+                        data-action="change->skill-tree-builder#updateMode"
+                    >
+                        <option value="existing">Existing skill</option>
+                        <option value="anon">Anonymous skill</option>
+                    </select>
+                </label>
+
+                <div class="grid gap-3" data-skill-tree-builder-target="existingFields">
+                    <label class="flex flex-col gap-1 skill-tree-builder__search">
+                        Skill search
+                        <input
+                            class="rounded border border-slate-300 px-3 py-2"
+                            data-skill-tree-builder-target="skillSearchInput"
+                            data-action="input->skill-tree-builder#searchSkills focus->skill-tree-builder#searchSkills"
+                            placeholder="Start typing a code or name..."
+                        >
+                        <input type="hidden" data-skill-tree-builder-target="skillSearchHidden">
+                        <div class="skill-tree-builder__search-results" data-skill-tree-builder-target="skillSearchResults"></div>
+                    </label>
+                </div>
+
+                <div class="grid gap-3" data-skill-tree-builder-target="anonFields">
+                    <label class="flex flex-col gap-1">
+                        Code
+                        <input class="rounded border border-slate-300 px-3 py-2" data-skill-tree-builder-target="anonCode" placeholder="ANON">
+                    </label>
+                    <label class="flex flex-col gap-1">
+                        Name
+                        <input class="rounded border border-slate-300 px-3 py-2" data-skill-tree-builder-target="anonName" placeholder="Anonymous skill">
+                    </label>
+                    <label class="flex flex-col gap-1">
+                        Image URL
+                        <input class="rounded border border-slate-300 px-3 py-2" data-skill-tree-builder-target="anonIcon" placeholder="https://...">
+                    </label>
+                </div>
+
+                <label class="flex flex-col gap-1">
+                    Cost
+                    <input class="rounded border border-slate-300 px-3 py-2" data-skill-tree-builder-target="costInput" type="number">
+                </label>
+
+                <label class="flex items-center gap-2">
+                    <input type="checkbox" data-skill-tree-builder-target="starterInput">
+                    Starter node
+                </label>
+            </div>
+            <div class="mt-4 flex items-center justify-between">
+                <button class="text-rose-500" type="button" data-action="skill-tree-builder#clearNode">Clear Node</button>
+                <div class="flex gap-2">
+                    <button class="rounded border border-slate-300 px-4 py-2" type="button" data-action="skill-tree-builder#closeEditor">Cancel</button>
+                    <button class="rounded bg-slate-900 px-4 py-2 text-white" type="button" data-action="skill-tree-builder#saveNode">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{{ form_end(form) }}

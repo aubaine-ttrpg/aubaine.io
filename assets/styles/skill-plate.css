@@ -1,0 +1,83 @@
+.skill-plate {
+    width: var(--plate-size);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.skill-plate__image {
+    width: 100%;
+    height: var(--plate-size);
+    display: block;
+    object-fit: cover;
+    border: 2px solid #000;
+    border-bottom: 0;
+    border-radius: 6px 6px 0 0;
+    background: #fff;
+}
+
+.skill-plate__label {
+    margin: 0;
+    border: 2px solid #000;
+    border-top: 0;
+    background: #fff;
+    color: #000;
+    border-radius: 0 0 6px 6px;
+    font-size: 1rem;
+    font-weight: 400;
+    font-family: monospace, monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: var(--plate-label-height);
+    position: relative;
+    overflow: visible;
+}
+
+.skill-plate__cost {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    flex-shrink: 0;
+}
+
+.skill-plate__cost-text {
+    position: relative;
+    z-index: 1;
+    color: #000;
+}
+
+.skill-plate__star {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%, -45%);
+    pointer-events: none;
+}
+
+.skill-plate__star svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.skill-plate__code {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+}
+
+@media print {
+    .skill-plate__label,
+    .skill-plate__image {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+}

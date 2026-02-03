@@ -1,0 +1,141 @@
+.skill-tree-builder__canvas {
+    position: relative;
+    width: max-content;
+}
+
+.skill-tree-builder__links {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.skill-tree-builder__link {
+    stroke: #000;
+    stroke-width: 0.4rem;
+    stroke-linecap: round;
+}
+
+.skill-tree-builder__grid {
+    position: relative;
+    z-index: 2;
+    background: transparent;
+}
+
+.skill-tree__cell.is-link-source {
+    outline: 3px solid rgba(59, 130, 246, 0.6);
+    outline-offset: 6px;
+}
+
+.skill-tree__coords {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    font-size: 0.65rem;
+    line-height: 1;
+    background: rgba(255, 255, 255, 0.92);
+    color: #0f172a;
+    padding: 2px 4px;
+    border-radius: 4px;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.skill-tree__cell .skill-plate__star {
+    opacity: 0;
+    transform: translate(-50%, -45%) scale(0.7);
+    transition: opacity 120ms ease-in-out, transform 120ms ease-in-out;
+}
+
+.skill-tree__cell.is-starter .skill-plate__star {
+    opacity: 1;
+    transform: translate(-50%, -45%) scale(1);
+}
+
+.skill-tree-builder__editor {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    padding: 24px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 160ms ease;
+}
+
+.skill-tree-builder__editor-panel {
+    background: #f8fafc;
+    color: #0f172a;
+    width: min(520px, 100%);
+    border-radius: 12px;
+    box-shadow: 0 30px 80px rgba(15, 23, 42, 0.35);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transform: translateY(10px) scale(0.98);
+    transition: transform 160ms ease;
+}
+
+.skill-tree-builder__editor[hidden] {
+    display: none;
+}
+
+.skill-tree-builder__editor .is-hidden {
+    display: none;
+}
+
+.skill-tree-builder__editor.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.skill-tree-builder__editor.is-open .skill-tree-builder__editor-panel {
+    transform: translateY(0) scale(1);
+}
+
+.skill-tree-builder__search {
+    position: relative;
+}
+
+.skill-tree-builder__search-results {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 6px);
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+    max-height: 240px;
+    overflow-y: auto;
+    z-index: 5;
+}
+
+.skill-tree-builder__search-results button {
+    width: 100%;
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    color: #0f172a;
+}
+
+.skill-tree-builder__search-results button:hover {
+    background: #f1f5f9;
+}
+
+.skill-tree-builder__search-results .is-empty {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.print-page-break {
+    break-before: page;
+    page-break-before: always;
+}

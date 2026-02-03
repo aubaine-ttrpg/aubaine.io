@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Skill Tree {{ tree.code }}{% endblock %}
+
+{% block body %}
+    <main class="max-w-6xl mx-auto px-4 py-8 space-y-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm text-slate-400 space-x-1">
+                    <a href="{{ path('admin_home') }}" class="hover:text-sky-300">Admin</a>
+                    <span>/</span>
+                    <a href="{{ path('admin_skill_tree_index') }}" class="hover:text-sky-300">Skill Trees</a>
+                    <span>/</span>
+                    <span class="text-slate-300">{{ tree.code }}</span>
+                </p>
+                <h1 class="text-3xl font-semibold">Edit Skill Tree</h1>
+            </div>
+            <a href="{{ path('admin_skill_tree_show', { id: tree.id }) }}" class="btn btn-ghost">Back</a>
+        </div>
+
+        {% include 'admin/skill_tree/_form.html.twig' with {
+            form: form,
+            submit_label: 'Update',
+            columns: columns,
+            rows: rows,
+            initialPayload: initialPayload
+        } %}
+    </main>
+{% endblock %}

@@ -6,6 +6,7 @@ enum Ability: string
 {
     case NONE = 'none';
     case ANY = 'any';
+    case SPECIAL = 'special';
     case STRENGTH = 'strength';
     case DEXTERITY = 'dexterity';
     case CONSTITUTION = 'endurance';

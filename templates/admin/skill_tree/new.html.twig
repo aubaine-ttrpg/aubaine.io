@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create Skill Tree{% endblock %}
+
+{% block body %}
+    <main class="max-w-max mx-auto px-4 py-8 space-y-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm text-slate-400 space-x-1">
+                    <a href="{{ path('admin_home') }}" class="hover:text-sky-300">Admin</a>
+                    <span>/</span>
+                    <a href="{{ path('admin_skill_tree_index') }}" class="hover:text-sky-300">Skill Trees</a>
+                    <span>/</span>
+                    <span class="text-slate-300">Create</span>
+                </p>
+                <h1 class="text-3xl font-semibold">Create Skill Tree</h1>
+            </div>
+        </div>
+
+        {% include 'admin/skill_tree/_form.html.twig' with {
+            form: form,
+            submit_label: 'Create',
+            columns: columns,
+            rows: rows,
+            initialPayload: initialPayload
+        } %}
+    </main>
+{% endblock %}
