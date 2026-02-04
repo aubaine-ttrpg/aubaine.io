@@ -6,6 +6,8 @@ use App\Entity\SkillTree;
 use App\Entity\SkillTreeLink;
 use App\Entity\SkillTreeNode;
 use App\Entity\SkillTreeTranslation;
+use App\Enum\Ability;
+use App\Enum\Aptitude;
 use App\Enum\SkillCategory;
 use App\Repository\SkillsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -72,6 +74,8 @@ class SkillTreeBuilderController extends AbstractController
             'rows' => $tree->getRows() ?: 9,
             'initialPayload' => $this->buildInitialPayload($tree),
             'translations' => $this->buildTranslations($tree),
+            'abilityOptions' => $this->getAbilityOptions(),
+            'aptitudeOptions' => $this->getAptitudeOptions(),
         ]);
     }
 
@@ -162,15 +166,13 @@ class SkillTreeBuilderController extends AbstractController
             return;
         }
 
-        foreach ($tree->getLinks()->toArray() as $link) {
-            $tree->removeLink($link);
-        }
-
-        foreach ($tree->getNodes()->toArray() as $node) {
-            $tree->removeNode($node);
+        $existingNodes = [];
+        foreach ($tree->getNodes() as $node) {
+            $existingNodes[$node->getRow() . '-' . $node->getCol()] = $node;
         }
 
         $nodesByKey = [];
+        $keptNodeKeys = [];
         $nodesPayload = is_array($payload['nodes'] ?? null) ? $payload['nodes'] : [];
         foreach ($nodesPayload as $nodePayload) {
             if (!is_array($nodePayload)) {
@@ -183,11 +185,14 @@ class SkillTreeBuilderController extends AbstractController
                 continue;
             }
 
-            $node = new SkillTreeNode();
+            $key = $row . '-' . $col;
+            $node = $existingNodes[$key] ?? new SkillTreeNode();
             $node->setRow($row);
             $node->setCol($col);
             $node->setCost((int) ($nodePayload['cost'] ?? 0));
             $node->setIsStarter((bool) ($nodePayload['isStarter'] ?? false));
+            $node->setSkill(null);
+            $node->setAnonPayload(null);
 
             $skillId = $nodePayload['skillId'] ?? null;
             if (is_string($skillId) && $skillId !== '') {
@@ -208,15 +213,42 @@ class SkillTreeBuilderController extends AbstractController
             }
 
             if ($node->getSkill() === null && $node->getAnonPayload() === null) {
+                if (isset($existingNodes[$key])) {
+                    $tree->removeNode($node);
+                }
                 continue;
             }
 
-            $tree->addNode($node);
-            $nodesByKey[$row . '-' . $col] = $node;
+            if (!$tree->getNodes()->contains($node)) {
+                $tree->addNode($node);
+            }
+            $nodesByKey[$key] = $node;
+            $keptNodeKeys[$key] = true;
+        }
+
+        foreach ($existingNodes as $key => $node) {
+            if (!isset($keptNodeKeys[$key])) {
+                $tree->removeNode($node);
+            }
+        }
+
+        $existingLinks = [];
+        foreach ($tree->getLinks() as $link) {
+            $from = $link->getFromNode();
+            $to = $link->getToNode();
+            if (!$from || !$to) {
+                $tree->removeLink($link);
+                continue;
+            }
+            $fromKey = $from->getRow() . '-' . $from->getCol();
+            $toKey = $to->getRow() . '-' . $to->getCol();
+            $a = $fromKey < $toKey ? $fromKey : $toKey;
+            $b = $fromKey < $toKey ? $toKey : $fromKey;
+            $existingLinks[$a . '|' . $b] = $link;
         }
 
         $linksPayload = is_array($payload['links'] ?? null) ? $payload['links'] : [];
-        $seen = [];
+        $desiredLinks = [];
         foreach ($linksPayload as $linkPayload) {
             if (!is_array($linkPayload)) {
                 continue;
@@ -238,13 +270,15 @@ class SkillTreeBuilderController extends AbstractController
             $b = $fromKey < $toKey ? $toKey : $fromKey;
             $key = $a . '|' . $b;
 
-            if (isset($seen[$key])) {
-                continue;
-            }
-
             $fromNode = $nodesByKey[$fromKey] ?? null;
             $toNode = $nodesByKey[$toKey] ?? null;
             if (!$fromNode || !$toNode) {
+                continue;
+            }
+
+            $desiredLinks[$key] = true;
+
+            if (isset($existingLinks[$key])) {
                 continue;
             }
 
@@ -253,8 +287,12 @@ class SkillTreeBuilderController extends AbstractController
             $link->setToNode($toNode);
             $link->setIsDirected(false);
             $tree->addLink($link);
+        }
 
-            $seen[$key] = true;
+        foreach ($existingLinks as $key => $link) {
+            if (!isset($desiredLinks[$key])) {
+                $tree->removeLink($link);
+            }
         }
     }
 
@@ -268,6 +306,10 @@ class SkillTreeBuilderController extends AbstractController
             'code' => trim((string) ($payload['code'] ?? '')),
             'name' => trim((string) ($payload['name'] ?? '')),
             'icon' => trim((string) ($payload['icon'] ?? '')),
+            'description' => trim((string) ($payload['description'] ?? '')),
+            'category' => trim((string) ($payload['category'] ?? '')),
+            'ability' => trim((string) ($payload['ability'] ?? '')),
+            'aptitude' => trim((string) ($payload['aptitude'] ?? '')),
         ];
 
         foreach ($normalized as $value) {
@@ -277,6 +319,28 @@ class SkillTreeBuilderController extends AbstractController
         }
 
         return null;
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function getAbilityOptions(): array
+    {
+        return array_map(
+            static fn (Ability $ability): string => $ability->value,
+            Ability::cases()
+        );
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function getAptitudeOptions(): array
+    {
+        return array_map(
+            static fn (Aptitude $aptitude): string => $aptitude->value,
+            Aptitude::cases()
+        );
     }
 
     private function normalizeOptionalText(mixed $value): ?string

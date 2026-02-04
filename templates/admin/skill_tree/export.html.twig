@@ -3,7 +3,7 @@
 {% block title %}Export Skill Tree · {{ tree.name }}{% endblock %}
 
 {% block body %}
-    <main class="grid-test max-w-6xl mx-auto px-4 py-8 print:max-w-full print:p-0 flex flex-col gap-6">
+    <main class="grid-test max-w-max mx-auto px-4 py-8 print:max-w-full print:p-0 flex flex-col gap-6">
         <div class="hide-print flex items-center justify-between">
             <div>
                 <p class="text-sm text-slate-400 space-x-1">
@@ -68,21 +68,30 @@
         </section>
 
         <section class="skill-tree-export__skills print-page-break">
-            <div class="print-title py-[10px] px-[20px] text-black">
-                <div class="text-left text-lg font-semibold">Aubaine · {{ tree.name }}</div>
-                <hr class="h-1 w-full bg-black border-0">
-            </div>
-
-            {% if starterSkills is empty and otherSkills is empty %}
+            {% if starterEntries is empty and otherEntries is empty %}
                 <div class="card p-6 text-slate-300">No skills found in this tree.</div>
             {% else %}
-                <div class="print-columns gap-6 print:gap-0">
-                    {% for skill in starterSkills %}
-                        {{ component('SkillExportCard', { skill: skill, displayCode: displayCode, exportLocale: exportLocale }) }}
-                    {% endfor %}
-                    {% for skill in otherSkills %}
-                        {{ component('SkillExportCard', { skill: skill, displayCode: displayCode, exportLocale: exportLocale }) }}
-                    {% endfor %}
+                <div class="bg-white rounded-sm print:rounded-none shadow-sm print:shadow-none">
+                    <div class="print-title py-[10px] px-[20px] text-black">
+                        <div class="text-left text-lg font-semibold">Aubaine · {{ tree.name }}</div>
+                        <hr class="h-1 w-full bg-black border-0">
+                    </div>
+                    <div class="print-columns gap-6 print:gap-0">
+                        {% for entry in starterEntries %}
+                            {% if entry.type == 'skill' %}
+                                {{ component('SkillExportCard', { skill: entry.skill, displayCode: displayCode, exportLocale: exportLocale, hideEmptyPrerequisites: true }) }}
+                            {% else %}
+                                {% include 'components/AnonSkillExportCard.html.twig' with { anon: entry, exportLocale: exportLocale } %}
+                            {% endif %}
+                        {% endfor %}
+                        {% for entry in otherEntries %}
+                            {% if entry.type == 'skill' %}
+                                {{ component('SkillExportCard', { skill: entry.skill, displayCode: displayCode, exportLocale: exportLocale, hideEmptyPrerequisites: true }) }}
+                            {% else %}
+                                {% include 'components/AnonSkillExportCard.html.twig' with { anon: entry, exportLocale: exportLocale } %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
             {% endif %}
         </section>

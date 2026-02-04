@@ -15,6 +15,10 @@ export default class extends Controller {
         'anonCode',
         'anonName',
         'anonIcon',
+        'anonDescription',
+        'anonCategory',
+        'anonAbility',
+        'anonAptitude',
         'costInput',
         'starterInput',
         'status',
@@ -52,6 +56,10 @@ export default class extends Controller {
 
         this.resizeHandler = () => this.drawLinks();
         window.addEventListener('resize', this.resizeHandler);
+        if (window.ResizeObserver) {
+            this.resizeObserver = new ResizeObserver(() => this.drawLinks());
+            this.resizeObserver.observe(this.gridTarget);
+        }
 
         if (this.hasEditorTarget) {
             this.backdropHandler = (event) => {
@@ -67,10 +75,40 @@ export default class extends Controller {
             this.editorTarget.addEventListener('click', this.backdropHandler);
             document.addEventListener('keydown', this.keydownHandler);
         }
+
+        this.beforePrintHandler = () => {
+            window.requestAnimationFrame(() => this.drawLinks());
+        };
+        window.addEventListener('beforeprint', this.beforePrintHandler);
+        if (window.matchMedia) {
+            this.printMediaQuery = window.matchMedia('print');
+            this.printMediaListener = (event) => {
+                if (event.matches) {
+                    window.requestAnimationFrame(() => this.drawLinks());
+                }
+            };
+            if (this.printMediaQuery.addEventListener) {
+                this.printMediaQuery.addEventListener('change', this.printMediaListener);
+            } else if (this.printMediaQuery.addListener) {
+                this.printMediaQuery.addListener(this.printMediaListener);
+            }
+        }
     }
 
     disconnect() {
         window.removeEventListener('resize', this.resizeHandler);
+        window.removeEventListener('beforeprint', this.beforePrintHandler);
+        if (this.resizeObserver) {
+            this.resizeObserver.disconnect();
+            this.resizeObserver = null;
+        }
+        if (this.printMediaQuery && this.printMediaListener) {
+            if (this.printMediaQuery.removeEventListener) {
+                this.printMediaQuery.removeEventListener('change', this.printMediaListener);
+            } else if (this.printMediaQuery.removeListener) {
+                this.printMediaQuery.removeListener(this.printMediaListener);
+            }
+        }
         if (this.backdropHandler && this.hasEditorTarget) {
             this.editorTarget.removeEventListener('click', this.backdropHandler);
         }
@@ -111,6 +149,10 @@ export default class extends Controller {
         this.anonCodeTarget.value = node && node.anon ? node.anon.code || '' : '';
         this.anonNameTarget.value = node && node.anon ? node.anon.name || '' : '';
         this.anonIconTarget.value = node && node.anon ? node.anon.icon || '' : '';
+        this.anonDescriptionTarget.value = node && node.anon ? node.anon.description || '' : '';
+        this.anonCategoryTarget.value = node && node.anon ? node.anon.category || '' : '';
+        this.anonAbilityTarget.value = node && node.anon ? node.anon.ability || 'none' : 'none';
+        this.anonAptitudeTarget.value = node && node.anon ? node.anon.aptitude || 'none' : 'none';
         this.costInputTarget.value = node ? node.cost : 0;
         this.starterInputTarget.checked = node ? node.isStarter : false;
 
@@ -179,6 +221,10 @@ export default class extends Controller {
                 code: this.anonCodeTarget.value.trim(),
                 name: this.anonNameTarget.value.trim(),
                 icon: this.anonIconTarget.value.trim(),
+                description: this.anonDescriptionTarget.value.trim(),
+                category: this.anonCategoryTarget.value.trim(),
+                ability: this.anonAbilityTarget.value.trim(),
+                aptitude: this.anonAptitudeTarget.value.trim(),
             };
             if (anon.code || anon.name || anon.icon) {
                 node = {
@@ -368,6 +414,13 @@ export default class extends Controller {
         const gridRect = this.gridTarget.getBoundingClientRect();
         const width = gridRect.width;
         const height = gridRect.height;
+        const canvas = svg.parentElement;
+        if (canvas) {
+            canvas.style.width = `${width}px`;
+            canvas.style.height = `${height}px`;
+        }
+        svg.style.width = `${width}px`;
+        svg.style.height = `${height}px`;
         svg.setAttribute('width', width.toString());
         svg.setAttribute('height', height.toString());
         svg.setAttribute('viewBox', `0 0 ${width} ${height}`);

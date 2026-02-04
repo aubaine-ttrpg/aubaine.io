@@ -3,7 +3,7 @@
 {% block title %}Edit Skill Tree {{ tree.code }}{% endblock %}
 
 {% block body %}
-    <main class="max-w-6xl mx-auto px-4 py-8 space-y-6">
+    <main class="max-w-max mx-auto px-4 py-8 space-y-6">
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm text-slate-400 space-x-1">
@@ -23,7 +23,9 @@
             submit_label: 'Update',
             columns: columns,
             rows: rows,
-            initialPayload: initialPayload
+            initialPayload: initialPayload,
+            abilityOptions: abilityOptions,
+            aptitudeOptions: aptitudeOptions
         } %}
     </main>
 {% endblock %}

@@ -8,6 +8,8 @@ use App\Entity\SkillTreeNode;
 use App\Entity\SkillTreeTranslation;
 use App\Form\SkillTreeFormType;
 use App\Enum\SkillCategory;
+use App\Enum\Ability;
+use App\Enum\Aptitude;
 use App\Repository\SkillTreeRepository;
 use App\Repository\SkillsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -65,10 +67,11 @@ class AdminSkillTreeController extends AdminController
         return $this->render('admin/skill_tree/new.html.twig', [
             'form' => $form->createView(),
             'tree' => $tree,
-            'skills' => [],
             'columns' => $tree->getColumns() ?: 9,
             'rows' => $tree->getRows() ?: 9,
             'initialPayload' => $this->buildInitialPayload($tree),
+            'abilityOptions' => $this->getAbilityOptions(),
+            'aptitudeOptions' => $this->getAptitudeOptions(),
         ]);
     }
 
@@ -118,10 +121,36 @@ class AdminSkillTreeController extends AdminController
 
         $skillsById = [];
         $starterIds = [];
+        $anonByKey = [];
 
         foreach ($tree->getNodes() as $node) {
             $skill = $node->getSkill();
             if ($skill === null) {
+                    $anon = $node->getAnonPayload();
+                    if (is_array($anon)) {
+                        $code = trim((string) ($anon['code'] ?? ''));
+                        $name = trim((string) ($anon['name'] ?? ''));
+                        $description = trim((string) ($anon['description'] ?? ''));
+                        $icon = trim((string) ($anon['icon'] ?? ''));
+                        $category = trim((string) ($anon['category'] ?? ''));
+                        $ability = trim((string) ($anon['ability'] ?? ''));
+                        $aptitude = trim((string) ($anon['aptitude'] ?? ''));
+                        $key = mb_strtolower($code) . '|' . mb_strtolower($name) . '|' . md5($description . '|' . $icon . '|' . $ability . '|' . $aptitude);
+                        if (!isset($anonByKey[$key])) {
+                            $anonByKey[$key] = [
+                                'code' => $code,
+                                'name' => $name,
+                                'description' => $description,
+                                'icon' => $icon,
+                                'category' => $category,
+                                'ability' => $ability,
+                                'aptitude' => $aptitude,
+                                'isStarter' => $node->isStarter(),
+                            ];
+                        } else {
+                            $anonByKey[$key]['isStarter'] = $anonByKey[$key]['isStarter'] || $node->isStarter();
+                        }
+                    }
                 continue;
             }
 
@@ -133,28 +162,63 @@ class AdminSkillTreeController extends AdminController
             }
         }
 
-        $starterSkills = [];
-        $otherSkills = [];
+        $starterEntries = [];
+        $otherEntries = [];
 
         foreach ($skillsById as $id => $skill) {
+            $entry = [
+                'type' => 'skill',
+                'code' => $skill->getCode(),
+                'name' => $skill->getName(),
+                'skill' => $skill,
+            ];
             if (isset($starterIds[$id])) {
-                $starterSkills[] = $skill;
+                $starterEntries[] = $entry;
             } else {
-                $otherSkills[] = $skill;
+                $otherEntries[] = $entry;
             }
         }
 
-        $sortByCode = static fn ($a, $b): int => strcasecmp($a->getCode(), $b->getCode());
-        usort($starterSkills, $sortByCode);
-        usort($otherSkills, $sortByCode);
+        foreach ($anonByKey as $anon) {
+            $entry = [
+                'type' => 'anon',
+                'code' => $anon['code'] ?? '',
+                'name' => $anon['name'] ?? '',
+                'description' => $anon['description'] ?? '',
+                'icon' => $anon['icon'] ?? '',
+                'category' => $anon['category'] ?? '',
+                'ability' => $anon['ability'] ?? '',
+                'aptitude' => $anon['aptitude'] ?? '',
+            ];
+
+            if (!empty($anon['isStarter'])) {
+                $starterEntries[] = $entry;
+            } else {
+                $otherEntries[] = $entry;
+            }
+        }
+
+        $sortByCode = static function (array $a, array $b): int {
+            $aKey = trim((string) ($a['code'] ?? ''));
+            $bKey = trim((string) ($b['code'] ?? ''));
+            if ($aKey === '') {
+                $aKey = trim((string) ($a['name'] ?? ''));
+            }
+            if ($bKey === '') {
+                $bKey = trim((string) ($b['name'] ?? ''));
+            }
+            return strcasecmp($aKey, $bKey);
+        };
+        usort($starterEntries, $sortByCode);
+        usort($otherEntries, $sortByCode);
 
         return $this->render('admin/skill_tree/export.html.twig', [
             'tree' => $tree,
             'columns' => $tree->getColumns() ?: 9,
             'rows' => $tree->getRows() ?: 9,
             'initialPayload' => $this->buildInitialPayload($tree),
-            'starterSkills' => $starterSkills,
-            'otherSkills' => $otherSkills,
+            'starterEntries' => $starterEntries,
+            'otherEntries' => $otherEntries,
             'displayCode' => true,
             'exportLocale' => 'fr',
         ]);
@@ -191,6 +255,8 @@ class AdminSkillTreeController extends AdminController
             'columns' => $tree->getColumns() ?: 9,
             'rows' => $tree->getRows() ?: 9,
             'initialPayload' => $this->buildInitialPayload($tree),
+            'abilityOptions' => $this->getAbilityOptions(),
+            'aptitudeOptions' => $this->getAptitudeOptions(),
         ]);
     }
 
@@ -300,15 +366,13 @@ class AdminSkillTreeController extends AdminController
             return;
         }
 
-        foreach ($tree->getLinks()->toArray() as $link) {
-            $tree->removeLink($link);
-        }
-
-        foreach ($tree->getNodes()->toArray() as $node) {
-            $tree->removeNode($node);
+        $existingNodes = [];
+        foreach ($tree->getNodes() as $node) {
+            $existingNodes[$node->getRow() . '-' . $node->getCol()] = $node;
         }
 
         $nodesByKey = [];
+        $keptNodeKeys = [];
         $nodesPayload = is_array($payload['nodes'] ?? null) ? $payload['nodes'] : [];
         foreach ($nodesPayload as $nodePayload) {
             if (!is_array($nodePayload)) {
@@ -321,11 +385,14 @@ class AdminSkillTreeController extends AdminController
                 continue;
             }
 
-            $node = new SkillTreeNode();
+            $key = $row . '-' . $col;
+            $node = $existingNodes[$key] ?? new SkillTreeNode();
             $node->setRow($row);
             $node->setCol($col);
             $node->setCost((int) ($nodePayload['cost'] ?? 0));
             $node->setIsStarter((bool) ($nodePayload['isStarter'] ?? false));
+            $node->setSkill(null);
+            $node->setAnonPayload(null);
 
             $skillId = $nodePayload['skillId'] ?? null;
             if (is_string($skillId) && $skillId !== '') {
@@ -346,15 +413,42 @@ class AdminSkillTreeController extends AdminController
             }
 
             if ($node->getSkill() === null && $node->getAnonPayload() === null) {
+                if (isset($existingNodes[$key])) {
+                    $tree->removeNode($node);
+                }
                 continue;
             }
 
-            $tree->addNode($node);
-            $nodesByKey[$row . '-' . $col] = $node;
+            if (!$tree->getNodes()->contains($node)) {
+                $tree->addNode($node);
+            }
+            $nodesByKey[$key] = $node;
+            $keptNodeKeys[$key] = true;
+        }
+
+        foreach ($existingNodes as $key => $node) {
+            if (!isset($keptNodeKeys[$key])) {
+                $tree->removeNode($node);
+            }
+        }
+
+        $existingLinks = [];
+        foreach ($tree->getLinks() as $link) {
+            $from = $link->getFromNode();
+            $to = $link->getToNode();
+            if (!$from || !$to) {
+                $tree->removeLink($link);
+                continue;
+            }
+            $fromKey = $from->getRow() . '-' . $from->getCol();
+            $toKey = $to->getRow() . '-' . $to->getCol();
+            $a = $fromKey < $toKey ? $fromKey : $toKey;
+            $b = $fromKey < $toKey ? $toKey : $fromKey;
+            $existingLinks[$a . '|' . $b] = $link;
         }
 
         $linksPayload = is_array($payload['links'] ?? null) ? $payload['links'] : [];
-        $seen = [];
+        $desiredLinks = [];
         foreach ($linksPayload as $linkPayload) {
             if (!is_array($linkPayload)) {
                 continue;
@@ -376,13 +470,15 @@ class AdminSkillTreeController extends AdminController
             $b = $fromKey < $toKey ? $toKey : $fromKey;
             $key = $a . '|' . $b;
 
-            if (isset($seen[$key])) {
-                continue;
-            }
-
             $fromNode = $nodesByKey[$fromKey] ?? null;
             $toNode = $nodesByKey[$toKey] ?? null;
             if (!$fromNode || !$toNode) {
+                continue;
+            }
+
+            $desiredLinks[$key] = true;
+
+            if (isset($existingLinks[$key])) {
                 continue;
             }
 
@@ -391,8 +487,12 @@ class AdminSkillTreeController extends AdminController
             $link->setToNode($toNode);
             $link->setIsDirected(false);
             $tree->addLink($link);
+        }
 
-            $seen[$key] = true;
+        foreach ($existingLinks as $key => $link) {
+            if (!isset($desiredLinks[$key])) {
+                $tree->removeLink($link);
+            }
         }
     }
 
@@ -406,6 +506,10 @@ class AdminSkillTreeController extends AdminController
             'code' => trim((string) ($payload['code'] ?? '')),
             'name' => trim((string) ($payload['name'] ?? '')),
             'icon' => trim((string) ($payload['icon'] ?? '')),
+            'description' => trim((string) ($payload['description'] ?? '')),
+            'category' => trim((string) ($payload['category'] ?? '')),
+            'ability' => trim((string) ($payload['ability'] ?? '')),
+            'aptitude' => trim((string) ($payload['aptitude'] ?? '')),
         ];
 
         foreach ($normalized as $value) {
@@ -415,6 +519,28 @@ class AdminSkillTreeController extends AdminController
         }
 
         return null;
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function getAbilityOptions(): array
+    {
+        return array_map(
+            static fn (Ability $ability): string => $ability->value,
+            Ability::cases()
+        );
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function getAptitudeOptions(): array
+    {
+        return array_map(
+            static fn (Aptitude $aptitude): string => $aptitude->value,
+            Aptitude::cases()
+        );
     }
 
     private function useDefaultLocale(): void

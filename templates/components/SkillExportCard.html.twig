@@ -34,14 +34,16 @@
     </div>
 
     {# Prerequisites #}
-    <div class="font-serif text-[11px] italic text-gray-800 pb-1">
-        {{ 'skill.label.prerequisites'|trans({}, 'skills', exportLocale) }}:
-        {% if prerequisites %}
-            {{ prerequisites }}
-        {% else %}
-            {{ 'skill.common.none'|trans({}, 'skills', exportLocale) }}
-        {% endif %}
-    </div>
+        <div class="font-serif text-[11px] italic text-gray-800 pb-1">
+            {% if prerequisites or not hideEmptyPrerequisites %}
+                {{ 'skill.label.prerequisites'|trans({}, 'skills', exportLocale) }}:
+                {% if prerequisites %}
+                    {{ prerequisites }}
+                {% else %}
+                    {{ 'skill.common.none'|trans({}, 'skills', exportLocale) }}
+                {% endif %}
+            {% endif %}
+        </div>
 
     {# Skill Details #}
     <div class="text-[11px] pb-1">

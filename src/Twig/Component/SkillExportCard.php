@@ -11,6 +11,7 @@ final class SkillExportCard
     public Skills $skill;
     public bool $displayCode = false;
     public string $exportLocale = 'en';
+    public bool $hideEmptyPrerequisites = false;
 
     public function getTagsLine(): string
     {

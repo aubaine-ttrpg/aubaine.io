@@ -1,0 +1,39 @@
+{% set exportLocale = exportLocale|default('en') %}
+{% set noneLabel = 'skill.ability.none'|trans({}, 'skills', exportLocale) %}
+{% set code = anon.code|default('')|trim %}
+{% set name = anon.name|default('')|trim %}
+{% set description = anon.description|default('')|trim %}
+{% set displayName = name ?: noneLabel %}
+{% set displayCode = (code ?: 'ANON')|upper %}
+{% set categoryLabel = anon.category|default('')|trim %}
+{% set abilityValue = anon.ability|default('none')|trim %}
+{% set aptitudeValue = anon.aptitude|default('none')|trim %}
+{% set abilityLabel = abilityValue != 'none' ? ('skill.ability.' ~ abilityValue)|trans({}, 'skills', exportLocale) : null %}
+{% set aptitudeLabel = aptitudeValue != 'none' ? ('skill.aptitude.' ~ aptitudeValue)|trans({}, 'skills', exportLocale) : null %}
+{% set showMeta = abilityLabel or aptitudeLabel %}
+
+<article class="py-[10px] px-[20px] text-[1rem] text-left text-black font-['Georgia','Times New Roman'] inline-block leading-normal min-w-full">
+    <div class="text-[1.4rem] leading-none flex items-center gap-1 break-after-avoid p-0">
+        <span class="font-mono font-light text-gray-500">[{{ displayCode }}]</span>
+        <div class="gap-2 flex flex-row w-full items-center">
+            <h1 class="font-semibold [font-variant-caps:small-caps] tracking-wide text-[#EFBF04]">{{ displayName }}</h1>
+            {% if showMeta %}
+                <span class="font-serif font-medium text-[12px] text-white italic bg-[#6D0000] py-[2px] px-1 rounded-sm">
+                    {{ abilityLabel }}{% if abilityLabel and aptitudeLabel %} / {% endif %}{{ aptitudeLabel }}
+                </span>
+            {% endif %}
+        </div>
+    </div>
+
+        <div class="font-serif text-[11px] italic text-gray-800 pb-1">
+            {% if categoryLabel %}
+                {{ categoryLabel|capitalize }}
+            {% endif %}
+        </div>
+
+    {% if description %}
+        <div class="whitespace-pre-line text-[11px] leading-none text-justify">{{ description }}</div>
+    {% else %}
+        <div class="text-[11px] italic text-gray-700">{{ noneLabel }}</div>
+    {% endif %}
+</article>

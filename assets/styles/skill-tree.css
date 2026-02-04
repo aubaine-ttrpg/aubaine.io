@@ -45,13 +45,13 @@
 
 .skill-tree__cell .skill-plate__star {
     opacity: 0;
-    transform: translate(-50%, -45%) scale(0.7);
+    transform: translate(-50%, -50%) scale(0.7);
     transition: opacity 120ms ease-in-out, transform 120ms ease-in-out;
 }
 
 .skill-tree__cell.is-starter .skill-plate__star {
     opacity: 1;
-    transform: translate(-50%, -45%) scale(1);
+    transform: translate(-50%, -50%) scale(1);
 }
 
 .skill-tree-builder__editor {
