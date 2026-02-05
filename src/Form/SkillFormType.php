@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Enum\Ability;
 use App\Enum\Aptitude;
 use App\Enum\SkillCategory;
+use App\Enum\SkillType;
 use App\Entity\Skills;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -24,6 +25,11 @@ class SkillFormType extends AbstractType
             ->add('category', EnumType::class, [
                 'class' => SkillCategory::class,
                 'choice_label' => static fn (SkillCategory $category): string => 'skill.category.' . $category->value,
+                'choice_translation_domain' => 'skills',
+            ])
+            ->add('type', EnumType::class, [
+                'class' => SkillType::class,
+                'choice_label' => static fn (SkillType $type): string => 'skill.type.' . $type->value,
                 'choice_translation_domain' => 'skills',
             ])
             ->add('ability', EnumType::class, [

@@ -12,9 +12,10 @@
     z-index: 1;
 }
 
+/* TODO: Do STROKE BORDER and maybe print without stroke filled so players can fill it */
 .skill-tree-builder__link {
     stroke: #000;
-    stroke-width: 0.4rem;
+    stroke-width: 1rem;
     stroke-linecap: round;
 }
 
@@ -27,6 +28,19 @@
 .skill-tree__cell.is-link-source {
     outline: 3px solid rgba(59, 130, 246, 0.6);
     outline-offset: 6px;
+}
+
+.skill-tree__cell.is-dragging {
+    opacity: 0.6;
+}
+
+.skill-tree__cell.is-drag-over {
+    outline: 2px dashed #0f172a;
+    outline-offset: 6px;
+}
+
+.skill-tree__cell.is-drag-invalid {
+    outline-color: #ef4444;
 }
 
 .skill-tree__coords {
@@ -45,14 +59,24 @@
 
 .skill-tree__cell .skill-plate__star {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.7);
+    transform: scale(0.85);
     transition: opacity 120ms ease-in-out, transform 120ms ease-in-out;
 }
 
 .skill-tree__cell.is-starter .skill-plate__star {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transform: scale(1);
 }
+
+.skill-tree__cell.is-starter .skill-plate__image,
+.skill-tree__cell.is-starter .skill-plate__label {
+    border-color: #ffb300;
+}
+
+.skill-tree__cell.is-starter .skill-plate__star svg {
+    color: #ffb300;
+}
+
 
 .skill-tree-builder__editor {
     position: fixed;
@@ -72,12 +96,14 @@
     background: #f8fafc;
     color: #0f172a;
     width: min(520px, 100%);
+    max-height: calc(100vh - 48px);
     border-radius: 12px;
     box-shadow: 0 30px 80px rgba(15, 23, 42, 0.35);
     padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 12px;
+    overflow: auto;
     transform: translateY(10px) scale(0.98);
     transition: transform 160ms ease;
 }
@@ -97,6 +123,71 @@
 
 .skill-tree-builder__editor.is-open .skill-tree-builder__editor-panel {
     transform: translateY(0) scale(1);
+}
+
+.skill-tree-builder__editor-panel.is-wide {
+    width: min(1100px, 96vw);
+}
+
+.skill-tree-builder__create-form {
+    font-size: 1rem;
+}
+
+.skill-tree-builder__create-form .card {
+    background: #fff;
+    color: #0f172a;
+    border: 1px solid #e2e8f0;
+    box-shadow: none;
+}
+
+.skill-tree-builder__create-form .label {
+    color: #334155;
+}
+
+.skill-tree-builder__create-form .input {
+    background: #fff;
+    color: #0f172a;
+    border-color: #cbd5f5;
+}
+
+.skill-tree-builder__create-form .input:focus {
+    outline: none;
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+}
+
+.skill-tree-builder__create-form .btn-ghost {
+    color: #475569;
+}
+
+.skill-tree-builder__create-form .btn-ghost:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+.skill-tree-builder__create-form .text-slate-200 {
+    color: #0f172a;
+}
+
+.skill-tree-builder__create-form .icon-edit-wrap {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    box-shadow: none;
+}
+
+.skill-tree-builder__create-form .icon-edit-overlay {
+    background: rgba(15, 23, 42, 0.35);
+}
+
+.skill-tree-builder__create-error {
+    color: #b91c1c;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.skill-tree-builder__create-error ul {
+    list-style: disc;
+    padding-left: 20px;
 }
 
 .skill-tree-builder__search {

@@ -10,7 +10,9 @@
 {% set aptitudeValue = anon.aptitude|default('none')|trim %}
 {% set abilityLabel = abilityValue != 'none' ? ('skill.ability.' ~ abilityValue)|trans({}, 'skills', exportLocale) : null %}
 {% set aptitudeLabel = aptitudeValue != 'none' ? ('skill.aptitude.' ~ aptitudeValue)|trans({}, 'skills', exportLocale) : null %}
-{% set showMeta = abilityLabel or aptitudeLabel %}
+{% set isPassiveOrUpgrade = categoryLabel in ['passive', 'upgrade'] %}
+{% set hideMeta = isPassiveOrUpgrade and abilityValue == 'none' %}
+{% set showMeta = (abilityLabel or aptitudeLabel) and not hideMeta %}
 
 <article class="py-[10px] px-[20px] text-[1rem] text-left text-black font-['Georgia','Times New Roman'] inline-block leading-normal min-w-full">
     <div class="text-[1.4rem] leading-none flex items-center gap-1 break-after-avoid p-0">

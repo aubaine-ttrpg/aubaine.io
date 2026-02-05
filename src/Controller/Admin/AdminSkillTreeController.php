@@ -6,6 +6,8 @@ use App\Entity\SkillTree;
 use App\Entity\SkillTreeLink;
 use App\Entity\SkillTreeNode;
 use App\Entity\SkillTreeTranslation;
+use App\Entity\Skills;
+use App\Form\SkillFormType;
 use App\Form\SkillTreeFormType;
 use App\Enum\SkillCategory;
 use App\Enum\Ability;
@@ -50,6 +52,7 @@ class AdminSkillTreeController extends AdminController
         $tree->setTranslatableLocale('fr');
 
         $form = $this->createForm(SkillTreeFormType::class, $tree);
+        $skillForm = $this->buildSkillCreateForm();
         $this->prefillTranslationFields($form, $tree);
         $form->handleRequest($request);
 
@@ -66,6 +69,7 @@ class AdminSkillTreeController extends AdminController
 
         return $this->render('admin/skill_tree/new.html.twig', [
             'form' => $form->createView(),
+            'skillForm' => $skillForm->createView(),
             'tree' => $tree,
             'columns' => $tree->getColumns() ?: 9,
             'rows' => $tree->getRows() ?: 9,
@@ -236,6 +240,7 @@ class AdminSkillTreeController extends AdminController
         $tree->setTranslatableLocale('fr');
 
         $form = $this->createForm(SkillTreeFormType::class, $tree);
+        $skillForm = $this->buildSkillCreateForm();
         $this->prefillTranslationFields($form, $tree);
         $form->handleRequest($request);
 
@@ -251,6 +256,7 @@ class AdminSkillTreeController extends AdminController
 
         return $this->render('admin/skill_tree/edit.html.twig', [
             'form' => $form->createView(),
+            'skillForm' => $skillForm->createView(),
             'tree' => $tree,
             'columns' => $tree->getColumns() ?: 9,
             'rows' => $tree->getRows() ?: 9,
@@ -353,6 +359,14 @@ class AdminSkillTreeController extends AdminController
             'nodes' => $nodes,
             'links' => $links,
         ];
+    }
+
+    private function buildSkillCreateForm(): FormInterface
+    {
+        $skill = new Skills();
+        $skill->setTranslatableLocale('fr');
+
+        return $this->createForm(SkillFormType::class, $skill);
     }
 
     private function syncTreeFromPayload(SkillTree $tree, string $rawPayload): void

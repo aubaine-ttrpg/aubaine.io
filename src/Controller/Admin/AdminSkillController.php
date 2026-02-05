@@ -14,6 +14,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Attribute\Route;
@@ -216,6 +217,47 @@ class AdminSkillController extends AdminController
         ]);
     }
 
+    #[Route('/inline-create', name: 'create_inline', methods: ['POST'])]
+    public function createInline(Request $request): JsonResponse
+    {
+        $skill = new Skills();
+        $this->useDefaultLocale();
+        $skill->setTranslatableLocale('fr');
+
+        $form = $this->createForm(SkillFormType::class, $skill);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->handleIconUpload(
+                $form->get('icon')->getData(),
+                $skill
+            );
+            $this->entityManager->persist($skill);
+            $this->applyTranslations($skill, $form);
+            $this->entityManager->flush();
+
+            return new JsonResponse([
+                'success' => true,
+                'skill' => [
+                    'id' => (string) $skill->getId(),
+                    'code' => $skill->getCode(),
+                    'name' => $skill->getName(),
+                    'icon' => $skill->getIcon(),
+                ],
+            ], Response::HTTP_CREATED);
+        }
+
+        $errors = [];
+        foreach ($form->getErrors(true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+
+        return new JsonResponse([
+            'success' => false,
+            'errors' => $errors,
+        ], Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
     #[Route(
         '/{id}/delete',
         name: 'delete',
@@ -309,6 +351,7 @@ class AdminSkillController extends AdminController
             ->setDescription($skill->getDescription())
             ->setUltimate($skill->isUltimate())
             ->setCategory($skill->getCategory())
+            ->setType($skill->getType())
             ->setAbility($skill->getAbility())
             ->setAptitude($skill->getAptitude())
             ->setLimitations($skill->getLimitations())

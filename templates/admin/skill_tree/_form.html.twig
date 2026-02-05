@@ -1,15 +1,18 @@
 {% set submit_label = submit_label ?? 'Save' %}
 {% set placeholder_image = 'https://placehold.co/120?text=?' %}
 
+<div
+    data-controller="skill-tree-builder"
+    data-skill-tree-builder-placeholder-value="{{ placeholder_image }}"
+    data-skill-tree-builder-initial-value="{{ initialPayload|json_encode }}"
+    data-skill-tree-builder-search-url-value="{{ path('admin_skill_tree_search_skills') }}"
+>
 {{ form_start(form, {
     attr: {
         'class': 'grid-test',
         'data-turbo': 'false',
-        'data-controller': 'locale-toggle skill-tree-builder',
-        'data-locale-toggle-active-value': 'fr',
-        'data-skill-tree-builder-placeholder-value': placeholder_image,
-        'data-skill-tree-builder-initial-value': initialPayload|json_encode,
-        'data-skill-tree-builder-search-url-value': path('admin_skill_tree_search_skills')
+        'data-controller': 'locale-toggle',
+        'data-locale-toggle-active-value': 'fr'
     }
 }) }}
     {{ form_widget(form.tree_payload, { attr: { 'data-skill-tree-builder-target': 'payload' } }) }}
@@ -115,8 +118,10 @@
         </div>
     </div>
 
+{{ form_end(form) }}
+
     <div class="skill-tree-builder__editor" data-skill-tree-builder-target="editor" aria-hidden="true" hidden>
-        <div class="skill-tree-builder__editor-panel">
+        <div class="skill-tree-builder__editor-panel" data-skill-tree-builder-target="editorPanel">
             <div class="flex items-center justify-between">
                 <h2 class="text-lg font-semibold text-slate-900">Edit Node</h2>
                 <button class="text-slate-500" type="button" data-action="skill-tree-builder#closeEditor">Close</button>
@@ -130,6 +135,9 @@
                         data-action="change->skill-tree-builder#updateMode"
                     >
                         <option value="existing">Existing skill</option>
+                        {% if skillForm is defined %}
+                            <option value="create">Create skill</option>
+                        {% endif %}
                         <option value="anon">Anonymous skill</option>
                     </select>
                 </label>
@@ -191,6 +199,28 @@
                     </label>
                 </div>
 
+                {% if skillForm is defined %}
+                    <div class="skill-tree-builder__create-form is-hidden" data-skill-tree-builder-target="createFields">
+                        <div class="skill-tree-builder__create-error is-hidden" data-skill-tree-builder-target="createError" role="alert"></div>
+                        {{ form_start(skillForm, {
+                            action: path('admin_skill_create_inline'),
+                            attr: {
+                                'data-turbo': 'false',
+                                'data-controller': 'locale-toggle',
+                                'data-locale-toggle-active-value': 'fr',
+                                'data-skill-tree-builder-target': 'createForm',
+                                'data-action': 'submit->skill-tree-builder#handleCreateSubmit'
+                            }
+                        }) }}
+                            {% include 'admin/skill/_form_fields.html.twig' with {
+                                form: skillForm,
+                                submit_label: 'Create skill',
+                                show_submit: false
+                            } %}
+                        {{ form_end(skillForm) }}
+                    </div>
+                {% endif %}
+
                 <label class="flex flex-col gap-1">
                     Cost
                     <input class="rounded border border-slate-300 px-3 py-2" data-skill-tree-builder-target="costInput" type="number">
@@ -210,4 +240,4 @@
             </div>
         </div>
     </div>
-{{ form_end(form) }}
+</div>

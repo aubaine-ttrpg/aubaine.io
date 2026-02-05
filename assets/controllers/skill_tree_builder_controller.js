@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
+import { generateCsrfHeaders, generateCsrfToken } from './csrf_protection_controller';
 
 export default class extends Controller {
     static targets = [
@@ -6,11 +7,15 @@ export default class extends Controller {
         'links',
         'payload',
         'editor',
+        'editorPanel',
         'modeSelect',
         'skillSearchInput',
         'skillSearchResults',
         'skillSearchHidden',
         'anonFields',
+        'createFields',
+        'createForm',
+        'createError',
         'existingFields',
         'anonCode',
         'anonName',
@@ -37,6 +42,9 @@ export default class extends Controller {
         this.linksSet = new Set();
         this.linkFromKey = null;
         this.activeCell = null;
+        this.createFormSubmitting = false;
+        this.dragState = null;
+        this.dragSuppressClick = false;
         this.skillMap = new Map(
             (this.skillsValue || []).map((skill) => [skill.id, skill])
         );
@@ -59,6 +67,13 @@ export default class extends Controller {
         if (window.ResizeObserver) {
             this.resizeObserver = new ResizeObserver(() => this.drawLinks());
             this.resizeObserver.observe(this.gridTarget);
+        }
+
+        this.pointerDownHandler = (event) => this.handleGridPointerDown(event);
+        this.pointerMoveHandler = (event) => this.handleGridPointerMove(event);
+        this.pointerUpHandler = (event) => this.handleGridPointerUp(event);
+        if (this.hasGridTarget) {
+            this.gridTarget.addEventListener('pointerdown', this.pointerDownHandler);
         }
 
         if (this.hasEditorTarget) {
@@ -102,6 +117,10 @@ export default class extends Controller {
             this.resizeObserver.disconnect();
             this.resizeObserver = null;
         }
+        if (this.hasGridTarget && this.pointerDownHandler) {
+            this.gridTarget.removeEventListener('pointerdown', this.pointerDownHandler);
+        }
+        this.detachDragListeners();
         if (this.printMediaQuery && this.printMediaListener) {
             if (this.printMediaQuery.removeEventListener) {
                 this.printMediaQuery.removeEventListener('change', this.printMediaListener);
@@ -118,6 +137,10 @@ export default class extends Controller {
     }
 
     handleCellClick(event) {
+        if (this.dragSuppressClick) {
+            this.dragSuppressClick = false;
+            return;
+        }
         if (this.readonlyValue) {
             return;
         }
@@ -180,8 +203,23 @@ export default class extends Controller {
     updateMode() {
         const mode = this.modeSelectTarget.value;
         const showExisting = mode === 'existing';
-        this.existingFieldsTarget.classList.toggle('is-hidden', !showExisting);
-        this.anonFieldsTarget.classList.toggle('is-hidden', showExisting);
+        const showAnon = mode === 'anon';
+        const showCreate = mode === 'create';
+        if (this.hasExistingFieldsTarget) {
+            this.existingFieldsTarget.classList.toggle('is-hidden', !showExisting);
+        }
+        if (this.hasAnonFieldsTarget) {
+            this.anonFieldsTarget.classList.toggle('is-hidden', !showAnon);
+        }
+        if (this.hasCreateFieldsTarget) {
+            this.createFieldsTarget.classList.toggle('is-hidden', !showCreate);
+        }
+        if (this.hasEditorPanelTarget) {
+            this.editorPanelTarget.classList.toggle('is-wide', showCreate);
+        }
+        if (!showCreate) {
+            this.clearCreateError();
+        }
         if (!showExisting) {
             this.skillSearchHiddenTarget.value = '';
             this.skillSearchInputTarget.value = '';
@@ -191,21 +229,43 @@ export default class extends Controller {
         }
     }
 
-    saveNode() {
+    async saveNode() {
         if (!this.activeCell) {
             return;
         }
 
         const key = this.getCellKey(this.activeCell);
-        const mode = this.modeSelectTarget.value;
+        let mode = this.modeSelectTarget.value;
         const cost = parseInt(this.costInputTarget.value || '0', 10);
         const isStarter = this.starterInputTarget.checked;
-        const selectedSkillId = this.skillSearchHiddenTarget.value;
-        const selectedMeta =
+        let selectedSkillId = this.skillSearchHiddenTarget.value;
+        let selectedMeta =
             this.selectedSkillMeta ||
             (selectedSkillId ? this.skillMap.get(selectedSkillId) : null);
 
         let node = null;
+        if (mode === 'create') {
+            const createdSkill = await this.createSkillFromForm();
+            if (!createdSkill) {
+                return;
+            }
+
+            this.skillMap.set(createdSkill.id, createdSkill);
+            this.selectedSkillMeta = createdSkill;
+            this.selectedSkillLabel = this.formatSkillLabel(createdSkill);
+            if (this.hasSkillSearchHiddenTarget) {
+                this.skillSearchHiddenTarget.value = createdSkill.id;
+            }
+            if (this.hasSkillSearchInputTarget) {
+                this.skillSearchInputTarget.value = this.selectedSkillLabel;
+            }
+            this.clearSearchResults();
+            selectedSkillId = createdSkill.id;
+            selectedMeta = createdSkill;
+            mode = 'existing';
+            this.modeSelectTarget.value = 'existing';
+            this.updateMode();
+        }
         if (mode === 'existing' && selectedSkillId) {
             node = {
                 row: parseInt(this.activeCell.dataset.row, 10),
@@ -501,6 +561,173 @@ export default class extends Controller {
         };
     }
 
+    handleGridPointerDown(event) {
+        if (this.readonlyValue) {
+            return;
+        }
+        if (event.button !== 0 || event.shiftKey) {
+            return;
+        }
+        const cell = event.target.closest('.grid-test__cell');
+        if (!cell || !this.gridTarget.contains(cell)) {
+            return;
+        }
+        const key = this.getCellKey(cell);
+        if (!this.nodes.has(key)) {
+            return;
+        }
+
+        this.dragState = {
+            originCell: cell,
+            originKey: key,
+            startX: event.clientX,
+            startY: event.clientY,
+            pointerId: event.pointerId,
+            hasMoved: false,
+            overCell: null,
+        };
+
+        cell.setPointerCapture?.(event.pointerId);
+        this.attachDragListeners();
+    }
+
+    handleGridPointerMove(event) {
+        if (!this.dragState || event.pointerId !== this.dragState.pointerId) {
+            return;
+        }
+
+        const dx = event.clientX - this.dragState.startX;
+        const dy = event.clientY - this.dragState.startY;
+        if (!this.dragState.hasMoved && Math.hypot(dx, dy) > 6) {
+            this.dragState.hasMoved = true;
+            this.dragState.originCell.classList.add('is-dragging');
+            this.gridTarget.classList.add('is-dragging');
+        }
+
+        if (!this.dragState.hasMoved) {
+            return;
+        }
+
+        const target = document.elementFromPoint(event.clientX, event.clientY);
+        const cell = target ? target.closest('.grid-test__cell') : null;
+        if (cell && this.gridTarget.contains(cell)) {
+            this.updateDragOverCell(cell);
+        } else {
+            this.updateDragOverCell(null);
+        }
+    }
+
+    handleGridPointerUp(event) {
+        if (!this.dragState || event.pointerId !== this.dragState.pointerId) {
+            return;
+        }
+
+        const { originCell, originKey, overCell, hasMoved } = this.dragState;
+        this.detachDragListeners();
+
+        if (hasMoved) {
+            this.dragSuppressClick = true;
+            window.setTimeout(() => {
+                this.dragSuppressClick = false;
+            }, 0);
+        }
+
+        originCell.classList.remove('is-dragging');
+        this.gridTarget.classList.remove('is-dragging');
+        this.clearDragOverCell();
+
+        if (hasMoved && overCell && overCell !== originCell) {
+            const targetKey = this.getCellKey(overCell);
+            if (!this.nodes.has(targetKey)) {
+                this.moveNode(originKey, targetKey);
+            }
+        }
+
+        this.dragState = null;
+    }
+
+    attachDragListeners() {
+        window.addEventListener('pointermove', this.pointerMoveHandler);
+        window.addEventListener('pointerup', this.pointerUpHandler);
+        window.addEventListener('pointercancel', this.pointerUpHandler);
+    }
+
+    detachDragListeners() {
+        window.removeEventListener('pointermove', this.pointerMoveHandler);
+        window.removeEventListener('pointerup', this.pointerUpHandler);
+        window.removeEventListener('pointercancel', this.pointerUpHandler);
+    }
+
+    updateDragOverCell(cell) {
+        if (this.dragState.overCell === cell) {
+            return;
+        }
+        this.clearDragOverCell();
+        if (!cell) {
+            return;
+        }
+        cell.classList.add('is-drag-over');
+        const key = this.getCellKey(cell);
+        if (this.nodes.has(key)) {
+            cell.classList.add('is-drag-invalid');
+        }
+        this.dragState.overCell = cell;
+    }
+
+    clearDragOverCell() {
+        if (this.dragState && this.dragState.overCell) {
+            this.dragState.overCell.classList.remove('is-drag-over', 'is-drag-invalid');
+            this.dragState.overCell = null;
+        }
+    }
+
+    moveNode(fromKey, toKey) {
+        const node = this.nodes.get(fromKey);
+        if (!node) {
+            return;
+        }
+        const [row, col] = toKey.split('-').map((value) => parseInt(value, 10));
+        node.row = row;
+        node.col = col;
+
+        this.nodes.delete(fromKey);
+        this.nodes.set(toKey, node);
+
+        const fromCell = this.cellIndex.get(fromKey);
+        const toCell = this.cellIndex.get(toKey);
+        if (fromCell) {
+            this.updateCellDisplay(fromCell, null);
+        }
+        if (toCell) {
+            this.updateCellDisplay(toCell, node);
+        }
+
+        if (this.linkFromKey === fromKey) {
+            this.clearLinkSource();
+            this.linkFromKey = toKey;
+            const newSourceCell = this.cellIndex.get(toKey);
+            if (newSourceCell) {
+                newSourceCell.classList.add('is-link-source');
+            }
+        }
+
+        const nextLinks = new Set();
+        for (const linkKey of this.linksSet) {
+            const [a, b] = linkKey.split('|');
+            const newA = a === fromKey ? toKey : a;
+            const newB = b === fromKey ? toKey : b;
+            if (newA === newB) {
+                continue;
+            }
+            nextLinks.add(this.getLinkKey(newA, newB));
+        }
+        this.linksSet = nextLinks;
+
+        this.updatePayload();
+        this.drawLinks();
+        this.setStatus('Node moved.');
+    }
+
     searchSkills() {
         if (this.readonlyValue || !this.hasSearchUrlValue) {
             return;
@@ -581,6 +808,100 @@ export default class extends Controller {
     clearSearchResults() {
         if (this.hasSkillSearchResultsTarget) {
             this.skillSearchResultsTarget.innerHTML = '';
+        }
+    }
+
+    clearCreateError() {
+        if (this.hasCreateErrorTarget) {
+            this.createErrorTarget.textContent = '';
+            this.createErrorTarget.classList.add('is-hidden');
+        }
+    }
+
+    setCreateError(messages) {
+        if (!this.hasCreateErrorTarget) {
+            return;
+        }
+        const list = Array.isArray(messages) ? messages.filter(Boolean) : [messages].filter(Boolean);
+        if (!list.length) {
+            this.clearCreateError();
+            return;
+        }
+
+        this.createErrorTarget.innerHTML = '';
+        if (list.length === 1) {
+            this.createErrorTarget.textContent = list[0];
+        } else {
+            const ul = document.createElement('ul');
+            list.forEach((message) => {
+                const li = document.createElement('li');
+                li.textContent = message;
+                ul.appendChild(li);
+            });
+            this.createErrorTarget.appendChild(ul);
+        }
+        this.createErrorTarget.classList.remove('is-hidden');
+    }
+
+    async handleCreateSubmit(event) {
+        event.preventDefault();
+        if (this.activeCell) {
+            await this.saveNode();
+            return;
+        }
+        await this.createSkillFromForm();
+    }
+
+    async createSkillFromForm() {
+        if (!this.hasCreateFormTarget || this.createFormSubmitting) {
+            return null;
+        }
+
+        const form = this.createFormTarget;
+        const submitButton = form.querySelector('[type="submit"]');
+        this.createFormSubmitting = true;
+        this.clearCreateError();
+        if (submitButton) {
+            submitButton.disabled = true;
+        }
+
+        try {
+            generateCsrfToken(form);
+            const csrfHeaders = generateCsrfHeaders(form);
+            const response = await fetch(form.action, {
+                method: form.method || 'POST',
+                body: new FormData(form),
+                headers: { 'X-Requested-With': 'XMLHttpRequest', ...csrfHeaders },
+                credentials: 'same-origin',
+            });
+            let payload = {};
+            try {
+                payload = await response.json();
+            } catch (error) {
+                payload = {};
+            }
+
+            if (!response.ok || !payload.success) {
+                this.setCreateError(payload.errors || 'Unable to create the skill.');
+                return null;
+            }
+
+            const skill = payload.skill || {};
+            if (!skill.id) {
+                this.setCreateError('Skill created but response was incomplete.');
+                return null;
+            }
+
+            form.reset();
+            return skill;
+        } catch (error) {
+            this.setCreateError('Unable to create the skill.');
+            return null;
+        } finally {
+            this.createFormSubmitting = false;
+            if (submitButton) {
+                submitButton.disabled = false;
+            }
         }
     }
 

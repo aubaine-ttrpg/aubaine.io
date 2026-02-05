@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Enum\Ability;
 use App\Enum\Aptitude;
 use App\Enum\SkillCategory;
+use App\Enum\SkillType;
 use App\Entity\SkillsTranslation;
 use App\Repository\SkillsRepository;
 use DateTimeImmutable;
@@ -47,6 +48,9 @@ class Skills
 
     #[ORM\Column(enumType: SkillCategory::class)]
     private SkillCategory $category = SkillCategory::NONE;
+
+    #[ORM\Column(enumType: SkillType::class)]
+    private SkillType $type = SkillType::ACTION;
 
     #[ORM\Column(enumType: Ability::class)]
     private Ability $ability = Ability::NONE;
@@ -169,6 +173,18 @@ class Skills
     public function setCategory(SkillCategory $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getType(): SkillType
+    {
+        return $this->type;
+    }
+
+    public function setType(SkillType $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

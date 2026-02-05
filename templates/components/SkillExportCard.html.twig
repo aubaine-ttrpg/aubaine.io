@@ -11,6 +11,16 @@
 {% set duration = skill.duration ? skill.duration|trim : '' %}
 {% set energyValue = skill.energy ? skill.energy|trim : '' %}
 {% set tagsLine = this.tagsLine %}
+{% set tagsLineTrimmed = tagsLine|trim %}
+{% set type = skill.type %}
+{% set isAbilityNone = ability == enum('App\\Enum\\Ability').NONE %}
+{% set isPassiveUpgradeEvolution = type in [
+    enum('App\\Enum\\SkillType').PASSIVE,
+    enum('App\\Enum\\SkillType').UPGRADE,
+    enum('App\\Enum\\SkillType').EVOLUTION
+] %}
+{% set hideMeta = isAbilityNone and isPassiveUpgradeEvolution %}
+{% set showMeta = (abilityLabel or aptitudeLabel) and not hideMeta %}
 
 <article class="py-[10px] px-[20px] text-[1rem] text-left text-black font-['Georgia','Times New Roman'] inline-block leading-normal min-w-full">
     {# Skill Name and Meta #}
@@ -20,13 +30,13 @@
         {% endif %}
         
         {% if displayCode %}
-            <span class="font-mono font-light text-gray-500">[{{ skill.code }}]</span>
+            <span class="font-mono font-light text-gray-500 text-[16px]">[{{ skill.code }}]</span>
         {% endif %}
 
         <div class="gap-2 flex flex-row w-full items-center">
             <h1 class="font-semibold [font-variant-caps:small-caps] tracking-wide text-[#EFBF04]">{{ skill.name }}</h1>
             {% if showMeta %}
-                <span class="font-serif font-medium text-[12px] text-white italic bg-[#6D0000] py-[2px] px-1 rounded-sm">
+                <span class="font-serif font-medium text-[16px] text-white italic bg-[#6D0000] py-[2px] px-1 rounded-sm">
                     {{ abilityLabel }}{% if abilityLabel and aptitudeLabel %} / {% endif %}{{ aptitudeLabel }}
                 </span>
             {% endif %}
@@ -34,7 +44,7 @@
     </div>
 
     {# Prerequisites #}
-        <div class="font-serif text-[11px] italic text-gray-800 pb-1">
+        <div class="font-serif text-[16px] italic text-gray-800 pb-1">
             {% if prerequisites or not hideEmptyPrerequisites %}
                 {{ 'skill.label.prerequisites'|trans({}, 'skills', exportLocale) }}:
                 {% if prerequisites %}
@@ -46,7 +56,7 @@
         </div>
 
     {# Skill Details #}
-    <div class="text-[11px] pb-1">
+    <div class="text-[16px] pb-1">
         {% if limitations %}
             <div>
                 <span class="font-semibold">{{ 'skill.label.limitations'|trans({}, 'skills', exportLocale) }}:</span>
@@ -89,12 +99,14 @@
             </div>
         {% endif %}
 
-        <div>
-            <span class="font-semibold">{{ 'skill.label.tags'|trans({}, 'skills', exportLocale) }}:</span>
-            {{ tagsLine }}
-        </div>
+        {% if tagsLineTrimmed %}
+            <div>
+                <span class="font-semibold">{{ 'skill.label.tags'|trans({}, 'skills', exportLocale) }}:</span>
+                {{ tagsLineTrimmed }}
+            </div>
+        {% endif %}
     </div>
 
     {# Description #}
-    <div class="whitespace-pre-line text-[11px] leading-none text-justify">{{ skill.description }}</div>
+    <div class="whitespace-pre-line text-[16px] leading-none text-justify">{{ skill.description }}</div>
 </article>
