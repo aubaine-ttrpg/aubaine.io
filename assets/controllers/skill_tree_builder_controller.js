@@ -503,6 +503,14 @@ export default class extends Controller {
             line.setAttribute('y2', to.y.toString());
             line.setAttribute('class', 'skill-tree-builder__link');
             svg.appendChild(line);
+
+            const core = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            core.setAttribute('x1', from.x.toString());
+            core.setAttribute('y1', from.y.toString());
+            core.setAttribute('x2', to.x.toString());
+            core.setAttribute('y2', to.y.toString());
+            core.setAttribute('class', 'skill-tree-builder__link-core');
+            svg.appendChild(core);
         });
     }
 

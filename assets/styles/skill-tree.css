@@ -12,10 +12,16 @@
     z-index: 1;
 }
 
-/* TODO: Do STROKE BORDER and maybe print without stroke filled so players can fill it */
+/* Connection lines: dark outline + white core for hand-marking when printed */
 .skill-tree-builder__link {
     stroke: #000;
-    stroke-width: 1rem;
+    stroke-width: 2rem;
+    stroke-linecap: round;
+}
+
+.skill-tree-builder__link-core {
+    stroke: #fff;
+    stroke-width: 0.5rem;
     stroke-linecap: round;
 }
 
