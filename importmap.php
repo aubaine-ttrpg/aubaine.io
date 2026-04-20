@@ -25,4 +25,13 @@ return [
     '@symfony/ux-live-component' => [
         'path' => './vendor/symfony/ux-live-component/assets/dist/live_controller.js',
     ],
+    'swup' => [
+        'version' => '4.8.3',
+    ],
+    'delegate-it' => [
+        'version' => '6.3.0',
+    ],
+    'path-to-regexp' => [
+        'version' => '6.3.0',
+    ],
 ];
