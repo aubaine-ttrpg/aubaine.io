@@ -16,6 +16,10 @@ If the user gives you a directive that is **mandatory** ("must", "always", "neve
 
 Otherwise the directive belongs in agent memory or stays inline in the conversation. When unsure, ask the user: *"Is this a rule or a preference?"* before creating a file in `rules/`.
 
+## When you finish a big project
+
+Follow [Rule 08](rules/08-plan-documentation.md). Once every commit of a multi-commit project has landed, write a human-readable plan doc to `plans/NN-speakable-slug.md` summarizing Context, Decisions, Files changed, Commit sequence (with real short hashes), and Verification. Commit it with a `📝` gitmoji. Skip this for small single-intent work.
+
 ## When you commit
 
 Follow [Rule 01](rules/01-commit-convention.md). On top of that rule, because you are an agent making commits on behalf of the user:
