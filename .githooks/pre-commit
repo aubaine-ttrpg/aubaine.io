@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Pre-commit hook — run PHPStan and PHPUnit when the staged diff
+# touches anything PHP-related (src, tests, templates, config,
+# Symfony/PHP manifests, analysis or test configs, env files).
+#
+# Install once per clone:   git config core.hooksPath .githooks
+#
+# Skip the hook for a single commit (emergencies only):
+#     git commit --no-verify
+set -euo pipefail
+
+CHANGED=$(git diff --cached --name-only --diff-filter=ACMR)
+
+# Patterns that affect PHP runtime, analysis, or test outcomes.
+PHP_PATTERN='^(src/|tests/|config/|templates/|migrations/|public/|assets/|.*\.php$|.*\.twig$|composer\.(json|lock)$|phpstan\.(dist\.)?neon$|phpunit\.(dist\.)?xml$|\.env(\.|$))'
+
+if [ -z "$CHANGED" ] || ! echo "$CHANGED" | grep -qE "$PHP_PATTERN"; then
+    echo "→ No PHP-related changes staged. Skipping PHPStan and PHPUnit."
+    exit 0
+fi
+
+echo "→ PHP-related changes staged. Running checks…"
+
+echo "→ PHPStan"
+if ! vendor/bin/phpstan analyse --no-progress; then
+    echo "✗ PHPStan failed. Commit blocked."
+    exit 1
+fi
+
+echo "→ PHPUnit"
+if ! php bin/phpunit; then
+    echo "✗ PHPUnit failed. Commit blocked."
+    exit 1
+fi
+
+echo "✓ PHP checks passed."
