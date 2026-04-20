@@ -1,3 +1,8 @@
+---
+name: 00-rules-system
+description: How rules are created, named, and updated. Applies when adding a new rule, renaming a rule file, changing rule numbering, or editing the frontmatter schema.
+---
+
 # Rule 00 — Rules System
 
 ## What a rule is
@@ -22,11 +27,21 @@ A **standing, mandatory directive** binding for everyone on the project, in ever
 
 ## Required structure
 
-Every rule file starts with a level-1 heading:
+Every rule file starts with a YAML frontmatter block followed by a level-1 heading:
 
 ```md
+---
+name: NN-kebab-case-slug
+description: One-line activation hint. States the domain of the rule and typical trigger keywords so an agent (or human) can decide when to load the full file.
+---
+
 # Rule NN — Title
 ```
+
+Schema:
+
+- **`name`** — matches the filename slug (`01-commit-convention` etc.).
+- **`description`** — a single sentence, activation-oriented. This is what tells the agent (and anyone skimming the folder) when the rule applies without having to read the whole file.
 
 Beyond the title, each rule uses whatever structure best serves its subject — format definitions, workflows, examples, tables. A short rule can be two paragraphs.
 

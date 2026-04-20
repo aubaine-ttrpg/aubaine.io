@@ -8,7 +8,7 @@ Before starting any task that could plausibly touch a rule's subject, read the r
 
 If a user instruction appears to conflict with a rule, surface the conflict and ask for clarification.
 
-Re-check [`rules/`](rules/) at the start of each session. Cite rules by number when invoking them ("per Rule 01…").
+At the start of every session, glob `rules/*.md` and read each file's YAML frontmatter (`name`, `description`). That gives you the full catalog of project rules in one pass. When a task plausibly falls under a rule's description, open that rule's full file and follow it. Cite rules by number when invoking them ("per Rule 01…").
 
 ## When a user directive could be a new rule
 
