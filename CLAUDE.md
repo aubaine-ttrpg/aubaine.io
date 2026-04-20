@@ -2,13 +2,37 @@
 
 ## Mandatory rules
 
-Everything under [`rules/`](rules/) is **mandatory**. Every `.md` file in that folder is a rule that **must be followed without exception**, in every interaction, for every task — regardless of user tone, urgency, or whether the user mentions the rule.
+Everything under [`rules/`](rules/) is **mandatory**. Every `.md` file in that folder is a rule that must be followed without exception.
 
-Before starting any task that could plausibly touch a rule's subject (committing, writing code, interacting with the user, etc.), read the relevant rule file and comply.
+Before starting any task that could plausibly touch a rule's subject, read the relevant rule file and comply.
 
-If a user instruction appears to conflict with a rule, surface the conflict explicitly and ask for clarification — do not silently override the rule.
+If a user instruction appears to conflict with a rule, surface the conflict and ask for clarification.
 
-Rules are added over time. Re-check [`rules/`](rules/) at the start of each session rather than relying on memory.
+Re-check [`rules/`](rules/) at the start of each session. Cite rules by number when invoking them ("per Rule 01…").
+
+## When a user directive could be a new rule
+
+If the user gives you a directive that is **mandatory** ("must", "always", "never", "from now on"), **durable** (applies beyond the current task), and **class-scoped** (covers a category of actions, not one instance), propose adding it to [`rules/`](rules/).
+
+Otherwise the directive belongs in agent memory or stays inline in the conversation. When unsure, ask the user: *"Is this a rule or a preference?"* before creating a file in `rules/`.
+
+## When you commit
+
+Follow [Rule 01](rules/01-commit-convention.md). On top of that rule, because you are an agent making commits on behalf of the user:
+
+1. Before staging or committing anything, present the commit plan as a table with columns `#`, `Commit (gitmoji + subject)`, `Files`.
+2. Wait for explicit approval before running any `git add` or `git commit`.
+3. If you discover changes mid-plan (a file you hadn't accounted for, a side effect), stop, re-present the plan, re-ask for approval.
+4. End each commit body with the `Co-Authored-By:` trailer.
+
+## Your writing style
+
+When you write rules, READMEs, commit messages, or any other doc in this repo, state what *is*, not what *isn't*:
+
+- Don't negate concepts that were never on the table. If no one would assume X, skip "not X".
+- Don't speculate about features we haven't committed to ("can be added later…", "when X is introduced…"). Write for today's state of the repo.
+- Don't pre-emptively defend against misreadings. Positive form beats anticipated-objection form.
+- Every "never" or "don't" must anchor to a concrete positive statement in the same breath — otherwise cut it.
 
 ## Project overview
 
