@@ -5,9 +5,9 @@ description: How technical documentation (the plans/ wiki) is created and mainta
 
 # Rule 08 — Plan Documentation
 
-`plans/` holds the repo's **technical documentation** — the project wiki. Each page explains *why* the codebase looks the way it does: the decisions, the constraints, the rejected alternatives. Diffs cover what changed; git log covers when; plan docs cover **why**.
+`plans/` holds the repo's **human-oriented technical documentation for developers** — the dev wiki. Each page is written for another developer joining the project, or for the same developer six months from now, who needs to understand *why* the codebase looks the way it does: the decisions, the constraints, the rejected alternatives. Diffs cover what changed; git log covers when; plan docs cover **why**.
 
-The folder is named `plans/` (not `docs/`) because `docs/` is reserved for game-content documentation — TTRPG mechanics, math, design concepts.
+The folder is named `plans/` (not `docs/`) because `docs/` is reserved for **game-content documentation** — TTRPG mechanics, math, design concepts — aimed at a different audience (players, GMs, designers).
 
 ## Filename convention
 

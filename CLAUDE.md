@@ -16,9 +16,9 @@ If the user gives you a directive that is **mandatory** ("must", "always", "neve
 
 Otherwise the directive belongs in agent memory or stays inline in the conversation. When unsure, ask the user: *"Is this a rule or a preference?"* before creating a file in `rules/`.
 
-## When you finish a big project
+## Producing technical documentation
 
-Follow [Rule 08](rules/08-plan-documentation.md). Once every commit of a multi-commit project has landed, write a human-readable plan doc to `plans/NN-speakable-slug.md` summarizing Context, Decisions, Files changed, Commit sequence (with real short hashes), and Verification. Commit it with a `📝` gitmoji. Skip this for small single-intent work.
+Follow [Rule 08](rules/08-plan-documentation.md). `plans/` is the repo's human-oriented technical documentation for developers. When a multi-commit project wraps, synthesize the session context — your working plan file, the todo list, the landed diffs, the directives the user gave along the way — into a finished plan doc at `plans/UPPER_SNAKE_CASE.md`. The plan doc is the polished wiki page aimed at the next developer on the project; your working plan and the chat are source material for it, not its format.
 
 ## When you commit
 
