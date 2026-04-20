@@ -1,40 +1,85 @@
 # Aubaine
 
-Web companion for **Aubaine**, a fiction-first tabletop RPG.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?logo=opensourceinitiative&logoColor=white)](LICENSE)
+[![PHP](https://img.shields.io/badge/PHP-%E2%89%A5%208.4-777bb4.svg?logo=php&logoColor=white)](https://www.php.net/)
+[![Symfony](https://img.shields.io/badge/Symfony-8.0-000000.svg?logo=symfony&logoColor=white)](https://symfony.com/)
+[![Twig](https://img.shields.io/badge/Twig-3-0c0c0c.svg?logo=symfony&logoColor=white)](https://twig.symfony.com/)
+[![Tailwind](https://img.shields.io/badge/Tailwind-4.1-38bdf8.svg?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Stimulus](https://img.shields.io/badge/Stimulus-3.2-77e8b9.svg?logo=symfony&logoColor=white)](https://stimulus.hotwired.dev/)
+[![PHPUnit](https://img.shields.io/badge/PHPUnit-13-366488.svg?logo=php&logoColor=white)](https://phpunit.de/)
+[![PHPStan](https://img.shields.io/badge/PHPStan-level%209-2d87a7.svg?logo=php&logoColor=white)](https://phpstan.org/)
 
-This is v2 — a minimal Symfony 8 skeleton. The entire v1 codebase (and the design docs that drove it) was archived under [`_archive/`](_archive/) on 2026-04-20. See [`_archive/README.md`](_archive/README.md) for what's in there and how to salvage specific pieces.
+**Aubaine** is a fiction-first tabletop RPG. This repository hosts the game's web companion — a character and skill tool built on the same principles that drive the game itself: simple, flexible, and narrative-led.
+
+The v1 prototype is archived under [`_archive/`](_archive/) with per-directory READMEs documenting salvageable pieces. The game's design canon lives at [`_archive/docs/`](_archive/docs/).
 
 ## Stack
 
-- Symfony 8, PHP 8.4
-- Twig (server-side templates)
-- Doctrine ORM + SQLite (file in [`db/`](db/))
-- Nothing else yet — additional bundles will be added only when a concrete feature needs them.
+| Layer | Choice |
+|---|---|
+| Language | PHP 8.4 |
+| Framework | Symfony 8 |
+| ORM + DB | Doctrine ORM + SQLite (file at [`db/app.db`](db/)) |
+| Templating | Twig + Twig Components + Live Components |
+| JS | Stimulus (via Symfony StimulusBundle) + Swup for page transitions, all served through AssetMapper |
+| CSS | Tailwind CSS 4 (via `symfonycasts/tailwind-bundle`, standalone binary, no Node) |
+| Tests | PHPUnit 13 (strict mode, random order) |
+| Static analysis | PHPStan level 9 with Symfony + Doctrine + PHPUnit extensions |
+
+## Requirements
+
+- PHP **8.4+**
+- [Composer](https://getcomposer.org/)
+- [Symfony CLI](https://symfony.com/download) — for the local dev server
+- `make` (ships with macOS and most Linux distros)
 
 ## Install
 
 ```bash
 composer install
+make hooks      # install the .githooks/ pre-commit hook
 ```
 
 ## Database
 
-The SQLite file lives at `db/app.db` (gitignored). Create it when you first need it:
+SQLite file lives at `db/app.db` (gitignored):
 
 ```bash
 touch db/app.db
-# or, once entities exist:
-php bin/console doctrine:schema:update --force
+php bin/console doctrine:schema:update --force   # once entities exist
 ```
 
 ## Run
 
 ```bash
-symfony server:start
+make dev        # = symfony server:start
 ```
 
 Then open <http://127.0.0.1:8000/>.
 
-## Design canon
+Compile Tailwind (watch mode) in a second terminal while developing:
 
-See [`_archive/docs/`](_archive/docs/) for the game's principles, resolution framework, system overview, and skill system. Those documents drive everything that gets built here.
+```bash
+php bin/console tailwind:build --watch
+```
+
+## Tests & static analysis
+
+```bash
+make test                              # full PHPUnit suite
+make test CMD="--testsuite Unit"       # one suite (Unit / Integration / Functional)
+make test CMD="--group skill"          # one group
+vendor/bin/phpstan analyse             # PHPStan at level 9
+```
+
+The pre-commit hook (installed by `make hooks`) runs both on every commit that touches PHP-related files. Bypass only in emergencies with `git commit --no-verify`.
+
+## Project docs
+
+- [`rules/`](rules/) — mandatory project rules (commit convention, testing conventions, Doctrine / Twig / Symfony best practices, …). Each rule starts with YAML frontmatter so the catalog is self-describing.
+- [`_archive/docs/`](_archive/docs/) — the game design canon: principles, system overview, resolution framework, skills.
+- [`_archive/README.md`](_archive/README.md) — what's in the v1 archive and how to salvage it.
+
+## License
+
+[MIT](LICENSE) © 2026 Kori-San
