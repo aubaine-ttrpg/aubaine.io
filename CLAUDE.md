@@ -8,7 +8,7 @@ Before starting any task that could plausibly touch a rule's subject, read the r
 
 If a user instruction appears to conflict with a rule, surface the conflict and ask for clarification.
 
-At the start of every session, glob `rules/*.md` and read each file's YAML frontmatter (`name`, `description`). That gives you the full catalog of project rules in one pass. When a task plausibly falls under a rule's description, open that rule's full file and follow it. Cite rules by number when invoking them ("per Rule 01…").
+At the start of every session, glob `rules/*.md` and read each file **in full**. The YAML frontmatter (`name`, `description`) at the top of every rule makes the catalog easy to scan. Cite rules by number when invoking them ("per Rule 01…").
 
 ## When a user directive could be a new rule
 
@@ -18,7 +18,7 @@ Otherwise the directive belongs in agent memory or stays inline in the conversat
 
 ## Producing technical documentation
 
-Follow [Rule 08](rules/08-plan-documentation.md). `plans/` is the repo's human-oriented technical documentation for developers. When a multi-commit project wraps, synthesize the session context — your working plan file, the todo list, the landed diffs, the directives the user gave along the way — into a finished plan doc at `plans/UPPER_SNAKE_CASE.md`. The plan doc is the polished wiki page aimed at the next developer on the project; your working plan and the chat are source material for it, not its format.
+Follow [Rule 08](rules/08-technical-documentation.md). [`docs/`](docs/) is the repo's technical documentation for developers. When a multi-commit project wraps — or any time an architectural decision would be hard to reconstruct from code alone — synthesize the session context (your working plan file, the todo list, the landed diffs, the directives the user gave along the way) into a finished doc page at `docs/UPPER_SNAKE_CASE.md`. The page is the polished reference aimed at the next developer on the project; your working plan and the chat are source material, not the page's format.
 
 ## When you commit
 
