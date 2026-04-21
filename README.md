@@ -11,8 +11,6 @@
 
 **Aubaine** is a fiction-first tabletop RPG. This repository hosts the game's web companion — a character and skill tool built on the same principles that drive the game itself: simple, flexible, and narrative-led.
 
-The v1 prototype is archived under [`_archive/`](_archive/) with per-directory READMEs documenting salvageable pieces. The game's design canon lives at [`_archive/docs/`](_archive/docs/).
-
 ## Stack
 
 | Layer | Choice |
@@ -76,9 +74,9 @@ The pre-commit hook (installed by `make hooks`) runs both on every commit that t
 
 ## Project docs
 
+- [`docs/`](docs/) — technical documentation for developers: architecture, conventions, tooling.
 - [`rules/`](rules/) — mandatory project rules (commit convention, testing conventions, Doctrine / Twig / Symfony best practices, …). Each rule starts with YAML frontmatter so the catalog is self-describing.
-- [`_archive/docs/`](_archive/docs/) — the game design canon: principles, system overview, resolution framework, skills.
-- [`_archive/README.md`](_archive/README.md) — what's in the v1 archive and how to salvage it.
+- [`wiki/`](wiki/) — game-content documentation (TTRPG mechanics, math, design concepts).
 
 ## License
 
