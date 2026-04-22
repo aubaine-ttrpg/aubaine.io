@@ -5,41 +5,41 @@ description: Testing philosophy and layer selection. Applies when deciding wheth
 
 # Rule 05 — Testing Philosophy
 
-Tests exist to encode behavioral contracts. Once a test passes, it guards that behavior for the life of the codebase.
+Tests encode behavioral contracts. Once a test passes, it guards that behavior for the life of the codebase.
 
-## When to write a test
+## What gets a test
 
 - **Behavior** — a function, service method, or endpoint with a non-trivial contract.
-- **Regressions** — a bug is worth a test that pins the fix so it cannot silently reappear.
+- **Regressions** — each fixed bug is pinned by a test so the defect cannot silently reappear.
 - **Edge cases** — empty inputs, overflow, boundary conditions, concurrency, auth failures.
 - **Public contracts** — endpoints returning JSON, commands with documented options, events other code subscribes to.
 
-## When not to write a test
+## What does not
 
-- Framework internals already covered by Symfony/Doctrine upstream tests.
-- Trivial getters, setters, or passthroughs with no logic.
-- Private methods — test the public surface that calls them; if a private method needs direct testing, it's asking to be extracted into its own class.
+- Framework internals already covered by Symfony or Doctrine upstream tests.
+- Trivial getters, setters, and passthroughs with no logic.
+- Private methods. The public surface that calls them is the contract under test; a private method that needs direct coverage is a signal to extract it into its own class.
 
 ## Test layers
 
-Three layers, in order of cost. Start as low as possible.
+Three layers, in order of cost. Tests live at the lowest layer that can express their contract.
 
-| Layer | Base class | Boots kernel | Touches DB | Use when |
+| Layer | Base class | Boots kernel | Touches DB | Scope |
 |---|---|---|---|---|
-| **Unit** | `TestCase` | no | no | Pure logic with stubs or real collaborators cheap to build |
-| **Integration** | `KernelTestCase` | yes | yes | Container wiring, Doctrine repositories, service interactions that need the real container |
+| **Unit** | `TestCase` | no | no | Pure logic with stubs or cheap real collaborators |
+| **Integration** | `KernelTestCase` | yes | yes | Container wiring, Doctrine repositories, service interactions requiring the real container |
 | **Functional** | `WebTestCase` | yes | yes | Full HTTP cycle — routing, controller, middleware, response |
 
-Pick the **highest layer you can avoid**. A Unit test for pure logic catches the bug in milliseconds; a Functional test for the same thing takes orders of magnitude longer and couples the test to the transport.
+A Unit test for pure logic catches the bug in milliseconds. A Functional test for the same logic takes orders of magnitude longer and couples the contract to the transport.
 
 ## Stability
 
-- **Fix the code, not the test.** A red test means the production code does not match its contract. Do not weaken assertions, raise thresholds, or add exceptions to make a test pass.
-- **Tests change only when the contract changes.** If the behavior is deliberately redesigned, rewrite the test to the new contract. Otherwise leave it alone.
-- **Never delete a test to unblock a merge.** A test that blocks a merge is doing its job.
-- **Thresholds are calibrated against real UX targets** (Core Web Vitals, TTFB budgets). Raising them to accommodate slow code is hiding a performance regression.
-- **Flaky is a bug.** A test that passes sometimes is not a passing test. Fix the underlying non-determinism — race condition, unordered results, time-dependent logic. Do not retry loops, do not `markTestSkipped` as a shortcut.
+- **Failing tests reveal production bugs.** A red test means the production code no longer matches its contract. Assertions are not weakened, thresholds are not raised, and exceptions are not added to make a test pass.
+- **Tests change only when contracts change.** Deliberate behavioral redesigns rewrite the test to the new contract. Unrelated test changes are out of scope for a feature commit.
+- **Tests are not deleted to unblock a merge.** A test that blocks a merge is doing its job.
+- **Thresholds are calibrated against real UX targets** (Core Web Vitals, TTFB budgets). A threshold raised to accommodate slow code hides a performance regression.
+- **Flakiness is a bug.** A test that passes sometimes is not a passing test. The underlying non-determinism — race conditions, unordered results, time-dependent logic — is fixed at the source. Retry loops and `markTestSkipped` are not remedies.
 
 ## Measurement before optimization
 
-When a test fails on performance grounds, the diagnosis goes into the test message (`sprintf` in the failure message is fine — it is not user output). The test tells you *what* is slow at what volume; you use a profiler to find *why*. Do not tune code against a vibe.
+Performance assertions include a failure message (`sprintf` inside the assertion) that names *what* is slow at what volume. Profiler output identifies *why*. Performance tuning is driven by measurements, not by intuition.

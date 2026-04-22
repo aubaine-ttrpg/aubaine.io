@@ -9,24 +9,24 @@ Mechanics of writing tests that fit this repo. See [Rule 05](05-testing-philosop
 
 ## Layout
 
-Tests mirror `src/` under `tests/{Unit,Integration,Functional}/`:
+The `tests/` tree mirrors `src/` under `tests/{Unit,Integration,Functional}/`:
 
 ```
-src/Service/Skill/Registry.php      →  tests/Unit/Service/Skill/RegistryTest.php
-src/Controller/Admin/SkillController →  tests/Functional/Controller/Admin/SkillControllerTest.php
+src/Service/Skill/Registry.php        →  tests/Unit/Service/Skill/RegistryTest.php
+src/Controller/Admin/SkillController  →  tests/Functional/Controller/Admin/SkillControllerTest.php
 ```
 
-`.gitkeep` files sit in `tests/Unit/`, `tests/Integration/`, `tests/Functional/` so the empty suites track in git from day one.
+`.gitkeep` files sit in `tests/Unit/`, `tests/Integration/`, and `tests/Functional/` so the empty suites remain tracked from day one.
 
 ## Naming
 
 - **Class:** `{ProductionClass}Test` — e.g. `SkillResolver` → `SkillResolverTest`.
-- **Method:** `test{Behavior}` for single-shape tests, or `test{What}_{When}_{Expected}` when the input/state matters (`testResolveSkill_WhenTagUnknown_ReturnsNull`).
-- **DataProvider:** `public static` method returning `iterable`, keyed with readable labels (`yield 'empty input' => [...];`). Labels show up in test output.
+- **Method:** `test{Behavior}` for single-shape tests, or `test{What}_{When}_{Expected}` when input or state matters (`testResolveSkill_WhenTagUnknown_ReturnsNull`).
+- **DataProvider:** `public static` method returning `iterable`, keyed with readable labels (`yield 'empty input' => [...];`). Labels appear in test output.
 
 ## Attributes (PHPUnit 11+)
 
-Use attributes. Annotation-based discovery (`@dataProvider`, `@group`) is not used:
+Discovery uses attributes. Annotation-based discovery (`@dataProvider`, `@group`) is not used:
 
 ```php
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -49,11 +49,11 @@ final class SkillResolverTest extends TestCase
 }
 ```
 
-Every test class carries **at least one domain `#[Group]`** from [Rule 07](07-test-groups.md).
+Every test class carries at least one domain `#[Group]` from [Rule 07](07-test-groups.md).
 
 ## Structure
 
-Use Arrange-Act-Assert, with blank lines between the three blocks when it clarifies:
+Tests follow Arrange-Act-Assert, with blank lines between the three blocks when that aids readability:
 
 ```php
 public function testRejectsBlankName(): void
@@ -72,11 +72,11 @@ public function testRejectsBlankName(): void
 
 ## `setUp()` patterns
 
-- **Real objects when cheap.** An entity with public setters, a value object, a pure-logic service — instantiate it directly.
-- **Stub for fire-and-forget deps.** `createStub(LoggerInterface::class)` when the test does not verify interaction with it.
-- **Stub for expensive or external deps.** `EntityManagerInterface`, HTTP clients, file systems — stubs.
-- **Final classes cannot be stubbed.** PHPUnit throws `ClassIsFinalException`. Instantiate the real class with stubbed constructor dependencies instead.
-- **Store stubs as properties only when tests configure them.** Fire-and-forget stubs stay inline.
+- **Real objects when cheap.** Entities with public setters, value objects, and pure-logic services are instantiated directly.
+- **Stubs for fire-and-forget dependencies.** `createStub(LoggerInterface::class)` when the test does not verify interaction.
+- **Stubs for expensive or external dependencies.** `EntityManagerInterface`, HTTP clients, file systems.
+- **Final classes are not stubbed.** PHPUnit raises `ClassIsFinalException`. The real class is instantiated with stubbed constructor dependencies instead.
+- **Stubs are promoted to properties only when tests configure them.** Fire-and-forget stubs stay inline.
 
 ## Strict mode
 
@@ -88,27 +88,27 @@ public function testRejectsBlankName(): void
 - `beStrictAboutOutputDuringTests="true"`
 - `executionOrder="random"`
 
-Every test must produce zero warnings, zero deprecations, zero stdout output. Tests passing under deterministic order must also pass under random order — setup leakage between tests is a bug.
+Every test produces zero warnings, zero deprecations, and zero stdout output. A test that passes under deterministic order also passes under random order; setup leakage between tests is a bug.
 
-Assertion failure messages (`$this->assertSame($expected, $actual, sprintf('…'))`) are not stdout output and are fine.
+Assertion failure messages (`$this->assertSame($expected, $actual, sprintf('…'))`) are not stdout output and are allowed.
 
 ## Running
 
 ```bash
-make test                             # full suite
+make test                              # full suite
 make test CMD="--testsuite Unit"       # one suite
 make test CMD="--group skill"          # one group
 make test CMD="--filter testResolve"   # one method
 ```
 
-The `test` target calls `php bin/phpunit` directly.
+The `test` target invokes `php bin/phpunit` directly.
 
 ## Performance (when relevant)
 
-For endpoints that hit the database, scalability tests are the contract that guards against N+1 and O(n²) regressions:
+Endpoints that hit the database are guarded by scalability tests that pin the contract against N+1 and O(n²) regressions:
 
-- **Response-time ceilings** — constants aligned with Core Web Vitals: API under 0.5s, page under 1.0s, heavy operation under 3.0s. Every data volume must stay under the same ceiling.
-- **Logarithmic volume tiers** — 0, 1, 10, 100, 1,000, 10,000 rows. Each order of magnitude reveals a different class of failure.
-- **Query-count ratio** — `queries(10_000_rows) / queries(1_row)` must stay at x3 or under. Ratios of x10+ are N+1 symptoms.
+- **Response-time ceilings** — constants aligned with Core Web Vitals: API under 0.5s, page under 1.0s, heavy operation under 3.0s. Every data volume stays under the same ceiling.
+- **Logarithmic volume tiers** — 0, 1, 10, 100, 1,000, 10,000 rows. Each order of magnitude exposes a different class of failure.
+- **Query-count ratio** — `queries(10_000_rows) / queries(1_row)` stays at ×3 or under. Ratios of ×10 or more are N+1 symptoms.
 
-When performance tests enter the repo, add a `tests/PerformanceThresholds.php` constants class and a `tests/Traits/PerformanceTestTrait.php` with reusable assertions — importing the trait methods `as final` (PHP 8.3+) so child classes cannot override the assertion logic.
+When performance tests enter the repo, a `tests/PerformanceThresholds.php` constants class and a `tests/Traits/PerformanceTestTrait.php` with reusable assertions accompany them. The trait methods are imported `as final` (PHP 8.3+) so child classes cannot override assertion logic.

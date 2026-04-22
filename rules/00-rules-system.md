@@ -5,49 +5,48 @@ description: How rules are created, named, and updated. Applies when adding a ne
 
 # Rule 00 — Rules System
 
-## What a rule is
+## Definition
 
-A **standing, mandatory directive** binding for everyone on the project, in every interaction, for every task. A rule:
+A rule is a standing project standard. Each rule:
 
-- Overrides transient preferences, convenience shortcuts, and "just this once" exceptions.
-- Covers a *class* of actions (all commits, all docs, all tests…), not one instance.
-- Remains in force until explicitly superseded by another rule update.
+- Covers a class of actions (all commits, all templates, all tests), not a single instance.
+- Takes precedence over transient preferences and one-off shortcuts.
+- Stays in force until a later rule change supersedes it.
 
-## Where rules live
+## Location
 
-- All rules live as `.md` files in [`/rules/`](.) at repo root.
-- [`/CLAUDE.md`](../CLAUDE.md) declares this folder mandatory.
+Rules live as `.md` files in [`rules/`](.) at the repo root. [`CLAUDE.md`](../CLAUDE.md) declares this folder mandatory.
 
-## Naming and numbering
+## Filename and numbering
 
-- Filename format: **`NN-kebab-case-slug.md`**, where `NN` is a zero-padded two-digit number.
-- **`00-*.md` is reserved for meta-rules** — rules about the rules system itself (this file).
-- Application rules start at **`01`**. Numbers are monotonic and never reused, even after deletion.
-- The slug names *what the rule is*, not its motivation. `01-commit-convention.md` ✓. `01-because-i-hate-messy-commits.md` ✗.
+- Filename format: `NN-kebab-case-slug.md`, with `NN` zero-padded.
+- `00-*.md` is reserved for meta-rules — rules about the rules system itself.
+- Application rules begin at `01`. Numbers are monotonic and never reused.
+- The slug names what the rule covers, not its motivation. `01-commit-convention.md` ✓. `01-clean-history-matters.md` ✗.
 
-## Required structure
+## File structure
 
-Every rule file starts with a YAML frontmatter block followed by a level-1 heading:
+Every rule file opens with a YAML frontmatter block followed by a level-1 heading:
 
 ```md
 ---
 name: NN-kebab-case-slug
-description: One-line activation hint. States the domain of the rule and typical trigger keywords so an agent (or human) can decide when to load the full file.
+description: One activation-oriented sentence stating the domain and typical trigger keywords.
 ---
 
 # Rule NN — Title
 ```
 
-Schema:
+Frontmatter keys:
 
-- **`name`** — matches the filename slug (`01-commit-convention` etc.).
-- **`description`** — a single sentence, activation-oriented. This is what tells the agent (and anyone skimming the folder) when the rule applies without having to read the whole file.
+- `name` — matches the filename slug.
+- `description` — one activation-oriented sentence. The description alone carries enough context to decide whether the rule applies to a given task.
 
-Beyond the title, each rule uses whatever structure best serves its subject — format definitions, workflows, examples, tables. A short rule can be two paragraphs.
+The body is free-form: format definitions, workflows, examples, tables. A short rule can be two paragraphs.
 
-## Updating rules
+## Updating
 
-- Rule updates are changes like any other — they go through the commit convention defined in [Rule 01](01-commit-convention.md).
-- **Rename** with `git mv` so history follows the file.
-- **Never reuse a number.** If a rule is retired, replace its file content with a tombstone: a single paragraph stating the rule is deprecated, when, and which rule (if any) supersedes it. Keep the original number.
-- Significant rule revisions deserve their own commit — do not bundle a rule change with unrelated code changes.
+- Rule changes follow [Rule 01](01-commit-convention.md) like any other commit.
+- Renames use `git mv` so history tracks the file.
+- A retired rule keeps its filename and number. Its body becomes a tombstone: one paragraph stating the rule is deprecated, the date, and the rule (if any) that supersedes it.
+- Each significant rule revision lands in its own commit, separate from unrelated code changes.

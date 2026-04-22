@@ -5,24 +5,24 @@ description: How commits are named, organized, and authored. Applies when creati
 
 # Rule 01 — Commit Convention
 
-## Format
+## Subject format
 
-Every commit subject **must** follow:
+Every commit subject follows:
 
 ```
 <emoji> <Imperative sentence-case subject>
 ```
 
-- Exactly **one** Gitmoji character (not the `:code:` form) followed by a single space.
-- Subject in **sentence case**, imperative voice ("Add…", "Fix…", "Refactor…"), no trailing period.
-- Subject ≤ ~72 characters. Use the body for detail.
-- Optional body: blank line after subject, wrapped ≤72 cols. Explain *why*, not *what* — the diff shows what.
+- Exactly one Gitmoji character (not the `:code:` form), followed by a single space.
+- Subject in sentence case, imperative voice (`Add…`, `Fix…`, `Refactor…`), no trailing period.
+- Subject length ≤ 72 characters. Details belong in the body.
+- Optional body: blank line after the subject, wrapped at ≤ 72 columns. The body explains *why*; the diff already shows *what*.
 
 Reference: <https://gitmoji.dev/>.
 
-### Gitmoji cheatsheet
+## Gitmoji cheatsheet
 
-Pick the emoji matching the **primary intent** of the commit:
+The emoji reflects the commit's primary intent:
 
 | Emoji | Code | When to use |
 |---|---|---|
@@ -34,7 +34,7 @@ Pick the emoji matching the **primary intent** of the commit:
 | 🎨 | `:art:` | Improve code structure or formatting |
 | ⚡️ | `:zap:` | Improve performance |
 | 🚚 | `:truck:` | Move or rename files/resources |
-| 🗃️ | `:card_file_box:` | Database schema/migration changes |
+| 🗃️ | `:card_file_box:` | Database schema or migration changes |
 | 🔧 | `:wrench:` | Config file changes |
 | 🔒 | `:lock:` | Security or secrets |
 | 🙈 | `:see_no_evil:` | Add or update `.gitignore` |
@@ -48,16 +48,17 @@ Pick the emoji matching the **primary intent** of the commit:
 | 💚 | `:green_heart:` | Fix CI build |
 | ✅ | `:white_check_mark:` | Add, update, or pass tests |
 
-For anything not listed here, consult <https://gitmoji.dev/> and pick the closest match.
+For intents not listed here, <https://gitmoji.dev/> is the source of truth; the closest match wins.
 
 ## Commit craft
 
-- Before each commit, check `git status` and `git diff --name-only` to see the **actual** changes.
-- Group changes by **primary intent**. Each group is one commit.
-- Each commit must be **isolated**, **single-responsibility**, and **independently revertible**.
-- **Never bundle unrelated changes** — no tests with features, no refactors with bug fixes, no `.gitignore` tweaks with code changes.
-- Stage files by explicit path.
+- Commits are grouped by primary intent. Each group is one commit.
+- Each commit is isolated, single-responsibility, and independently revertible.
+- Unrelated changes stay in separate commits — tests apart from features, refactors apart from bug fixes, `.gitignore` edits apart from code changes.
+- Files are staged by explicit path. `git status` and `git diff --name-only` confirm the actual change set before staging.
 
-### When a commit would touch multiple intents
+## Splitting coupled changes
 
-Split it. Stage only the files for one intent, commit, stage the next, commit. If the files cannot be cleanly separated because they are genuinely coupled, raise it — that coupling is worth discussing before committing.
+A change set spanning multiple intents is split into one commit per intent, each staged by explicit path.
+
+A change set that resists splitting because it is genuinely coupled is committed as a single unit, with the coupling named in the commit body rather than hidden behind a single emoji.

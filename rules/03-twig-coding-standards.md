@@ -5,11 +5,11 @@ description: Twig coding standards (whitespace, naming, delimiters). Applies whe
 
 # Rule 03 — Twig Coding Standards
 
-Distilled from the upstream standard (<https://twig.symfony.com/doc/3.x/coding_standards.html>). Apply to every `.html.twig` file — including Twig Component and Live Component templates.
+Distilled from the upstream standard (<https://twig.symfony.com/doc/3.x/coding_standards.html>). These conventions govern every `.html.twig` file in the project, including Twig Component and Live Component templates.
 
 ## Whitespace inside delimiters
 
-Exactly one space after `{{`, `{%`, `{#` and before `}}`, `%}`, `#}`, when the content is non-empty.
+Exactly one space after `{{`, `{%`, `{#` and before `}}`, `%}`, `#}`, when the content is non-empty:
 
 ```twig
 {{ user }}
@@ -17,7 +17,7 @@ Exactly one space after `{{`, `{%`, `{#` and before `}}`, `%}`, `#}`, when the c
 {% if user %}{% endif %}
 ```
 
-With whitespace control (`-`), no space between the dash and the delimiter:
+Whitespace-control markers (`-`) sit flush against the delimiter:
 
 ```twig
 {{- user -}}
@@ -27,7 +27,14 @@ With whitespace control (`-`), no space between the dash and the delimiter:
 
 ## Spaces around operators
 
-One space before and after: comparison (`==`, `!=`, `<`, `>`, `>=`, `<=`), math (`+`, `-`, `/`, `*`, `%`, `//`, `**`), logic (`not`, `and`, `or`), concatenation `~`, `is`, `in`, and the ternary `?:`.
+One space before and after:
+
+- Comparison: `==`, `!=`, `<`, `>`, `>=`, `<=`
+- Math: `+`, `-`, `/`, `*`, `%`, `//`, `**`
+- Logic: `not`, `and`, `or`
+- Concatenation: `~`
+- Tests and membership: `is`, `in`
+- Ternary: `?:`
 
 ```twig
 {{ 1 + 2 }}
@@ -44,7 +51,7 @@ One space after `:` in mappings and after `,` in sequences and mappings:
 
 ## No spaces around these
 
-Do not add spaces around: `.`, `|`, `[]`, `..`, parentheses in expressions, string delimiters, or the parentheses of filter/function calls.
+No spaces around `.`, `|`, `[]`, `..`, parentheses in expressions, string delimiters, or the parentheses of filter and function calls:
 
 ```twig
 {{ name|upper|lower }}          {# not name | upper | lower #}
@@ -59,7 +66,7 @@ Do not add spaces around: `.`, `|`, `[]`, `..`, parentheses in expressions, stri
 
 ## Naming
 
-Use `snake_case` for variables, functions, filters, tests, macro argument names, and named arguments — both when calling and when declaring. Applies to names provided by the application and names defined inside templates.
+Variables, functions, filters, tests, macro argument names, and named arguments use `snake_case` — both at the call site and in the declaration. This applies equally to names provided by the application and names defined inside templates:
 
 ```twig
 {% set first_name = 'Fabien' %}
@@ -77,7 +84,7 @@ One space before and after `=` in macro argument defaults:
 {% macro html_input(class = 'input') %}{% endmacro %}
 ```
 
-When calling, use `:` (not `=`) to pass named arguments; one space after the `:`:
+Named arguments are passed with `:` (not `=`), with one space after the `:`:
 
 ```twig
 {{ html_input(class: 'input') }}
@@ -86,7 +93,7 @@ When calling, use `:` (not `=`) to pass named arguments; one space after the `:`
 
 ## Indentation
 
-Indent the contents of tags using the same indentation as the target language of the rendered template (HTML, plain text, etc.):
+Tag contents follow the indentation of the target language (HTML, plain text, etc.):
 
 ```twig
 {% block content %}
@@ -98,8 +105,8 @@ Indent the contents of tags using the same indentation as the target language of
 
 ## File and fragment naming
 
-Per Symfony best practices, template file names use `snake_case.html.twig`. Prefix partial templates (fragments intended for `{% include %}` / `{{ include() }}`) with an underscore: `_user_card.html.twig`, `_form_fields.html.twig`.
+Template file names use `snake_case.html.twig`, per Symfony best practices. Partial templates intended for `{% include %}` or `{{ include() }}` are prefixed with an underscore: `_user_card.html.twig`, `_form_fields.html.twig`.
 
 ## Twig Components
 
-Component class names are `PascalCase` (e.g. `SkillPlate`), invoked as `<twig:SkillPlate …/>`. Component templates still follow the rules above for their body — snake_case variables inside, standard whitespace, etc.
+Component class names are `PascalCase` (e.g. `SkillPlate`) and are invoked as `<twig:SkillPlate …/>`. Component template bodies follow every rule above: `snake_case` variables, standard whitespace, standard delimiter spacing.

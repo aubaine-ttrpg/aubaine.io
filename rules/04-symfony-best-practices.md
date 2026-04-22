@@ -5,67 +5,68 @@ description: Symfony framework best practices. Applies when scaffolding controll
 
 # Rule 04 — Symfony Best Practices
 
-Distilled from the upstream guide (<https://symfony.com/doc/current/best_practices.html>). Apply to every new controller, service, form, template, config file, and asset.
+Distilled from the upstream guide (<https://symfony.com/doc/current/best_practices.html>). These conventions govern every controller, service, form, template, config file, and asset in the project.
 
-## Project creation & layout
+## Project creation and layout
 
-- Use the Symfony binary to create new applications (`symfony new …`) and keep the default directory layout: `src/`, `config/`, `templates/`, `public/`, `tests/`, `migrations/`, `translations/`, `var/`, `vendor/`.
-- Organize application code by PHP namespaces under `App\`. Do not create custom bundles for internal code — bundles are only for genuinely reusable, standalone packages.
+- New applications are created with the Symfony binary (`symfony new …`) and keep the default directory layout: `src/`, `config/`, `templates/`, `public/`, `tests/`, `migrations/`, `translations/`, `var/`, `vendor/`.
+- Application code is organized by PHP namespace under `App\`. Internal code does not live in custom bundles; bundles are reserved for genuinely reusable, standalone packages.
 
 ## Configuration
 
-- **Environment variables** (`.env`, `.env.local`, per-environment overrides) for **infrastructure**: database URL, mailer DSN, Redis host, API endpoints. Values that change per machine and do not change application behavior.
-- **Parameters** in `config/services.yaml` for **application behavior**: feature toggles, defaults, page sizes. Use the `app.` prefix and a short, descriptive name (`app.contents_dir`, `app.items_per_page`).
-- **Symfony secrets** for **sensitive data**: API keys, passwords, signing keys. Never commit raw secrets to `.env`.
-- **PHP constants** in domain classes for values that rarely change and need to be referenced from Twig and entities (`Post::NUMBER_OF_ITEMS`). Constants work everywhere; parameters only work inside the container.
+- **Environment variables** (`.env`, `.env.local`, per-environment overrides) carry **infrastructure**: database URL, mailer DSN, Redis host, API endpoints. These values change per machine without changing application behavior.
+- **Parameters** in `config/services.yaml` carry **application behavior**: feature toggles, defaults, page sizes. Keys use the `app.` prefix and a short descriptive name (`app.contents_dir`, `app.items_per_page`).
+- **Symfony secrets** carry **sensitive data**: API keys, passwords, signing keys. Raw secrets never land in `.env`.
+- **PHP constants** on domain classes carry values that rarely change and need to be referenced from both Twig and entities (`Post::NUMBER_OF_ITEMS`). Constants reach everywhere; parameters are container-scoped.
 
 ## Services
 
-- Enable **autowiring** and **autoconfigure** (on by default in `services.yaml`). Type-hint dependencies; Symfony injects them.
-- Services are **private** by default. Fetching via `$container->get(...)` is an anti-pattern — inject instead.
-- Manual service definitions go in `config/services.yaml` (YAML, not XML or PHP).
+- Autowiring and autoconfigure are enabled (on by default in `services.yaml`). Dependencies are type-hinted and injected.
+- Services are private by default. `$container->get(...)` is an anti-pattern; injection is the single access path.
+- Manual service definitions live in `config/services.yaml` — YAML, not XML or PHP.
 
 ## Doctrine mapping
 
-- Use PHP **attributes** for entity mapping (`#[ORM\Entity]`, `#[ORM\Column]`). Keeps the mapping next to the class. See also [Rule 02](02-doctrine-best-practices.md) for Doctrine specifics.
+- Entity mapping uses PHP attributes (`#[ORM\Entity]`, `#[ORM\Column]`), keeping declaration and configuration in the same file. See [Rule 02](02-doctrine-best-practices.md) for Doctrine specifics.
 
 ## Controllers
 
-- Extend `Symfony\Bundle\FrameworkBundle\Controller\AbstractController`.
-- Use **attributes** for `#[Route]`, caching, and `#[IsGranted]`.
-- Inject services by type-hinting action arguments or the constructor. No `$this->container->get(...)`.
-- Use `EntityValueResolver` for simple route → entity fetches; drop to manual repository calls when the fetch logic gets real.
+- Controllers extend `Symfony\Bundle\FrameworkBundle\Controller\AbstractController`.
+- Routing, caching, and authorization use attributes (`#[Route]`, `#[Cache]`, `#[IsGranted]`).
+- Services are injected via constructor or action arguments. `$this->container->get(...)` is not used.
+- `EntityValueResolver` handles simple route → entity fetches. Manual repository calls take over when the fetch logic becomes non-trivial.
 
 ## Templates
 
-- File names in `snake_case.html.twig`.
-- Prefix partial templates (intended for `include`) with an underscore: `_user_card.html.twig`.
-- Snake_case for variables and template paths. See [Rule 03](03-twig-coding-standards.md) for Twig coding standards inside templates.
+- Template file names use `snake_case.html.twig`.
+- Partial templates intended for `include` are prefixed with an underscore: `_user_card.html.twig`.
+- Variables and template paths use `snake_case`. See [Rule 03](03-twig-coding-standards.md) for Twig coding standards inside templates.
 
 ## Forms
 
 - Every form is a PHP class in `src/Form/` extending `AbstractType`.
-- Do not add submit buttons inside the form class — render them in the template so the same form type can back different actions.
-- Attach **validation constraints on the underlying object** (the entity or DTO), not on form fields. Validation follows the object, not the UI.
-- Single action handles both `GET` (render) and `POST` (process): one route, methods `['GET', 'POST']`, `$form->handleRequest($request)`, branch on `isSubmitted() && isValid()`.
+- Submit buttons are rendered in the template, not declared inside the form class, so one form type can back multiple actions.
+- Validation constraints live on the underlying object (entity or DTO), not on form fields. Validation follows the object, not the UI.
+- A single action handles both `GET` (render) and `POST` (process): one route, methods `['GET', 'POST']`, `$form->handleRequest($request)`, with branching on `isSubmitted() && isValid()`.
 
 ## Internationalization
 
-- XLIFF for translation files; translation keys describe **purpose** (`label.username`), not **location** (`edit_form.label.username`).
+- Translation files use XLIFF.
+- Translation keys describe **purpose** (`label.username`), not **location** (`edit_form.label.username`).
 
 ## Security
 
-- **One firewall** unless you have two genuinely different auth systems and user bases.
-- Password hasher: `auto` — Symfony picks the best available algorithm.
-- Complex authorization: write **voters** (`Symfony\Component\Security\Voter\Voter`), not inline `#[IsGranted]` expressions with three operators.
+- One firewall, unless two genuinely different auth systems and user bases coexist.
+- The password hasher is `auto`, so Symfony selects the best available algorithm.
+- Complex authorization lives in voters (`Symfony\Component\Security\Voter\Voter`), not in `#[IsGranted]` expressions with multi-operator logic.
 
 ## Assets
 
-- **AssetMapper** for CSS, JavaScript, and images. No bundler for the common case. Drop to Webpack Encore only when asset processing genuinely requires it (heavy Sass pipelines, TS compilation, etc.).
+- CSS, JavaScript, and images are handled by AssetMapper. No bundler is used for the common case. Webpack Encore is introduced only when asset processing genuinely requires it (heavy Sass pipelines, TypeScript compilation, and similar).
 
 ## Tests
 
-- Smoke-test every URL with a single `DataProvider`-driven functional test — cheap, catches route/controller wiring regressions across the app.
-- Hard-code URLs in functional tests instead of generating them from route names. When a URL changes and the test fails, you have a signal to add a redirect (which the public needs anyway).
+- Every URL is smoke-tested by a single `DataProvider`-driven functional test that covers route and controller wiring across the app.
+- URLs in functional tests are hard-coded, not generated from route names. A failing test after a URL change is the signal to add a public redirect.
 
 See [Rule 05](05-testing-philosophy.md), [Rule 06](06-test-conventions.md), and [Rule 07](07-test-groups.md) for the full testing setup.
