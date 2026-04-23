@@ -1,45 +1,54 @@
 ---
 name: 08-technical-documentation
-description: How technical documentation is written and maintained in the `docs/` folder. Applies when authoring or updating a dev doc, or when looking up the rationale behind a prior architectural choice.
+description: How technical documentation is written and maintained in the `docs/` folder. Applies when authoring or updating a dev doc, or when looking up how a subsystem is organized.
 ---
 
 # Rule 08 — Technical Documentation
 
-[`docs/`](../docs) holds the repo's technical documentation for developers. Each page is written for another developer joining the project, or for the same developer six months later, who needs to understand *what the codebase looks like* and *why it was built that way*.
+[`docs/`](../docs) holds this repo's **technical documentation for developers**. A page teaches the shape of a part of the codebase: the mental model, where the code lives, how a typical operation flows, and the constraints that would otherwise trip up a newcomer.
+
+The outcome each page aims for: another developer, or the same developer six months later, opens the page cold and walks away knowing how to navigate and extend the subject.
 
 ## Filename convention
 
 - Format: `UPPER_SNAKE_CASE.md` — uppercase words joined by underscores. Same family as `README.md`, `CONTRIBUTING.md`, `LICENSE`.
-- The slug names the **topic** (a noun), not a process or adjective: `FOUNDATION.md`, `STACK.md`, `DATABASE.md`, `AUTH.md` ✓. `COOL_SETUP.md`, `APRIL_WORK.md`, `MY_IDEAS.md` ✗.
-- Every `docs/` directory (the root `docs/` and any future subdirectory) carries a `README.md` summarizing its contents.
+- The slug names the **topic** (a noun), not a process or adjective: `STACK.md`, `TESTING.md`, `FRONTEND.md`, `DATABASE.md` ✓. `APRIL_WORK.md`, `MY_IDEAS.md`, `COOL_SETUP.md` ✗.
+- Every `docs/` directory (the root `docs/` and any future subdirectory) carries a `README.md` that indexes its pages.
 
 ## When a page exists
 
-A doc page is warranted when:
+A page is warranted when a subsystem, workflow, or constraint is non-obvious from the code alone — when reading the source would leave a newcomer with questions the code cannot answer on its own.
 
-- A multi-commit project has shaped the architecture, tooling, conventions, or rule set.
-- A stack-level choice was made (picking an ORM, an asset pipeline, a test runner).
-- A non-obvious constraint shapes the code in ways a newcomer would trip over.
+Single-intent changes do not get a doc page. The commit message carries the rationale there.
 
-Small single-intent changes do not get a doc page — the commit message covers them.
+## What a page does
 
-## Structure
+Each page teaches one topic end-to-end. The structure follows the subject; no single template applies to every page.
 
-Pages are written for a reader landing cold, and favor decisions and rationale over mechanics.
+The ingredients below are useful to draw from. A page uses the ones that clarify its subject and skips the ones that do not.
 
-1. **Overview / Context** — the subject of the page, the problem that shaped it, and the constraints that applied.
-2. **Decisions** — the technical choices that define the topic. Each decision states the choice, the reason, and the alternatives rejected with why they lost.
-3. **Verification** *(when applicable)* — how the setup is confirmed to work (a command, an observation, a test).
-4. **Follow-ups** *(optional)* — open questions, deferred work, lessons for next time.
+- **Purpose** — what the topic is and why it exists in this codebase, in one or two direct sentences.
+- **Mental model** — the vocabulary and relationships that come before any code. Which concepts interact, and how.
+- **File layout** — where the relevant code lives. Directories, key classes, entry points, with links to actual files.
+- **End-to-end flow** — how a typical operation moves through the code, referencing concrete files. A request, a test run, a build, a deploy, a lifecycle event.
+- **Extending it** — where new code goes, which patterns apply, how to follow the grain of the existing design.
+- **Gotchas** — non-obvious constraints, invariants, and surprises that would otherwise cost an hour of investigation.
 
-Out of scope for `docs/`: file-by-file change lists (the diff covers that), commit hashes (the git log covers that), step-by-step how-tos (those belong in `README.md` or code comments), and anything personal to one developer's environment (aliases, editor config, shell setup — that is not the project).
+Rationale and tradeoffs are woven inline where they clarify the *how*. A design choice surfaces in the sentence that explains the mechanism ("mapping uses attributes because declaration and class sit in one file"), not in a separate decision catalog.
+
+## Out of scope for `docs/`
+
+- File-by-file change lists. The diff covers those.
+- Commit hashes, dates, and change history. `git log` covers those.
+- Step-by-step install or setup instructions. Those belong in [`README.md`](../README.md) or code comments.
+- Per-developer environment notes (aliases, editor config, shell tweaks). Those are not the project.
 
 ## Maintenance
 
-Doc pages age. When a prior decision is reversed or superseded, the page is edited in place: a dated note explains what changed and why, and the decision text is revised. The original reasoning remains visible so the history of thinking stays intact.
+Pages age. When a description no longer matches the code, the page is edited in place. When a design choice is reversed, a dated note explains what changed and why, and the surrounding text is revised. The original reasoning remains visible so the history of thinking stays intact.
 
-Doc-page changes are committed with the `📝` gitmoji.
+Doc-page changes are committed with the `📝` gitmoji per [Rule 01](01-commit-convention.md).
 
 ## Starting a new project
 
-[`docs/`](../docs) is the first reference for a new project. Prior pages show how similar problems were reasoned through, what constraints applied, and what was left open.
+[`docs/`](../docs) is the first reference for a new project in this repo. Prior pages show how adjacent subsystems are modeled, what vocabulary is in use, and where in the code to start reading.
