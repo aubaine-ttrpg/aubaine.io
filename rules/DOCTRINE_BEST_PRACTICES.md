@@ -1,9 +1,9 @@
 ---
-name: 02-doctrine-best-practices
+name: DOCTRINE_BEST_PRACTICES
 description: Doctrine ORM best practices. Applies when designing entities, defining relationships, mapping tables, writing queries, configuring cascade or lifecycle events, or adding migrations.
 ---
 
-# Rule 02 — Doctrine ORM Best Practices
+# Doctrine ORM Best Practices
 
 Distilled from the upstream guide (<https://www.doctrine-project.org/projects/doctrine-orm/en/3.6/reference/best-practices.html>). These standards apply to every new entity, repository, migration, and Doctrine config change.
 
@@ -23,7 +23,7 @@ Distilled from the upstream guide (<https://www.doctrine-project.org/projects/do
 ## Mapping
 
 - **One mapping driver, project-wide.** Attributes are the default for new code. Attributes, XML, and YAML are not mixed.
-- **Mapping attributes sit on the entity class.** Declaration and configuration stay in one file, matching the Symfony best-practice guidance in [Rule 04](04-symfony-best-practices.md).
+- **Mapping attributes sit on the entity class.** Declaration and configuration stay in one file, matching the guidance in [symfony best practices](SYMFONY_BEST_PRACTICES.md).
 
 ## Queries, transactions, and persistence
 

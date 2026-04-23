@@ -1,9 +1,9 @@
 ---
-name: 07-test-groups
+name: TEST_GROUPS
 description: Canonical test-group taxonomy (PHPUnit #[Group]). Applies when picking the `#[Group]` attribute for a test class, or when introducing a new domain or concern group.
 ---
 
-# Rule 07 — Test Groups
+# Test Groups
 
 Every test class carries at least one **domain group**. **Concern groups** layer cross-cutting aspects on top.
 
@@ -33,7 +33,7 @@ Cross-cutting. Any test class carries zero or more, in addition to its domain gr
 
 | Group | Scope |
 |---|---|
-| `performance` | Scalability, response-time ceilings, N+1 detection (see [Rule 06](06-test-conventions.md) § Performance) |
+| `performance` | Scalability, response-time ceilings, N+1 detection (see [test conventions](TEST_CONVENTIONS.md) § Performance) |
 | `translation` | Gedmo translatable behavior, multilingual entities, XLIFF catalogs |
 | `security` | Authentication, authorization, voters, CSRF |
 | `regression` | Pins a previously broken behavior; docblock carries the ticket or commit reference |

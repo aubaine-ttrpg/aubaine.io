@@ -1,11 +1,11 @@
 ---
-name: 06-test-conventions
+name: TEST_CONVENTIONS
 description: How tests are written and organized in this repo. Applies when creating a test file, naming test classes and methods, picking attributes, writing setUp, or configuring PHPUnit strict mode.
 ---
 
-# Rule 06 — Test Conventions
+# Test Conventions
 
-Mechanics of writing tests that fit this repo. See [Rule 05](05-testing-philosophy.md) for when to write them and [Rule 07](07-test-groups.md) for the `#[Group]` taxonomy.
+Mechanics of writing tests that fit this repo. See [testing philosophy](TESTING_PHILOSOPHY.md) for when to write them and [test groups](TEST_GROUPS.md) for the `#[Group]` taxonomy.
 
 ## Layout
 
@@ -49,7 +49,7 @@ final class SkillResolverTest extends TestCase
 }
 ```
 
-Every test class carries at least one domain `#[Group]` from [Rule 07](07-test-groups.md).
+Every test class carries at least one domain `#[Group]` from [test groups](TEST_GROUPS.md).
 
 ## Structure
 

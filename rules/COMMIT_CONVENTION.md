@@ -1,9 +1,9 @@
 ---
-name: 01-commit-convention
+name: COMMIT_CONVENTION
 description: How commits are named, organized, and authored. Applies when creating, staging, or committing changes, when grouping work into commits, or when picking a gitmoji.
 ---
 
-# Rule 01 — Commit Convention
+# Commit Convention
 
 ## Subject format
 

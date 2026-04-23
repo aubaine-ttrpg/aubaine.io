@@ -1,9 +1,9 @@
 ---
-name: 05-testing-philosophy
+name: TESTING_PHILOSOPHY
 description: Testing philosophy and layer selection. Applies when deciding whether a behavior is worth testing, which test layer to reach for, or how to keep a test suite stable over time.
 ---
 
-# Rule 05 — Testing Philosophy
+# Testing Philosophy
 
 Tests encode behavioral contracts. Once a test passes, it guards that behavior for the life of the codebase.
 

@@ -1,9 +1,9 @@
 ---
-name: 00-rules-system
-description: How rules are created, named, and updated. Applies when adding a new rule, renaming a rule file, changing rule numbering, or editing the frontmatter schema.
+name: RULES_SYSTEM
+description: How rules are created, named, and updated. Applies when adding a new rule, renaming a rule file, or editing the frontmatter schema.
 ---
 
-# Rule 00 — Rules System
+# Rules System
 
 ## Definition
 
@@ -17,12 +17,10 @@ A rule is a standing project standard. Each rule:
 
 Rules live as `.md` files in [`rules/`](.) at the repo root. [`CLAUDE.md`](../CLAUDE.md) declares this folder mandatory.
 
-## Filename and numbering
+## Filename convention
 
-- Filename format: `NN-kebab-case-slug.md`, with `NN` zero-padded.
-- `00-*.md` is reserved for meta-rules — rules about the rules system itself.
-- Application rules begin at `01`. Numbers are monotonic and never reused.
-- The slug names what the rule covers, not its motivation. `01-commit-convention.md` ✓. `01-clean-history-matters.md` ✗.
+- Filename format: `UPPER_SNAKE_CASE.md` — uppercase words joined by underscores. Same family as `README.md`, `CONTRIBUTING.md`, `LICENSE`.
+- The slug names what the rule covers, not its motivation. `COMMIT_CONVENTION.md` ✓. `CLEAN_HISTORY_MATTERS.md` ✗.
 
 ## File structure
 
@@ -30,11 +28,11 @@ Every rule file opens with a YAML frontmatter block followed by a level-1 headin
 
 ```md
 ---
-name: NN-kebab-case-slug
+name: UPPER_SNAKE_CASE
 description: One activation-oriented sentence stating the domain and typical trigger keywords.
 ---
 
-# Rule NN — Title
+# Title
 ```
 
 Frontmatter keys:
@@ -46,7 +44,7 @@ The body is free-form: format definitions, workflows, examples, tables. A short 
 
 ## Updating
 
-- Rule changes follow [Rule 01](01-commit-convention.md) like any other commit.
+- Rule changes follow the [commit convention](COMMIT_CONVENTION.md) like any other commit.
 - Renames use `git mv` so history tracks the file.
-- A retired rule keeps its filename and number. Its body becomes a tombstone: one paragraph stating the rule is deprecated, the date, and the rule (if any) that supersedes it.
+- A retired rule is deleted from the folder — no tombstone, no placeholder.
 - Each significant rule revision lands in its own commit, separate from unrelated code changes.

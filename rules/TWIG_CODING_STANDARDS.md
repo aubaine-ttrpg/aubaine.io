@@ -1,9 +1,9 @@
 ---
-name: 03-twig-coding-standards
+name: TWIG_CODING_STANDARDS
 description: Twig coding standards (whitespace, naming, delimiters). Applies when writing or editing `.html.twig` templates, Twig components, Live components, or Twig macros.
 ---
 
-# Rule 03 — Twig Coding Standards
+# Twig Coding Standards
 
 Distilled from the upstream standard (<https://twig.symfony.com/doc/3.x/coding_standards.html>). These conventions govern every `.html.twig` file in the project, including Twig Component and Live Component templates.
 

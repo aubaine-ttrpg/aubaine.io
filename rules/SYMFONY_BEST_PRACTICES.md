@@ -1,9 +1,9 @@
 ---
-name: 04-symfony-best-practices
+name: SYMFONY_BEST_PRACTICES
 description: Symfony framework best practices. Applies when scaffolding controllers, services, forms, routing, security, templates, configuration, parameters, translations, tests, or assets.
 ---
 
-# Rule 04 — Symfony Best Practices
+# Symfony Best Practices
 
 Distilled from the upstream guide (<https://symfony.com/doc/current/best_practices.html>). These conventions govern every controller, service, form, template, config file, and asset in the project.
 
@@ -27,7 +27,7 @@ Distilled from the upstream guide (<https://symfony.com/doc/current/best_practic
 
 ## Doctrine mapping
 
-- Entity mapping uses PHP attributes (`#[ORM\Entity]`, `#[ORM\Column]`), keeping declaration and configuration in the same file. See [Rule 02](02-doctrine-best-practices.md) for Doctrine specifics.
+- Entity mapping uses PHP attributes (`#[ORM\Entity]`, `#[ORM\Column]`), keeping declaration and configuration in the same file. See [doctrine best practices](DOCTRINE_BEST_PRACTICES.md) for Doctrine specifics.
 
 ## Controllers
 
@@ -40,7 +40,7 @@ Distilled from the upstream guide (<https://symfony.com/doc/current/best_practic
 
 - Template file names use `snake_case.html.twig`.
 - Partial templates intended for `include` are prefixed with an underscore: `_user_card.html.twig`.
-- Variables and template paths use `snake_case`. See [Rule 03](03-twig-coding-standards.md) for Twig coding standards inside templates.
+- Variables and template paths use `snake_case`. See [twig coding standards](TWIG_CODING_STANDARDS.md) for Twig coding standards inside templates.
 
 ## Forms
 
@@ -69,4 +69,4 @@ Distilled from the upstream guide (<https://symfony.com/doc/current/best_practic
 - Every URL is smoke-tested by a single `DataProvider`-driven functional test that covers route and controller wiring across the app.
 - URLs in functional tests are hard-coded, not generated from route names. A failing test after a URL change is the signal to add a public redirect.
 
-See [Rule 05](05-testing-philosophy.md), [Rule 06](06-test-conventions.md), and [Rule 07](07-test-groups.md) for the full testing setup.
+See [testing philosophy](TESTING_PHILOSOPHY.md), [test conventions](TEST_CONVENTIONS.md), and [test groups](TEST_GROUPS.md) for the full testing setup.
