@@ -1,29 +1,40 @@
-###> symfony/framework-bundle ###
+# ────────────────────────────────────────────────────────────────────────────────
+# 🔒 Secrets & Environment
+# ────────────────────────────────────────────────────────────────────────────────
 /.env.local
 /.env.local.php
 /.env.*.local
 /.env.dev
 /config/secrets/prod/prod.decrypt.private.php
-/public/bundles/
-/var/
-/vendor/
-###< symfony/framework-bundle ###
 
-# SQLite database files (dev-local data, per developer)
+# ────────────────────────────────────────────────────────────────────────────────
+# 🏗️ Symfony Runtime
+# ────────────────────────────────────────────────────────────────────────────────
+/var/
+/public/bundles/
+
+# ────────────────────────────────────────────────────────────────────────────────
+# 📦 Dependencies & Build
+# ────────────────────────────────────────────────────────────────────────────────
+/vendor/
+/public/assets/
+/assets/vendor/
+
+# ────────────────────────────────────────────────────────────────────────────────
+# 🗃️ SQLite Databases
+# ────────────────────────────────────────────────────────────────────────────────
 /db/*.db
 /db/*.db-journal
 /db/*.db-wal
 /db/*.db-shm
 
-###> phpunit/phpunit ###
+# ────────────────────────────────────────────────────────────────────────────────
+# ✅ PHPUnit
+# ────────────────────────────────────────────────────────────────────────────────
 /phpunit.xml
 /.phpunit.cache/
-###< phpunit/phpunit ###
 
-###> symfony/asset-mapper ###
-/public/assets/
-/assets/vendor/
-###< symfony/asset-mapper ###
-
-# Claude Code local overrides (personal permission list, gitignored by convention)
+# ────────────────────────────────────────────────────────────────────────────────
+# 🤖 Claude Code
+# ────────────────────────────────────────────────────────────────────────────────
 /.claude/settings.local.json
