@@ -50,6 +50,20 @@ The emoji reflects the commit's primary intent:
 
 For intents not listed here, <https://gitmoji.dev/> is the source of truth; the closest match wins.
 
+## Project emoji overrides
+
+When a commit's primary files sit in one of these domains, the domain emoji takes precedence over the default intent emoji from the cheatsheet:
+
+| Domain | Emoji | Primary files |
+|---|---|---|
+| Docker | 🐳 | `Dockerfile`, `docker-compose*.yml`, `.dockerignore`, and related container config |
+| AI in development | 🤖 | `CLAUDE.md`, `.claude/` (settings, skills, hooks), and other agent-assistance tooling. Not application code that calls AI APIs — that is regular code. |
+| Rules | 📏 | Files under `rules/` — new, updated, renamed, or retired rule |
+
+Overlapping domains resolve by the **location** of the primary changed file: a rule file about Docker is 📏 (lives in `rules/`), a skill file about git is 🤖 (lives in `.claude/`). The primary changed file decides.
+
+Other intents follow the standard cheatsheet above.
+
 ## Commit craft
 
 - Commits are grouped by primary intent. Each group is one commit.
