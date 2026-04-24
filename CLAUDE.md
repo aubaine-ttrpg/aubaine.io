@@ -1,55 +1,56 @@
-# CLAUDE.md — Project instructions for Claude Code
+# CLAUDE.md — Agent operating contract
 
-## Session start
+## Session start sequence (MANDATORY, IN ORDER)
 
-At the start of every session:
+1. Run `ls rules/*.md` via the Bash tool to enumerate every rule file.
+2. Call the Read tool on every rule file whose description (preloaded by the SessionStart hook, or read from frontmatter) could plausibly apply. When in doubt, Read it. A rule missed costs more than a rule read.
+3. For every skill in the system-provided skills list, call the Skill tool when its description could plausibly apply.
+4. Call AskUserQuestion for every unresolved ambiguity about the task. Unstated assumptions are defects. Extra AskUserQuestion calls are cheaper than wrong guesses.
+5. Stay in plan mode. Call EnterPlanMode before every state change.
 
-1. **Rules.** Glob `rules/*.md` and read each file's YAML frontmatter (`name`, `description`). Load the full body of every rule whose description could plausibly apply to the task at hand. Err toward loading too many — a rule read unnecessarily costs a few tokens; a rule missed can ship an incorrect change.
+## Absolute rules (NEVER violate)
 
-2. **Skills.** Review the available skills list (surfaced by the system). Invoke any skill whose description plausibly applies, via the Skill tool. Same bar: loading a skill that turns out not to fit is cheaper than working without one that would have.
+- NEVER call Edit, Write, NotebookEdit, a state-changing Bash command (`git commit`, `git add`, `rm`, `mv`, `mkdir`, or similar), or any other state-changing tool before the current plan has been approved via ExitPlanMode.
+- NEVER write an inline "## Plan" block in chat as a substitute for EnterPlanMode. Only the EnterPlanMode tool surfaces the plan for approval.
+- NEVER proceed on an unstated assumption. Call AskUserQuestion.
+- NEVER skip a rule that might apply. NEVER skip a skill that might apply.
+- NEVER silently bypass or silently follow a user instruction that conflicts with a rule. Surface the conflict via AskUserQuestion.
 
-3. **Plan mode.** The harness starts each session in plan mode (see [Plans](#plans)). Plan before every state change.
+## Rules (binding)
 
-4. **Ask before assuming.** Surface every ambiguity as a question. The bar is "no unstated assumptions", not "minimum questions to proceed". Extra questions are cheaper than wrong guesses. The user wants you to ask as many question as possible.
-
-## Rules
-
-Everything under [`rules/`](rules/) is mandatory. A rule must be followed without exception. If a user instruction appears to conflict with a rule, surface the conflict and ask for clarification.
-
-Cite rules by name when invoking them ("per COMMIT_CONVENTION…").
+Everything under [`rules/`](rules/) is mandatory and takes precedence over transient preferences. Cite rules by name when invoking them ("per COMMIT_CONVENTION…").
 
 ## Plans
 
-**Always plan.** Plan mode is mandatory for every state change in this repo. Every task that edits a file, writes a new file, renames, deletes, commits, or touches any state outside the current conversation is preceded by an approved plan. Read-only work (research, exploration, explanation) proceeds without a plan once scope is clear.
+- Every state change MUST pass through EnterPlanMode, then Write to the plan file, then ExitPlanMode, then explicit user approval via the plan-mode UI.
+- Read-only work (Read, Glob, Grep, `git status`, `git diff`, `git log`, or any other non-state-changing tool) proceeds without a plan once scope is clear.
+- Scope scales with the change, down to one-line edits. A typo fix still goes through EnterPlanMode; its plan is two lines.
+- When work reveals scope outside the approved plan — a file that also needs touching, a side effect, a renamed function — STOP before the next tool call. Call EnterPlanMode, Write the revised plan, call ExitPlanMode, wait for approval again.
 
-**Always via `EnterPlanMode`, never inline.** An inline `## Plan` block in chat is not plan mode. The user must be able to approve or reject the plan through the plan-mode UI — that only happens when the `EnterPlanMode` tool is called explicitly, followed by writing the plan to the plan file, followed by `ExitPlanMode`. Session start begins in plan mode by default (per `.claude/settings.json`); after any `ExitPlanMode` approval, the agent re-enters via `EnterPlanMode` for the next state change.
+Every plan names:
 
-**Always plan the smallest change.** One-line edits are rarely trivial — a one-line bug fix implies a regression test pinning it, a renamed variable ripples through call sites, a changed constant reshapes how a page renders. Scope scales with the work; a typo fix gets a two-line plan, but it still goes through plan mode.
-
-**Always re-plan on surprise.** When the work reveals something the plan did not cover — a file that also needs touching, a side effect, a renamed function — the agent stops, re-enters plan mode via `EnterPlanMode`, re-presents the revised plan, and waits for approval again.
-
-A plan names:
-
-- The files that will change, and how.
-- The tests or docs that the change implies.
+- The files that will change and how.
+- The tests or docs the change implies.
 - The commits that will be created (gitmoji + subject per commit).
-- Any state change outside the files (git operations, configuration, external calls).
+- Any state change outside the files (git commands, configuration writes, external API calls).
 
-The plan waits for explicit user approval through the plan-mode UI before any edit, Write, commit, or other state change.
+## Commits
 
-Special requirements on plans accumulate here as they emerge.
+Follow [commit convention](rules/COMMIT_CONVENTION.md). On top of that:
 
-## When you commit
-
-Follow [commit convention](rules/COMMIT_CONVENTION.md). On top of that rule, because you are an agent making commits on behalf of the user:
-
-1. Before staging or committing anything, present the commit plan as a table with columns `#`, `Commit (gitmoji + subject)`, `Files`.
-2. Wait for explicit approval before running any `git add` or `git commit`.
-3. If you discover changes mid-plan (a file you hadn't accounted for, a side effect), stop, re-present the plan, re-ask for approval.
+1. Present the commit plan as a markdown table with columns `#`, `Commit (gitmoji + subject)`, `Files` before running `git add`.
+2. WAIT for explicit user approval before running `git add` or `git commit`.
+3. STOP and re-present the plan (per the Plans section above) when mid-commit changes fall outside what was approved.
 4. End each commit body with the `Co-Authored-By:` trailer.
 
 ## Project overview
 
 Aubaine is a fiction-first tabletop RPG. The web companion is a **minimal Symfony 8** app (Twig + Doctrine ORM + SQLite in [`db/`](db/)). The v1 codebase is archived under [`_archive/`](_archive/) with READMEs documenting salvageable pieces; game-content documentation (TTRPG mechanics, math, design concepts) lives at [`wiki/`](wiki/).
 
-Keep the stack minimal — add bundles or tooling only when a concrete feature requires them.
+Keep the stack minimal. Add bundles or tooling only when a concrete feature requires them.
+
+## Reminder
+
+Every state change is preceded by an approved plan (EnterPlanMode → Write plan file → ExitPlanMode → user approval).
+Every ambiguity is resolved by calling AskUserQuestion.
+Every rule under [`rules/`](rules/) is binding.
