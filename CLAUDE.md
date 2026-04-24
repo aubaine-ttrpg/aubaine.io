@@ -1,20 +1,39 @@
 # CLAUDE.md — Project instructions for Claude Code
 
-## Mandatory rules
+## Session start
 
-Everything under [`rules/`](rules/) is **mandatory**. Every `.md` file in that folder is a rule that must be followed without exception.
+At the start of every session:
 
-Before starting any task that could plausibly touch a rule's subject, read the relevant rule file and comply.
+1. **Rules.** Glob `rules/*.md` and read each file's YAML frontmatter (`name`, `description`). Load the full body of every rule whose description could plausibly apply to the task at hand. Err toward loading too many — a rule read unnecessarily costs a few tokens; a rule missed can ship an incorrect change.
 
-If a user instruction appears to conflict with a rule, surface the conflict and ask for clarification.
+2. **Skills.** Review the available skills list (surfaced by the system). Invoke any skill whose description plausibly applies, via the Skill tool. Same bar: loading a skill that turns out not to fit is cheaper than working without one that would have.
 
-At the start of every session, glob `rules/*.md` and read each file **in full**. The YAML frontmatter (`name`, `description`) at the top of every rule makes the catalog easy to scan. Cite rules by name when invoking them ("per commit-convention…").
+3. **Plan mode.** The harness starts each session in plan mode (see [Plans](#plans)). Plan before every state change.
 
-## When a user directive could be a new rule
+4. **Ask before assuming.** Surface every ambiguity as a question. The bar is "no unstated assumptions", not "minimum questions to proceed". Extra questions are cheaper than wrong guesses. The user wants you to ask as many question as possible.
 
-If the user gives you a directive that is **mandatory** ("must", "always", "never", "from now on"), **durable** (applies beyond the current task), and **class-scoped** (covers a category of actions, not one instance), propose adding it to [`rules/`](rules/).
+## Rules
 
-Otherwise the directive belongs in agent memory or stays inline in the conversation. When unsure, ask the user: *"Is this a rule or a preference?"* before creating a file in `rules/`.
+Everything under [`rules/`](rules/) is mandatory. A rule must be followed without exception. If a user instruction appears to conflict with a rule, surface the conflict and ask for clarification.
+
+Cite rules by name when invoking them ("per COMMIT_CONVENTION…").
+
+## Plans
+
+Every session starts in plan mode. Every task that changes state — edits, writes, renames, deletes, commits, external calls — is preceded by an approved plan presented through the plan-mode UI. Read-only work (research, exploration, explanation) can proceed without a plan once the scope of the question is clear.
+
+One-line edits are rarely trivial. A one-line bug fix implies the regression needs a test pinning it; a renamed variable may ripple through call sites; a changed constant may reshape how a page renders. Planning before editing surfaces those follow-ons before they are lost.
+
+A plan names:
+
+- The files that will change, and how.
+- The tests or docs that the change implies.
+- The commits that will be created (gitmoji + subject per commit).
+- Any state change outside the files (git operations, configuration, external calls).
+
+The plan waits for explicit user approval before any edit, Write, commit, or other state change. When the work reveals something the plan did not cover — a file that also needs touching, a side effect — the agent stops, re-presents the plan, and waits again.
+
+Special requirements on plans accumulate here as they emerge.
 
 ## When you commit
 
@@ -25,17 +44,8 @@ Follow [commit convention](rules/COMMIT_CONVENTION.md). On top of that rule, bec
 3. If you discover changes mid-plan (a file you hadn't accounted for, a side effect), stop, re-present the plan, re-ask for approval.
 4. End each commit body with the `Co-Authored-By:` trailer.
 
-## Your writing style
-
-When you write rules, READMEs, commit messages, or any other doc in this repo, state what *is*, not what *isn't*:
-
-- Don't negate concepts that were never on the table. If no one would assume X, skip "not X".
-- Don't speculate about features we haven't committed to ("can be added later…", "when X is introduced…"). Write for today's state of the repo.
-- Don't pre-emptively defend against misreadings. Positive form beats anticipated-objection form.
-- Every "never" or "don't" must anchor to a concrete positive statement in the same breath — otherwise cut it.
-
 ## Project overview
 
-Aubaine is a fiction-first tabletop RPG. The web companion is a **minimal Symfony 8** app (Twig + Doctrine ORM + SQLite in [`db/`](db/)). The v1 codebase is archived under [`_archive/`](_archive/) with READMEs documenting salvageable pieces; the game design canon lives at [`_archive/docs/`](_archive/docs/).
+Aubaine is a fiction-first tabletop RPG. The web companion is a **minimal Symfony 8** app (Twig + Doctrine ORM + SQLite in [`db/`](db/)). The v1 codebase is archived under [`_archive/`](_archive/) with READMEs documenting salvageable pieces; game-content documentation (TTRPG mechanics, math, design concepts) lives at [`wiki/`](wiki/).
 
 Keep the stack minimal — add bundles or tooling only when a concrete feature requires them.
