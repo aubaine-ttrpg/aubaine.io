@@ -26,7 +26,7 @@ One blank line between sections.
 
 - Dividers are `# ` followed by 80 `─` (U+2500 BOX DRAWINGS LIGHT HORIZONTAL) characters — 82 chars total.
 - Same divider above and below every heading.
-- Non-divider content lines inside a section stay ≤ 80 characters total (including the `# ` prefix on prose lines). Long URLs go on their own line within the cap, or use a descriptive pointer when no shorter form exists.
+- Non-divider content lines inside a section stay ≤ 80 characters total (including the `# ` prefix on prose lines). A URL that can't be meaningfully shortened — a deep link with a fragment, a versioned path, a documentation anchor — is exempt; it goes on its own line and may exceed the cap. Shortening is preferred when a shorter form preserves the meaning.
 
 ## Section heading
 
