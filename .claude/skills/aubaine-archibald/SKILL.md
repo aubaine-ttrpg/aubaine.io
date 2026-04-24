@@ -97,7 +97,7 @@ Game-design documentation:
 Documents authored by this skill comply with:
 
 - [rules system](../../../rules/RULES_SYSTEM.md) — rule file format, naming, retirement.
-- [commit convention](../../../rules/COMMIT_CONVENTION.md) — gitmoji + imperative sentence-case subject. Doc-page edits use `📝`; new rule files use `✨`; retired files use `🔥`.
+- [commit convention](../../../rules/COMMIT_CONVENTION.md) — gitmoji + imperative sentence-case subject. Emoji choice, including the project's domain overrides (`📏` for rules, `🤖` for AI-in-dev tooling, `🐳` for Docker), is governed entirely by that rule.
 
 ## Workflows
 
@@ -115,7 +115,7 @@ Documents authored by this skill comply with:
 4. Opening heading: `# Title`.
 5. Body in the `rules/` register: concise project standards. Framework concepts are assumed. Upstream references are linked, not restated, except where restating cements a project-specific choice.
 6. Phrasing leans on the "Prefer" list above: "Use X when…", "Do not do Y…", "Choose A over B when…", "X in this project must…".
-7. Commit subject: `✨ Add <Title> rule` — describing what the rule governs.
+7. Commit subject follows [commit convention](../../../rules/COMMIT_CONVENTION.md), including the rules domain override.
 
 ### New game-design page — `wiki/<TOPIC>.md`
 
@@ -123,13 +123,13 @@ Documents authored by this skill comply with:
 2. Subject-driven structure: one or two sentences of overview, then reference-style content — tables for bands, definition lists for terms, worked examples for resolution.
 3. The game is treated as a fixed system. Mechanics are stated in third person; the GM and players are named by role, not addressed.
 4. [`wiki/README.md`](../../../wiki/README.md) is updated to index the new page when the wiki grows past a single topic.
-5. Commit subject: `📝 Add wiki/<TOPIC>.md — <one-line summary>`.
+5. Commit subject follows [commit convention](../../../rules/COMMIT_CONVENTION.md).
 
 ### Revising an existing file
 
 1. The file is edited in place. Old and new variants do not coexist.
 2. When a prior decision is reversed, a dated note explains what changed and why, and the surrounding text is revised. The original reasoning remains visible so the history of thinking stays intact.
-3. Commit subject: `📝 <Imperative sentence-case>` describing the change.
+3. Commit subject follows [commit convention](../../../rules/COMMIT_CONVENTION.md), including any applicable domain override.
 
 ### README files
 
