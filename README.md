@@ -13,16 +13,18 @@
 
 ## Stack
 
-| Layer | Choice |
-|---|---|
-| Language | PHP 8.4 |
-| Framework | Symfony 8 |
-| ORM + DB | Doctrine ORM + SQLite (file at [`db/app.db`](db/)) |
-| Templating | Twig + Twig Components + Live Components |
-| JS | Stimulus (via Symfony StimulusBundle) + Swup for page transitions, all served through AssetMapper |
-| CSS | Tailwind CSS 4 (via `symfonycasts/tailwind-bundle`, standalone binary, no Node) |
-| Tests | PHPUnit 13 (strict mode, random order) |
-| Static analysis | PHPStan level 9 with Symfony + Doctrine + PHPUnit extensions |
+| Layer | Component | Version |
+|---|---|---|
+| Runtime | PHP | 8.4+ |
+| Framework | Symfony | 8.0.* |
+| ORM | Doctrine ORM | ^3.6 |
+| Database | SQLite (file at [`db/app.db`](db/)) | — |
+| Templates | Twig + Twig Components + Live Components | 3.x |
+| Asset pipeline | Symfony AssetMapper | 8.0.* |
+| JavaScript | Stimulus (via StimulusBundle), Swup | 3.2 / latest |
+| Styles | Tailwind CSS (standalone binary, no Node) | 4.1 |
+| Tests | PHPUnit (strict mode, random order) | 13 |
+| Static analysis | PHPStan + Symfony / Doctrine / PHPUnit extensions | level 9 |
 
 ## Requirements
 
