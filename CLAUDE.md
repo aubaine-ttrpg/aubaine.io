@@ -20,9 +20,13 @@ Cite rules by name when invoking them ("per COMMIT_CONVENTION…").
 
 ## Plans
 
-Every session starts in plan mode. Every task that changes state — edits, writes, renames, deletes, commits, external calls — is preceded by an approved plan presented through the plan-mode UI. Read-only work (research, exploration, explanation) can proceed without a plan once the scope of the question is clear.
+**Always plan.** Plan mode is mandatory for every state change in this repo. Every task that edits a file, writes a new file, renames, deletes, commits, or touches any state outside the current conversation is preceded by an approved plan. Read-only work (research, exploration, explanation) proceeds without a plan once scope is clear.
 
-One-line edits are rarely trivial. A one-line bug fix implies the regression needs a test pinning it; a renamed variable may ripple through call sites; a changed constant may reshape how a page renders. Planning before editing surfaces those follow-ons before they are lost.
+**Always via `EnterPlanMode`, never inline.** An inline `## Plan` block in chat is not plan mode. The user must be able to approve or reject the plan through the plan-mode UI — that only happens when the `EnterPlanMode` tool is called explicitly, followed by writing the plan to the plan file, followed by `ExitPlanMode`. Session start begins in plan mode by default (per `.claude/settings.json`); after any `ExitPlanMode` approval, the agent re-enters via `EnterPlanMode` for the next state change.
+
+**Always plan the smallest change.** One-line edits are rarely trivial — a one-line bug fix implies a regression test pinning it, a renamed variable ripples through call sites, a changed constant reshapes how a page renders. Scope scales with the work; a typo fix gets a two-line plan, but it still goes through plan mode.
+
+**Always re-plan on surprise.** When the work reveals something the plan did not cover — a file that also needs touching, a side effect, a renamed function — the agent stops, re-enters plan mode via `EnterPlanMode`, re-presents the revised plan, and waits for approval again.
 
 A plan names:
 
@@ -31,7 +35,7 @@ A plan names:
 - The commits that will be created (gitmoji + subject per commit).
 - Any state change outside the files (git operations, configuration, external calls).
 
-The plan waits for explicit user approval before any edit, Write, commit, or other state change. When the work reveals something the plan did not cover — a file that also needs touching, a side effect — the agent stops, re-presents the plan, and waits again.
+The plan waits for explicit user approval through the plan-mode UI before any edit, Write, commit, or other state change.
 
 Special requirements on plans accumulate here as they emerge.
 
