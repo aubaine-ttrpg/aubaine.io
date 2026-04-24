@@ -93,7 +93,7 @@ A section that carries prose — a preamble, context, or comments annotating ent
 SOME_VAR=value
 ```
 
-A thematic emoji goes on the heading (📖 for readme-style preambles is a natural default). Preamble sections go first in the file. Entry-only sections (no prose inside) skip the closing divider — entries follow directly after the opening block.
+A thematic emoji goes on the heading (📖 for readme-style preambles is a natural default). Preamble sections go first in the file. Entry-only sections (no prose inside) skip the closing divider — entries follow directly after the opening block. A blank `#` line inside a prose block is allowed as a visual separator between paragraphs, or between a lead sentence and a list.
 
 ## Tooling-managed blocks
 
