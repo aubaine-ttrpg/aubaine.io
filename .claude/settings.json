@@ -136,5 +136,18 @@
       "Edit(~/.gnupg/*)"
     ],
     "defaultMode": "plan"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/session-start.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
   }
 }
