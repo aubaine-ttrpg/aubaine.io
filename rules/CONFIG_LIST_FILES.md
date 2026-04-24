@@ -69,6 +69,12 @@ Subjects not in this table pick a thematic emoji matching their content. Consist
   - `.env` / `.env.example`: `KEY=value` lines.
 - No inline comments after entries; if an entry needs context, the section heading carries it.
 
-## Auto-generated sections
+## Informational header sections
 
-Tooling-managed blocks (e.g. Symfony Flex's `###> bundle-name ###` … `###< bundle-name ###` markers in `.gitignore`, or recipe-managed env blocks) are left untouched. The rule applies to hand-authored sections only — Flex needs its markers to add and remove entries when bundles are installed or removed.
+A file can open with an informational preamble — loading order, format notes, links to upstream docs. The preamble uses the same section format as any other group, with its own thematic emoji (📖 for readme-style preamble is a natural default). Informational sections go first in the file.
+
+## Tooling-managed blocks
+
+Tools like Symfony Flex use `###> bundle-name ###` … `###< bundle-name ###` markers to auto-add and auto-remove entries when bundles are installed or removed. These blocks are replaced with the section format like any other group.
+
+When `composer require` or a Flex recipe adds a new `###> … ###` block to a file, the block is promoted in the same commit that introduces the dependency: the markers are removed, the entries gain a divider + emoji heading, and related entries are regrouped thematically (Flex's per-bundle split is not preserved). Auto-management by the recipe ends there — entries in a promoted section are maintained manually from that point. The trade-off is deliberate: visual consistency across the file outweighs recipe auto-management.
