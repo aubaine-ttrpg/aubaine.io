@@ -74,7 +74,6 @@ The pre-commit hook (installed by `make hooks`) runs both on every commit that t
 
 ## Project docs
 
-- [`docs/`](docs/) — technical documentation for developers: architecture, conventions, tooling.
 - [`rules/`](rules/) — mandatory project rules (commit convention, testing conventions, Doctrine / Twig / Symfony best practices, …). Each rule starts with YAML frontmatter so the catalog is self-describing.
 - [`wiki/`](wiki/) — game-content documentation (TTRPG mechanics, math, design concepts).
 
