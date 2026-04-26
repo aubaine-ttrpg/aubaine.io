@@ -1,9 +1,9 @@
 ---
-name: TEST_CONVENTIONS
-description: How tests are written and organized in this repo. Applies when creating a test file, naming test classes and methods, picking attributes, writing setUp, or configuring PHPUnit strict mode.
+name: PHP_TESTING
+description: PHPUnit conventions for PHP tests under tests/{Unit,Integration,Functional}/ — class and method naming ({ProductionClass}Test, test{Behavior}), attribute-based discovery (#[DataProvider], #[Group]), setUp() patterns (real objects when cheap, createStub() for external dependencies, no stubs for final classes), strict mode (failOnDeprecation, failOnWarning, failOnNotice, random execution order), performance tests (response-time ceilings, logarithmic volume tiers, query-count ratios for N+1). Applies when writing or editing a `.php` test file, configuring `phpunit.dist.xml`, or adding a regression or performance test.
 ---
 
-# Test Conventions
+# PHP Testing
 
 Mechanics of writing tests that fit this repo. See [testing philosophy](TESTING_PHILOSOPHY.md) for when to write them and [test groups](TEST_GROUPS.md) for the `#[Group]` taxonomy.
 

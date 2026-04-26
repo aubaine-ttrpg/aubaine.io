@@ -1,9 +1,9 @@
 ---
-name: TEST_GROUPS
-description: Canonical test-group taxonomy (PHPUnit #[Group]). Applies when picking the `#[Group]` attribute for a test class, or when introducing a new domain or concern group.
+name: PHP_TEST_GROUPS
+description: Canonical PHPUnit #[Group] taxonomy for PHP tests — domain groups (skill, skill-tree, tag, character, resolution) and concern groups (performance, translation, security, regression, api). Group names are lowercase kebab-case; one test class carries one domain group plus zero or more concern groups. Applies when picking a #[Group] attribute, introducing a new domain or concern, or running `make test --group …`.
 ---
 
-# Test Groups
+# PHP Test Groups
 
 Every test class carries at least one **domain group**. **Concern groups** layer cross-cutting aspects on top.
 
