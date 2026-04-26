@@ -109,7 +109,7 @@ Documents authored by this skill comply with:
    ```yaml
    ---
    name: UPPER_SNAKE_CASE
-   description: One activation-oriented sentence stating the domain and typical trigger keywords.
+   description: Activation-oriented prose enumerating concrete trigger keywords — file globs, framework or library names, attribute or tool names, action verbs. One or two sentences sufficient to match against a task without reading the body.
    ---
    ```
 4. Opening heading: `# Title`.
