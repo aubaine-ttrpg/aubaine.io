@@ -1,11 +1,21 @@
 ---
-name: TWIG_CODING_STANDARDS
-description: Twig coding standards (whitespace, naming, delimiters). Applies when writing or editing `.html.twig` templates, Twig components, Live components, or Twig macros.
+name: FRONTEND_TEMPLATES
+description: Server-side rendered frontend templates — Twig syntax (whitespace inside delimiters, operator spacing, snake_case variables and template paths, named-argument colons), Twig Components (PascalCase class names, `<twig:Component …/>` invocation), Live Components, the SSR-first rendering model (pages render server-side; Stimulus and Live Components add per-component interactivity, no SPA replacement), the props contract (templates receive scalars, value objects, and view-model arrays — not raw entities), and the presentation/domain split (Twig carries presentation logic only). Applies when writing or editing `.html.twig` files, defining or invoking a Twig or Live Component, naming a partial (`_user_card.html.twig`), or writing a macro.
 ---
 
-# Twig Coding Standards
+# Frontend Templates
 
-Distilled from the upstream standard (<https://twig.symfony.com/doc/3.x/coding_standards.html>). These conventions govern every `.html.twig` file in the project, including Twig Component and Live Component templates.
+Pages render server-side. Twig is the rendering path for every view; Twig Components and Live Components build on that base. This rule covers both the editorial conventions (whitespace, naming) and the boundary between what belongs in a template and what stays in PHP.
+
+Syntax conventions distilled from the upstream Twig standard (<https://twig.symfony.com/doc/3.x/coding_standards.html>). They govern every `.html.twig` file in the project, including Twig Component and Live Component templates.
+
+## Rendering
+
+Pages render server-side. Interactive behavior is added per-component through Twig Live Components; client-side navigation does not replace server rendering.
+
+## Presentation and domain
+
+Templates carry presentation logic only. Domain decisions, query building, and state changes stay in PHP. Twig Components receive pre-computed props — scalars, value objects, and view-model arrays — not raw entities.
 
 ## Whitespace inside delimiters
 
