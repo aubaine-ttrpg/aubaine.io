@@ -1,11 +1,11 @@
 ---
-name: SYMFONY_BEST_PRACTICES
-description: Symfony framework best practices. Applies when scaffolding controllers, services, forms, routing, security, templates, configuration, parameters, translations, tests, or assets.
+name: BACKEND_CONVENTIONS
+description: Server-side Symfony conventions — project layout (src/, config/, templates/, public/, tests/, migrations/, translations/, var/), configuration (.env for infrastructure, `app.*` parameters in services.yaml for behavior, Symfony secrets for sensitive data, PHP constants for cross-domain values), services (autowiring, private, stateless, constructor injection), controllers (AbstractController, #[Route], #[IsGranted], EntityValueResolver), forms (AbstractType in src/Form/, validation on the underlying entity or DTO, single GET/POST action), security (single firewall, voters for complex authorization, `auto` password hasher), translations (XLIFF, purpose-keyed), assets (AssetMapper), Doctrine mapping attributes, functional smoke tests. Applies when scaffolding or editing PHP under src/ or YAML/PHP under config/.
 ---
 
-# Symfony Best Practices
+# Backend Conventions
 
-Distilled from the upstream guide (<https://symfony.com/doc/current/best_practices.html>). These conventions govern every controller, service, form, template, config file, and asset in the project.
+Distilled from the upstream guide (<https://symfony.com/doc/current/best_practices.html>). These conventions govern every controller, service, form, config file, and asset in the project.
 
 ## Project creation and layout
 
@@ -24,6 +24,7 @@ Distilled from the upstream guide (<https://symfony.com/doc/current/best_practic
 - Autowiring and autoconfigure are enabled (on by default in `services.yaml`). Dependencies are type-hinted and injected.
 - Services are private by default. `$container->get(...)` is an anti-pattern; injection is the single access path.
 - Manual service definitions live in `config/services.yaml` — YAML, not XML or PHP.
+- Services hold no per-request state. Constructor-injected dependencies are immutable references; request-scoped data flows through method arguments.
 
 ## Doctrine mapping
 
@@ -35,12 +36,6 @@ Distilled from the upstream guide (<https://symfony.com/doc/current/best_practic
 - Routing, caching, and authorization use attributes (`#[Route]`, `#[Cache]`, `#[IsGranted]`).
 - Services are injected via constructor or action arguments. `$this->container->get(...)` is not used.
 - `EntityValueResolver` handles simple route → entity fetches. Manual repository calls take over when the fetch logic becomes non-trivial.
-
-## Templates
-
-- Template file names use `snake_case.html.twig`.
-- Partial templates intended for `include` are prefixed with an underscore: `_user_card.html.twig`.
-- Variables and template paths use `snake_case`. See [twig coding standards](TWIG_CODING_STANDARDS.md) for Twig coding standards inside templates.
 
 ## Forms
 
