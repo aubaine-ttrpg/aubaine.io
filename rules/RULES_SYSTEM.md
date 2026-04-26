@@ -1,6 +1,6 @@
 ---
 name: RULES_SYSTEM
-description: How rules are created, named, and updated. Applies when adding a new rule, renaming a rule file, or editing the frontmatter schema.
+description: How rules under rules/ are defined, named, structured, and retired — UPPER_SNAKE_CASE filename slugs, the YAML frontmatter schema (name, description), description authoring (keyword-rich and activation-oriented), per-rule commit policy (significant revisions in their own commit, gitmoji 📏), `git mv` for renames, retirement without tombstones. Applies when adding, renaming, splitting, or retiring a rule, or when editing the frontmatter schema or description guidance.
 ---
 
 # Rules System
@@ -38,7 +38,7 @@ description: One activation-oriented sentence stating the domain and typical tri
 Frontmatter keys:
 
 - `name` — matches the filename slug.
-- `description` — one activation-oriented sentence. The description alone carries enough context to decide whether the rule applies to a given task.
+- `description` — activation-oriented prose enumerating concrete trigger keywords: file globs the rule governs, framework, library, attribute, or tool names it touches, and action verbs that surface its scope. One or two sentences sufficient. The description alone carries enough context for an agent to decide whether the rule applies; the body is read only once the description matches. The SessionStart hook injects every rule's description as the rules index, so descriptions carry the full discovery surface.
 
 The body is free-form: format definitions, workflows, examples, tables. A short rule can be two paragraphs.
 

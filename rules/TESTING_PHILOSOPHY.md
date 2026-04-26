@@ -1,6 +1,6 @@
 ---
 name: TESTING_PHILOSOPHY
-description: Testing philosophy and layer selection. Applies when deciding whether a behavior is worth testing, which test layer to reach for, or how to keep a test suite stable over time.
+description: Testing philosophy — test-pyramid layer selection (Unit, Integration, Functional, End-to-End), what behaviors warrant a test, when to write a test versus trust the type system, how to keep a suite stable across time, the cost-of-coverage versus cost-of-regression trade-off. Applies when deciding whether a change earns a test, which layer to reach for, how to scope a regression test, or when refactoring an existing suite.
 ---
 
 # Testing Philosophy

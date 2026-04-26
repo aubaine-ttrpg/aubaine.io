@@ -1,6 +1,6 @@
 ---
 name: COMMIT_CONVENTION
-description: How commits are named, organized, and authored. Applies when creating, staging, or committing changes, when grouping work into commits, or when picking a gitmoji.
+description: Commit subject format (gitmoji + imperative sentence-case ≤72 chars), body wrap (≤72 columns), authoring, gitmoji selection (project overrides 📏 for rules/, 🤖 for .claude/, 🐳 for Docker), grouping coupled changes into one commit per primary intent, splitting unrelated changes, the Co-Authored-By trailer. Applies before any `git add` or `git commit`, when staging files, when picking an emoji, or when deciding whether to split a change set.
 ---
 
 # Commit Convention

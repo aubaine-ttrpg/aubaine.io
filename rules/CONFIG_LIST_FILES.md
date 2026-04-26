@@ -1,6 +1,6 @@
 ---
 name: CONFIG_LIST_FILES
-description: Formatting for plain-text config files organized as lists of entries with `#` comments — `.gitignore`, `.dockerignore`, `.env`, `.env.example`, and similar. Applies when creating or editing any such file.
+description: Plain-text list-style config files with `#` comments — `.gitignore`, `.dockerignore`, `.env`, `.env.example`, `.npmignore`, `.eslintignore`, `.prettierignore`, `.editorconfig`, and similar. Covers line-width caps with load-bearing-URL exemptions, prose-block separators (blank `#` lines), tooling-managed-block promotion, blank-line policies. Applies when creating or editing any such file.
 ---
 
 # Config List Files

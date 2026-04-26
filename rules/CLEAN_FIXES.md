@@ -1,6 +1,6 @@
 ---
 name: CLEAN_FIXES
-description: Changes go to the root cause, not around it. Applies when a rule drifts out of sync, a file carries stale content, or a patch would hide the real issue rather than fix it.
+description: Root-cause fixes over workarounds and tombstones. Applies whenever a rule drifts from current code, a file carries stale content, a workaround would hide a real defect, a "deprecated" placeholder lingers, or a comment would explain a violated rule instead of fixing it. Triggers: drift, stale, workaround, hidden defect, silent exception, scope expansion to fix the root cause.
 ---
 
 # Clean Fixes
