@@ -1,11 +1,11 @@
 ---
-name: DOCTRINE_BEST_PRACTICES
-description: Doctrine ORM best practices. Applies when designing entities, defining relationships, mapping tables, writing queries, configuring cascade or lifecycle events, or adding migrations.
+name: DATABASE_AND_ORM
+description: Database and Doctrine ORM standards — entities (single-value primary keys via auto-increment/UUID/ULID, ASCII-only names, no SQL reserved words, collections initialized with ArrayCollection in __construct(), FKs exposed as association objects not ID scalars), associations (unidirectional preferred, cascade reserved for compositions), mapping (PHP attributes only — no XML or YAML mixing), queries (DQL preferred, raw SQL only when DQL cannot express, JOIN FETCH to prevent N+1, fetch=EAGER only when truly unavoidable), transactions and persistence (multi-operation flushes wrapped in explicit transactions, batch flushes), lifecycle events (cross-cutting only — timestamps, audit, soft-delete; no chained event modifications), gedmo extensions (Timestampable for createdAt/updatedAt, Timeable for time-ranged entities), append-only migrations (generated via make:migration, every diff reviewed, never edited after commit). Applies when designing or editing entities, repositories, DQL queries, raw SQL, gedmo trait usage, migrations, or Doctrine configuration.
 ---
 
-# Doctrine ORM Best Practices
+# Database and ORM
 
-Distilled from the upstream guide (<https://www.doctrine-project.org/projects/doctrine-orm/en/3.6/reference/best-practices.html>). These standards apply to every new entity, repository, migration, and Doctrine config change.
+Distilled from the upstream guide (<https://www.doctrine-project.org/projects/doctrine-orm/en/3.6/reference/best-practices.html>). Doctrine is the sole database access path in this project; "database" and "ORM" are treated as one concern. Standards apply to every new entity, repository, migration, query, and Doctrine config change.
 
 ## Entities
 
@@ -27,6 +27,8 @@ Distilled from the upstream guide (<https://www.doctrine-project.org/projects/do
 
 ## Queries, transactions, and persistence
 
+- **Queries use DQL.** Raw SQL is reserved for cases DQL cannot express, not as a shortcut.
+- **N+1 is prevented at the query.** List views use `JOIN FETCH` on collections pulled eagerly; `fetch=EAGER` on a mapping is reserved for associations that are truly unavoidable at hydration time.
 - **Multi-operation flushes run inside an explicit transaction.** Every query already runs inside an implicit transaction; atomic multi-operation flows wrap the whole sequence:
 
     ```php
@@ -47,6 +49,11 @@ Distilled from the upstream guide (<https://www.doctrine-project.org/projects/do
 
 - **Lifecycle events handle cross-cutting concerns** only: timestamps, audit trails, soft-delete. Domain logic lives in services, not in `#[ORM\PrePersist]` callbacks.
 - **Events stay flat.** Events that modify related entities become hard to reason about and expensive to execute. When that coupling is needed, a domain service replaces the chain.
+
+## Time and lifecycle extensions
+
+- **Timestamped entities use `gedmo/doctrine-extensions` Timestampable.** `createdAt` and `updatedAt` are populated by the extension; per-entity timestamp plumbing is not repeated.
+- **Time-ranged entities use Timeable.** Start and end bounds are managed by the extension.
 
 ## Migrations
 
