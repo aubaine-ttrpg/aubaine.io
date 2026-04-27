@@ -29,7 +29,7 @@ Every rule file opens with a YAML frontmatter block followed by a level-1 headin
 ```md
 ---
 name: UPPER_SNAKE_CASE
-description: One activation-oriented sentence stating the domain and typical trigger keywords.
+description: Activation-oriented prose enumerating concrete trigger keywords — file globs, framework or library names, attribute or tool names, action verbs. One or two sentences sufficient.
 ---
 
 # Title
@@ -41,6 +41,10 @@ Frontmatter keys:
 - `description` — activation-oriented prose enumerating concrete trigger keywords: file globs the rule governs, framework, library, attribute, or tool names it touches, and action verbs that surface its scope. One or two sentences sufficient. The description alone carries enough context for an agent to decide whether the rule applies; the body is read only once the description matches. The SessionStart hook injects every rule's description as the rules index, so descriptions carry the full discovery surface.
 
 The body is free-form: format definitions, workflows, examples, tables. A short rule can be two paragraphs.
+
+## Cross-references between rules
+
+Cross-references are repeated where they help. The same link to another rule may appear in multiple files when each one benefits from the pointer; deduplication is not a goal in itself. A reader of one rule does not chase a missing reference because the link "lives in another file".
 
 ## Updating
 
