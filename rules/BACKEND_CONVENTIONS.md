@@ -28,7 +28,7 @@ Distilled from the upstream guide (<https://symfony.com/doc/current/best_practic
 
 ## Doctrine mapping
 
-- Entity mapping uses PHP attributes (`#[ORM\Entity]`, `#[ORM\Column]`), keeping declaration and configuration in the same file. See [doctrine best practices](DOCTRINE_BEST_PRACTICES.md) for Doctrine specifics.
+- Entity mapping uses PHP attributes (`#[ORM\Entity]`, `#[ORM\Column]`), keeping declaration and configuration in the same file. See [database and orm](DATABASE_AND_ORM.md) for Doctrine specifics.
 
 ## Controllers
 
@@ -64,4 +64,4 @@ Distilled from the upstream guide (<https://symfony.com/doc/current/best_practic
 - Every URL is smoke-tested by a single `DataProvider`-driven functional test that covers route and controller wiring across the app.
 - URLs in functional tests are hard-coded, not generated from route names. A failing test after a URL change is the signal to add a public redirect.
 
-See [testing philosophy](TESTING_PHILOSOPHY.md), [test conventions](TEST_CONVENTIONS.md), and [test groups](TEST_GROUPS.md) for the full testing setup.
+See [testing philosophy](TESTING_PHILOSOPHY.md), [PHP testing](PHP_TESTING.md), and [PHP test groups](PHP_TEST_GROUPS.md) for the full testing setup.

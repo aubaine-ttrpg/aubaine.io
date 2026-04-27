@@ -5,7 +5,7 @@ description: PHPUnit conventions for PHP tests under tests/{Unit,Integration,Fun
 
 # PHP Testing
 
-Mechanics of writing tests that fit this repo. See [testing philosophy](TESTING_PHILOSOPHY.md) for when to write them and [test groups](TEST_GROUPS.md) for the `#[Group]` taxonomy.
+Mechanics of writing tests that fit this repo. See [testing philosophy](TESTING_PHILOSOPHY.md) for when to write them and [PHP test groups](PHP_TEST_GROUPS.md) for the `#[Group]` taxonomy.
 
 ## Layout
 
@@ -49,7 +49,7 @@ final class SkillResolverTest extends TestCase
 }
 ```
 
-Every test class carries at least one domain `#[Group]` from [test groups](TEST_GROUPS.md).
+Every test class carries at least one domain `#[Group]` from [PHP test groups](PHP_TEST_GROUPS.md).
 
 ## Structure
 

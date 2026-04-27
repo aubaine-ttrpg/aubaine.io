@@ -33,7 +33,7 @@ Cross-cutting. Any test class carries zero or more, in addition to its domain gr
 
 | Group | Scope |
 |---|---|
-| `performance` | Scalability, response-time ceilings, N+1 detection (see [test conventions](TEST_CONVENTIONS.md) § Performance) |
+| `performance` | Scalability, response-time ceilings, N+1 detection (see [PHP testing](PHP_TESTING.md) § Performance) |
 | `translation` | Gedmo translatable behavior, multilingual entities, XLIFF catalogs |
 | `security` | Authentication, authorization, voters, CSRF |
 | `regression` | Pins a previously broken behavior; docblock carries the ticket or commit reference |

@@ -23,7 +23,7 @@ Distilled from the upstream guide (<https://www.doctrine-project.org/projects/do
 ## Mapping
 
 - **One mapping driver, project-wide.** Attributes are the default for new code. Attributes, XML, and YAML are not mixed.
-- **Mapping attributes sit on the entity class.** Declaration and configuration stay in one file, matching the guidance in [symfony best practices](SYMFONY_BEST_PRACTICES.md).
+- **Mapping attributes sit on the entity class.** Declaration and configuration stay in one file, matching the guidance in [backend conventions](BACKEND_CONVENTIONS.md).
 
 ## Queries, transactions, and persistence
 
