@@ -1,6 +1,0 @@
-{% set icon_path = iconSrc ?? 'https://placehold.co/90?text=?' %}
-{% set submit_label = submit_label ?? 'Save' %}
-
-{{ form_start(form, { attr: { 'data-turbo': 'false', 'data-controller': 'locale-toggle', 'data-locale-toggle-active-value': 'fr' } }) }}
-    {% include 'admin/skill/_form_fields.html.twig' with { form: form, icon_path: icon_path, submit_label: submit_label } %}
-{{ form_end(form) }}

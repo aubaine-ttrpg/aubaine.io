@@ -1,8 +1,0 @@
-workers:
-    # Built-in command that builds and watches front-end assets
-    npm_encore_watch:
-        cmd: ['npx', 'encore', 'dev', '--watch']
-
-http:
-    port: 8000 # Force the port that will be used to run the server
-    use_gzip: true # Toggle GZIP compression
