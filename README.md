@@ -1,4 +1,4 @@
-# Aubaine
+# Aubaine.io
 
 > A fiction-first, progression-oriented tabletop RPG. Free to read, download, and print.
 
