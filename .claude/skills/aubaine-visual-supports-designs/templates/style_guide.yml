@@ -1,0 +1,91 @@
+brand:
+  name: "Untitled TTRPG Visual Support"
+  tone: "specific, table-facing, concise, tactile"
+  avoid_words:
+    - "delve"
+    - "tapestry"
+    - "immersive"
+    - "realm"
+    - "seamlessly"
+    - "unleash"
+
+output_targets:
+  screen_pdf: true
+  accessible_pdf: true
+  printer_pdf: false
+  home_print_pdf: false
+
+production_color:
+  screen_preview_space: "sRGB hex values below"
+  print_conversion: "Use printer ICC/output intent when print is required"
+  body_text_print_black: "100K when exporting CMYK for print"
+  output_intent: "TBD printer ICC profile"
+
+typography:
+  body_font: "Source Serif 4"
+  ui_font: "Source Sans 3"
+  mono_font: "Source Code Pro"
+  body_size_pt: 10.75
+  accessible_body_size_pt: 12.5
+  leading_multiplier: 1.35
+  accessible_leading_multiplier: 1.5
+  line_length_target_chars: "45-75"
+  figure_style: "tabular lining for tables/stat blocks"
+
+colors:
+  # Hex values are for WCAG contrast checking and screen previews.
+  paper: "#F7F1E3"
+  ink: "#171310"
+  accent: "#7A2E1F"
+  accent_dark: "#4B1B12"
+  rule_box_bg: "#EFE4C8"
+  warning_bg: "#F1D6CC"
+  warning_text: "#2A1110"
+
+contrast_pairs:
+  - name: "body on paper"
+    foreground: "#171310"
+    background: "#F7F1E3"
+    min_ratio: 7.0
+  - name: "accent heading on paper"
+    foreground: "#7A2E1F"
+    background: "#F7F1E3"
+    min_ratio: 4.5
+  - name: "rule text on rule box"
+    foreground: "#171310"
+    background: "#EFE4C8"
+    min_ratio: 7.0
+  - name: "warning text on warning box"
+    foreground: "#2A1110"
+    background: "#F1D6CC"
+    min_ratio: 7.0
+
+layout:
+  columns: 2
+  prose_columns: 1
+  table_columns: 2
+  baseline_grid: true
+  running_heads: true
+  repeated_table_headers: true
+  bookmarks_match_headings: true
+  color_is_never_only_signal: true
+
+components:
+  procedure_box:
+    fields: ["trigger", "actor", "steps", "choices", "inputs", "outputs", "example_or_reference"]
+  random_table:
+    first_column: "die range or key"
+    title_pattern: "dice + use case"
+  sheet_or_form:
+    pencil_friendly: true
+    labels_outside_fields: true
+    tab_order_defined: true
+  gm_screen_panel:
+    larger_than_body_text: true
+    one_functional_cluster_per_panel: true
+
+print_defaults:
+  trim_size: "6x9in"
+  bleed: "0.125in"
+  safe_margin_text: "0.5in"
+  export_target: "PDF/X-4 unless printer requires otherwise"

@@ -1,0 +1,22 @@
+assets:
+  - id: "text-original"
+    type: "manuscript"
+    source: "original"
+    owner: ""
+    license: ""
+    required_notice: ""
+    cleared_for_commercial_print: false
+  - id: "font-body"
+    type: "font"
+    source: ""
+    owner: ""
+    license: ""
+    embedding_allowed: "unknown"
+    required_notice: ""
+  - id: "rules-srd"
+    type: "rules text"
+    source: ""
+    owner: ""
+    license: ""
+    required_notice: ""
+    modified: false

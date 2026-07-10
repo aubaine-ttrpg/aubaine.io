@@ -1,0 +1,24 @@
+project:
+  title: "The Bell Under Blackfen"
+  product_type: "zine"
+use_context:
+  primary_use: "GM prep and table reference"
+  digital_use_expected: true
+  physical_use_expected: true
+visual_support_spec:
+  page_or_component_size: "A5"
+  navigation: "headings, TOC if expanded, page references"
+print_spec:
+  print_required: true
+  trim_size: "A5"
+  bleed: "3mm"
+  binding: "saddle_stitch"
+  page_count_target: 24
+exports:
+  screen_pdf:
+    required: true
+  accessible_pdf:
+    required: true
+  printer_pdf:
+    required: true
+    target: "PDF/X-4 unless printer requires otherwise"

@@ -1,0 +1,111 @@
+project:
+  title: "Untitled TTRPG Visual Support"
+  subtitle: ""
+  edition: "draft-0.1"
+  product_type: "book" # book | booklet | zine | adventure | sheet | gm_screen | cards | handout | insert | screen_pdf | accessible_pdf | source_pack
+  audience: "players and GM"
+  system: "system-neutral"
+  compatibility_claim: "none"
+  license_basis: "original" # original | CC-BY | ORC | OGL | SRD | mixed
+  rights_ledger: "rights_ledger.yml"
+
+use_context:
+  primary_use: "learn and reference during tabletop play"
+  reading_modes:
+    - "learning"
+    - "prep"
+    - "table lookup"
+    - "digital reference"
+  physical_use_expected: true
+  digital_use_expected: true
+  annotation_expected: true
+  used_under_time_pressure: true
+
+visual_support_spec:
+  page_or_component_size: "6x9in"
+  expected_pdf_page_size_with_bleed: "6.25x9.25in"
+  grid: "single prose grid + dense reference grid"
+  navigation: "TOC, bookmarks, running heads, page references"
+  component_templates:
+    - "procedure box"
+    - "random table"
+    - "stat/NPC block"
+    - "handout"
+    - "quick reference"
+  art_dependency: "layout must work without art"
+  icon_system: "color + icon + label; never color alone"
+
+print_spec:
+  print_required: false
+  trim_size: "6x9in"
+  bleed: "0.125in"
+  safe_margin_text: "0.5in"
+  binding: "perfect_bound" # saddle_stitch | perfect_bound | case_bound | coil | spiral | loose_leaf | folded | none
+  page_count_target: 96
+  page_count_must_be_multiple_of: 4
+  paper: "printer/platform default"
+  ink: "color" # bw | color | premium_color | offset_cmyk | risograph | home_print
+  print_vendor: "TBD"
+  printer_spec_url: ""
+  crop_marks: false
+
+exports:
+  screen_pdf:
+    required: true
+    bookmarks: true
+    hyperlinks: true
+    page_labels: true
+    searchable_text: true
+  accessible_pdf:
+    required: true
+    tagged: true
+    high_contrast: true
+    alt_text: true
+    reading_order_review: true
+  printer_pdf:
+    required: false
+    target: "PDF/X-4 unless printer requires otherwise"
+    color: "printer ICC/output intent TBD"
+  home_print_pdf:
+    required: false
+    low_ink: true
+    grayscale_safe: true
+  source_package:
+    required: true
+    include_style_guide: true
+    include_rights_ledger: true
+    include_production_notes: true
+
+content:
+  pitch: "One sentence about what this support does at the table."
+  table_use_cases:
+    - "learn the game"
+    - "run a session"
+    - "reference rules during play"
+  must_include:
+    - "core mechanic or support purpose"
+    - "quickstart/use path"
+    - "front matter or ownership notes"
+    - "credits and license"
+  forbidden_ai_tells:
+    - "delve"
+    - "tapestry"
+    - "immersive experience"
+    - "seamlessly blends"
+
+accessibility:
+  minimum_contrast_ratio: 4.5
+  accessible_body_size_pt: 12
+  accessible_version_required: true
+  color_not_only_signal: true
+  real_text_not_images_of_text: true
+  bookmarks_required: true
+  tagged_pdf_goal: true
+
+quality_gates:
+  contrast_check: true
+  manuscript_lint: true
+  export_preflight: true
+  rendered_page_review: true
+  rights_review: true
+  printer_upload_test: false

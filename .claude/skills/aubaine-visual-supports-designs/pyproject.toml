@@ -1,0 +1,13 @@
+[project]
+name = "ttrpg-visual-supports-design-skill"
+version = "1.1.0"
+description = "Reusable skill package for TTRPG visual supports, publication design, PDFs, and print-capable outputs."
+requires-python = ">=3.10"
+dependencies = ["PyYAML>=6.0", "PyMuPDF>=1.23"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
