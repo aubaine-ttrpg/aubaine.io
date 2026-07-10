@@ -11,15 +11,14 @@ It is built to produce table-ready content with no AI tells: direct language, co
 - `docs/no-ai-tells.md` — forbidden phrasing, cleanup rules, and replacement patterns
 - `docs/system-profiles.md` — system-aware guidance for common design families
 - `docs/safety-accessibility.md` — safety, consent, and accessibility practices
-- `templates/` — reusable output structures
 - `checklists/quality-gates.md` — final review gates
-- `examples/` — before/after examples and calibrated outputs
+- `examples/` — before/after examples
 - `bibliography.md` — source map and citations
 - `manifest.json` — package metadata
 
 ## Installation
 
-Use `SKILL.md` as the main skill file. Keep the supporting folders with it so the agent can consult templates, checklists, examples, and references.
+Use `SKILL.md` as the main skill file. Keep the supporting folders with it so the agent can consult the guidance docs, checklists, the style example, and references.
 
 ## Design Goal
 

@@ -1,8 +1,8 @@
 ---
 name: aubaine-content-writer
 author: Aymen Ezzayer
-version: 1.0.0
-last_updated: 2026-07-09
+version: 1.1.0
+last_updated: 2026-07-11
 license: MIT
 description: Create, revise, and quality-check tabletop roleplaying game content that is table-ready, mechanically sound, direct, and free of AI tells.
 ---
@@ -157,7 +157,6 @@ Use these files as internal references:
 - `docs/no-ai-tells.md` for style cleanup
 - `docs/system-profiles.md` for system modes
 - `docs/safety-accessibility.md` for consent and readable presentation
-- `templates/` for output shapes
 - `checklists/quality-gates.md` for final review
-- `examples/` for calibrated style
+- `examples/before-after-ai-tells.md` for calibrated style
 - `bibliography.md` for source map
