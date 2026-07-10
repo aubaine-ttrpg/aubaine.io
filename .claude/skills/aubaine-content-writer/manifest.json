@@ -1,0 +1,39 @@
+{
+  "name": "aubaine-content-writer",
+  "version": "1.0.0",
+  "created": "2026-07-09",
+  "description": "A complete AI skill for creating no-AI-tell, table-ready tabletop roleplaying game content.",
+  "entrypoint": "SKILL.md",
+  "files": [
+    "SKILL.md",
+    "README.md",
+    "docs/best-practices.md",
+    "docs/no-ai-tells.md",
+    "docs/system-profiles.md",
+    "docs/safety-accessibility.md",
+    "checklists/quality-gates.md",
+    "templates/adventure.md",
+    "templates/encounter.md",
+    "templates/npc.md",
+    "templates/monster.md",
+    "templates/location.md",
+    "templates/faction.md",
+    "templates/mystery.md",
+    "templates/dungeon.md",
+    "templates/rules-mechanic.md",
+    "templates/item.md",
+    "templates/random-table.md",
+    "examples/before-after-ai-tells.md",
+    "examples/adventure-example.md",
+    "bibliography.md",
+    "docs/practice-coverage-matrix.md"
+  ],
+  "quality_gates": [
+    "no AI tells",
+    "table-ready",
+    "system-aware",
+    "mechanically complete",
+    "player-agency first",
+    "safe and accessible"
+  ]
+}
