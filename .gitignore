@@ -32,10 +32,12 @@ dist/
 env.*
 
 # ─────────────────────────────────────────────────────────────
-# 🐍 Python (Claude skills tooling)
+# 🐍 Python (codex balancing: graphs, calculus, analysis)
 # ─────────────────────────────────────────────────────────────
 __pycache__/
 .pytest_cache/
+.venv/
+venv/
 *.pyc
 
 # ─────────────────────────────────────────────────────────────

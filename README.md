@@ -8,7 +8,7 @@ This repository is a **monorepo**. The game's data lives in the repo as the sour
 
 | Piece | Stack | Role |
 | --- | --- | --- |
-| **`codex/`** | Markdown | Rules, theory, and calculations, hand-authored as prose. Committed. |
+| **`codex/`** | Markdown + Python | Rules and theory as prose, plus Python for balancing (graphs, calculus). Committed. |
 | **`content/`** | JSON | Structured game data (skills, tags, archetypes, and so on), exported from Catalyst. Committed as the persistent data of record. |
 | **Catalyst** | Symfony | Local-only authoring tool. Edits a local SQLite db, then exports to `content/`. |
 | **Almanach** | Astro | Public static site. CI builds it from `codex/` and `content/`. |
@@ -27,10 +27,10 @@ This repository is a **monorepo**. The game's data lives in the repo as the sour
           ▼  │                                          │
    ═══════════════════ committed to git ═══════════════════
    content/   skills/ · tags/ · archetypes/ · …   (one JSON per entity)
-   codex/     rules and theory (hand-authored Markdown)
+   codex/     rules, theory, and balancing (Markdown + Python)
 ```
 
-1. **The repo is the database.** `codex/` (prose rules and theory) and `content/` (structured game data, one JSON file per entity) are committed and versioned.
+1. **The repo is the database.** `codex/` (rules, theory, and balancing) and `content/` (structured game data, one JSON file per entity) are committed and versioned.
 2. **Catalyst authors it locally.** You edit through a local SQLite db at `apps/catalyst/var/db/$APP_ENV.sqlite`. `catalyst:export` writes the db out to `content/{skills,tags,archetypes,…}`, which you commit. `catalyst:sync` reads `content/` and updates the db.
 3. **CI publishes it.** Astro builds a fast, no-backend static site from the committed `codex/` and `content/`, without Catalyst, PHP, or a database in the pipeline.
 
@@ -38,12 +38,13 @@ The game is **free**. Everything on Almanach is meant to be read online, downloa
 
 ---
 
-## `codex/` (rules and theory)
+## `codex/` (rules, theory, and balancing)
 
-The living rules and theory of Aubaine, authored as plain Markdown. It serves as documentation for developers and AI on the project, and as source content that both apps render.
+The living rules and theory of Aubaine. The prose is plain Markdown, and alongside it live Python scripts that work out game balance through graphs and calculus. It serves as documentation for developers and AI on the project, and as source content that both apps render.
 
-- **Plain Markdown with frontmatter** (not MDX), so both a JS renderer (Astro) and a PHP renderer (Symfony / `league/commonmark`) read it the same way.
-- **Single source of truth for numbers.** Structured values live in `content/`. Codex prose references them instead of restating them, so nothing drifts.
+- **Prose in plain Markdown with frontmatter** (not MDX), so both a JS renderer (Astro) and a PHP renderer (Symfony / `league/commonmark`) read it the same way.
+- **Python for balancing.** Scripts plot progression curves and run the calculus behind the numbers, reading `content/` for real values.
+- **Single source of truth for numbers.** Structured values live in `content/`. Codex prose and scripts reference them instead of restating them, so nothing drifts.
 - Read directly on GitHub, rendered on Almanach, and pulled into books by Catalyst.
 
 ## `content/` (game data)
@@ -70,7 +71,6 @@ A local-only application. It is not deployed publicly, and it is where the game 
 - Create and edit **skills, tags, archetypes, characters, adventures sheets, etc...**.
 - Backed by a **local SQLite db** at `apps/catalyst/var/db/$APP_ENV.sqlite`. The committed `content/` holds the truth.
 - **`catalyst:export`** writes the db out to `content/`. **`catalyst:sync`** reads `content/` and updates the db.
-- **Renders the `codex/`** into finished books.
 
 ## Almanach (Astro, the player site)
 
@@ -89,13 +89,9 @@ A static website built by CI from the committed `codex/` and `content/`.
 aubaine.io/
 ├── apps/
 │   ├── catalyst/     # Symfony, local authoring tool
-│   │   └── var/db/   # $APP_ENV.sqlite, local db (git-ignored)
 │   └── almanach/     # Astro, public static site, built in CI
 ├── content/          # structured game data (committed)
-│   ├── skills/       #   one JSON file per entity
-│   ├── tags/
-│   └── archetypes/   #   …
-├── codex/            # rules and theory, hand-authored Markdown (committed)
+├── codex/            # rules and theory (Markdown) + balancing (Python)  (committed)
 └── docs/             # code and contributor documentation
 ```
 
