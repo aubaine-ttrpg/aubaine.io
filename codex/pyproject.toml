@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aubaine-codex"
+version = "0.1.0"
+description = "Aubaine codex: game mechanics and the balancing lab that derives their numbers."
+requires-python = ">=3.14"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6"]
+plots = ["matplotlib>=3.8"]
+
+# The lab code is run by path and imported via pytest's pythonpath, not installed
+# as a package, so the distribution itself carries no modules.
+[tool.setuptools]
+py-modules = []
+
+[tool.pytest.ini_options]
+pythonpath = ["dice-and-modifiers/lab", "combat-system/lab"]
+testpaths = ["dice-and-modifiers/lab/tests", "combat-system/lab/tests"]
+
+[tool.ruff]
+line-length = 100
