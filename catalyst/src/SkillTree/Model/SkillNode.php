@@ -1,0 +1,53 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\SkillTree\Model;
+
+use App\Design\DomainSet;
+use App\Design\NodeType;
+
+/** One unlockable node of a skill tree. */
+final readonly class SkillNode
+{
+    /**
+     * @param list<string> $linked ids of visual parents; "CORE" points at the tree core
+     * @param list<string> $tags
+     */
+    public function __construct(
+        public string $id,
+        public string $title,
+        public NodeType $type,
+        public int $tier,
+        public DomainSet $domains,
+        public string $description,
+        public ?Position $pos,
+        public array $linked,
+        public ?string $icon,
+        public bool $ultimate,
+        public ?string $activation,
+        public ?string $range,
+        public ?string $duration,
+        public bool $concentration,
+        public ?int $energy,
+        public array $tags,
+        public ?string $evolvesFrom,
+    ) {
+    }
+
+    /** XP cost shown on the nameplate coin: 5 per tier. */
+    public function xp(): int
+    {
+        return 5 * $this->tier;
+    }
+
+    /** Duration line, prefixed per the D&D convention when it needs concentration. */
+    public function durationLine(): ?string
+    {
+        if (null === $this->duration) {
+            return null;
+        }
+
+        return $this->concentration ? 'Concentration · '.$this->duration : $this->duration;
+    }
+}
