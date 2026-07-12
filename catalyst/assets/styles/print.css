@@ -671,11 +671,25 @@ body {
 }
 
 .ability {
-    break-inside: avoid;
     margin-bottom: 22px;
     display: flex;
     flex-direction: column;
     gap: 8px;
+}
+
+/*
+ * The identity block (title, node, stats) is never cut and stays attached to
+ * the start of the description; only the description text may flow across a
+ * column or page break.
+ */
+.ability__hd,
+.ability__body {
+    break-inside: avoid;
+    break-after: avoid;
+}
+
+.ability__desc {
+    break-inside: auto;
 }
 
 .ability__hd {
