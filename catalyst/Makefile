@@ -2,7 +2,7 @@
 # Catalyst (Symfony authoring tool — dev-only, local)
 # ─────────────────────────────────────────────────────────────
 
-.PHONY: help install serve watch build test stan cs fix
+.PHONY: help install dev watch build test stan cs fix
 
 help: ## Show this help.
 	@grep "##" $(MAKEFILE_LIST) | grep -v "grep" | sed 's/:.*##\s*/:@\t/g' | column -t -s "@"
@@ -11,8 +11,8 @@ install: ## Install PHP + JS dependencies and build dev assets.
 	@[ -f composer.json ] && composer install || echo "catalyst: placeholder (no composer.json yet)"
 	@[ -f package.json ] && npm install && npm run dev || true
 
-serve: ## Start the local dev server (http://127.0.0.1:8000).
-	@symfony serve --no-tls 2>/dev/null || php -S 127.0.0.1:8000 -t public
+dev: ## Run the Symfony CLI dev server (http://127.0.0.1:8000).
+	@symfony serve --no-tls
 
 watch: ## Rebuild assets on change.
 	@npm run watch

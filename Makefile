@@ -5,7 +5,7 @@
 # cross-project pipeline. Stack-specific targets live in
 # codex/, catalyst/, and almanach/.
 
-.PHONY: all help md autophony install build build-site preview test lint
+.PHONY: all help md autophony install dev build build-site preview test lint
 
 all: help
 
@@ -28,6 +28,9 @@ install: ## Install every project's dependencies.
 	@$(MAKE) -C codex install
 	@$(MAKE) -C catalyst install
 	@$(MAKE) -C almanach install
+
+dev: ## Run the local dev server(s). Catalyst now; Almanach will join later.
+	@$(MAKE) -C catalyst dev
 
 test: ## Run the codex balancing-lab tests.
 	@$(MAKE) -C codex test
