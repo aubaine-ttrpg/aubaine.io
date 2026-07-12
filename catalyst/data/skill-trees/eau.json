@@ -1,0 +1,250 @@
+{
+  "id": "eau",
+  "name": "Eau",
+  "treeType": "domain",
+  "size": 16,
+  "core": {
+    "label": "Eau",
+    "sublabel": "Domaine",
+    "domains": [
+      "water"
+    ],
+    "pos": {
+      "x": 50,
+      "y": 50.81
+    }
+  },
+  "nodes": [
+    {
+      "id": "DRZZL-01",
+      "title": "Bruine",
+      "type": "active",
+      "tier": 1,
+      "domains": [
+        "water"
+      ],
+      "description": "Vous créez, déplacez, remodelez ou absorbez jusqu'à 5 cm³ d'eau à portée, soit une petite quantité tenant dans la paume de la main, sous forme liquide, solide ou vaporeuse. L'eau créée dure par défaut 1 tour et peut être projetée, condensée, gelée ou vaporisée contre une créature ou un objet pour infliger 1d10 dégâts appropriés à sa forme (Contondants, Tranchants, Perforants, Froids ou autre). Si vous souhaitez la faire durer plus longtemps, elle peut persister jusqu'à 10 minutes, mais elle perd alors sa puissance offensive, jusqu'à devenir inoffensive.",
+      "pos": {
+        "x": 50.21,
+        "y": 37.7
+      },
+      "linked": [
+        "CORE"
+      ],
+      "activation": "1 Action",
+      "range": "9 m",
+      "duration": "Instantanée ou jusqu'à 10 minutes",
+      "energy": 1,
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ]
+    },
+    {
+      "id": "DRZZL-02",
+      "title": "Vague",
+      "type": "evolution",
+      "tier": 3,
+      "domains": [
+        "water"
+      ],
+      "description": "Lorsque vous utilisez Bruine, vous pouvez dépenser jusqu'à 2 Énergies. L'eau manipulée peut atteindre la taille d'une vague tenue entre deux bras ouverts, assez dense pour frapper, geler en lame ou se changer en souffle de vapeur. Ses dégâts de base sont augmentés à un total de 2d10 dégâts appropriés à sa forme.",
+      "pos": {
+        "x": 69.9,
+        "y": 30.41
+      },
+      "linked": [
+        "DRZZL-01"
+      ],
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "DRZZL-01"
+    },
+    {
+      "id": "DRZZL-03",
+      "title": "Torrent",
+      "type": "evolution",
+      "tier": 5,
+      "domains": [
+        "water"
+      ],
+      "description": "Lorsque vous utilisez Bruine, vous pouvez dépenser jusqu'à 3 Énergies. L'eau manipulée peut atteindre la taille d'un torrent brutal, capable de fouetter une zone, d'emporter des objets légers, de se hérisser d'éclats de glace ou de saturer l'air de vapeur brûlante. Ses dégâts de base sont augmentés à un total de 3d10 dégâts appropriés à sa forme.",
+      "pos": {
+        "x": 67.81,
+        "y": 54.64
+      },
+      "linked": [
+        "DRZZL-02"
+      ],
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "DRZZL-02"
+    },
+    {
+      "id": "DRZZL-04",
+      "title": "Cascade",
+      "type": "evolution",
+      "tier": 7,
+      "domains": [
+        "water"
+      ],
+      "description": "Lorsque vous utilisez Bruine, vous pouvez dépenser jusqu'à 4 Énergies. L'eau manipulée peut atteindre la taille d'une cascade massive, assez puissante pour écraser, repousser, ensevelir sous la glace ou remplir une portion de salle d'un brouillard dense. Ses dégâts de base sont augmentés à un total de 4d10 dégâts appropriés à sa forme.",
+      "pos": {
+        "x": 49.38,
+        "y": 76.22
+      },
+      "linked": [
+        "DRZZL-03"
+      ],
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "DRZZL-03"
+    },
+    {
+      "id": "DRZZL-05",
+      "title": "Déluge",
+      "type": "evolution",
+      "tier": 9,
+      "domains": [
+        "water"
+      ],
+      "description": "Lorsque vous utilisez Bruine, vous pouvez dépenser jusqu'à 5 Énergies. L'eau manipulée peut atteindre la taille d'un déluge soudain, assez vaste pour submerger un grand objet, couvrir un passage ou changer une zone entière en bourbier, nappe de glace ou nuée de vapeur. Ses dégâts de base sont augmentés à un total de 5d10 dégâts appropriés à sa forme.",
+      "pos": {
+        "x": 31.98,
+        "y": 55.23
+      },
+      "linked": [
+        "DRZZL-04"
+      ],
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "DRZZL-04"
+    },
+    {
+      "id": "DRZZL-06",
+      "title": "Maelström",
+      "type": "evolution",
+      "tier": 10,
+      "domains": [
+        "water"
+      ],
+      "description": "Lorsque vous utilisez Bruine, vous pouvez toujours dépenser jusqu'à 5 Énergies, mais l'eau manipulée gagne une ampleur catastrophique. Elle peut prendre la forme d'un maelström, d'une masse de glace broyeuse ou d'un nuage de vapeur sous pression à l'échelle d'une grande salle, capable d'engloutir l'espace plutôt que de simplement frapper une cible. Ses dégâts de base sont augmentés à un total de 6d10 dégâts appropriés à sa forme.",
+      "pos": {
+        "x": 24.27,
+        "y": 34.02
+      },
+      "linked": [
+        "DRZZL-05"
+      ],
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "DRZZL-05"
+    },
+    {
+      "id": "WTRJT-01",
+      "title": "Arrosoir",
+      "type": "active",
+      "tier": 2,
+      "domains": [
+        "water"
+      ],
+      "description": "Vous projetez un jet d'eau violent sur une créature que vous voyez à portée. La cible effectue un Jet de Sauvegarde de Force (Athlétisme) ; en cas d'échec, elle est poussée de 3 m et tombe À terre. Si elle percute un mur, une créature ou un obstacle pendant ce recul, elle subit 2d6 dégâts de Force.",
+      "pos": {
+        "x": 55.94,
+        "y": 25.48
+      },
+      "linked": [
+        "DRZZL-02"
+      ],
+      "activation": "1 Action",
+      "range": "9 m",
+      "duration": "Instantanée",
+      "energy": 1,
+      "tags": [
+        "Sort",
+        "Invocation"
+      ]
+    },
+    {
+      "id": "WATPD-01",
+      "title": "Détection primordiale",
+      "type": "passive",
+      "tier": 3,
+      "domains": [
+        "water",
+        "psychic"
+      ],
+      "description": "Lorsque vous effectuez un Jet pour détecter, ressentir ou en apprendre plus sur un élément composé de magie d'Eau, vous gagnez 1 Avantage pour ce Jet.",
+      "pos": {
+        "x": 76.98,
+        "y": 19.37
+      },
+      "linked": [
+        "DRZZL-02"
+      ],
+      "tags": [
+        "Sort",
+        "Divination"
+      ]
+    },
+    {
+      "id": "WATME-01",
+      "title": "Étendue martiale",
+      "type": "active",
+      "tier": 2,
+      "domains": [
+        "water",
+        "physical"
+      ],
+      "description": "Vous touchez une arme et l'enveloppez d'une eau vivifiante pendant 1 minute. Une fois par tour, lorsque le porteur réussit un jet d'attaque avec cette arme, il récupère 1d4 PdV.",
+      "pos": {
+        "x": 80.31,
+        "y": 37.33
+      },
+      "linked": [
+        "DRZZL-02"
+      ],
+      "activation": "1 Action Bonus",
+      "range": "Contact",
+      "duration": "1 minute",
+      "energy": 1,
+      "tags": [
+        "Sort",
+        "Enchantement"
+      ]
+    },
+    {
+      "id": "WATME-02",
+      "title": "Étendue perfectionnée",
+      "type": "evolution",
+      "tier": 5,
+      "domains": [
+        "water",
+        "physical"
+      ],
+      "description": "Le soin d'Étendue martiale augmente selon votre maîtrise de Bruine. Il passe à 1d6 si vous possédez Vague, 1d8 si vous possédez Torrent, 1d10 si vous possédez Cascade, 1d12 si vous possédez Déluge, et 1d20 si vous possédez Maelström.",
+      "pos": {
+        "x": 89.69,
+        "y": 27.03
+      },
+      "linked": [
+        "WATME-01"
+      ],
+      "tags": [
+        "Sort",
+        "Enchantement"
+      ],
+      "evolvesFrom": "WATME-01"
+    }
+  ]
+}

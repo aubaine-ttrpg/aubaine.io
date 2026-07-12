@@ -1,0 +1,251 @@
+{
+  "id": "feu",
+  "name": "Feu",
+  "treeType": "domain",
+  "size": 16,
+  "core": {
+    "label": "Feu",
+    "sublabel": "Domaine",
+    "domains": [
+      "fire"
+    ],
+    "pos": {
+      "x": 50,
+      "y": 50.81
+    }
+  },
+  "nodes": [
+    {
+      "id": "IGNIT-01",
+      "title": "Embrasement",
+      "type": "active",
+      "tier": 1,
+      "domains": [
+        "fire"
+      ],
+      "description": "Vous créez, déplacez, remodelez ou absorbez jusqu'à 5 cm³ de feu à portée, soit une petite flamme tenant dans la paume de la main. Le feu créé dure par défaut 1 tour et peut être lancé sur une créature ou un objet pour infliger 1d10 dégâts de feu. Si vous souhaitez le faire durer plus longtemps, il peut persister jusqu'à 10 minutes, mais il perd alors sa puissance offensive, jusqu'à devenir inoffensif.",
+      "pos": {
+        "x": 50.21,
+        "y": 37.7
+      },
+      "linked": [
+        "CORE"
+      ],
+      "activation": "1 Action",
+      "range": "9 m",
+      "duration": "Instantanée ou jusqu'à 10 minutes",
+      "energy": 1,
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ]
+    },
+    {
+      "id": "IGNIT-02",
+      "title": "Flamme",
+      "type": "evolution",
+      "tier": 3,
+      "domains": [
+        "fire"
+      ],
+      "description": "Lorsque vous utilisez Embrasement, vous pouvez dépenser jusqu'à 2 Énergies. Le feu manipulé peut atteindre la taille d'une flamme tenue entre deux mains jointes. Ses dégâts de base sont augmentés à un total de 2d10 dégâts de feu.",
+      "pos": {
+        "x": 69.9,
+        "y": 30.41
+      },
+      "linked": [
+        "IGNIT-01"
+      ],
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "IGNIT-01"
+    },
+    {
+      "id": "IGNIT-03",
+      "title": "Brasier",
+      "type": "evolution",
+      "tier": 5,
+      "domains": [
+        "fire"
+      ],
+      "description": "Lorsque vous utilisez Embrasement, vous pouvez dépenser jusqu'à 3 Énergies. Le feu manipulé peut atteindre la taille d'un brasier de camp nourri. Ses dégâts de base sont augmentés à un total de 3d10 dégâts de feu.",
+      "pos": {
+        "x": 67.81,
+        "y": 54.64
+      },
+      "linked": [
+        "IGNIT-02"
+      ],
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "IGNIT-02"
+    },
+    {
+      "id": "IGNIT-04",
+      "title": "Foyer",
+      "type": "evolution",
+      "tier": 7,
+      "domains": [
+        "fire"
+      ],
+      "description": "Lorsque vous utilisez Embrasement, vous pouvez dépenser jusqu'à 4 Énergies. Le feu manipulé peut atteindre la taille d'un large foyer de cheminée ou de forge. Ses dégâts de base sont augmentés à un total de 4d10 dégâts de feu.",
+      "pos": {
+        "x": 49.38,
+        "y": 76.22
+      },
+      "linked": [
+        "IGNIT-03"
+      ],
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "IGNIT-03"
+    },
+    {
+      "id": "IGNIT-05",
+      "title": "Fournaise",
+      "type": "evolution",
+      "tier": 9,
+      "domains": [
+        "fire"
+      ],
+      "description": "Lorsque vous utilisez Embrasement, vous pouvez dépenser jusqu'à 5 Énergies. Le feu manipulé peut atteindre la taille d'une fournaise ouverte, assez vaste pour engloutir un grand objet ou barrer un passage. Ses dégâts de base sont augmentés à un total de 5d10 dégâts de feu.",
+      "pos": {
+        "x": 31.98,
+        "y": 55.23
+      },
+      "linked": [
+        "IGNIT-04"
+      ],
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "IGNIT-04"
+    },
+    {
+      "id": "IGNIT-06",
+      "title": "Solfatare",
+      "type": "evolution",
+      "tier": 10,
+      "domains": [
+        "fire"
+      ],
+      "description": "Lorsque vous utilisez Embrasement, vous pouvez dépenser jusqu'à 6 Énergies. Le feu manipulé peut atteindre la taille d'une solfatare en éruption, crachant une masse de flammes, de chaleur et de fumées brûlantes à l'échelle d'une grande salle. Ses dégâts de base sont augmentés à un total de 6d10 dégâts de feu.",
+      "pos": {
+        "x": 24.27,
+        "y": 34.02
+      },
+      "linked": [
+        "IGNIT-05"
+      ],
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "IGNIT-05"
+    },
+    {
+      "id": "INCRM-01",
+      "title": "Crème inflammatoire",
+      "type": "active",
+      "tier": 2,
+      "domains": [
+        "fire"
+      ],
+      "description": "Vous touchez une créature pour l'enduire de flammes réparatrices. La créature touchée récupère 2d6 PdV.",
+      "pos": {
+        "x": 55.94,
+        "y": 25.48
+      },
+      "linked": [
+        "IGNIT-02"
+      ],
+      "activation": "1 Action",
+      "range": "Contact",
+      "duration": "Instantanée",
+      "energy": 2,
+      "tags": [
+        "Sort",
+        "Soin"
+      ]
+    },
+    {
+      "id": "FIRPD-01",
+      "title": "Détection primordiale",
+      "type": "passive",
+      "tier": 3,
+      "domains": [
+        "fire",
+        "psychic"
+      ],
+      "description": "Lorsque vous effectuez un Jet pour détecter, ressentir ou en apprendre plus sur un élément composé de magie de Feu, vous gagnez 1 Avantage pour ce Jet.",
+      "pos": {
+        "x": 76.98,
+        "y": 19.37
+      },
+      "linked": [
+        "IGNIT-02"
+      ],
+      "tags": [
+        "Sort",
+        "Divination"
+      ]
+    },
+    {
+      "id": "FIRME-01",
+      "title": "Étendue martiale",
+      "type": "active",
+      "tier": 2,
+      "domains": [
+        "fire",
+        "physical"
+      ],
+      "description": "Vous touchez une arme et l'enflammez dans une flamme non destructrice. L'arme émet une lumière et, une fois par tour, lorsque vous réussissez un Jet d'attaque avec celle-ci, vous infligez 1d4 dégâts de feu supplémentaires sur ce Jet d'attaque.",
+      "pos": {
+        "x": 80.31,
+        "y": 37.33
+      },
+      "linked": [
+        "IGNIT-02"
+      ],
+      "activation": "1 Action Bonus",
+      "range": "Contact",
+      "duration": "jusqu'à 1 minute",
+      "concentration": true,
+      "energy": 1,
+      "tags": [
+        "Sort",
+        "Enchantement"
+      ]
+    },
+    {
+      "id": "FIRME-02",
+      "title": "Étendue perfectionnée",
+      "type": "evolution",
+      "tier": 5,
+      "domains": [
+        "fire",
+        "physical"
+      ],
+      "description": "Étendue martiale respecte maintenant le même schéma qu'Embrasement. Vous pouvez augmenter l'Énergie consommée par ce Sort pour augmenter le nombre de dés de dégâts de feu de 1, si vous possédez l'évolution d'Embrasement équivalente.",
+      "pos": {
+        "x": 89.69,
+        "y": 27.03
+      },
+      "linked": [
+        "FIRME-01"
+      ],
+      "tags": [
+        "Sort",
+        "Enchantement"
+      ],
+      "evolvesFrom": "FIRME-01"
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "skilltree.schema.json",
+  "title": "TTRPG Skill Tree — contrat de rendu",
+  "description": "Ce que le moteur de planches consomme. Règles de jeu : docs/SPEC.md ; autorat humain : docs/TEMPLATE.md.",
+  "type": "object",
+  "required": ["id", "name", "treeType", "size", "nodes"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "description": "Identifiant machine de l'arbre, ex. 'commandant'" },
+    "name": { "type": "string", "description": "Titre rendu sur la planche, ex. 'Commandant'" },
+    "treeType": { "enum": ["species", "archetype", "domain"], "description": "Rendu en sous-titre (Espèce / Archétype / Domaine)" },
+    "size": { "enum": [8, 16] },
+    "core": {
+      "type": "object",
+      "description": "Cœur de l'arbre (emblème central) — posé à l'intégration (design), pas à l'autorat",
+      "required": ["label"],
+      "additionalProperties": false,
+      "properties": {
+        "label": { "type": "string" },
+        "sublabel": { "type": "string" },
+        "domains": { "type": "array", "items": { "$ref": "#/definitions/domainKey" }, "maxItems": 2, "description": "Bordure de l'emblème" },
+        "pos": { "$ref": "#/definitions/pos", "description": "Défaut : 50,50" }
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16,
+      "items": { "$ref": "#/definitions/node" }
+    }
+  },
+  "definitions": {
+    "domainKey": {
+      "enum": ["fire", "water", "wind", "earth", "thunder", "slime", "physical", "psychic", "light", "void"]
+    },
+    "pos": {
+      "type": "object",
+      "description": "Position du centre du nœud, en % du canvas de l'arbre (0–100), origine en haut à gauche",
+      "required": ["x", "y"],
+      "additionalProperties": false,
+      "properties": {
+        "x": { "type": "number", "minimum": 0, "maximum": 100 },
+        "y": { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "node": {
+      "type": "object",
+      "required": ["id", "title", "type", "tier", "domains", "description"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Z0-9]{5}-[0-9]{2}$" },
+        "title": { "type": "string" },
+        "type": { "enum": ["passive", "active", "evolution", "special"], "description": "→ forme du nœud (rond / carré / octogone / concave)" },
+        "ultimate": { "type": "boolean", "default": false, "description": "→ glyphe hexagone plein #7d5e16 devant le titre" },
+        "tier": { "type": "integer", "minimum": 1, "maximum": 10, "description": "XP rendu = 5 × tier (jeton doré)" },
+        "domains": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/domainKey" },
+          "minItems": 0,
+          "maxItems": 2,
+          "description": "→ couleur de bordure ; [] = Neutre ; 2 = bordure scindée 135°"
+        },
+        "icon": { "type": "string", "description": "assets/img/icons/<icon>.png ; absent → _placeholder ; assigné à l'intégration (design)" },
+        "pos": { "$ref": "#/definitions/pos", "description": "Posé à l'intégration (design)" },
+        "linked": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "pattern": "^([A-Z0-9]{5}-[0-9]{2}|CORE)$" },
+          "description": "IDs vers lesquels tracer un lien (parents visuels). 'CORE' = cœur de l'arbre. Déclaré d'un seul côté : jamais de doublon inverse. Posé à l'intégration (design)."
+        },
+        "activation": { "type": "string", "description": "Ligne de stats (horloge). Jamais 'Réaction'" },
+        "range": { "type": "string", "description": "Ligne de stats (flèches)" },
+        "duration": { "type": "string", "description": "Ligne de stats (sablier)" },
+        "concentration": { "type": "boolean", "description": "→ rendue dans la durée : « Concentration · <durée> » (convention D&D). Pas un tag." },
+        "energy": { "type": "integer", "minimum": 0, "maximum": 5, "description": "→ pastille ÉNERGIE ; actives uniquement" },
+        "tags": { "type": "array", "items": { "type": "string" }, "description": "→ chips en pied d'entrée" },
+        "evolvesFrom": { "type": "string", "pattern": "^[A-Z0-9]{5}-[0-9]{2}$", "description": "Évolutions : id de la base → note « ▲ Évolution de <titre> »" },
+        "description": { "type": "string" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "evolution" } }, "required": ["type"] },
+          "then": { "required": ["evolvesFrom"] }
+        },
+        {
+          "if": { "properties": { "type": { "enum": ["passive", "evolution", "special"] } }, "required": ["type"] },
+          "then": { "not": { "required": ["energy"] } }
+        }
+      ]
+    }
+  }
+}

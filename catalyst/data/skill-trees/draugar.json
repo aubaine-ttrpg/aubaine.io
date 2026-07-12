@@ -1,0 +1,193 @@
+{
+  "id": "draugar",
+  "name": "Draugar",
+  "treeType": "archetype",
+  "size": 16,
+  "core": {
+    "label": "Draugar",
+    "sublabel": "Archétype",
+    "domains": [],
+    "pos": {
+      "x": 50,
+      "y": 50.81
+    }
+  },
+  "nodes": [
+    {
+      "id": "ABGRF-01",
+      "title": "Greffe abominable",
+      "type": "active",
+      "tier": 1,
+      "domains": [],
+      "description": "Vous vous greffez une partie du corps d’une autre créature et pouvez l’utiliser comme si elle était votre propre membre. Vous ne pouvez maintenir qu’une seule greffe simultanément.",
+      "pos": {
+        "x": 41.67,
+        "y": 41.24
+      },
+      "linked": [
+        "CORE"
+      ],
+      "activation": "10 minutes",
+      "range": "Personnelle",
+      "duration": "Jusqu’à votre prochain repos court ou long",
+      "energy": 1
+    },
+    {
+      "id": "ABGRF-02",
+      "title": "Double greffe",
+      "type": "evolution",
+      "tier": 3,
+      "domains": [],
+      "description": "Vous pouvez maintenir jusqu’à 2 greffes simultanément.",
+      "pos": {
+        "x": 27.08,
+        "y": 34.61
+      },
+      "linked": [
+        "ABGRF-01"
+      ],
+      "evolvesFrom": "ABGRF-01"
+    },
+    {
+      "id": "ABGRF-03",
+      "title": "Triple greffe",
+      "type": "evolution",
+      "tier": 6,
+      "domains": [],
+      "description": "Vous pouvez maintenir jusqu’à 3 greffes simultanément.",
+      "pos": {
+        "x": 20.83,
+        "y": 47.13
+      },
+      "linked": [
+        "ABGRF-02"
+      ],
+      "evolvesFrom": "ABGRF-02"
+    },
+    {
+      "id": "ABGRF-04",
+      "title": "Quadruple greffe",
+      "type": "evolution",
+      "tier": 9,
+      "domains": [],
+      "description": "Vous pouvez maintenir jusqu’à 4 greffes simultanément.",
+      "pos": {
+        "x": 20.83,
+        "y": 61.12
+      },
+      "linked": [
+        "ABGRF-03"
+      ],
+      "evolvesFrom": "ABGRF-03"
+    },
+    {
+      "id": "ABGRF-05",
+      "title": "Corps chimérique",
+      "type": "evolution",
+      "tier": 10,
+      "domains": [],
+      "description": "Vous pouvez maintenir jusqu’à 5 greffes simultanément.",
+      "pos": {
+        "x": 31.25,
+        "y": 73.64
+      },
+      "linked": [
+        "ABGRF-04"
+      ],
+      "evolvesFrom": "ABGRF-04"
+    },
+    {
+      "id": "ABGRF-06",
+      "title": "Greffes dissimulées",
+      "type": "evolution",
+      "tier": 7,
+      "domains": [],
+      "description": "Vos greffes sont dissimulées à l’œil des autres créatures. Seule une créature sous l’effet de Clairvoyance peut toujours les percevoir.",
+      "pos": {
+        "x": 44.79,
+        "y": 31.66
+      },
+      "linked": [
+        "ABGRF-01"
+      ],
+      "evolvesFrom": "ABGRF-01"
+    },
+    {
+      "id": "BTRAK-01",
+      "title": "Hémotraqueur",
+      "type": "active",
+      "tier": 2,
+      "domains": [],
+      "description": "Vous touchez du sang, le reniflez et le goûtez. Vous pouvez connaître une information de votre choix sur la créature dont provient ce sang.",
+      "pos": {
+        "x": 64.58,
+        "y": 36.82
+      },
+      "linked": [
+        "CORE"
+      ],
+      "activation": "1 Action",
+      "range": "Contact",
+      "duration": "Instantanée",
+      "energy": 1
+    },
+    {
+      "id": "SIPHN-01",
+      "title": "Ponction",
+      "type": "active",
+      "tier": 2,
+      "domains": [],
+      "description": "Votre prochain jet d’attaque effectué avec Force ou Dextérité vous rend des points de vie égaux à 50% des dégâts infligés.",
+      "pos": {
+        "x": 67.71,
+        "y": 51.55
+      },
+      "linked": [
+        "CORE"
+      ],
+      "activation": "1 Action Bonus",
+      "range": "Personnelle",
+      "duration": "Jusqu’à votre prochain jet d’attaque",
+      "energy": 1
+    },
+    {
+      "id": "SIPHN-02",
+      "title": "Ponction totale",
+      "type": "evolution",
+      "tier": 5,
+      "domains": [],
+      "description": "Votre Ponction vous rend désormais des points de vie égaux à 100% des dégâts infligés au lieu de 50%.",
+      "pos": {
+        "x": 81.25,
+        "y": 61.12
+      },
+      "linked": [
+        "SIPHN-01"
+      ],
+      "evolvesFrom": "SIPHN-01"
+    },
+    {
+      "id": "BLFNG-01",
+      "title": "Croc sanguinaire",
+      "type": "active",
+      "tier": 1,
+      "domains": [],
+      "description": "Vous effectuez un jet d’attaque de mêlée avec Force ou Dextérité. En cas de réussite, vous infligez 1d6 dégâts perforants et récupérez 1d4 points de vie.",
+      "pos": {
+        "x": 58.33,
+        "y": 66.27
+      },
+      "linked": [
+        "CORE"
+      ],
+      "activation": "1 Action",
+      "range": "Mêlée",
+      "duration": "Instantanée",
+      "energy": 0,
+      "tags": [
+        "Croc",
+        "Abjuration"
+      ]
+    }
+  ]
+}

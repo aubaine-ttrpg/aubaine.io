@@ -1,0 +1,187 @@
+{
+  "id": "technomancien",
+  "name": "Technomancien",
+  "treeType": "archetype",
+  "size": 8,
+  "core": {
+    "label": "Technomancien",
+    "sublabel": "Archétype",
+    "domains": [],
+    "pos": {
+      "x": 50,
+      "y": 30.19
+    }
+  },
+  "nodes": [
+    {
+      "id": "AUTOM-01",
+      "title": "Automaticien",
+      "type": "active",
+      "tier": 1,
+      "domains": [],
+      "description": "Vous créez un Automate fait d’un domaine magique dont vous connaissez l'arbre, sous la forme que vous souhaitez. L’Automate est Petit : il mesure au maximum 1 m³. Par défaut, il possède 3 points dans toutes ses caractéristiques, puis 3 points supplémentaires que vous répartissez comme vous le souhaitez. Par défaut, il inflige 1d4 + sa Force ou sa Dextérité ; le type de dégâts dépend de la forme de son attaque sur le moment, il peuvent être contendant, tranchant, perforants ou du même type que son domaine magique. Il possède une CA égale à 12 + son Endurance et gagne 50% de l’XP que vous gagnez.",
+      "pos": {
+        "x": 50,
+        "y": 50.81
+      },
+      "linked": [
+        "CORE"
+      ],
+      "activation": "1 heure",
+      "range": "Contact",
+      "duration": "Jusqu’à destruction ou remplacement",
+      "energy": 3,
+      "tags": [
+        "Automate",
+        "Création"
+      ]
+    },
+    {
+      "id": "AUTOM-02",
+      "title": "Apprentissage accéléré",
+      "type": "evolution",
+      "tier": 6,
+      "domains": [],
+      "description": "Votre Automate apprend presque aussi vite que vous. Il gagne désormais 100% de l’XP que vous gagnez au lieu de 50%. Son développement devient une vraie branche parallèle de votre progression.",
+      "pos": {
+        "x": 28.13,
+        "y": 36.82
+      },
+      "linked": [
+        "AUTOM-01"
+      ],
+      "tags": [
+        "Automate",
+        "Création"
+      ],
+      "evolvesFrom": "AUTOM-01"
+    },
+    {
+      "id": "CMDLN-01",
+      "title": "Ligne de commande",
+      "type": "active",
+      "tier": 2,
+      "domains": [],
+      "description": "Vous transmettez un ordre direct à votre Automate. Il peut immédiatement se déplacer, interagir avec son environnement, ou effectuer une attaque selon ce qu’il est capable de faire. L’ordre doit rester simple et exécutable par sa forme actuelle.",
+      "pos": {
+        "x": 26.04,
+        "y": 48.6
+      },
+      "linked": [
+        "AUTOM-01"
+      ],
+      "activation": "1 Action Bonus",
+      "range": "18 m",
+      "duration": "Instantanée",
+      "energy": 0,
+      "tags": [
+        "Automate",
+        "Commande"
+      ]
+    },
+    {
+      "id": "GNFST-01",
+      "title": "Pisto-poings",
+      "type": "special",
+      "tier": 3,
+      "domains": [],
+      "description": "Avant que votre Automate attaque, vous pouvez changer son mode d’attaque. Il peut rester en mode N0RM4L, passer en mode P01NGS, ou passer en mode T1R3UR. En mode P01NGS, ses attaques utilisent la Force et infligent désormais 2d6 dégâts. En mode T1R3UR, ses jets d’attaque utilisent uniquement la Dextérité ; il gagne 2 Avantages à chaque jet d’attaque à distance dans ce mode, et gagne 9 m de portée.",
+      "pos": {
+        "x": 71.88,
+        "y": 61.86
+      },
+      "linked": [
+        "AUTOM-01"
+      ],
+      "tags": [
+        "Automate",
+        "Mode"
+      ]
+    },
+    {
+      "id": "REPAR-01",
+      "title": "Réparation",
+      "type": "active",
+      "tier": 4,
+      "domains": [],
+      "description": "Vous posez vos mains sur une créature artificielle et forcez sa structure à se reconstituer. La créature restaure 1d100 PdV. Cette compétence peut notamment cibler votre Automate.",
+      "pos": {
+        "x": 34.38,
+        "y": 64.06
+      },
+      "linked": [
+        "AUTOM-01"
+      ],
+      "activation": "1 Action",
+      "range": "Contact",
+      "duration": "Instantanée",
+      "energy": 3,
+      "tags": [
+        "Automate",
+        "Soin"
+      ]
+    },
+    {
+      "id": "TCHTH-01",
+      "title": "Techno-chapardeur",
+      "type": "special",
+      "tier": 5,
+      "domains": [],
+      "description": "Au déblocage, vous attribuez une de vos compétences à votre Automate de façon permanente. L’Automate l’utilise comme une partie intégrée de son propre fonctionnement. Cette compétence devient une fonction stable de son châssis, de son noyau ou de sa forme magique.",
+      "pos": {
+        "x": 75,
+        "y": 47.86
+      },
+      "linked": [
+        "AUTOM-01"
+      ],
+      "tags": [
+        "Automate",
+        "Transfert"
+      ]
+    },
+    {
+      "id": "TCHTH-02",
+      "title": "Double chapardage",
+      "type": "evolution",
+      "tier": 8,
+      "domains": [],
+      "description": "Vous attribuez une deuxième de vos compétences à votre Automate de façon permanente. Ses fonctions volées commencent à se mélanger avec sa structure magique, jusqu’à lui donner une identité de combat propre. Les deux compétences transférées restent liées à l’Automate choisi.",
+      "pos": {
+        "x": 85.42,
+        "y": 36.82
+      },
+      "linked": [
+        "TCHTH-01"
+      ],
+      "tags": [
+        "Automate",
+        "Transfert"
+      ],
+      "evolvesFrom": "TCHTH-01"
+    },
+    {
+      "id": "TELAB-01",
+      "title": "Télé-absorption",
+      "type": "active",
+      "tier": 2,
+      "domains": [],
+      "description": "Si votre Automate est à portée, il se prépare à se jeter devant vous pour vous protéger. Jusqu’au début de votre prochain tour, le prochain jet d’attaque qui vous cible peut viser votre Automate à la place. L’Automate doit pouvoir s’interposer d’une manière cohérente avec sa forme et sa position.",
+      "pos": {
+        "x": 52.08,
+        "y": 68.48
+      },
+      "linked": [
+        "AUTOM-01"
+      ],
+      "activation": "1 Action",
+      "range": "9 m",
+      "duration": "Jusqu’au début de votre prochain tour",
+      "energy": 1,
+      "tags": [
+        "Automate",
+        "Protection"
+      ]
+    }
+  ]
+}

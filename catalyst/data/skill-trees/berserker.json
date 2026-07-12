@@ -1,0 +1,201 @@
+{
+  "id": "berserker",
+  "name": "Berserker",
+  "treeType": "archetype",
+  "size": 8,
+  "core": {
+    "label": "Berserker",
+    "sublabel": "Archétype",
+    "domains": [
+      "physical"
+    ],
+    "pos": {
+      "x": 50,
+      "y": 50.81
+    }
+  },
+  "nodes": [
+    {
+      "id": "RAGER-01",
+      "title": "Rage",
+      "type": "active",
+      "tier": 1,
+      "domains": [
+        "physical"
+      ],
+      "description": "Si vous possédez 50% ou moins de vos PdV maximum, vous pouvez entrer en Rage. Tant que vous êtes en Rage, vous gagnez une résistance aux dégâts Tranchants, Contondants et Perforants, et 1 Avantage à tous vos Jets de Force. Votre Rage prend fin lorsque vous terminez un repos court ou long, ou lorsque vos PdV repassent au-dessus du seuil nécessaire.",
+      "pos": {
+        "x": 36.46,
+        "y": 41.97
+      },
+      "linked": [
+        "CORE"
+      ],
+      "activation": "1 Action Bonus",
+      "range": "Personnel",
+      "duration": "Jusqu'au prochain repos court ou long",
+      "energy": 2,
+      "tags": [
+        "Rage",
+        "Déchaîné"
+      ]
+    },
+    {
+      "id": "RAGER-02",
+      "title": "Frénésie critique",
+      "type": "evolution",
+      "tier": 3,
+      "domains": [
+        "physical"
+      ],
+      "description": "Tant que vous êtes en Rage, votre seuil de coup critique est réduit de 1.",
+      "pos": {
+        "x": 19.27,
+        "y": 36.82
+      },
+      "linked": [
+        "RAGER-01"
+      ],
+      "tags": [
+        "Rage",
+        "Critique"
+      ],
+      "evolvesFrom": "RAGER-01"
+    },
+    {
+      "id": "RAGER-03",
+      "title": "Sang bouillant",
+      "type": "evolution",
+      "tier": 3,
+      "domains": [
+        "physical"
+      ],
+      "description": "Vous pouvez désormais entrer en Rage si vous possédez 75% ou moins de vos PdV maximum, au lieu de 50%. Votre Rage prend fin si vos PdV repassent au-dessus de ce nouveau seuil.",
+      "pos": {
+        "x": 29.17,
+        "y": 57.44
+      },
+      "linked": [
+        "RAGER-01"
+      ],
+      "tags": [
+        "Rage"
+      ],
+      "evolvesFrom": "RAGER-01"
+    },
+    {
+      "id": "RAGER-04",
+      "title": "Sang en ébullition",
+      "type": "evolution",
+      "tier": 7,
+      "domains": [
+        "physical"
+      ],
+      "description": "Vous pouvez désormais entrer en Rage si vous possédez 90% ou moins de vos PdV maximum, au lieu de 75%. Votre Rage prend fin si vos PdV repassent au-dessus de ce nouveau seuil.",
+      "pos": {
+        "x": 31.25,
+        "y": 71.43
+      },
+      "linked": [
+        "RAGER-03"
+      ],
+      "tags": [
+        "Rage"
+      ],
+      "evolvesFrom": "RAGER-03"
+    },
+    {
+      "id": "RAGER-05",
+      "title": "Rage absolue",
+      "type": "evolution",
+      "tier": 10,
+      "domains": [
+        "physical"
+      ],
+      "description": "Vous n'avez plus besoin d'être sous un seuil de PdV pour entrer en Rage. Votre Rage ne prend plus fin lorsque vos PdV remontent.",
+      "pos": {
+        "x": 46.88,
+        "y": 79.53
+      },
+      "linked": [
+        "RAGER-04"
+      ],
+      "tags": [
+        "Rage"
+      ],
+      "evolvesFrom": "RAGER-04"
+    },
+    {
+      "id": "INTFC-01",
+      "title": "Visage intimidant",
+      "type": "passive",
+      "tier": 4,
+      "domains": [
+        "physical",
+        "psychic"
+      ],
+      "description": "La première fois après un repos long que vous réussissez un Jet de Force Intimidation contre une créature, celle-ci obéit à tous vos ordres dans la mesure du possible pendant les 10 prochaines minutes.",
+      "pos": {
+        "x": 55.21,
+        "y": 31.66
+      },
+      "linked": [
+        "CORE"
+      ],
+      "tags": [
+        "Intimidation",
+        "Présence"
+      ]
+    },
+    {
+      "id": "PRMCR-01",
+      "title": "Cri primordial",
+      "type": "active",
+      "tier": 4,
+      "domains": [
+        "physical"
+      ],
+      "description": "Vous poussez un cri brutal et l'infusez d'un Domaine choisi parmi Feu, Eau, Terre, Foudre ou aucun.  —  Feu : jusqu'à 2 créatures à portée qui vous entendent gagnent 1 Action Bonus, 3 m de déplacement pour ce tour et émettent une lumière jusqu'à la fin de ce tour.  —  Eau : choisissez 1 créature à portée qui vous entend ; si elle possède de l'eau dans son corps, vous en prenez le contrôle jusqu'à la fin de votre tour (la soigner de 1d6 PdV, faire bouger un membre…).  —  Terre : jusqu'à 3 créatures à portée réduisent leurs prochains dégâts de 1d6 avant votre prochain tour et ne subissent aucun dégât de chute pendant cette durée.  —  Foudre : vous ciblez jusqu'à 3 objets ou créatures de métal à portée et en prenez le contrôle jusqu'à la fin de votre tour.  —  Aucun : jusqu'à 3 créatures de votre choix à portée gagnent 1d6 PdV temporaires.",
+      "pos": {
+        "x": 68.75,
+        "y": 41.97
+      },
+      "linked": [
+        "CORE"
+      ],
+      "activation": "1 Action Bonus",
+      "range": "3 m",
+      "duration": "Instantanée ou jusqu'à la fin du tour",
+      "energy": 2,
+      "tags": [
+        "Cri",
+        "Déchaîné"
+      ]
+    },
+    {
+      "id": "SALCR-01",
+      "title": "Cri du salut",
+      "type": "active",
+      "tier": 5,
+      "domains": [
+        "physical"
+      ],
+      "description": "Choisissez jusqu'à 5 créatures de votre choix à portée qui peuvent vous entendre. Chaque cible guérit d'un effet négatif qui l'affecte.",
+      "pos": {
+        "x": 72.92,
+        "y": 58.17
+      },
+      "linked": [
+        "CORE"
+      ],
+      "activation": "1 Action",
+      "range": "3 m",
+      "duration": "Instantanée",
+      "energy": 3,
+      "tags": [
+        "Cri",
+        "Abjuration"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,251 @@
+{
+  "id": "terre",
+  "name": "Terre",
+  "treeType": "domain",
+  "size": 16,
+  "core": {
+    "label": "Terre",
+    "sublabel": "Domaine",
+    "domains": [
+      "earth"
+    ],
+    "pos": {
+      "x": 50,
+      "y": 50.81
+    }
+  },
+  "nodes": [
+    {
+      "id": "PBBLE-01",
+      "title": "Galet",
+      "type": "active",
+      "tier": 1,
+      "domains": [
+        "earth"
+      ],
+      "description": "Vous créez, déplacez, remodelez ou absorbez jusqu'à 5 cm³ de terre, de pierre ou de matière végétale simple à portée, soit un petit galet, une motte de terre ou une feuille tenant dans la paume de la main. La matière créée dure par défaut 1 tour et peut être projetée sur une créature ou un objet pour infliger 1d10 dégâts appropriés à sa forme : contondants pour une pierre, tranchants pour une feuille affilée, etc. Si vous souhaitez la faire durer plus longtemps, elle peut persister jusqu'à 10 minutes, mais elle perd alors sa puissance offensive, jusqu'à devenir inoffensive.",
+      "pos": {
+        "x": 50.21,
+        "y": 37.7
+      },
+      "linked": [
+        "CORE"
+      ],
+      "activation": "1 Action",
+      "range": "9 m",
+      "duration": "Instantanée ou jusqu'à 10 minutes",
+      "energy": 1,
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ]
+    },
+    {
+      "id": "PBBLE-02",
+      "title": "Terreau",
+      "type": "evolution",
+      "tier": 3,
+      "domains": [
+        "earth"
+      ],
+      "description": "Lorsque vous utilisez Galet, vous pouvez dépenser jusqu'à 2 Énergies. La matière manipulée peut atteindre la taille d'une grosse poignée de terreau, d'un caillou lourd ou d'un bouquet de feuilles et de racines. Ses dégâts de base sont augmentés à un total de 2d10 dégâts appropriés à sa forme.",
+      "pos": {
+        "x": 69.9,
+        "y": 30.41
+      },
+      "linked": [
+        "PBBLE-01"
+      ],
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "PBBLE-01"
+    },
+    {
+      "id": "PBBLE-03",
+      "title": "Glaise",
+      "type": "evolution",
+      "tier": 5,
+      "domains": [
+        "earth"
+      ],
+      "description": "Lorsque vous utilisez Galet, vous pouvez dépenser jusqu'à 3 Énergies. La matière manipulée peut atteindre la taille d'un bloc de glaise, d'une pierre de taille moyenne ou d'un amas dense de racines, d'écorce et de feuilles durcies. Ses dégâts de base sont augmentés à un total de 3d10 dégâts appropriés à sa forme.",
+      "pos": {
+        "x": 67.81,
+        "y": 54.64
+      },
+      "linked": [
+        "PBBLE-02"
+      ],
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "PBBLE-02"
+    },
+    {
+      "id": "PBBLE-04",
+      "title": "Souche",
+      "type": "evolution",
+      "tier": 7,
+      "domains": [
+        "earth"
+      ],
+      "description": "Lorsque vous utilisez Galet, vous pouvez dépenser jusqu'à 4 Énergies. La matière manipulée peut atteindre la taille d'une souche massive, d'un rocher imposant ou d'un entrelacs de racines assez large pour obstruer un petit passage. Ses dégâts de base sont augmentés à un total de 4d10 dégâts appropriés à sa forme.",
+      "pos": {
+        "x": 49.38,
+        "y": 76.22
+      },
+      "linked": [
+        "PBBLE-03"
+      ],
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "PBBLE-03"
+    },
+    {
+      "id": "PBBLE-05",
+      "title": "Tertre",
+      "type": "evolution",
+      "tier": 9,
+      "domains": [
+        "earth"
+      ],
+      "description": "Lorsque vous utilisez Galet, vous pouvez dépenser jusqu'à 5 Énergies. La matière manipulée peut atteindre la taille d'un tertre, d'un large bloc rocheux ou d'une masse végétale capable d'engloutir un grand objet ou de barrer un passage. Ses dégâts de base sont augmentés à un total de 5d10 dégâts appropriés à sa forme.",
+      "pos": {
+        "x": 31.98,
+        "y": 55.23
+      },
+      "linked": [
+        "PBBLE-04"
+      ],
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "PBBLE-04"
+    },
+    {
+      "id": "PBBLE-06",
+      "title": "Colline",
+      "type": "evolution",
+      "tier": 10,
+      "domains": [
+        "earth"
+      ],
+      "description": "Lorsque vous utilisez Galet, vous pouvez dépenser jusqu'à 6 Énergies. La matière manipulée peut atteindre la taille d'une petite colline soulevée d'un coup, d'un pan de roche arraché au sol ou d'une masse de racines et de végétation à l'échelle d'une grande salle. Ses dégâts de base sont augmentés à un total de 6d10 dégâts appropriés à sa forme.",
+      "pos": {
+        "x": 24.27,
+        "y": 34.02
+      },
+      "linked": [
+        "PBBLE-05"
+      ],
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "PBBLE-05"
+    },
+    {
+      "id": "PHTST-01",
+      "title": "Photosynthèse",
+      "type": "active",
+      "tier": 4,
+      "domains": [
+        "earth",
+        "light"
+      ],
+      "description": "Vous accélérez brutalement la croissance d'une graine, d'une pousse, d'une plante, d'un arbre ou d'une créature végétale à portée, la faisant atteindre sa pleine maturité naturelle en quelques instants. Une graine plantée peut ainsi devenir un arbre adulte.",
+      "pos": {
+        "x": 55.94,
+        "y": 25.48
+      },
+      "linked": [
+        "PBBLE-02"
+      ],
+      "activation": "1 Action",
+      "range": "9 m",
+      "duration": "Instantanée",
+      "energy": 2,
+      "tags": [
+        "Sort",
+        "Croissance"
+      ]
+    },
+    {
+      "id": "EARPD-01",
+      "title": "Détection primordiale",
+      "type": "passive",
+      "tier": 3,
+      "domains": [
+        "earth",
+        "psychic"
+      ],
+      "description": "Lorsque vous effectuez un Jet pour détecter, ressentir ou en apprendre plus sur un élément composé de magie de Terre, vous gagnez 1 Avantage pour ce Jet.",
+      "pos": {
+        "x": 76.98,
+        "y": 19.37
+      },
+      "linked": [
+        "PBBLE-02"
+      ],
+      "tags": [
+        "Sort",
+        "Divination"
+      ]
+    },
+    {
+      "id": "EARME-01",
+      "title": "Étendue martiale",
+      "type": "active",
+      "tier": 2,
+      "domains": [
+        "earth",
+        "physical"
+      ],
+      "description": "Vous touchez une arme et l'enveloppez d'une force minérale ou végétale pendant 1 minute. Une fois par tour, lorsque vous réussissez un Jet d'attaque avec celle-ci, lancez 1d100 : vous gagnez un montant de PV Temporaires égal à ce pourcentage des dégâts infligés par ce Jet d'attaque, jusqu'à un maximum de 50% des dégâts infligés.",
+      "pos": {
+        "x": 80.31,
+        "y": 37.33
+      },
+      "linked": [
+        "PBBLE-02"
+      ],
+      "activation": "1 Action Bonus",
+      "range": "Contact",
+      "duration": "1 minute",
+      "energy": 1,
+      "tags": [
+        "Sort",
+        "Enchantement"
+      ]
+    },
+    {
+      "id": "EARME-02",
+      "title": "Étendue perfectionnée",
+      "type": "evolution",
+      "tier": 5,
+      "domains": [
+        "earth",
+        "physical"
+      ],
+      "description": "Étendue martiale respecte maintenant la progression de Galet. Pour chaque évolution de Galet que vous possédez, le maximum de PV Temporaires que vous pouvez gagner grâce à Étendue martiale augmente de 10% des dégâts infligés.",
+      "pos": {
+        "x": 89.69,
+        "y": 27.03
+      },
+      "linked": [
+        "EARME-01"
+      ],
+      "tags": [
+        "Sort",
+        "Enchantement"
+      ],
+      "evolvesFrom": "EARME-01"
+    }
+  ]
+}
