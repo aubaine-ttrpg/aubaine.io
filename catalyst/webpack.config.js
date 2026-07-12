@@ -53,6 +53,14 @@ Encore
     // PostCSS + autoprefixer, targets driven by .browserslistrc (single source of truth)
     .enablePostCssLoader()
 
+    // Cover art, node icons, and paper textures, fingerprinted and referenced
+    // via the manifest (see catalyst_image() in AppExtension).
+    .copyFiles({
+        from: './assets/images',
+        to: 'images/[path][name].[hash:8].[ext]',
+        pattern: /\.(png|jpe?g|svg|webp)$/,
+    })
+
     // Configure JS and CSS minimizers
     // .configureJsMinimizerPlugin((options, MinimizerPlugin) => {
     //     options.minify = MinimizerPlugin.esbuildMinify

@@ -3,4 +3,7 @@ parameters:
     paths:
         - src/
         - tests/
+    excludePaths:
+        # Symfony-generated bootstrap; not application code.
+        - tests/bootstrap.php
     treatPhpDocTypesAsCertain: false
