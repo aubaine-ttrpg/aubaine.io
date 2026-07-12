@@ -1,0 +1,35 @@
+# ─────────────────────────────────────────────────────────────
+# 📦 Build & dependencies
+# ─────────────────────────────────────────────────────────────
+/vendor/
+/node_modules/
+/public/build/
+/public/bundles/
+npm-debug.log
+yarn-error.log
+
+# ─────────────────────────────────────────────────────────────
+# 🏗️ Symfony runtime (var/ also holds the locally-authored book JSON)
+# ─────────────────────────────────────────────────────────────
+/var/
+
+# ─────────────────────────────────────────────────────────────
+# 🔒 Environment (committed dev defaults; per-dev overrides go in .env.dev, git-ignored)
+# ─────────────────────────────────────────────────────────────
+# The repo-root .gitignore ignores every .env*; re-include only the committed defaults.
+!.env
+
+# ─────────────────────────────────────────────────────────────
+# ✅ Testing & static analysis (config files stay committed)
+# ─────────────────────────────────────────────────────────────
+/.phpunit.cache/
+/phpunit.xml
+/.php-cs-fixer.cache
+
+# ─────────────────────────────────────────────────────────────
+# 🧑‍💻 IDE & OS
+# ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+/.idea/
+/.vscode/

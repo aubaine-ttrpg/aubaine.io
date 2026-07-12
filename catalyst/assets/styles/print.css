@@ -1,0 +1,50 @@
+/*
+ * Print document — A4 page geometry shared by every book page.
+ * Page-specific styling lives alongside each page template's markup.
+ * Filled out as the print page templates are built.
+ */
+
+@page {
+    size: A4;
+    margin: 0;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+}
+
+/* One physical A4 leaf. */
+.page {
+    position: relative;
+    width: 210mm;
+    height: 297mm;
+    overflow: hidden;
+    break-after: page;
+    break-inside: avoid;
+}
+
+.page:last-of-type {
+    break-after: auto;
+}
+
+/* On-screen preview: show leaves stacked on a neutral backdrop. */
+@media screen {
+    body {
+        background: #3a3a3f;
+        padding: 24px 0;
+    }
+
+    .page {
+        margin: 0 auto 24px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+    }
+}

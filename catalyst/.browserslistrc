@@ -1,0 +1,5 @@
+# Single source of truth for target browsers.
+# Read by autoprefixer (CSS) and Babel preset-env (JS). Modern baseline, no IE.
+last 2 versions
+not dead
+> 0.5%
