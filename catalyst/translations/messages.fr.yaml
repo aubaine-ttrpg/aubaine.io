@@ -1,0 +1,82 @@
+app.name: Aubaine Catalyst
+
+nav.language: Langue
+nav.toggle_theme: Basculer clair et sombre
+
+action.cancel: Annuler
+action.customize: Personnaliser
+action.add: Ajouter
+action.remove: Retirer
+action.save: Enregistrer
+
+book.title: Titre
+book.subtitle: Sous-titre
+book.print: Imprimer
+book.pages_count: '%count% page(s)'
+book.list.title: Livres
+book.list.new: Nouveau livre
+book.list.empty.title: Aucun livre pour le moment
+book.list.empty.hint: Créez un livre, puis cliquez sur des pages pour les ajouter et les personnaliser.
+book.new.title: Nouveau livre
+book.new.submit: Créer le livre
+book.delete.action: Supprimer
+book.delete.confirm: Supprimer ce livre ?
+
+editor.pages: Pages
+editor.pages_empty.title: Ce livre n''a pas encore de page
+editor.pages_empty.hint: Choisissez une page dans le catalogue pour l''ajouter.
+editor.catalog: Ajouter une page
+editor.customize: 'Personnaliser : %page%'
+editor.move_up: Monter
+editor.move_down: Descendre
+editor.remove_page_confirm: Retirer cette page ?
+
+category.covers: Couvertures
+category.trees: Arbres de compétences
+
+page.cover_front.label: Couverture
+page.cover_front.description: Couverture sombre et cinématographique, titre et filigrane dorés.
+page.cover_front.eyebrow: Surtitre
+page.cover_front.title: Titre
+page.cover_front.subtitle: Sous-titre
+page.cover_front.version: Ligne d''édition
+page.cover_front.image: Illustration
+page.cover_front.image_none: Aucune illustration
+page.cover_front.ornaments: Afficher le cadre doré
+
+page.cover_back.label: Quatrième de couverture
+page.cover_back.description: Illustration pleine page, accroche, appel à l''action et QR code.
+page.cover_back.eyebrow: Surtitre
+page.cover_back.tagline: Accroche
+page.cover_back.body: Texte
+page.cover_back.body_help: Une ligne par entrée.
+page.cover_back.cta: Appel à l''action
+page.cover_back.url: URL
+page.cover_back.copyright: Ligne de copyright
+page.cover_back.image: Illustration
+page.cover_back.image_none: Aucune illustration
+page.cover_back.show_qr: Afficher le QR code
+page.cover_back.ornaments: Afficher le cadre doré
+
+page.skill_tree.label: Arbre de compétences
+page.skill_tree.description: Une planche d''arbre et ses pages de compétences générées.
+page.skill_tree.tree: Arbre
+page.skill_tree.paper: Papier
+page.skill_tree.legend: Afficher la légende
+
+flash.book_created: Livre créé.
+flash.page_added: Page ajoutée.
+flash.page_saved: Page enregistrée.
+flash.page_removed: Page retirée.
+flash.book_deleted: Livre supprimé.
+
+print.empty: Ce livre n''a pas encore de page à imprimer.
+
+tree.subtitle: Arbre de compétences
+tree.footer: aubaine.io
+tree.abilities: Compétences
+tree.evolves_from: Évolution de
+tree.type.active: Active
+tree.type.passive: Passive
+tree.type.evolution: Évolution
+tree.type.special: Spéciale

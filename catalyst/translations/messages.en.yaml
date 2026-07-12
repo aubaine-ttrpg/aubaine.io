@@ -1,0 +1,82 @@
+app.name: Aubaine Catalyst
+
+nav.language: Language
+nav.toggle_theme: Toggle light and dark
+
+action.cancel: Cancel
+action.customize: Customize
+action.add: Add
+action.remove: Remove
+action.save: Save
+
+book.title: Title
+book.subtitle: Subtitle
+book.print: Print
+book.pages_count: '%count% page(s)'
+book.list.title: Books
+book.list.new: New book
+book.list.empty.title: No books yet
+book.list.empty.hint: Create a book, then click pages to add and customize them.
+book.new.title: New book
+book.new.submit: Create book
+book.delete.action: Delete
+book.delete.confirm: Delete this book?
+
+editor.pages: Pages
+editor.pages_empty.title: This book has no pages yet
+editor.pages_empty.hint: Pick a page from the catalog to add it.
+editor.catalog: Add a page
+editor.customize: 'Customize: %page%'
+editor.move_up: Move up
+editor.move_down: Move down
+editor.remove_page_confirm: Remove this page?
+
+category.covers: Covers
+category.trees: Skill trees
+
+page.cover_front.label: Front cover
+page.cover_front.description: Dark cinematic cover with gold title and filigree.
+page.cover_front.eyebrow: Eyebrow
+page.cover_front.title: Title
+page.cover_front.subtitle: Subtitle
+page.cover_front.version: Edition line
+page.cover_front.image: Artwork
+page.cover_front.image_none: No artwork
+page.cover_front.ornaments: Show the gold frame
+
+page.cover_back.label: Back cover
+page.cover_back.description: Full illustration, blurb, call to action and QR code.
+page.cover_back.eyebrow: Eyebrow
+page.cover_back.tagline: Tagline
+page.cover_back.body: Blurb
+page.cover_back.body_help: One line per row.
+page.cover_back.cta: Call to action
+page.cover_back.url: URL
+page.cover_back.copyright: Copyright line
+page.cover_back.image: Artwork
+page.cover_back.image_none: No artwork
+page.cover_back.show_qr: Show the QR code
+page.cover_back.ornaments: Show the gold frame
+
+page.skill_tree.label: Skill tree
+page.skill_tree.description: A tree planche plus its generated ability pages.
+page.skill_tree.tree: Tree
+page.skill_tree.paper: Paper
+page.skill_tree.legend: Show the legend
+
+flash.book_created: Book created.
+flash.page_added: Page added.
+flash.page_saved: Page saved.
+flash.page_removed: Page removed.
+flash.book_deleted: Book deleted.
+
+print.empty: This book has no pages to print yet.
+
+tree.subtitle: Skill tree
+tree.footer: aubaine.io
+tree.abilities: Abilities
+tree.evolves_from: Evolves from
+tree.type.active: Active
+tree.type.passive: Passive
+tree.type.evolution: Evolution
+tree.type.special: Special
