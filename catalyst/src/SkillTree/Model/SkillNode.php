@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\SkillTree\Model;
 
+use App\Design\Characteristic;
 use App\Design\DomainSet;
 use App\Design\NodeType;
 
@@ -11,8 +12,9 @@ use App\Design\NodeType;
 final readonly class SkillNode
 {
     /**
-     * @param list<string> $linked ids of visual parents; "CORE" points at the tree core
-     * @param list<string> $tags
+     * @param list<string>         $linked          ids of visual parents; "CORE" points at the tree core
+     * @param list<string>         $tags
+     * @param list<Characteristic> $characteristics zero, one, or several; drives the title icons
      */
     public function __construct(
         public string $id,
@@ -32,6 +34,7 @@ final readonly class SkillNode
         public ?int $energy,
         public array $tags,
         public ?string $evolvesFrom,
+        public array $characteristics = [],
     ) {
     }
 

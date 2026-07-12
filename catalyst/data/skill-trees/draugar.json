@@ -46,6 +46,9 @@
       "linked": [
         "ABGRF-01"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "evolvesFrom": "ABGRF-01"
     },
     {
@@ -62,6 +65,9 @@
       "linked": [
         "ABGRF-02"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "evolvesFrom": "ABGRF-02"
     },
     {
@@ -78,6 +84,9 @@
       "linked": [
         "ABGRF-03"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "evolvesFrom": "ABGRF-03"
     },
     {
@@ -94,6 +103,9 @@
       "linked": [
         "ABGRF-04"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "evolvesFrom": "ABGRF-04"
     },
     {
@@ -110,6 +122,9 @@
       "linked": [
         "ABGRF-01"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "evolvesFrom": "ABGRF-01"
     },
     {
@@ -164,6 +179,9 @@
       "linked": [
         "SIPHN-01"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "evolvesFrom": "SIPHN-01"
     },
     {

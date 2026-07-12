@@ -55,7 +55,7 @@ final class CoverFrontPageType implements PageTypeInterface
     public function buildViewModel(array $data): array
     {
         $view = array_merge($this->defaultData(), $data);
-        $view['ornaments'] = ($data['ornaments'] ?? true) == true;
+        $view['ornaments'] = ($data['ornaments'] ?? true) === true;
 
         return $view;
     }

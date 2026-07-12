@@ -60,10 +60,24 @@ final class Page
     }
 
     /**
-     * @param array{id: string, type: string, data: array<string, mixed>} $raw
+     * @param array<mixed, mixed> $raw
      */
     public static function fromArray(array $raw): self
     {
-        return new self($raw['id'], $raw['type'], $raw['data']);
+        $data = [];
+        $rawData = $raw['data'] ?? [];
+        if (\is_array($rawData)) {
+            foreach ($rawData as $key => $value) {
+                if (\is_string($key)) {
+                    $data[$key] = $value;
+                }
+            }
+        }
+
+        return new self(
+            \is_string($raw['id'] ?? null) ? $raw['id'] : '',
+            \is_string($raw['type'] ?? null) ? $raw['type'] : '',
+            $data,
+        );
     }
 }

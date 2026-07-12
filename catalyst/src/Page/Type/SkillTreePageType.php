@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace App\Page\Type;
 
+use App\Design\Domain;
+use App\Design\NodeType;
 use App\Design\Paper;
 use App\Page\Form\SkillTreeType;
 use App\Page\PageTypeInterface;
 use App\SkillTree\Exception\SkillTreeNotFoundException;
+use App\SkillTree\Model\SkillNode;
+use App\SkillTree\Model\SkillTree;
 use App\SkillTree\SkillTreeRepository;
 
 /**
  * Skill-tree bundle: renders a chosen tree's planche plus paginated ability
  * pages. Selecting a tree JSON and a paper is all the user does; the rest is
- * derived here from the loaded {@see \App\SkillTree\Model\SkillTree}.
+ * derived here from the loaded {@see SkillTree}.
  */
 final class SkillTreePageType implements PageTypeInterface
 {
@@ -92,14 +96,66 @@ final class SkillTreePageType implements PageTypeInterface
             $tree->edges(),
         );
 
+        $titles = [];
+        foreach ($tree->nodes as $node) {
+            $titles[$node->id] = $node->title;
+        }
+
+        // Ability entries read in ID order; the two columns fill left-first.
+        $ordered = $tree->nodes;
+        usort($ordered, static fn (SkillNode $a, SkillNode $b): int => strcmp($a->id, $b->id));
+
         return [
             'tree' => $tree,
             'paper' => $paper,
-            'legend' => ($data['legend'] ?? true) == true,
+            'legend' => ($data['legend'] ?? true) === true,
+            'legendTypes' => $this->usedTypes($tree),
+            'legendDomains' => $this->usedDomains($tree),
             'edges' => $edges,
             'canvasWidth' => self::CANVAS_WIDTH,
             'canvasHeight' => self::CANVAS_HEIGHT,
-            'abilityPages' => array_chunk($tree->nodes, self::ENTRIES_PER_PAGE),
+            'titles' => $titles,
+            'abilityPages' => array_chunk($ordered, self::ENTRIES_PER_PAGE),
         ];
+    }
+
+    /**
+     * Node types present in the tree, in a fixed reading order.
+     *
+     * @return list<NodeType>
+     */
+    private function usedTypes(SkillTree $tree): array
+    {
+        $used = [];
+        foreach ([NodeType::Active, NodeType::Passive, NodeType::Evolution, NodeType::Special] as $type) {
+            foreach ($tree->nodes as $node) {
+                if ($node->type === $type) {
+                    $used[] = $type;
+                    break;
+                }
+            }
+        }
+
+        return $used;
+    }
+
+    /**
+     * Domains present across the tree's nodes, in enum order.
+     *
+     * @return list<Domain>
+     */
+    private function usedDomains(SkillTree $tree): array
+    {
+        $used = [];
+        foreach (Domain::cases() as $domain) {
+            foreach ($tree->nodes as $node) {
+                if (\in_array($domain, $node->domains->all(), true)) {
+                    $used[] = $domain;
+                    break;
+                }
+            }
+        }
+
+        return $used;
     }
 }

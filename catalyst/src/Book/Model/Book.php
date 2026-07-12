@@ -132,17 +132,27 @@ final class Book
     }
 
     /**
-     * @param array{id: string, title: string, subtitle?: ?string, createdAt: string, updatedAt: string, pages?: list<array{id: string, type: string, data: array<string, mixed>}>} $raw
+     * @param array<mixed, mixed> $raw
      */
     public static function fromArray(array $raw): self
     {
+        $pages = [];
+        $rawPages = $raw['pages'] ?? [];
+        if (\is_array($rawPages)) {
+            foreach ($rawPages as $rawPage) {
+                if (\is_array($rawPage)) {
+                    $pages[] = Page::fromArray($rawPage);
+                }
+            }
+        }
+
         return new self(
-            $raw['id'],
-            $raw['title'],
-            $raw['subtitle'] ?? null,
-            new DateTimeImmutable($raw['createdAt']),
-            new DateTimeImmutable($raw['updatedAt']),
-            array_map(static fn (array $page): Page => Page::fromArray($page), $raw['pages'] ?? []),
+            \is_string($raw['id'] ?? null) ? $raw['id'] : '',
+            \is_string($raw['title'] ?? null) ? $raw['title'] : '',
+            \is_string($raw['subtitle'] ?? null) ? $raw['subtitle'] : null,
+            new DateTimeImmutable(\is_string($raw['createdAt'] ?? null) ? $raw['createdAt'] : 'now'),
+            new DateTimeImmutable(\is_string($raw['updatedAt'] ?? null) ? $raw['updatedAt'] : 'now'),
+            $pages,
         );
     }
 }

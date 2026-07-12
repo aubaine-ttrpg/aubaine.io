@@ -16,6 +16,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Customizes a back-cover page. The blurb is a single multi-line string; the
  * template renders one line per row.
+ *
+ * @extends AbstractType<mixed>
  */
 final class CoverBackType extends AbstractType
 {

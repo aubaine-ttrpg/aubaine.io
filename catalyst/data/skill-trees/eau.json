@@ -56,6 +56,9 @@
       "linked": [
         "DRZZL-01"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "tags": [
         "Sort",
         "Déchaîné"
@@ -78,6 +81,9 @@
       "linked": [
         "DRZZL-02"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "tags": [
         "Sort",
         "Déchaîné"
@@ -100,6 +106,9 @@
       "linked": [
         "DRZZL-03"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "tags": [
         "Sort",
         "Déchaîné"
@@ -122,6 +131,9 @@
       "linked": [
         "DRZZL-04"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "tags": [
         "Sort",
         "Déchaîné"
@@ -144,6 +156,9 @@
       "linked": [
         "DRZZL-05"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "tags": [
         "Sort",
         "Déchaîné"
@@ -192,6 +207,9 @@
       "linked": [
         "DRZZL-02"
       ],
+      "activation": "Passif",
+      "range": "—",
+      "duration": "—",
       "tags": [
         "Sort",
         "Divination"
@@ -240,6 +258,9 @@
       "linked": [
         "WATME-01"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "tags": [
         "Sort",
         "Enchantement"

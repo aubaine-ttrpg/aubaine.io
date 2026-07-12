@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'book.new.title'|trans }} · {{ 'app.name'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="page-head">
+        <h1>{{ 'book.new.title'|trans }}</h1>
+        <a class="btn btn--ghost" href="{{ path('app_book_index') }}">{{ 'action.cancel'|trans }}</a>
+    </div>
+
+    <div class="panel panel--narrow">
+        {{ form_start(form) }}
+            {{ form_row(form.title) }}
+            {{ form_row(form.subtitle) }}
+            <div class="form-actions">
+                <button class="btn btn--primary" type="submit">{{ 'book.new.submit'|trans }}</button>
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

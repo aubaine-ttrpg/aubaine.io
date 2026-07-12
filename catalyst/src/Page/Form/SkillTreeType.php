@@ -17,6 +17,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  * Customizes a skill-tree page: which tree JSON to render, the paper stock, and
  * whether to show the legend. Choices come from the seeded trees and the Paper
  * enum, so both value sets stay single-sourced.
+ *
+ * @extends AbstractType<mixed>
  */
 final class SkillTreeType extends AbstractType
 {

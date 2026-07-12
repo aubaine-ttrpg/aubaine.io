@@ -69,10 +69,10 @@ final readonly class DomainSet
     }
 
     /** @return list<string> */
-    public function labels(string $locale = 'en'): array
+    public function labels(string $locale = 'fr'): array
     {
         if ([] === $this->domains) {
-            return ['fr' === $locale ? Domain::NEUTRAL_LABEL_FR : Domain::NEUTRAL_LABEL_EN];
+            return ['en' === $locale ? Domain::NEUTRAL_LABEL_EN : Domain::NEUTRAL_LABEL_FR];
         }
 
         return array_map(static fn (Domain $domain): string => $domain->label($locale), $this->domains);

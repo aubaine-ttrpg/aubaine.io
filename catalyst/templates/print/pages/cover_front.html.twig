@@ -1,0 +1,22 @@
+{% set art = catalyst_image('covers', image) %}
+<div class="page cover cover--recto">
+    <div class="cover__scaler">
+        <div class="cover__inner">
+            {% if art %}<div class="cover__art" style="background-image: url('{{ art }}'); background-position: 50% 16%"></div>{% endif %}
+            <div class="cover__wash cover__wash--recto-radial"></div>
+            <div class="cover__wash cover__wash--recto-linear"></div>
+            <div class="grain"></div>
+            {% if ornaments %}
+                <div class="cover__frame"></div>
+                <div class="cover__frame cover__frame--inner"></div>
+            {% endif %}
+            {% if eyebrow %}<div class="cover__eyebrow">{{ eyebrow }}</div>{% endif %}
+            <div class="cover__headline">
+                <h1 class="cover__title">{{ title }}</h1>
+                <div class="cover__rule"></div>
+                {% if subtitle %}<div class="cover__subtitle">{{ subtitle }}</div>{% endif %}
+            </div>
+            {% if version %}<div class="cover__version">{{ version }}</div>{% endif %}
+        </div>
+    </div>
+</div>

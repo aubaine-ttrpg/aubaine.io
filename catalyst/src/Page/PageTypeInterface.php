@@ -39,7 +39,7 @@ interface PageTypeInterface
     /**
      * FQCN of the Symfony form type used to customize this page's data.
      *
-     * @return class-string<\Symfony\Component\Form\FormTypeInterface>
+     * @return class-string<\Symfony\Component\Form\FormTypeInterface<mixed>>
      */
     public function formType(): string;
 

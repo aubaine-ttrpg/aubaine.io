@@ -71,8 +71,8 @@ enum Paper: string
         };
     }
 
-    public function label(string $locale = 'en'): string
+    public function label(string $locale = 'fr'): string
     {
-        return 'fr' === $locale ? $this->labelFr() : $this->labelEn();
+        return 'en' === $locale ? $this->labelEn() : $this->labelFr();
     }
 }

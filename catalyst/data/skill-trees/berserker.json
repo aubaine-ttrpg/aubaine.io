@@ -38,6 +38,9 @@
       "tags": [
         "Rage",
         "Déchaîné"
+      ],
+      "characteristics": [
+        "strength"
       ]
     },
     {
@@ -56,11 +59,18 @@
       "linked": [
         "RAGER-01"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "tags": [
         "Rage",
         "Critique"
       ],
-      "evolvesFrom": "RAGER-01"
+      "evolvesFrom": "RAGER-01",
+      "characteristics": [
+        "strength",
+        "endurance"
+      ]
     },
     {
       "id": "RAGER-03",
@@ -78,10 +88,16 @@
       "linked": [
         "RAGER-01"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "tags": [
         "Rage"
       ],
-      "evolvesFrom": "RAGER-01"
+      "evolvesFrom": "RAGER-01",
+      "characteristics": [
+        "endurance"
+      ]
     },
     {
       "id": "RAGER-04",
@@ -99,10 +115,16 @@
       "linked": [
         "RAGER-03"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "tags": [
         "Rage"
       ],
-      "evolvesFrom": "RAGER-03"
+      "evolvesFrom": "RAGER-03",
+      "characteristics": [
+        "endurance"
+      ]
     },
     {
       "id": "RAGER-05",
@@ -120,10 +142,16 @@
       "linked": [
         "RAGER-04"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "tags": [
         "Rage"
       ],
-      "evolvesFrom": "RAGER-04"
+      "evolvesFrom": "RAGER-04",
+      "characteristics": [
+        "any"
+      ]
     },
     {
       "id": "INTFC-01",
@@ -142,9 +170,15 @@
       "linked": [
         "CORE"
       ],
+      "activation": "Passif",
+      "range": "—",
+      "duration": "—",
       "tags": [
         "Intimidation",
         "Présence"
+      ],
+      "characteristics": [
+        "charisma"
       ]
     },
     {
@@ -170,6 +204,10 @@
       "tags": [
         "Cri",
         "Déchaîné"
+      ],
+      "characteristics": [
+        "spirit",
+        "charisma"
       ]
     },
     {

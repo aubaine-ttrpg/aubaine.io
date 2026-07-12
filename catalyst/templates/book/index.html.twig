@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'book.list.title'|trans }} · {{ 'app.name'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="page-head">
+        <h1>{{ 'book.list.title'|trans }}</h1>
+        <a class="btn btn--primary" href="{{ path('app_book_new') }}">{{ 'book.list.new'|trans }}</a>
+    </div>
+
+    {% if books is empty %}
+        <div class="empty">
+            <p class="empty__title">{{ 'book.list.empty.title'|trans }}</p>
+            <p class="empty__hint">{{ 'book.list.empty.hint'|trans }}</p>
+            <a class="btn btn--primary" href="{{ path('app_book_new') }}">{{ 'book.list.new'|trans }}</a>
+        </div>
+    {% else %}
+        <ul class="book-list">
+            {% for book in books %}
+                <li class="book-card">
+                    <a class="book-card__link" href="{{ path('app_book_edit', {id: book.id}) }}">
+                        <span class="book-card__title">{{ book.title }}</span>
+                        {% if book.subtitle %}<span class="book-card__subtitle">{{ book.subtitle }}</span>{% endif %}
+                        <span class="book-card__meta">{{ 'book.pages_count'|trans({'%count%': book.pageCount}) }}</span>
+                    </a>
+                    <div class="book-card__actions">
+                        <a class="btn btn--ghost" href="{{ path('app_book_print', {id: book.id}) }}">{{ 'book.print'|trans }}</a>
+                        <form method="post" action="{{ path('app_book_delete', {id: book.id}) }}"
+                              onsubmit="return confirm('{{ 'book.delete.confirm'|trans }}')">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-book') }}">
+                            <button class="btn btn--danger" type="submit">{{ 'book.delete.action'|trans }}</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

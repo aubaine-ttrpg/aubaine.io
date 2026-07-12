@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ type.labelKey|trans }} · {{ book.title }}{% endblock %}
+
+{% block body %}
+    <div class="page-head">
+        <div>
+            <a class="back" href="{{ path('app_book_edit', {id: book.id}) }}">← {{ book.title }}</a>
+            <h1>{{ 'editor.customize'|trans({'%page%': type.labelKey|trans}) }}</h1>
+        </div>
+    </div>
+
+    <div class="panel panel--narrow">
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <div class="form-actions">
+                <button class="btn btn--primary" type="submit">{{ 'action.save'|trans }}</button>
+                <a class="btn btn--ghost" href="{{ path('app_book_edit', {id: book.id}) }}">{{ 'action.cancel'|trans }}</a>
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

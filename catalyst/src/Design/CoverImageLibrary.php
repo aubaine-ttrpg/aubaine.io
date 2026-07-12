@@ -25,7 +25,8 @@ final class CoverImageLibrary
         }
 
         $names = [];
-        foreach (glob($this->coversDirectory.'/*.{png,jpg,jpeg,webp}', \GLOB_BRACE) ?: [] as $file) {
+        $files = glob($this->coversDirectory.'/*.{png,jpg,jpeg,webp}', \GLOB_BRACE);
+        foreach (\is_array($files) ? $files : [] as $file) {
             $names[] = basename($file);
         }
         sort($names);

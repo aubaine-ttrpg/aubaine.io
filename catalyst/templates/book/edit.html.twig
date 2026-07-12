@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ book.title }} · {{ 'app.name'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="page-head">
+        <div>
+            <a class="back" href="{{ path('app_book_index') }}">← {{ 'book.list.title'|trans }}</a>
+            <h1>{{ book.title }}</h1>
+            {% if book.subtitle %}<p class="subtitle">{{ book.subtitle }}</p>{% endif %}
+        </div>
+        <div class="page-head__actions">
+            <a class="btn btn--primary" href="{{ path('app_book_print', {id: book.id}) }}" target="_blank" rel="noopener">
+                {{ 'book.print'|trans }}
+            </a>
+        </div>
+    </div>
+
+    <div class="editor">
+        <section class="editor__pages" aria-labelledby="pages-heading">
+            <h2 id="pages-heading">{{ 'editor.pages'|trans }}</h2>
+
+            {% if book.pages is empty %}
+                <div class="empty">
+                    <p class="empty__title">{{ 'editor.pages_empty.title'|trans }}</p>
+                    <p class="empty__hint">{{ 'editor.pages_empty.hint'|trans }}</p>
+                </div>
+            {% else %}
+                <ol class="page-strip">
+                    {% for page in book.pages %}
+                        {% set type = page_type(page.type) %}
+                        <li class="page-item">
+                            <span class="page-item__index">{{ loop.index }}</span>
+                            <span class="page-item__body">
+                                <span class="page-item__label">{{ type.labelKey|trans }}</span>
+                                <span class="page-item__cat">{{ ('category.' ~ type.category)|trans }}</span>
+                            </span>
+                            <span class="page-item__actions">
+                                <form method="post" action="{{ path('app_book_page_move', {id: book.id, pageId: page.id}) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('move-page') }}">
+                                    <button name="direction" value="up" class="icon-btn" {{ loop.first ? 'disabled' }} aria-label="{{ 'editor.move_up'|trans }}">↑</button>
+                                    <button name="direction" value="down" class="icon-btn" {{ loop.last ? 'disabled' }} aria-label="{{ 'editor.move_down'|trans }}">↓</button>
+                                </form>
+                                <a class="btn btn--ghost" href="{{ path('app_book_page_edit', {id: book.id, pageId: page.id}) }}">{{ 'action.customize'|trans }}</a>
+                                <form method="post" action="{{ path('app_book_page_delete', {id: book.id, pageId: page.id}) }}"
+                                      onsubmit="return confirm('{{ 'editor.remove_page_confirm'|trans }}')">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete-page') }}">
+                                    <button class="icon-btn icon-btn--danger" type="submit" aria-label="{{ 'action.remove'|trans }}">✕</button>
+                                </form>
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ol>
+            {% endif %}
+        </section>
+
+        <aside class="editor__catalog" aria-labelledby="catalog-heading">
+            <h2 id="catalog-heading">{{ 'editor.catalog'|trans }}</h2>
+            {% for category, types in catalog %}
+                <div class="catalog-group">
+                    <h3>{{ ('category.' ~ category)|trans }}</h3>
+                    <div class="catalog-tiles">
+                        {% for type in types %}
+                            <form method="post" action="{{ path('app_book_page_add', {id: book.id}) }}" class="tile">
+                                <input type="hidden" name="_token" value="{{ csrf_token('add-page') }}">
+                                <input type="hidden" name="type" value="{{ type.key }}">
+                                <button type="submit" class="tile__btn">
+                                    <span class="tile__title">{{ type.labelKey|trans }}</span>
+                                    <span class="tile__desc">{{ type.descriptionKey|trans }}</span>
+                                    <span class="tile__add">＋ {{ 'action.add'|trans }}</span>
+                                </button>
+                            </form>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </aside>
+    </div>
+{% endblock %}

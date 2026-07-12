@@ -45,7 +45,8 @@ final class BookRepository
         }
 
         $books = [];
-        foreach (glob($this->booksDirectory.'/*.json') ?: [] as $file) {
+        $files = glob($this->booksDirectory.'/*.json');
+        foreach (\is_array($files) ? $files : [] as $file) {
             $books[] = Book::fromArray($this->decode($file));
         }
 
@@ -121,7 +122,7 @@ final class BookRepository
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<mixed, mixed>
      */
     private function decode(string $file): array
     {
@@ -135,7 +136,6 @@ final class BookRepository
             throw new RuntimeException(\sprintf('Book file "%s" is not a JSON object.', $file));
         }
 
-        /* @var array<string, mixed> $data */
         return $data;
     }
 

@@ -1,0 +1,73 @@
+{% import 'print/_macros.html.twig' as m %}
+
+{% set paperTexture = catalyst_image('paper', paper.textureFile) %}
+{% set paperStyle = '--paper: ' ~ paper.color ~ (paperTexture ? '; --paper-texture: url(\'' ~ paperTexture ~ '\')' : '') %}
+
+{# ---- Planche: the tree ---- #}
+<div class="page tree-leaf" style="{{ paperStyle }}">
+    <div class="tree-planche">
+        <svg class="tree-links" viewBox="0 0 {{ canvasWidth }} {{ canvasHeight }}" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <circle class="orbit" cx="480" cy="690" r="175"></circle>
+            <circle class="orbit" cx="480" cy="690" r="335"></circle>
+            <circle class="orbit" cx="480" cy="690" r="500"></circle>
+            {% for edge in edges %}
+                <line class="edge" x1="{{ edge.x1 }}" y1="{{ edge.y1 }}" x2="{{ edge.x2 }}" y2="{{ edge.y2 }}"></line>
+            {% endfor %}
+        </svg>
+
+        <header class="tree-head">
+            <span class="tree-head__title">{{ tree.name }}</span>
+            <span class="tree-head__sub">{{ tree.core.sublabel }} · {{ 'tree.subtitle'|trans }}</span>
+        </header>
+
+        <div class="tree-core" style="left: {{ tree.core.pos ? tree.core.pos.x : 50 }}%; top: {{ tree.core.pos ? tree.core.pos.y : 50 }}%; --domain: {{ tree.core.domains.borderCss }}">
+            <span class="tree-core__ring"></span>
+            <span class="tree-core__glyph"></span>
+            <span class="tree-core__plate">
+                <span class="tree-core__label">{{ tree.core.label }}</span>
+                {% if tree.core.sublabel %}<span class="tree-core__sub">{{ tree.core.sublabel }}</span>{% endif %}
+            </span>
+        </div>
+
+        {% for node in tree.nodes %}{{ m.skill_node(node) }}{% endfor %}
+
+        {% if legend %}
+            <div class="tree-legend">
+                <div class="tree-legend__group">
+                    {% for type in legendTypes %}
+                        <span class="legend-item"><span class="legend-shape node__shape--{{ type.shapeKey }}"></span>{{ type.labelFr }}</span>
+                    {% endfor %}
+                </div>
+                <div class="tree-legend__group">
+                    {% for domain in legendDomains %}
+                        <span class="legend-item"><span class="pastille" style="background: {{ domain.color }}"></span>{{ domain.labelFr }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        <footer class="tree-foot">
+            <span>Aubaine · {{ tree.name }}</span>
+            <span>{{ 'tree.footer'|trans }}</span>
+        </footer>
+    </div>
+</div>
+
+{# ---- Ability pages ---- #}
+{% for entries in abilityPages %}
+    <div class="page tree-leaf" style="{{ paperStyle }}">
+        <div class="ability-planche">
+            <header class="tree-head tree-head--interior">
+                <span class="tree-head__title">{{ 'tree.abilities'|trans }}</span>
+                <span class="tree-head__sub">{{ tree.core.sublabel }} · {{ tree.name }}</span>
+            </header>
+            <div class="ability-cols">
+                {% for node in entries %}{{ m.ability_entry(node, titles) }}{% endfor %}
+            </div>
+            <footer class="tree-foot">
+                <span>Aubaine · {{ tree.name }}</span>
+                <span>{{ loop.index }} / {{ abilityPages|length }}</span>
+            </footer>
+        </div>
+    </div>
+{% endfor %}

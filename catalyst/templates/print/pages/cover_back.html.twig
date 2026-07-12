@@ -1,0 +1,32 @@
+{% set art = catalyst_image('covers', image) %}
+{% set qr = catalyst_image('covers', 'qr-aubaine.png') %}
+<div class="page cover cover--verso">
+    <div class="cover__scaler">
+        <div class="cover__inner">
+            {% if art %}<div class="cover__art" style="background-image: url('{{ art }}'); background-position: 50% 22%"></div>{% endif %}
+            <div class="cover__wash cover__wash--verso-radial"></div>
+            <div class="cover__wash cover__wash--verso-linear"></div>
+            <div class="grain"></div>
+            {% if ornaments %}
+                <div class="cover__frame"></div>
+                <div class="cover__frame cover__frame--inner"></div>
+            {% endif %}
+            {% if eyebrow %}<div class="cover__eyebrow">{{ eyebrow }}</div>{% endif %}
+
+            <div class="cover__back">
+                {% if tagline %}<div class="cover__tagline">{{ tagline }}</div>{% endif %}
+                {% if bodyLines %}
+                    <div class="cover__body">
+                        {% for line in bodyLines %}<div>{{ line }}</div>{% endfor %}
+                    </div>
+                {% endif %}
+                <div class="cover__rule cover__rule--short"></div>
+                {% if cta %}<div class="cover__cta">{{ cta }}</div>{% endif %}
+                {% if url %}<div class="cover__url">{{ url }}</div>{% endif %}
+            </div>
+
+            {% if copyright %}<div class="cover__copyright">{{ copyright }}</div>{% endif %}
+            {% if showQr and qr %}<img class="cover__qr" src="{{ qr }}" alt="QR aubaine.io">{% endif %}
+        </div>
+    </div>
+</div>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\SkillTree;
 
+use App\Design\Characteristic;
 use App\Design\DomainSet;
 use App\Design\NodeType;
 use App\SkillTree\Exception\InvalidSkillTreeException;
@@ -39,7 +40,8 @@ final class SkillTreeRepository
         }
 
         $ids = [];
-        foreach (glob($this->treesDirectory.'/*.json') ?: [] as $file) {
+        $files = glob($this->treesDirectory.'/*.json');
+        foreach (\is_array($files) ? $files : [] as $file) {
             $ids[] = basename($file, '.json');
         }
         sort($ids);
@@ -116,7 +118,7 @@ final class SkillTreeRepository
     }
 
     /**
-     * @param array<string, mixed> $data
+     * @param array<mixed, mixed> $data
      */
     private function mapTree(array $data): SkillTree
     {
@@ -173,7 +175,24 @@ final class SkillTreeRepository
             \is_int($energy) ? $energy : null,
             $this->toStringList($node['tags'] ?? []),
             $this->toString($node['evolvesFrom'] ?? null),
+            $this->mapCharacteristics($node['characteristics'] ?? []),
         );
+    }
+
+    /**
+     * @return list<Characteristic>
+     */
+    private function mapCharacteristics(mixed $value): array
+    {
+        $characteristics = [];
+        foreach ($this->toStringList($value) as $key) {
+            $characteristic = Characteristic::tryFrom($key);
+            if ($characteristic instanceof Characteristic) {
+                $characteristics[] = $characteristic;
+            }
+        }
+
+        return $characteristics;
     }
 
     private function mapPosition(mixed $value): ?Position

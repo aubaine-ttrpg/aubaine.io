@@ -63,14 +63,15 @@ final class CoverBackPageType implements PageTypeInterface
         $view = array_merge($this->defaultData(), $data);
 
         $body = \is_string($view['bodyText'] ?? null) ? $view['bodyText'] : '';
-        $lines = preg_split('/\r?\n/', $body) ?: [];
+        $split = preg_split('/\r?\n/', $body);
+        $lines = \is_array($split) ? $split : [];
         $view['bodyLines'] = array_values(array_filter(
             array_map(static fn (string $line): string => trim($line), $lines),
             static fn (string $line): bool => '' !== $line,
         ));
 
-        $view['showQr'] = ($data['showQr'] ?? true) == true;
-        $view['ornaments'] = ($data['ornaments'] ?? true) == true;
+        $view['showQr'] = ($data['showQr'] ?? true) === true;
+        $view['ornaments'] = ($data['ornaments'] ?? true) === true;
 
         return $view;
     }

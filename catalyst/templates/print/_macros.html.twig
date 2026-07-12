@@ -1,0 +1,84 @@
+{# Reusable print pieces: a positioned tree node and a full ability entry. #}
+
+{% macro node_shape(node, extraClass) %}
+    {% set icon = catalyst_image('icons', node.icon) %}
+    <span class="node__shape node__shape--{{ node.type.shapeKey }} {{ extraClass }}"
+          style="--domain: {{ node.domains.borderCss }}{% if icon %}; --icon: url('{{ icon }}'){% endif %}">
+        <span class="node__fill"></span>
+    </span>
+{% endmacro %}
+
+{% macro skill_node(node) %}
+    {% import _self as self %}
+    <div class="node" style="left: {{ node.pos ? node.pos.x : 50 }}%; top: {{ node.pos ? node.pos.y : 50 }}%">
+        {{ self.node_shape(node, 'node__shape--tree') }}
+        <span class="nameplate">
+            <span class="nameplate__xp">{{ node.xp }}</span>
+            <span class="nameplate__text">
+                <span class="nameplate__title">{% if node.ultimate %}<span class="nameplate__ult">⬢</span> {% endif %}{{ node.title }}</span>
+                <span class="nameplate__id">{{ node.id }}</span>
+            </span>
+        </span>
+    </div>
+{% endmacro %}
+
+{% macro ability_entry(node, titles) %}
+    {% import _self as self %}
+    {% set isEvo = node.type.value == 'evolution' %}
+    {% set isSpecial = node.type.value == 'special' %}
+    {% set parent = node.evolvesFrom ? (titles[node.evolvesFrom] | default(node.evolvesFrom)) : null %}
+    {% set evoNote = isSpecial
+        ? ('Capacité spéciale' ~ (parent ? ' · suite de ' ~ parent : ''))
+        : (parent ? 'Évolution de ' ~ parent : 'Évolution') %}
+
+    <div class="ability">
+        <div class="ability__hd">
+            <span class="ability__hd-title">
+                {% if node.ultimate %}<svg class="ability__ult" width="16" height="16" viewBox="0 0 24 24" fill="#7d5e16"><path d="m3.47 16.85l8 5a1.01 1.01 0 0 0 1.06 0l8-5c.29-.18.47-.5.47-.85V8c0-.34-.18-.67-.47-.85l-8-5c-.32-.2-.74-.2-1.06 0l-8 5c-.29.18-.47.5-.47.85v8c0 .34.18.67.47.85"></path></svg>{% endif %}
+                {% if node.characteristics %}
+                    <span class="ability__chars">
+                        {% for characteristic in node.characteristics %}
+                            <span class="char-badge" style="color: {{ characteristic.color }}" title="{{ characteristic.labelFr }}">
+                                {{ ux_icon('mdi:hexagon', {class: 'char-badge__hex'}) }}
+                                {{ ux_icon(characteristic.iconName, {class: 'char-badge__icon'}) }}
+                            </span>
+                        {% endfor %}
+                    </span>
+                {% endif %}
+                <span class="ability__name">{{ node.title }}</span>
+            </span>
+            <span class="ability__hd-meta">
+                <span class="ability__id">{{ node.id }}</span>
+                <span class="ability__xp">{{ node.xp }}<span class="ability__xp-u">XP</span></span>
+            </span>
+        </div>
+
+        <div class="ability__body">
+            <div class="ability__node">{{ self.node_shape(node, 'node__shape--card') }}</div>
+            <div class="ability__col">
+                <div class="ability__meta-row">
+                    {% if node.energy is not null %}
+                        <span class="ability__energy"><svg width="9" height="10" viewBox="0 0 24 24" fill="rgba(58,44,8,.8)"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>{{ node.energy }} ÉNERGIE</span>
+                    {% endif %}
+                    <span class="ability__meta">{{ node.type.labelFr }}{% if not node.domains.empty %} · {{ node.domains.labels('fr') | join(' / ') }}{% endif %}</span>
+                </div>
+
+                {% if isEvo %}
+                    <div class="ability__evo"><span class="hexmark"></span>{{ evoNote }}</div>
+                {% else %}
+                    <div class="ability__stats">
+                        {% if node.activation %}<span class="stat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8a6a2e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5V12l3 2"></path></svg>{{ node.activation }}</span>{% endif %}
+                        {% if node.range %}<span class="stat"><svg width="15" height="14" viewBox="0 0 24 24" fill="none" stroke="#8a6a2e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18"></path><path d="M7 8l-4 4 4 4"></path><path d="M17 8l4 4-4 4"></path></svg>{{ node.range }}</span>{% endif %}
+                        {% if node.durationLine %}<span class="stat"><svg width="13" height="14" viewBox="0 0 24 24" fill="#8a6a2e"><path d="M5 2h14v2l-7 8 7 8v2H5v-2l7-8L5 4z"></path></svg>{{ node.durationLine }}</span>{% endif %}
+                    </div>
+                {% endif %}
+
+                {% if node.tags %}<div class="ability__tags-line">{{ node.tags | join(' · ') }}</div>{% endif %}
+            </div>
+        </div>
+
+        <div class="ability__desc">{{ node.description }}</div>
+
+        {% if isSpecial %}<div class="ability__evo-foot"><span class="hexmark hexmark--foot"></span>{{ evoNote }}</div>{% endif %}
+    </div>
+{% endmacro %}

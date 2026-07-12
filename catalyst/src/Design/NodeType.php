@@ -39,9 +39,9 @@ enum NodeType: string
         };
     }
 
-    public function label(string $locale = 'en'): string
+    public function label(string $locale = 'fr'): string
     {
-        return 'fr' === $locale ? $this->labelFr() : $this->labelEn();
+        return 'en' === $locale ? $this->labelEn() : $this->labelFr();
     }
 
     /** Shape-family key; the stylesheet defines `.tree-node--<key>`. */

@@ -62,6 +62,11 @@
           "description": "→ couleur de bordure ; [] = Neutre ; 2 = bordure scindée 135°"
         },
         "icon": { "type": "string", "description": "assets/img/icons/<icon>.png ; absent → _placeholder ; assigné à l'intégration (design)" },
+        "characteristics": {
+          "type": "array",
+          "items": { "enum": ["strength", "dexterity", "endurance", "intelligence", "spirit", "charisma", "any"] },
+          "description": "Caractéristique(s) liée(s) : icône(s) devant le titre ; [] ou absent = aucune ; 'any' = astérisque"
+        },
         "pos": { "$ref": "#/definitions/pos", "description": "Posé à l'intégration (design)" },
         "linked": {
           "type": "array",

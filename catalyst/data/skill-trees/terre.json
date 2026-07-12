@@ -56,6 +56,9 @@
       "linked": [
         "PBBLE-01"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "tags": [
         "Sort",
         "Déchaîné"
@@ -78,6 +81,9 @@
       "linked": [
         "PBBLE-02"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "tags": [
         "Sort",
         "Déchaîné"
@@ -100,6 +106,9 @@
       "linked": [
         "PBBLE-03"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "tags": [
         "Sort",
         "Déchaîné"
@@ -122,6 +131,9 @@
       "linked": [
         "PBBLE-04"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "tags": [
         "Sort",
         "Déchaîné"
@@ -144,6 +156,9 @@
       "linked": [
         "PBBLE-05"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "tags": [
         "Sort",
         "Déchaîné"
@@ -193,6 +208,9 @@
       "linked": [
         "PBBLE-02"
       ],
+      "activation": "Passif",
+      "range": "—",
+      "duration": "—",
       "tags": [
         "Sort",
         "Divination"
@@ -241,6 +259,9 @@
       "linked": [
         "EARME-01"
       ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
       "tags": [
         "Sort",
         "Enchantement"

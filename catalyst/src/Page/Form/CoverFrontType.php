@@ -17,6 +17,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 /**
  * Customizes a front-cover page. Data is the page's array map; each field
  * whitelists and validates one key.
+ *
+ * @extends AbstractType<mixed>
  */
 final class CoverFrontType extends AbstractType
 {
