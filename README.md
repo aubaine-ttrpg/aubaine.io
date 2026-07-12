@@ -31,7 +31,7 @@ This repository is a **monorepo**. The game's data lives in the repo as the sour
 ```
 
 1. **The repo is the database.** `codex/` (rules, theory, and balancing) and `content/` (structured game data, one JSON file per entity) are committed and versioned.
-2. **Catalyst authors it locally.** You edit through a local SQLite db at `apps/catalyst/var/db/$APP_ENV.sqlite`. `catalyst:export` writes the db out to `content/{skills,tags,archetypes,…}`, which you commit. `catalyst:sync` reads `content/` and updates the db.
+2. **Catalyst authors it locally.** You edit through a local SQLite db at `catalyst/var/db/$APP_ENV.sqlite`. `catalyst:export` writes the db out to `content/{skills,tags,archetypes,…}`, which you commit. `catalyst:sync` reads `content/` and updates the db.
 3. **CI publishes it.** Astro builds a fast, no-backend static site from the committed `codex/` and `content/`, without Catalyst, PHP, or a database in the pipeline.
 
 The game is **free**. Everything on Almanach is meant to be read online, downloaded, and printed.
@@ -43,8 +43,8 @@ The game is **free**. Everything on Almanach is meant to be read online, downloa
 The living rules and theory of Aubaine. The prose is plain Markdown, and alongside it live Python scripts that work out game balance through graphs and calculus. It serves as documentation for developers and AI on the project, and as source content that both apps render.
 
 - **Prose in plain Markdown with frontmatter** (not MDX), so both a JS renderer (Astro) and a PHP renderer (Symfony / `league/commonmark`) read it the same way.
-- **Python for balancing.** Scripts plot progression curves and run the calculus behind the numbers, reading `content/` for real values.
-- **Single source of truth for numbers.** Structured values live in `content/`. Codex prose and scripts reference them instead of restating them, so nothing drifts.
+- **Python for balancing.** Scripts compute the game's numbers (dice odds, difficulty, AC, the damage model) and commit the tables they produce.
+- **Source of truth for the mechanics.** The rules, their numbers, and the math behind them all live in the codex.
 - Read directly on GitHub, rendered on Almanach, and pulled into books by Catalyst.
 
 ## `content/` (game data)
@@ -69,7 +69,7 @@ content/
 A local-only application. It is not deployed publicly, and it is where the game is made.
 
 - Create and edit **skills, tags, archetypes, characters, adventures sheets, etc...**.
-- Backed by a **local SQLite db** at `apps/catalyst/var/db/$APP_ENV.sqlite`. The committed `content/` holds the truth.
+- Backed by a **local SQLite db** at `catalyst/var/db/$APP_ENV.sqlite`. The committed `content/` holds the truth.
 - **`catalyst:export`** writes the db out to `content/`. **`catalyst:sync`** reads `content/` and updates the db.
 
 ## Almanach (Astro, the player site)
@@ -87,11 +87,10 @@ A static website built by CI from the committed `codex/` and `content/`.
 
 ```
 aubaine.io/
-├── apps/
-│   ├── catalyst/     # Symfony, local authoring tool
-│   └── almanach/     # Astro, public static site, built in CI
+├── codex/            # rules + balancing lab (Markdown + Python)  (committed)
 ├── content/          # structured game data (committed)
-├── codex/            # rules and theory (Markdown) + balancing (Python)  (committed)
+├── catalyst/         # Symfony, local authoring tool
+├── almanach/         # Astro, public static site, built in CI
 └── docs/             # code and contributor documentation
 ```
 
@@ -106,7 +105,7 @@ Conventions that keep it clean:
 ## Getting started
 
 ```
-make install    # install both apps' dependencies
+make install    # install every project's dependencies
 make dev        # run Almanach locally
 make build      # export from Catalyst, then build the static site
 ```
