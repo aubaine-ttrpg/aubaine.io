@@ -1,14 +1,11 @@
 # ─────────────────────────────────────────────────────────────
-# Variables
+# Root orchestrator
 # ─────────────────────────────────────────────────────────────
-# - Apps
-CATALYST_DIR = apps/catalyst
-ALMANACH_DIR = apps/almanach
-# - Shared (committed data)
-CODEX_DIR    = codex
-CONTENT_DIR  = content
+# Delegates to each project's own Makefile and owns only the
+# cross-project pipeline. Stack-specific targets live in
+# codex/, catalyst/, and almanach/.
 
-.PHONY: all help md autophony install export sync dev build build-site preview
+.PHONY: all help md autophony install build build-site preview test lint
 
 all: help
 
@@ -25,26 +22,28 @@ autophony: ## Regenerate the .PHONY line from every rule in the Makefile.
 	@grep -oE "^[a-zA-Z-]*\:" $(MAKEFILE_LIST) | sed "s/://g" | xargs echo ".PHONY:"
 
 # ─────────────────────────────────────────────────────────────
-# Pipeline
+# Fan-out
 # ─────────────────────────────────────────────────────────────
-install: ## Install dependencies for both apps.
-	@composer --working-dir=$(CATALYST_DIR) install
-	@npm --prefix $(ALMANACH_DIR) install
+install: ## Install every project's dependencies.
+	@$(MAKE) -C codex install
+	@$(MAKE) -C catalyst install
+	@$(MAKE) -C almanach install
 
-export: ## [Catalyst] Export the local db into content/ (commit the result).
-	@php $(CATALYST_DIR)/bin/console catalyst:export
+test: ## Run the codex balancing-lab tests.
+	@$(MAKE) -C codex test
 
-sync: ## [Catalyst] Read content/ and update the local db.
-	@php $(CATALYST_DIR)/bin/console catalyst:sync
+lint: ## Lint the codex balancing lab.
+	@$(MAKE) -C codex lint
 
-dev: ## [Almanach] Run the Astro dev server.
-	@npm --prefix $(ALMANACH_DIR) run dev
+# ─────────────────────────────────────────────────────────────
+# Cross-project pipeline
+# ─────────────────────────────────────────────────────────────
+build: ## Export from Catalyst, then build the Almanach static site.
+	@$(MAKE) -C catalyst export
+	@$(MAKE) -C almanach build
 
-build: export ## [Almanach] Export from Catalyst, then build the static site.
-	@npm --prefix $(ALMANACH_DIR) run build
+build-site: ## Build the static site from committed content/ (CI, no Catalyst).
+	@$(MAKE) -C almanach build-site
 
-build-site: ## [Almanach] Build the static site from committed content/ (CI, no Catalyst).
-	@npm --prefix $(ALMANACH_DIR) run build
-
-preview: ## [Almanach] Preview the built static site locally.
-	@npm --prefix $(ALMANACH_DIR) run preview
+preview: ## Preview the built static site locally.
+	@$(MAKE) -C almanach preview
