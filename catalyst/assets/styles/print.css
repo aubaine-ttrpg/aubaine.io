@@ -40,12 +40,22 @@ body {
     height: 297mm;
     overflow: hidden;
     break-after: page;
-    break-inside: avoid;
     background: #fff;
 }
 
 .page:last-of-type {
     break-after: auto;
+}
+
+/*
+ * The paper fills the whole A4 leaf, not the scaled planche box: the planche is
+ * zoomed content that can round a few pixels short of the page, so painting the
+ * texture on the full-size leaf keeps every page covered edge to edge.
+ */
+.page.tree-leaf {
+    background-color: var(--paper, #fff);
+    background-image: var(--paper-texture, none);
+    background-size: cover;
 }
 
 /* ── Toolbar (screen only) ── */
@@ -353,19 +363,9 @@ body {
     left: 0;
     width: 960px;
     height: 1358px;
-    transform: scale(0.82708);
-    transform-origin: top left;
+    zoom: 0.82708;
     overflow: hidden;
-    background-color: var(--paper, #fff);
-    background-image: var(--paper-texture, none);
-    background-size: cover;
     font-family: var(--font-body);
-}
-
-.ability-planche {
-    display: flex;
-    flex-direction: column;
-    padding: 34px 40px 56px;
 }
 
 .tree-links {
@@ -401,9 +401,13 @@ body {
     align-items: baseline;
 }
 
+/*
+ * The ability leaf pins header, columns and footer absolutely inside the zoomed
+ * planche (like the tree), instead of a flex column: flex + multicol under zoom
+ * collapsed the columns or clipped the footer. The header keeps the inherited
+ * absolute top from .tree-head.
+ */
 .tree-head--interior {
-    position: static;
-    margin-bottom: 18px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
     padding-bottom: 8px;
 }
@@ -655,15 +659,19 @@ body {
     padding-top: 6px;
 }
 
-.ability-planche .tree-foot {
-    position: static;
-    margin-top: 12px;
-}
+/*
+ * The footer stays pinned to the leaf bottom (the shared absolute .tree-foot),
+ * not pushed by the flex flow: under zoom a flex-grown column swallowed the
+ * footer and overflow:hidden clipped it.
+ */
 
 /* Ability entries */
 .ability-cols {
-    flex: 1 1 auto;
-    min-height: 0;
+    position: absolute;
+    top: 74px;
+    left: 40px;
+    right: 40px;
+    bottom: 42px;
     column-count: 2;
     column-gap: 26px;
     column-fill: auto;
