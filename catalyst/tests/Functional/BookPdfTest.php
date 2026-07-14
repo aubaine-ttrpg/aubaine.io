@@ -6,6 +6,7 @@ namespace App\Tests\Functional;
 
 use App\Book\BookEditor;
 use App\Book\BookRepository;
+use Closure;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
@@ -17,6 +18,9 @@ use Symfony\Component\HttpClient\Response\MockResponse;
  */
 final class BookPdfTest extends WebTestCase
 {
+    /** The multipart payload the controller sent Gotenberg, captured by the transport fake. */
+    private string $lastGotenbergBody = '';
+
     public function testDownloadPdfSendsAttachmentWithBookSlugFilename(): void
     {
         $client = static::createClient();
@@ -53,6 +57,23 @@ final class BookPdfTest extends WebTestCase
         }
     }
 
+    public function testPdfRenderIsGatedOnFontsAndSettleDelay(): void
+    {
+        $client = static::createClient();
+        $this->fakeGotenberg();
+        $book = $this->createBook('Gated');
+
+        try {
+            $client->request('GET', '/books/'.$book->id().'/pdf');
+
+            self::assertResponseIsSuccessful();
+            self::assertStringContainsString("document.fonts.status === 'loaded'", $this->lastGotenbergBody);
+            self::assertStringContainsString('300ms', $this->lastGotenbergBody);
+        } finally {
+            $this->deleteBook($book->id());
+        }
+    }
+
     public function testMissingBookReturns404(): void
     {
         $client = static::createClient();
@@ -83,10 +104,12 @@ final class BookPdfTest extends WebTestCase
      */
     private function fakeGotenberg(int $convertStatus = 200): void
     {
-        $mock = new MockHttpClient(static function (string $method, string $url, array $options) use ($convertStatus): MockResponse {
+        $mock = new MockHttpClient(function (string $method, string $url, array $options) use ($convertStatus): MockResponse {
             if (str_ends_with($url, '/version')) {
                 return new MockResponse('8.5.0');
             }
+
+            $this->lastGotenbergBody = self::collectBody($options['body'] ?? '');
 
             if (200 !== $convertStatus) {
                 return new MockResponse('render failed', ['http_code' => $convertStatus]);
@@ -107,6 +130,33 @@ final class BookPdfTest extends WebTestCase
         });
 
         static::getContainer()->set('gotenberg.client', $mock);
+    }
+
+    /**
+     * Drains the request body HttpClient hands the transport (a chunk closure for
+     * the bundle's multipart stream, or a plain string) into one string to assert on.
+     */
+    private static function collectBody(mixed $body): string
+    {
+        if ($body instanceof Closure) {
+            $collected = '';
+            while ('' !== ($chunk = $body(8192))) {
+                $collected .= $chunk;
+            }
+
+            return $collected;
+        }
+
+        if (is_iterable($body)) {
+            $collected = '';
+            foreach ($body as $chunk) {
+                $collected .= (string) $chunk;
+            }
+
+            return $collected;
+        }
+
+        return \is_string($body) ? $body : '';
     }
 
     private function createBook(string $title): \App\Book\Model\Book

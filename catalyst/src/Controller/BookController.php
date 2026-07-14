@@ -169,6 +169,8 @@ final class BookController extends AbstractController
                 ->route('app_book_print', ['id' => $book->id()])
                 ->printBackground()      // cover art, paper textures, dark cover backgrounds
                 ->preferCssPageSize()    // honour the CSS @page A4 + margin:0 (full bleed)
+                ->waitForExpression("document.fonts.status === 'loaded'") // don't snapshot before the webfonts settle
+                ->waitDelay('300ms')     // settle margin for background-image paint
                 ->fileName($filename, $disposition)
                 ->generate()
                 ->stream();
