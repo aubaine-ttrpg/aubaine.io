@@ -1,0 +1,9 @@
+# Local web server config for the Symfony CLI (`symfony serve`).
+# The Encore watcher runs alongside the server, so CSS/JS rebuild on save
+# (the `watch` script is `encore dev --watch`, see package.json).
+workers:
+    encore:
+        cmd: ['npm', 'run', 'watch']
+    # Start/stop the Gotenberg container (compose.yaml) with the web server, so
+    # `symfony serve` brings up the dev server, the Encore watcher, and Gotenberg.
+    docker_compose: ~
