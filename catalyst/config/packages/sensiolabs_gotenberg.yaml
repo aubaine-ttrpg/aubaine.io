@@ -1,0 +1,9 @@
+sensiolabs_gotenberg:
+    # App -> Gotenberg. The client's base_uri lives in the scoped client
+    # (config/packages/framework.yaml), built from GOTENBERG_HOST / GOTENBERG_PORT.
+    http_client: 'gotenberg.client'
+    request_context:
+        # Gotenberg -> app. Base URL Gotenberg's Chromium uses to fetch routes
+        # passed to ->route() when converting a URL to PDF (Docker reaches the
+        # `symfony serve` host through host.docker.internal).
+        base_uri: '%env(GOTENBERG_APP_URL)%'

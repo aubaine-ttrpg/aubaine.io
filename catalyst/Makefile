@@ -11,8 +11,8 @@ install: ## Install PHP + JS dependencies and build dev assets.
 	@[ -f composer.json ] && composer install || echo "catalyst: placeholder (no composer.json yet)"
 	@[ -f package.json ] && npm install && npm run dev || true
 
-dev: ## Run the Symfony CLI dev server (http://127.0.0.1:8000).
-	@symfony serve --no-tls
+dev: ## Run the Symfony CLI dev server (https://127.0.0.1:8000).
+	@symfony serve
 
 watch: ## Rebuild assets on change.
 	@npm run watch

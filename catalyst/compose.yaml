@@ -1,0 +1,22 @@
+# ─────────────────────────────────────────────────────────────
+# 🐳 Local dev services for the Symfony CLI (`symfony serve`)
+# ─────────────────────────────────────────────────────────────
+services:
+    gotenberg:
+        # Chromium-based URL/HTML -> PDF renderer for the book print output.
+        image: gotenberg/gotenberg:latest
+        # Trust the Symfony CLI's local TLS certificate when fetching the print
+        # page (the `symfony serve` HTTPS cert is not in the container's store).
+        command:
+            - gotenberg
+            - --chromium-ignore-certificate-errors
+        ports:
+            # Container port only; the Symfony CLI discovers the random host port
+            # and injects GOTENBERG_HOST / GOTENBERG_PORT from the label below.
+            - "3000"
+        extra_hosts:
+            # Let Gotenberg's Chromium reach `symfony serve` on the host.
+            - "host.docker.internal:host-gateway"
+        labels:
+            com.symfony.server.service-prefix: "GOTENBERG"
+        restart: unless-stopped

@@ -12,6 +12,8 @@ action.save: Enregistrer
 book.title: Titre
 book.subtitle: Sous-titre
 book.print: Imprimer
+book.view_pdf: Voir le PDF
+book.download_pdf: Télécharger le PDF
 book.pages_count: '%count% page(s)'
 book.list.title: Livres
 book.list.new: Nouveau livre

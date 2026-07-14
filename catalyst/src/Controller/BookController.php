@@ -10,15 +10,21 @@ use App\Book\Dto\BookMeta;
 use App\Book\Form\BookMetaType;
 use App\Page\PageTypeRegistry;
 use App\Page\PageViewFactory;
+use App\Pdf\Exception\PdfRenderingException;
+use Psr\Log\LoggerInterface;
+use Sensiolabs\GotenbergBundle\Exception\ClientException;
+use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 /**
  * The book creator: list, create, edit (add/customize/reorder/remove pages),
- * print, delete. Actions stay thin, delegating to the editor, repository, and
- * page-type registry.
+ * print, download as PDF, delete. Actions stay thin, delegating to the editor,
+ * repository, page-type registry, and PDF renderer.
  */
 final class BookController extends AbstractController
 {
@@ -136,6 +142,41 @@ final class BookController extends AbstractController
             'book' => $book,
             'pages' => $views->forBook($book),
         ]);
+    }
+
+    /**
+     * Server-side PDF of the printable book, rendered by Gotenberg from the
+     * print route. `?download=1` forces a download; otherwise it opens inline.
+     */
+    #[Route('/books/{id}/pdf', name: 'app_book_pdf', methods: ['GET'])]
+    public function pdf(
+        string $id,
+        Request $request,
+        BookRepository $books,
+        GotenbergPdfInterface $gotenberg,
+        LoggerInterface $logger,
+    ): Response {
+        $book = $books->find($id);
+
+        $slug = (new AsciiSlugger())->slug($book->title())->lower()->toString();
+        $filename = '' !== $slug ? $slug : 'book';
+        $disposition = $request->query->getBoolean('download')
+            ? HeaderUtils::DISPOSITION_ATTACHMENT
+            : HeaderUtils::DISPOSITION_INLINE;
+
+        try {
+            return $gotenberg->url()
+                ->route('app_book_print', ['id' => $book->id()])
+                ->printBackground()      // cover art, paper textures, dark cover backgrounds
+                ->preferCssPageSize()    // honour the CSS @page A4 + margin:0 (full bleed)
+                ->fileName($filename, $disposition)
+                ->generate()
+                ->stream();
+        } catch (ClientException $e) {
+            $logger->error('book.pdf_render_failed', ['event' => 'book.pdf_render_failed', 'book_id' => $id]);
+
+            throw PdfRenderingException::forBook($id, $e);
+        }
     }
 
     #[Route('/books/{id}/delete', name: 'app_book_delete', methods: ['POST'])]

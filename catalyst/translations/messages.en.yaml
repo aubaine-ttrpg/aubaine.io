@@ -12,6 +12,8 @@ action.save: Save
 book.title: Title
 book.subtitle: Subtitle
 book.print: Print
+book.view_pdf: View PDF
+book.download_pdf: Download PDF
 book.pages_count: '%count% page(s)'
 book.list.title: Books
 book.list.new: New book

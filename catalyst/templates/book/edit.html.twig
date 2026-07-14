@@ -10,8 +10,11 @@
             {% if book.subtitle %}<p class="subtitle">{{ book.subtitle }}</p>{% endif %}
         </div>
         <div class="page-head__actions">
-            <a class="btn btn--primary" href="{{ path('app_book_print', {id: book.id}) }}" target="_blank" rel="noopener">
-                {{ 'book.print'|trans }}
+            <a class="btn btn--ghost" href="{{ path('app_book_pdf', {id: book.id}) }}" target="_blank" rel="noopener">
+                {{ 'book.view_pdf'|trans }}
+            </a>
+            <a class="btn btn--primary" href="{{ path('app_book_pdf', {id: book.id, download: 1}) }}">
+                {{ 'book.download_pdf'|trans }}
             </a>
         </div>
     </div>

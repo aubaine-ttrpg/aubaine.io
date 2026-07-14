@@ -5,6 +5,16 @@ framework:
     # Note that the session will be started ONLY if you read or write from it.
     session: true
 
+    http_client:
+        scoped_clients:
+            # Talks to the Gotenberg container. Host/port come from the Docker
+            # service (Symfony CLI injects GOTENBERG_HOST / GOTENBERG_PORT); the
+            # timeouts keep this outbound call bounded.
+            gotenberg.client:
+                base_uri: 'http://%env(GOTENBERG_HOST)%:%env(GOTENBERG_PORT)%'
+                timeout: 10
+                max_duration: 30
+
     #esi: true
     #fragments: true
 

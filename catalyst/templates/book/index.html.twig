@@ -24,7 +24,7 @@
                         <span class="book-card__meta">{{ 'book.pages_count'|trans({'%count%': book.pageCount}) }}</span>
                     </a>
                     <div class="book-card__actions">
-                        <a class="btn btn--ghost" href="{{ path('app_book_print', {id: book.id}) }}">{{ 'book.print'|trans }}</a>
+                        <a class="btn btn--ghost" href="{{ path('app_book_pdf', {id: book.id, download: 1}) }}">{{ 'book.download_pdf'|trans }}</a>
                         <form method="post" action="{{ path('app_book_delete', {id: book.id}) }}"
                               onsubmit="return confirm('{{ 'book.delete.confirm'|trans }}')">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete-book') }}">
