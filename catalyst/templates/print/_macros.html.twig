@@ -1,7 +1,7 @@
 {# Reusable print pieces: a positioned tree node and a full ability entry. #}
 
 {% macro node_shape(node, extraClass) %}
-    {% set icon = catalyst_image('icons', node.icon) %}
+    {% set icon = catalyst_image('icons', node.iconFile) %}
     <span class="node__shape node__shape--{{ node.type.shapeKey }} {{ extraClass }}"
           style="--domain: {{ node.domains.borderCss }}{% if icon %}; --icon: url('{{ icon }}'){% endif %}">
         <span class="node__fill"></span>

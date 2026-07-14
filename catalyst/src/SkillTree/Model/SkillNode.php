@@ -11,6 +11,9 @@ use App\Design\NodeType;
 /** One unlockable node of a skill tree. */
 final readonly class SkillNode
 {
+    /** Icon filename rendered when a node has none assigned. */
+    public const string PLACEHOLDER_ICON = '_placeholder.png';
+
     /**
      * @param list<string>         $linked          ids of visual parents; "CORE" points at the tree core
      * @param list<string>         $tags
@@ -36,6 +39,12 @@ final readonly class SkillNode
         public ?string $evolvesFrom,
         public array $characteristics = [],
     ) {
+    }
+
+    /** The icon filename to render, falling back to the shared placeholder when none is assigned. */
+    public function iconFile(): string
+    {
+        return $this->icon ?? self::PLACEHOLDER_ICON;
     }
 
     /** XP cost shown on the nameplate coin: 5 per tier. */
