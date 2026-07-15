@@ -53,21 +53,23 @@
     </div>
 </div>
 
-{# ---- Ability pages ---- #}
-{% for entries in abilityPages %}
-    <div class="page tree-leaf" style="{{ paperStyle }}">
+{# ---- Ability pages ----
+   All entries render into one page; the print bundle measures their heights and
+   paginates them (fill left column, then right, then a cloned page). #}
+{% if abilities is not empty %}
+    <div class="page tree-leaf" data-abilities-page style="{{ paperStyle }}">
         <div class="ability-planche">
             <header class="tree-head tree-head--interior">
                 <span class="tree-head__title">{{ 'tree.abilities'|trans }}</span>
                 <span class="tree-head__sub">{{ tree.core.sublabel }} · {{ tree.name }}</span>
             </header>
             <div class="ability-cols">
-                {% for node in entries %}{{ m.ability_entry(node, titles) }}{% endfor %}
+                {% for node in abilities %}{{ m.ability_entry(node, titles) }}{% endfor %}
             </div>
             <footer class="tree-foot">
                 <span>Aubaine · {{ tree.name }}</span>
-                <span>{{ loop.index }} / {{ abilityPages|length }}</span>
+                <span class="tree-foot__page" data-page-number>1 / 1</span>
             </footer>
         </div>
     </div>
-{% endfor %}
+{% endif %}

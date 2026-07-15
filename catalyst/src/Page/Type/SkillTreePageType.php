@@ -25,9 +25,6 @@ final class SkillTreePageType implements PageTypeInterface
     private const int CANVAS_WIDTH = 960;
     private const int CANVAS_HEIGHT = 1358;
 
-    /** Ability entries per printed page (two columns). */
-    private const int ENTRIES_PER_PAGE = 8;
-
     public function __construct(private readonly SkillTreeRepository $trees)
     {
     }
@@ -101,7 +98,8 @@ final class SkillTreePageType implements PageTypeInterface
             $titles[$node->id] = $node->title;
         }
 
-        // Ability entries read in ID order; the two columns fill left-first.
+        // Ability entries read in ID order; the print bundle measures rendered
+        // heights and paginates them left-column-first across pages.
         $ordered = $tree->nodes;
         usort($ordered, static fn (SkillNode $a, SkillNode $b): int => strcmp($a->id, $b->id));
 
@@ -115,7 +113,7 @@ final class SkillTreePageType implements PageTypeInterface
             'canvasWidth' => self::CANVAS_WIDTH,
             'canvasHeight' => self::CANVAS_HEIGHT,
             'titles' => $titles,
-            'abilityPages' => array_chunk($ordered, self::ENTRIES_PER_PAGE),
+            'abilities' => $ordered,
         ];
     }
 
