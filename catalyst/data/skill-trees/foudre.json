@@ -1,0 +1,300 @@
+{
+  "id": "foudre",
+  "name": "Foudre",
+  "treeType": "domain",
+  "size": 16,
+  "core": {
+    "label": "Foudre",
+    "sublabel": "Domaine",
+    "domains": [
+      "thunder"
+    ],
+    "pos": {
+      "x": 50,
+      "y": 50.81
+    }
+  },
+  "nodes": [
+    {
+      "id": "SPARK-01",
+      "title": "Étincelle",
+      "type": "active",
+      "tier": 1,
+      "domains": [
+        "thunder"
+      ],
+      "description": "Vous créez, remodelez, déplacez ou absorbez un phénomène électrique ou tonitruant minuscule que vous voyez : une étincelle, un arc bref ou un claquement sec tenu à deux mains. Utilisé de façon offensive, ce phénomène inflige jusqu'à 1d12 dégâts de Foudre ou de Tonnerre, selon sa forme. Chaque portée, zone, durée ou effet supplémentaire que vous lui donnez réduit d'autant ces dégâts, jusqu'à rendre le sort inoffensif. Si ce sort provoque un Jet de Sauvegarde, la base de votre DD est de 15.",
+      "pos": {
+        "x": 48,
+        "y": 40
+      },
+      "linked": [
+        "CORE"
+      ],
+      "activation": "1 Action",
+      "range": "9 m",
+      "duration": "Instantanée ou jusqu'à 10 minutes",
+      "energy": 1,
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ],
+      "characteristics": [
+        "intelligence",
+        "spirit",
+        "charisma"
+      ]
+    },
+    {
+      "id": "SPARK-02",
+      "title": "Décharge",
+      "type": "evolution",
+      "tier": 3,
+      "domains": [
+        "thunder"
+      ],
+      "description": "Lorsque vous utilisez Étincelle, vous pouvez dépenser 1 Énergie de plus pour lancer Décharge. Décharge agit exactement comme Étincelle, mais le phénomène peut désormais atteindre l'ampleur d'une décharge vive, assez forte pour faire claquer l'air ou traverser une petite surface conductrice. Ses dégâts maximaux passent à 2d12 et la base de son DD passe à 16.",
+      "pos": {
+        "x": 62,
+        "y": 34
+      },
+      "linked": [
+        "SPARK-01"
+      ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "SPARK-01",
+      "characteristics": [
+        "intelligence",
+        "spirit",
+        "charisma"
+      ]
+    },
+    {
+      "id": "SPARK-03",
+      "title": "Éclair",
+      "type": "evolution",
+      "tier": 5,
+      "domains": [
+        "thunder"
+      ],
+      "description": "Lorsque vous utilisez Étincelle, vous pouvez dépenser 2 Énergies de plus pour lancer Éclair. Éclair agit exactement comme Étincelle, mais le phénomène peut désormais atteindre l'ampleur d'un éclair court et brutal, assez net pour fendre l'air dans un flash aveuglant. Ses dégâts maximaux passent à 3d12 et la base de son DD passe à 17.",
+      "pos": {
+        "x": 48,
+        "y": 28
+      },
+      "linked": [
+        "SPARK-02"
+      ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "SPARK-02",
+      "characteristics": [
+        "intelligence",
+        "spirit",
+        "charisma"
+      ]
+    },
+    {
+      "id": "SPARK-04",
+      "title": "Foudre",
+      "type": "evolution",
+      "tier": 7,
+      "domains": [
+        "thunder"
+      ],
+      "description": "Lorsque vous utilisez Étincelle, vous pouvez dépenser 3 Énergies de plus pour lancer Foudre. Foudre agit exactement comme Étincelle, mais le phénomène peut désormais atteindre l'ampleur d'un véritable trait de foudre, assez violent pour marquer la pierre ou vriller le métal. Ses dégâts maximaux passent à 4d12 et la base de son DD passe à 18.",
+      "pos": {
+        "x": 62,
+        "y": 22
+      },
+      "linked": [
+        "SPARK-03"
+      ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "SPARK-03",
+      "characteristics": [
+        "intelligence",
+        "spirit",
+        "charisma"
+      ]
+    },
+    {
+      "id": "SPARK-05",
+      "title": "Orage",
+      "type": "evolution",
+      "tier": 9,
+      "domains": [
+        "thunder"
+      ],
+      "description": "Lorsque vous utilisez Étincelle, vous pouvez dépenser 4 Énergies de plus pour lancer Orage. Orage agit exactement comme Étincelle, mais le phénomène peut désormais atteindre l'ampleur d'un orage concentré, à l'échelle d'une pièce. Ses dégâts maximaux passent à 5d12 et la base de son DD passe à 19.",
+      "pos": {
+        "x": 48,
+        "y": 16
+      },
+      "linked": [
+        "SPARK-04"
+      ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "SPARK-04",
+      "characteristics": [
+        "intelligence",
+        "spirit",
+        "charisma"
+      ]
+    },
+    {
+      "id": "SPARK-06",
+      "title": "Fulmination",
+      "type": "evolution",
+      "tier": 10,
+      "domains": [
+        "thunder"
+      ],
+      "description": "Lorsque vous utilisez Étincelle, vous pouvez dépenser 5 Énergies de plus pour lancer Fulmination. Fulmination agit exactement comme Étincelle, mais le phénomène peut désormais atteindre l'ampleur d'une fulmination dévastatrice, saturant l'air d'arcs et d'ondes de choc à l'échelle d'une grande salle. Ses dégâts maximaux passent à 6d12 et la base de son DD passe à 20.",
+      "pos": {
+        "x": 62,
+        "y": 10
+      },
+      "linked": [
+        "SPARK-05"
+      ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Sort",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "SPARK-05",
+      "characteristics": [
+        "intelligence",
+        "spirit",
+        "charisma"
+      ]
+    },
+    {
+      "id": "FASTL-01",
+      "title": "Rapide comme l'éclair",
+      "type": "passive",
+      "tier": 2,
+      "domains": [
+        "thunder",
+        "physical"
+      ],
+      "description": "Votre corps répond avec une vivacité électrique, comme si chaque mouvement partait avant même que vous l'ayez décidé. Votre vitesse augmente de 3 m.",
+      "pos": {
+        "x": 78,
+        "y": 30
+      },
+      "linked": [
+        "SPARK-02"
+      ],
+      "activation": "Passif",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Mobilité"
+      ]
+    },
+    {
+      "id": "ELEPD-01",
+      "title": "Détection primordiale",
+      "type": "passive",
+      "tier": 3,
+      "domains": [
+        "thunder",
+        "psychic"
+      ],
+      "description": "Lorsque vous effectuez un Jet pour détecter, ressentir ou en apprendre plus sur un élément composé de magie de Foudre, vous gagnez 1 Avantage pour ce Jet.",
+      "pos": {
+        "x": 81,
+        "y": 42
+      },
+      "linked": [
+        "SPARK-02"
+      ],
+      "activation": "Passif",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Sort",
+        "Divination"
+      ]
+    },
+    {
+      "id": "ELEME-01",
+      "title": "Étendue martiale",
+      "type": "active",
+      "tier": 2,
+      "domains": [
+        "thunder",
+        "physical"
+      ],
+      "description": "Vous touchez une arme et l'enveloppez d'une tension électrique pendant 1 minute. Une fois par tour, lorsque vous réussissez un jet d'attaque avec cette arme, un arc électrique frappe une créature différente située à 9 m ou moins de la cible. Cette créature subit 1d6 dégâts de Foudre.",
+      "pos": {
+        "x": 78,
+        "y": 54
+      },
+      "linked": [
+        "SPARK-02"
+      ],
+      "activation": "1 Action Bonus",
+      "range": "Contact",
+      "duration": "1 minute",
+      "energy": 1,
+      "tags": [
+        "Sort",
+        "Enchantement"
+      ]
+    },
+    {
+      "id": "ELEME-02",
+      "title": "Étendue perfectionnée",
+      "type": "evolution",
+      "tier": 5,
+      "domains": [
+        "thunder",
+        "physical"
+      ],
+      "description": "Lorsque l'arc électrique d'Étendue martiale frappe une créature, il peut rebondir une fois pour chaque évolution d'Étincelle que vous possédez. Chaque rebond touche une créature différente située à 9 m ou moins de la créature précédemment touchée. Une même créature ne peut pas être touchée deux fois par le même déclenchement d'Étendue martiale.",
+      "pos": {
+        "x": 84,
+        "y": 65
+      },
+      "linked": [
+        "ELEME-01"
+      ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Sort",
+        "Enchantement"
+      ],
+      "evolvesFrom": "ELEME-01"
+    }
+  ]
+}
