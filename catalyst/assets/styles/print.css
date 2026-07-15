@@ -724,7 +724,6 @@ body {
 .ability__chars {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
     flex: 0 0 auto;
 }
 
