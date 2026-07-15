@@ -1,0 +1,61 @@
+{
+  "id": "mage",
+  "name": "Mage",
+  "treeType": "archetype",
+  "size": 16,
+  "core": {
+    "label": "Mage",
+    "sublabel": "Archétype",
+    "domains": [
+      "psychic"
+    ],
+    "pos": {
+      "x": 50,
+      "y": 50.81
+    }
+  },
+  "nodes": [
+    {
+      "id": "PASSE-01",
+      "title": "Tour de passe-passe",
+      "type": "special",
+      "tier": 4,
+      "domains": [],
+      "description": "Au déblocage de cette compétence, choisissez une compétence de n'importe quel arbre coûtant moins de 10 XP et portant le tag Sort. Vous apprenez la compétence choisie.",
+      "pos": {
+        "x": 50,
+        "y": 37.7
+      },
+      "linked": [
+        "CORE"
+      ],
+      "activation": "Passif",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Sort"
+      ]
+    },
+    {
+      "id": "PASSE-02",
+      "title": "Grand tour de passe-passe",
+      "type": "special",
+      "tier": 10,
+      "domains": [],
+      "description": "Au déblocage de cette compétence, choisissez une compétence de n'importe quel arbre coûtant 25 XP ou moins et portant le tag Sort. Vous apprenez la compétence choisie.",
+      "pos": {
+        "x": 50,
+        "y": 24
+      },
+      "linked": [
+        "PASSE-01"
+      ],
+      "activation": "Passif",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Sort"
+      ]
+    }
+  ]
+}
