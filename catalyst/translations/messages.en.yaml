@@ -60,6 +60,9 @@ page.cover_back.image_none: No artwork
 page.cover_back.show_qr: Show the QR code
 page.cover_back.ornaments: Show the gold frame
 
+page.cover_back_art.label: Back cover (clean)
+page.cover_back_art.description: Full-page art front and center, tagline, call to action and QR code.
+
 page.skill_tree.label: Skill tree
 page.skill_tree.description: A tree planche plus its generated ability pages.
 page.skill_tree.tree: Tree

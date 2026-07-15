@@ -60,6 +60,9 @@ page.cover_back.image_none: Aucune illustration
 page.cover_back.show_qr: Afficher le QR code
 page.cover_back.ornaments: Afficher le cadre doré
 
+page.cover_back_art.label: Quatrième de couverture (épurée)
+page.cover_back_art.description: Illustration pleine page mise en avant, accroche, appel à l'action et QR code.
+
 page.skill_tree.label: Arbre de compétences
 page.skill_tree.description: Une planche d''arbre et ses pages de compétences générées.
 page.skill_tree.tree: Arbre
