@@ -1,0 +1,470 @@
+{
+  "id": "prestidigitateur",
+  "name": "Prestidigitateur",
+  "treeType": "archetype",
+  "size": 16,
+  "core": {
+    "label": "Prestidigitateur",
+    "sublabel": "Archétype",
+    "domains": [
+      "psychic"
+    ],
+    "pos": {
+      "x": 50,
+      "y": 50.81
+    }
+  },
+  "nodes": [
+    {
+      "id": "ILLUS-01",
+      "title": "Illusions mineures",
+      "type": "active",
+      "tier": 1,
+      "domains": [
+        "wind",
+        "psychic"
+      ],
+      "description": "Vous créez une illusion visuelle à portée. Elle ne peut pas dépasser 1 m³, n'inflige aucun dégât et ne produit ni matière, ni chaleur, ni aucun autre effet physique. Une créature qui veut déjouer l'illusion doit consacrer son Action à un Jet de Caractéristique (Intelligence + Investigation) contre votre DD (15 + Intelligence + Tromperie). En cas de réussite, elle voit l'illusion pour ce qu'elle est.",
+      "pos": {
+        "x": 50,
+        "y": 37.7
+      },
+      "linked": [
+        "CORE"
+      ],
+      "activation": "1 Action",
+      "range": "9 m",
+      "duration": "jusqu'à 1 minute",
+      "concentration": true,
+      "energy": 1,
+      "tags": [
+        "Sort",
+        "Illusion"
+      ],
+      "characteristics": [
+        "intelligence"
+      ]
+    },
+    {
+      "id": "ILLUS-02",
+      "title": "Illusions sonores",
+      "type": "evolution",
+      "tier": 3,
+      "domains": [
+        "wind",
+        "psychic"
+      ],
+      "description": "Vos Illusions mineures peuvent désormais créer un son en plus de leur image.",
+      "pos": {
+        "x": 32,
+        "y": 27
+      },
+      "linked": [
+        "ILLUS-01"
+      ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Sort",
+        "Illusion"
+      ],
+      "evolvesFrom": "ILLUS-01",
+      "characteristics": [
+        "intelligence"
+      ]
+    },
+    {
+      "id": "ILLUS-03",
+      "title": "Grandes illusions",
+      "type": "evolution",
+      "tier": 5,
+      "domains": [
+        "wind",
+        "psychic"
+      ],
+      "description": "Les illusions que vous créez avec Illusions mineures peuvent désormais atteindre 3 m³ au lieu de 1 m³.",
+      "pos": {
+        "x": 68,
+        "y": 27
+      },
+      "linked": [
+        "ILLUS-01"
+      ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Sort",
+        "Illusion"
+      ],
+      "evolvesFrom": "ILLUS-01",
+      "characteristics": [
+        "intelligence"
+      ]
+    },
+    {
+      "id": "DREAD-01",
+      "title": "Illusion mortelle",
+      "type": "active",
+      "tier": 7,
+      "domains": [
+        "psychic"
+      ],
+      "description": "Lorsqu'un Sort portant le tag Illusion est présent, choisissez une créature qui voit l'illusion et la croit réelle. Elle effectue un Jet de Sauvegarde (Esprit + Perception) contre le DD de l'illusion choisie. En cas d'échec, elle subit 2d6 dégâts Psychiques.",
+      "pos": {
+        "x": 50,
+        "y": 14
+      },
+      "linked": [
+        "ILLUS-02",
+        "ILLUS-03"
+      ],
+      "activation": "1 Action Bonus",
+      "range": "9 m",
+      "duration": "Instantanée",
+      "energy": 3,
+      "tags": [
+        "Sort",
+        "Illusion"
+      ],
+      "characteristics": [
+        "any"
+      ]
+    },
+    {
+      "id": "OBJAN-01",
+      "title": "Objet animé",
+      "type": "active",
+      "tier": 1,
+      "domains": [
+        "psychic"
+      ],
+      "description": "Vous touchez un objet et l'animez par magie. Tant que vous maintenez votre concentration, vous pouvez le faire se déplacer et bouger dans un rayon de 9 m autour de vous. L'objet reste limité par sa forme et ne devient pas une créature intelligente. Il effectue ses Jets avec votre Intelligence et ne dispose d'aucune Aptitude, sauf celles que vous lui accordez.",
+      "pos": {
+        "x": 33,
+        "y": 62
+      },
+      "linked": [
+        "CORE"
+      ],
+      "activation": "1 Action",
+      "range": "Contact",
+      "duration": "jusqu'à 10 minutes",
+      "concentration": true,
+      "energy": 1,
+      "tags": [
+        "Sort",
+        "Enchantement"
+      ],
+      "characteristics": [
+        "intelligence"
+      ]
+    },
+    {
+      "id": "OBJAN-02",
+      "title": "Animation précise",
+      "type": "evolution",
+      "tier": 5,
+      "domains": [
+        "psychic"
+      ],
+      "description": "L'objet animé peut désormais accomplir des actions complexes et précises : écrire, ouvrir une porte, actionner un mécanisme. Il ne peut faire que ce que sa forme lui permet.",
+      "pos": {
+        "x": 20,
+        "y": 73
+      },
+      "linked": [
+        "OBJAN-01"
+      ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Sort",
+        "Enchantement"
+      ],
+      "evolvesFrom": "OBJAN-01",
+      "characteristics": [
+        "intelligence"
+      ]
+    },
+    {
+      "id": "OBJAN-03",
+      "title": "Projection astrale",
+      "type": "evolution",
+      "tier": 7,
+      "domains": [
+        "psychic"
+      ],
+      "description": "Vous projetez vos sens dans l'objet animé : vous voyez et entendez comme si vous étiez à sa place, et vous le contrôlez entièrement comme si vous vous trouviez à sa place.",
+      "pos": {
+        "x": 34,
+        "y": 84
+      },
+      "linked": [
+        "OBJAN-02"
+      ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Sort",
+        "Enchantement"
+      ],
+      "evolvesFrom": "OBJAN-02",
+      "characteristics": [
+        "intelligence"
+      ]
+    },
+    {
+      "id": "OBJAN-04",
+      "title": "Aptitudes partagées",
+      "type": "evolution",
+      "tier": 5,
+      "domains": [
+        "psychic"
+      ],
+      "description": "L'objet animé bénéficie désormais de la moitié de chacune de vos Aptitudes dont le modificateur est positif, arrondie à l'inférieur.",
+      "pos": {
+        "x": 47,
+        "y": 71
+      },
+      "linked": [
+        "OBJAN-01"
+      ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Sort",
+        "Enchantement"
+      ],
+      "evolvesFrom": "OBJAN-01",
+      "characteristics": [
+        "intelligence"
+      ]
+    },
+    {
+      "id": "APILL-01",
+      "title": "Apprenti illusionniste",
+      "type": "passive",
+      "tier": 2,
+      "domains": [
+        "psychic"
+      ],
+      "description": "Lorsque vous calculez le DD d'un Sort portant le tag Illusion, ajoutez la moitié de votre modificateur d'Arcanes, arrondie à l'inférieur.",
+      "pos": {
+        "x": 67,
+        "y": 62
+      },
+      "linked": [
+        "CORE"
+      ],
+      "activation": "Passif",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Illusion"
+      ],
+      "characteristics": [
+        "any"
+      ]
+    },
+    {
+      "id": "APILL-02",
+      "title": "Illusionniste accompli",
+      "type": "evolution",
+      "tier": 8,
+      "domains": [
+        "psychic"
+      ],
+      "description": "Vous ajoutez désormais la totalité de votre modificateur d'Arcanes au calcul du DD de vos Sorts Illusion, au lieu de la moitié.",
+      "pos": {
+        "x": 80,
+        "y": 74
+      },
+      "linked": [
+        "APILL-01"
+      ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Illusion"
+      ],
+      "evolvesFrom": "APILL-01",
+      "characteristics": [
+        "any"
+      ]
+    },
+    {
+      "id": "PREST-01",
+      "title": "Prestidigitation",
+      "type": "active",
+      "tier": 1,
+      "domains": [
+        "wind",
+        "psychic"
+      ],
+      "description": "Vous produisez un tour mineur à portée : une étincelle, une bouffée de vent, un frisson, un petit son, une odeur, salir ou nettoyer, ou faire apparaître une babiole illusoire. L'effet n'inflige aucun dégât. Une créature qui veut percer une illusion ainsi créée doit consacrer son Action à un Jet de Sauvegarde (Esprit + Perception) contre votre DD (15 + Intelligence + Arcanes ou Tromperie).",
+      "pos": {
+        "x": 24,
+        "y": 52
+      },
+      "linked": [
+        "CORE"
+      ],
+      "activation": "1 Action",
+      "range": "9 m",
+      "duration": "jusqu'à 1 minute",
+      "energy": 0,
+      "tags": [
+        "Sort",
+        "Illusion"
+      ],
+      "characteristics": [
+        "intelligence"
+      ]
+    },
+    {
+      "id": "DEGUI-01",
+      "title": "Déguisement",
+      "type": "active",
+      "tier": 3,
+      "domains": [
+        "wind",
+        "psychic"
+      ],
+      "description": "Vous drapez une créature consentante à portée, ou vous-même, d'une illusion qui change son apparence et sa voix. Plus le déguisement est extravagant, plus il est facile à repérer : l'observateur peut gagner jusqu'à 5 Avantages pour son Jet de Sauvegarde (faire passer un rat pour un géant, par exemple). Une créature qui veut le percer à jour consacre son Action à un Jet de Sauvegarde (Esprit + Perception) contre votre DD (15 + Intelligence + Tromperie ou 15 + Charisme + Tromperie de la personne déguisée).",
+      "pos": {
+        "x": 32,
+        "y": 37.7
+      },
+      "linked": [
+        "ILLUS-01"
+      ],
+      "activation": "1 Action",
+      "range": "Contact",
+      "duration": "jusqu'à 1 heure",
+      "energy": 2,
+      "tags": [
+        "Sort",
+        "Illusion"
+      ],
+      "characteristics": [
+        "intelligence",
+        "charisma"
+      ]
+    },
+    {
+      "id": "DOUBL-01",
+      "title": "Doubles illusoires",
+      "type": "active",
+      "tier": 5,
+      "domains": [
+        "wind",
+        "psychic"
+      ],
+      "description": "Vous créez jusqu'à 3 doubles illusoires de vous-même qui reproduisent vos gestes. Quand une attaque devrait vous toucher, un double la prend à votre place puis disparaît. Une créature qui veut vous distinguer d'eux doit consacrer son Action à un Jet de Sauvegarde (Esprit + Perception) contre votre DD (15 + Intelligence + Escamotage).",
+      "pos": {
+        "x": 68,
+        "y": 37.7
+      },
+      "linked": [
+        "ILLUS-01"
+      ],
+      "activation": "1 Action",
+      "range": "Personnel",
+      "duration": "jusqu'à 1 minute",
+      "concentration": true,
+      "energy": 2,
+      "tags": [
+        "Sort",
+        "Illusion"
+      ],
+      "characteristics": [
+        "intelligence"
+      ]
+    },
+    {
+      "id": "FLUXM-01",
+      "title": "Flux mystique",
+      "type": "passive",
+      "tier": 6,
+      "domains": [
+        "psychic"
+      ],
+      "description": "Vos compétences portant le tag Sort ou Illusion coûtent 1 Énergie de moins, jusqu'à un minimum de 0.",
+      "pos": {
+        "x": 60,
+        "y": 73
+      },
+      "linked": [
+        "APILL-01"
+      ],
+      "activation": "Passif",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Illusion"
+      ]
+    },
+    {
+      "id": "EVANO-01",
+      "title": "Évanouissement",
+      "type": "active",
+      "tier": 4,
+      "domains": [
+        "wind",
+        "psychic"
+      ],
+      "description": "Vous disparaissez à la vue de tous et devenez invisible. Attaquer ou lancer un Sort met fin à l'effet.",
+      "pos": {
+        "x": 84,
+        "y": 46
+      },
+      "linked": [
+        "CORE"
+      ],
+      "activation": "1 Action Bonus",
+      "range": "Personnel",
+      "duration": "3 tours",
+      "energy": 3,
+      "tags": [
+        "Sort",
+        "Illusion"
+      ]
+    },
+    {
+      "id": "GRAND-01",
+      "title": "Illusion grandiose",
+      "type": "active",
+      "tier": 10,
+      "domains": [
+        "wind",
+        "psychic"
+      ],
+      "description": "Vous façonnez une vaste illusion : un décor, un terrain, une foule ou une scène entière, avec image et son. Une créature qui veut la percer à jour consacre son Action à un Jet de Sauvegarde (Esprit + Perception) contre votre DD (15 + Intelligence + Tromperie).",
+      "pos": {
+        "x": 84,
+        "y": 20
+      },
+      "linked": [
+        "ILLUS-03"
+      ],
+      "activation": "1 Action",
+      "range": "30 m",
+      "duration": "jusqu'à 10 minutes",
+      "concentration": true,
+      "energy": 5,
+      "tags": [
+        "Sort",
+        "Illusion"
+      ],
+      "characteristics": [
+        "intelligence"
+      ]
+    }
+  ]
+}
