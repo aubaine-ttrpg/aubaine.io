@@ -32,7 +32,7 @@
   },
   "definitions": {
     "domainKey": {
-      "enum": ["fire", "water", "wind", "earth", "thunder", "slime", "physical", "psychic", "light", "void"]
+      "enum": ["fire", "water", "wind", "earth", "thunder", "slime", "physical", "psychic", "light", "void", "blood"]
     },
     "pos": {
       "type": "object",

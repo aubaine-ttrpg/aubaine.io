@@ -24,6 +24,7 @@ enum Domain: string
     case Psychic = 'psychic';
     case Light = 'light';
     case Void = 'void';
+    case Blood = 'blood';
 
     /** Rendering for a node with no domain. */
     public const string NEUTRAL_COLOR = '#2a2a2e';
@@ -43,6 +44,7 @@ enum Domain: string
             self::Psychic => '#c0397f',
             self::Light => '#f4c84e',
             self::Void => '#201460',
+            self::Blood => '#9c1527',
         };
     }
 
@@ -59,6 +61,7 @@ enum Domain: string
             self::Psychic => 'Psychique',
             self::Light => 'Lumière',
             self::Void => 'Vide',
+            self::Blood => 'Sang',
         };
     }
 
@@ -75,6 +78,7 @@ enum Domain: string
             self::Psychic => 'Psychic',
             self::Light => 'Light',
             self::Void => 'Void',
+            self::Blood => 'Blood',
         };
     }
 
