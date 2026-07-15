@@ -39,7 +39,7 @@
                         {% for characteristic in node.characteristics %}
                             <span class="char-badge" style="color: {{ characteristic.color }}" title="{{ characteristic.labelFr }}">
                                 {{ ux_icon('mdi:hexagon', {class: 'char-badge__hex'}) }}
-                                {{ ux_icon(characteristic.iconName, {class: 'char-badge__icon'}) }}
+                                {{ ux_icon(characteristic.iconName, {class: 'char-badge__icon char-badge__icon--' ~ characteristic.value}) }}
                             </span>
                         {% endfor %}
                     </span>

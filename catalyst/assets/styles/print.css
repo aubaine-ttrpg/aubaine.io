@@ -750,6 +750,14 @@ body {
     color: #fff;
 }
 
+/* Optical centring: these game-icons carry lopsided visual weight, so box centring
+   leaves them looking off. Nudge each glyph's ink centroid to the hexagon centre.
+   Percentages are relative to the glyph box. Re-derive if Characteristic::iconName() changes. */
+.char-badge__icon--strength { transform: translate(5.4%, -6.2%); }      /* game-icons:biceps */
+.char-badge__icon--endurance { transform: translate(-3.3%, 0.2%); }     /* game-icons:heart-organ */
+.char-badge__icon--intelligence { transform: translate(4.1%, 7.1%); }   /* game-icons:brain */
+.char-badge__icon--spirit { transform: translate(0.7%, -9.4%); }        /* game-icons:spiked-halo */
+
 .ability__name {
     font: 700 15px/1.1 var(--font-display);
     color: #1c1813;
