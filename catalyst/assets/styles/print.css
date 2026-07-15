@@ -604,11 +604,6 @@ body {
     color: #7d5e16;
 }
 
-.nameplate__ult,
-.ability__ult {
-    color: #7d5e16;
-}
-
 .tree-legend {
     position: absolute;
     left: 38px;
@@ -724,10 +719,6 @@ body {
     align-items: center;
     gap: 4px;
     min-width: 0;
-}
-
-.ability__ult {
-    flex: 0 0 auto;
 }
 
 .ability__chars {

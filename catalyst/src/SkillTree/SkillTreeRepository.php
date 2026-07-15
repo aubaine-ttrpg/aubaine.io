@@ -167,7 +167,6 @@ final class SkillTreeRepository
             $this->mapPosition($node['pos'] ?? null),
             $this->toStringList($node['linked'] ?? []),
             $this->toString($node['icon'] ?? null),
-            ($node['ultimate'] ?? null) === true,
             $this->toString($node['activation'] ?? null),
             $this->toString($node['range'] ?? null),
             $this->toString($node['duration'] ?? null),

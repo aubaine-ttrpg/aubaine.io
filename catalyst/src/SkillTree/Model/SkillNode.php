@@ -29,7 +29,6 @@ final readonly class SkillNode
         public ?Position $pos,
         public array $linked,
         public ?string $icon,
-        public bool $ultimate,
         public ?string $activation,
         public ?string $range,
         public ?string $duration,
