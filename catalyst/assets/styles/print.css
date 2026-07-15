@@ -241,6 +241,16 @@ body {
     filter: drop-shadow(0 3px 13px rgba(0, 0, 0, 0.62));
 }
 
+/* Longer titles step down so they never clip against the cover frame. */
+.cover__title--long {
+    font-size: 52px;
+}
+
+.cover__title--xlong {
+    font-size: 40px;
+    letter-spacing: 1px;
+}
+
 .cover__rule {
     margin: 18px auto;
     width: 170px;

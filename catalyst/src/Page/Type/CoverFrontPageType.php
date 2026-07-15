@@ -56,7 +56,21 @@ final class CoverFrontPageType implements PageTypeInterface
     {
         $view = array_merge($this->defaultData(), $data);
         $view['ornaments'] = ($data['ornaments'] ?? true) === true;
+        $view['titleClass'] = $this->titleClass(\is_string($view['title'] ?? null) ? $view['title'] : '');
 
         return $view;
+    }
+
+    /**
+     * Longer titles step down a size so they stay inside the cover frame,
+     * computed here rather than in Twig (print-safe, no JS fit-to-width).
+     */
+    private function titleClass(string $title): string
+    {
+        return match (true) {
+            mb_strlen(trim($title)) >= 15 => 'cover__title--xlong',
+            mb_strlen(trim($title)) >= 12 => 'cover__title--long',
+            default => '',
+        };
     }
 }
