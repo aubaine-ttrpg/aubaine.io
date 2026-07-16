@@ -1,0 +1,380 @@
+{
+  "id": "druide",
+  "name": "Druide",
+  "treeType": "archetype",
+  "size": 16,
+  "core": {
+    "label": "Druide",
+    "sublabel": "Archétype",
+    "domains": [
+      "earth"
+    ],
+    "pos": {
+      "x": 50,
+      "y": 50.81
+    }
+  },
+  "nodes": [
+    {
+      "id": "MORPH-01",
+      "title": "Métamorphose",
+      "type": "active",
+      "tier": 3,
+      "domains": [
+        "earth"
+      ],
+      "description": "Vous prenez la forme d'une Bête que vous connaissez. Vous ne pouvez pas prendre la forme d'une Bête dont le niveau de menace dépasse le vôtre, même si vous l'avez apprise. Tant que dure la métamorphose, vous remplacez votre Force, votre Dextérité, votre Endurance et vos PdV par ceux de la Bête, et vous gagnez ses attaques naturelles, son déplacement, sa taille, ses sens et ses compétences, indépendamment de votre Mémoire. Vous gardez votre esprit, vos caractéristiques mentales et vos Aptitudes, mais votre nouvelle forme n'accomplit que ce que son corps permet, et votre équipement se fond en elle sans produire d'effet. Vous reprenez votre forme par une Action Bonus, ou dès que les PdV de la Bête tombent à 0 : vous retrouvez alors les PdV que vous aviez avant de vous métamorphoser, et les dégâts en excès s'appliquent à ces PdV. Vous apprenez une nouvelle Bête en l'observant, ou parce que vous la connaissez déjà bien, de mémoire ou par vos connaissances ; lorsque vous connaissez déjà le maximum de Bêtes, elle remplace l'une des précédentes.",
+      "pos": {
+        "x": 50,
+        "y": 39
+      },
+      "linked": [
+        "CORE"
+      ],
+      "activation": "1 Action Bonus",
+      "range": "Personnel",
+      "duration": "jusqu'à 1 heure",
+      "energy": 3,
+      "tags": [
+        "Sort",
+        "Enchantement",
+        "Déchaîné"
+      ],
+      "characteristics": []
+    },
+    {
+      "id": "MORPH-02",
+      "title": "Double pelage",
+      "type": "evolution",
+      "tier": 7,
+      "domains": [
+        "earth"
+      ],
+      "description": "Vous pouvez désormais connaître jusqu'à 2 Bêtes à la fois, au lieu d'une seule.",
+      "pos": {
+        "x": 37,
+        "y": 30
+      },
+      "linked": [
+        "MORPH-01"
+      ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Sort",
+        "Enchantement",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "MORPH-01",
+      "characteristics": []
+    },
+    {
+      "id": "MORPH-03",
+      "title": "Meute intérieure",
+      "type": "evolution",
+      "tier": 10,
+      "domains": [
+        "earth"
+      ],
+      "description": "Vous pouvez désormais connaître jusqu'à 3 Bêtes à la fois, au lieu de 2.",
+      "pos": {
+        "x": 30,
+        "y": 18
+      },
+      "linked": [
+        "MORPH-02"
+      ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Sort",
+        "Enchantement",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "MORPH-02",
+      "characteristics": []
+    },
+    {
+      "id": "MORPH-04",
+      "title": "Forme de voyage",
+      "type": "evolution",
+      "tier": 10,
+      "domains": [
+        "earth"
+      ],
+      "description": "Vous pouvez connaître un nombre illimité de Bêtes supplémentaires, tant que vous les traitez comme des formes de voyage. Une forme de voyage ne peut infliger aucun dégât ni blesser qui que ce soit : elle sert à vous déplacer, à explorer et à vous dissimuler.",
+      "pos": {
+        "x": 46,
+        "y": 11
+      },
+      "linked": [
+        "MORPH-03"
+      ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Sort",
+        "Enchantement",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "MORPH-03",
+      "characteristics": []
+    },
+    {
+      "id": "MORPH-05",
+      "title": "Attirail changeant",
+      "type": "evolution",
+      "tier": 8,
+      "domains": [
+        "earth"
+      ],
+      "description": "Quand vous vous métamorphosez, vous choisissez désormais de transformer votre équipement avec vous, de sorte qu'il reste porté et utilisable sous votre nouvelle forme, ou de le fondre dans la Bête comme à l'accoutumée.",
+      "pos": {
+        "x": 23,
+        "y": 34
+      },
+      "linked": [
+        "MORPH-02"
+      ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Sort",
+        "Enchantement",
+        "Déchaîné"
+      ],
+      "evolvesFrom": "MORPH-02",
+      "characteristics": []
+    },
+    {
+      "id": "THORN-01",
+      "title": "Cotte épineuse",
+      "type": "active",
+      "tier": 3,
+      "domains": [
+        "earth"
+      ],
+      "description": "Une armure d'épines jaillit de votre corps. Tant que dure le sort, chaque fois que vous êtes touché par un Jet d'attaque au corps à corps ou de finesse, l'attaquant subit 1d4 dégâts Perforants.",
+      "pos": {
+        "x": 66,
+        "y": 34
+      },
+      "linked": [
+        "MORPH-01"
+      ],
+      "activation": "1 Action Bonus",
+      "range": "Personnel",
+      "duration": "jusqu'à 1 minute",
+      "energy": 1,
+      "tags": [
+        "Sort",
+        "Abjuration"
+      ],
+      "characteristics": []
+    },
+    {
+      "id": "BARKS-01",
+      "title": "Peau d'écorce",
+      "type": "active",
+      "tier": 5,
+      "domains": [
+        "earth"
+      ],
+      "description": "Vous touchez une créature consentante. Tant que dure le sort, sa peau prend l'aspect de l'écorce et sa Classe d'Armure passe à 21 si elle était inférieure.",
+      "pos": {
+        "x": 71,
+        "y": 48
+      },
+      "linked": [
+        "MORPH-01"
+      ],
+      "activation": "1 Action",
+      "range": "Contact",
+      "duration": "jusqu'à 10 minutes",
+      "concentration": true,
+      "energy": 2,
+      "tags": [
+        "Sort",
+        "Abjuration"
+      ],
+      "characteristics": []
+    },
+    {
+      "id": "COURR-01",
+      "title": "Courroux",
+      "type": "passive",
+      "tier": 3,
+      "domains": [
+        "physical"
+      ],
+      "description": "Tant que vous êtes métamorphosé, vous disposez de la compétence de Courroux qui correspond à la meilleure caractéristique physique que vous octroie la Bête, et elle ne compte pas dans votre Mémoire : Brutalité pour la Force, Protection pour l'Endurance, Féral pour la Dextérité.",
+      "pos": {
+        "x": 33,
+        "y": 47
+      },
+      "linked": [
+        "MORPH-01"
+      ],
+      "activation": "Passif",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Déchaîné"
+      ],
+      "characteristics": [
+        "strength",
+        "endurance",
+        "dexterity"
+      ]
+    },
+    {
+      "id": "COURR-02",
+      "title": "Courroux: Brutalité",
+      "type": "special",
+      "showXp": false,
+      "tier": 3,
+      "domains": [
+        "physical"
+      ],
+      "description": "Vous assénez un coup brutal, faites un Jet d'attaque de Force + Mélée et infligez 1d10 dégâts lié à une arme naturelle de votre Bête. En cas de réussite, la cible a 25% de chances d'être étourdie jusqu'à la fin de son prochain tour.",
+      "activation": "1 Action",
+      "range": "Corps à corps",
+      "duration": "Instantanée",
+      "energy": 2,
+      "tags": [
+        "Courroux"
+      ],
+      "evolvesFrom": "COURR-01",
+      "characteristics": [
+        "strength"
+      ]
+    },
+    {
+      "id": "COURR-03",
+      "title": "Courroux: Protection",
+      "type": "special",
+      "showXp": false,
+      "tier": 3,
+      "domains": [
+        "physical"
+      ],
+      "description": "Vous gagnez +1 à votre Classe d'Armure, cumulable jusqu'à +10 et jusqu'à la fin de la métamorphose.",
+      "activation": "1 Action Bonus",
+      "range": "Personnel",
+      "duration": "jusqu'à la fin de la métamorphose",
+      "energy": 3,
+      "tags": [
+        "Courroux"
+      ],
+      "evolvesFrom": "COURR-01",
+      "characteristics": [
+        "endurance"
+      ]
+    },
+    {
+      "id": "COURR-04",
+      "title": "Courroux: Féral",
+      "type": "special",
+      "showXp": false,
+      "tier": 3,
+      "domains": [
+        "physical"
+      ],
+      "description": "Pendant 1 minute, vous gagnez 2 Avantages à vos Jets de Caractéristique pour vous cacher, et votre seuil de coup critique est réduit de 1.",
+      "activation": "1 Action Bonus",
+      "range": "Personnel",
+      "duration": "1 minute",
+      "energy": 2,
+      "tags": [
+        "Courroux"
+      ],
+      "evolvesFrom": "COURR-01",
+      "characteristics": [
+        "dexterity"
+      ]
+    },
+    {
+      "id": "DRUID-01",
+      "title": "Connaissances druidiques",
+      "type": "passive",
+      "tier": 2,
+      "domains": [
+        "earth"
+      ],
+      "description": "Lorsque vous effectuez un Jet de Caractéristique de Charisme, d'Intelligence ou d'Esprit visant une Plante ou une Bête, vous gagnez 1 Avantage pour ce Jet.",
+      "pos": {
+        "x": 50,
+        "y": 63
+      },
+      "linked": [
+        "CORE"
+      ],
+      "activation": "Passif",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Divination"
+      ],
+      "characteristics": [
+        "charisma",
+        "intelligence",
+        "spirit"
+      ]
+    },
+    {
+      "id": "DRUID-02",
+      "title": "Communication avec les animaux",
+      "type": "passive",
+      "tier": 4,
+      "domains": [
+        "earth"
+      ],
+      "description": "Vous pouvez parler aux Bêtes et vous pouvez les comprendre.",
+      "pos": {
+        "x": 37,
+        "y": 73
+      },
+      "linked": [
+        "DRUID-01"
+      ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Divination"
+      ],
+      "evolvesFrom": "DRUID-01",
+      "characteristics": []
+    },
+    {
+      "id": "DRUID-03",
+      "title": "Communication avec les plantes",
+      "type": "passive",
+      "tier": 4,
+      "domains": [
+        "earth"
+      ],
+      "description": "Vous pouvez parler aux Plantes et vous pouvez les comprendre.",
+      "pos": {
+        "x": 63,
+        "y": 73
+      },
+      "linked": [
+        "DRUID-01"
+      ],
+      "activation": "—",
+      "range": "—",
+      "duration": "—",
+      "tags": [
+        "Language",
+        "Enchantement"
+      ],
+      "evolvesFrom": "DRUID-01",
+      "characteristics": []
+    }
+  ]
+}
