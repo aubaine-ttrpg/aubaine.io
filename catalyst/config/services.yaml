@@ -3,11 +3,17 @@
 parameters:
     # Local, dev-only storage: authored books live here (git-ignored).
     app.books_directory: '%kernel.project_dir%/var/books'
+    # Generated PDFs, cached by content hash (git-ignored under var/).
+    app.pdf_directory: '%kernel.project_dir%/var/books-pdf'
+    # Webpack Encore build output, hashed for the version stamp.
+    app.build_directory: '%kernel.project_dir%/public/build'
     # Seed game data the skill-tree page consumes.
     app.skill_trees_directory: '%kernel.project_dir%/data/skill-trees'
     app.skill_tree_schema: '%kernel.project_dir%/data/skilltree.schema.json'
+    # Source content images (covers, paper textures, node icons).
+    app.images_directory: '%kernel.project_dir%/assets/images'
     # Cover artwork the picker offers.
-    app.covers_directory: '%kernel.project_dir%/assets/images/covers'
+    app.covers_directory: '%app.images_directory%/covers'
 
 services:
     _defaults:
@@ -39,3 +45,15 @@ services:
     App\Design\CoverImageLibrary:
         arguments:
             $coversDirectory: '%app.covers_directory%'
+
+    App\Design\ImageSource:
+        arguments:
+            $imagesDirectory: '%app.images_directory%'
+
+    App\Pdf\BookFingerprint:
+        arguments:
+            $buildDirectory: '%app.build_directory%'
+
+    App\Pdf\BookPdfLibrary:
+        arguments:
+            $pdfDirectory: '%app.pdf_directory%'

@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Page\Type;
 
+use App\Design\ImageSource;
 use App\Page\Form\CoverFrontType;
 use App\Page\PageTypeInterface;
 
 /** Front cover (recto): dark cinematic art, gold title and filigree. */
 final class CoverFrontPageType implements PageTypeInterface
 {
+    public function __construct(private readonly ImageSource $images)
+    {
+    }
+
     public function key(): string
     {
         return 'cover-front';
@@ -36,7 +41,6 @@ final class CoverFrontPageType implements PageTypeInterface
             'eyebrow' => 'Aubaine',
             'title' => 'Parangon',
             'subtitle' => 'Les protecteurs de la Weitzguard',
-            'version' => 'Archétype · v0.1',
             'image' => 'parangon.png',
             'ornaments' => true,
         ];
@@ -59,6 +63,13 @@ final class CoverFrontPageType implements PageTypeInterface
         $view['titleClass'] = $this->titleClass(\is_string($view['title'] ?? null) ? $view['title'] : '');
 
         return $view;
+    }
+
+    public function referencedContentPaths(array $data): array
+    {
+        $image = \is_string($data['image'] ?? null) ? $data['image'] : '';
+
+        return '' !== $image ? [$this->images->path('covers', $image)] : [];
     }
 
     /**

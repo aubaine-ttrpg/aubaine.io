@@ -1,3 +1,4 @@
+{% import 'print/_macros.html.twig' as m %}
 {% set art = catalyst_image('covers', image) %}
 {% set qr = catalyst_image('covers', 'qr-aubaine.png') %}
 <div class="page cover cover--verso">
@@ -9,12 +10,12 @@
             {% if eyebrow %}<div class="cover__eyebrow">{{ eyebrow }}</div>{% endif %}
 
             <div class="cover__back cover__back--epure">
-                {% set pitch = [tagline, cta]|filter(v => v)|join(' · ') %}
-                {% if pitch %}<div class="cover__pitch">{{ pitch }}</div>{% endif %}
+                {% set pitch = [tagline, cta]|filter(v => v) %}
+                {% if pitch %}<div class="cover__pitch">{{ m.hex_line(pitch) }}</div>{% endif %}
                 {% if url %}<div class="cover__url">{{ url }}</div>{% endif %}
             </div>
 
-            {% if copyright %}<div class="cover__copyright">{{ copyright }}</div>{% endif %}
+            <div class="cover__copyright">{{ m.hex_line([copyright, bookTitle, versionFull]) }}</div>
             {% if showQr and qr %}<img class="cover__qr" src="{{ qr }}" alt="QR aubaine.io">{% endif %}
         </div>
     </div>

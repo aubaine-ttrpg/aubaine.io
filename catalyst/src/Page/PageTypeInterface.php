@@ -55,4 +55,17 @@ interface PageTypeInterface
      * @return array<string, mixed>
      */
     public function buildViewModel(array $data): array;
+
+    /**
+     * Absolute paths of the source files this page renders from but only
+     * references by name (linked data files and image assets). Used to
+     * fingerprint the book's content so that editing a linked file, or swapping
+     * one for different bytes under the same name, changes the book hash.
+     * Return [] when the page renders from its stored data alone.
+     *
+     * @param array<string, mixed> $data
+     *
+     * @return list<string>
+     */
+    public function referencedContentPaths(array $data): array;
 }

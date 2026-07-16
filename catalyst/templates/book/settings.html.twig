@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'book.new.title'|trans }} · {{ 'app.name'|trans }}{% endblock %}
+{% block title %}{{ 'book.settings.title'|trans }} · {{ book.title }}{% endblock %}
 
 {% block body %}
     <div class="page-head">
-        <h1>{{ 'book.new.title'|trans }}</h1>
-        <a class="btn btn--ghost" href="{{ path('app_book_index') }}">{{ 'action.cancel'|trans }}</a>
+        <h1>{{ 'book.settings.title'|trans }}</h1>
+        <a class="btn btn--ghost" href="{{ path('app_book_edit', {id: book.id}) }}">{{ 'action.cancel'|trans }}</a>
     </div>
 
     <div class="panel panel--narrow">
@@ -16,7 +16,7 @@
             {{ form_row(form.versionMajor) }}
             {{ form_row(form.versionMinor) }}
             <div class="form-actions">
-                <button class="btn btn--primary" type="submit">{{ 'book.new.submit'|trans }}</button>
+                <button class="btn btn--primary" type="submit">{{ 'action.save'|trans }}</button>
             </div>
         {{ form_end(form) }}
     </div>

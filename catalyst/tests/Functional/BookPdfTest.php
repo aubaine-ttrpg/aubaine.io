@@ -6,6 +6,8 @@ namespace App\Tests\Functional;
 
 use App\Book\BookEditor;
 use App\Book\BookRepository;
+use App\Book\BookType;
+use App\Book\Version;
 use Closure;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
@@ -21,6 +23,9 @@ final class BookPdfTest extends WebTestCase
     /** The multipart payload the controller sent Gotenberg, captured by the transport fake. */
     private string $lastGotenbergBody = '';
 
+    /** How many times Gotenberg was asked to render, to prove the cache is used. */
+    private int $gotenbergRenders = 0;
+
     public function testDownloadPdfSendsAttachmentWithBookSlugFilename(): void
     {
         $client = static::createClient();
@@ -34,7 +39,27 @@ final class BookPdfTest extends WebTestCase
             self::assertResponseHeaderSame('content-type', 'application/pdf');
             $disposition = (string) $client->getResponse()->headers->get('content-disposition');
             self::assertStringStartsWith('attachment', $disposition);
-            self::assertStringContainsString('the-blade-of-fire.pdf', $disposition);
+            // Cache filename is bookName_webpackHash_bookHash.pdf (book id as the name).
+            self::assertMatchesRegularExpression('/the-blade-of-fire_[0-9a-f]{8}_[0-9a-f]{8}\.pdf/', $disposition);
+        } finally {
+            $this->deleteBook($book->id());
+        }
+    }
+
+    public function testSecondRequestIsServedFromCacheWithoutRerendering(): void
+    {
+        $client = static::createClient();
+        $this->fakeGotenberg();
+        $book = $this->createBook('Cache Me');
+
+        try {
+            $client->request('GET', '/books/'.$book->id().'/pdf');
+            self::assertResponseIsSuccessful();
+            self::assertSame(1, $this->gotenbergRenders);
+
+            $client->request('GET', '/books/'.$book->id().'/pdf');
+            self::assertResponseIsSuccessful();
+            self::assertSame(1, $this->gotenbergRenders, 'the cached PDF must be served without a second render');
         } finally {
             $this->deleteBook($book->id());
         }
@@ -67,7 +92,7 @@ final class BookPdfTest extends WebTestCase
             $client->request('GET', '/books/'.$book->id().'/pdf');
 
             self::assertResponseIsSuccessful();
-            self::assertStringContainsString("document.fonts.status === 'loaded'", $this->lastGotenbergBody);
+            self::assertStringContainsString('window.__abilitiesPaginated === true', $this->lastGotenbergBody);
             self::assertStringContainsString('300ms', $this->lastGotenbergBody);
         } finally {
             $this->deleteBook($book->id());
@@ -110,6 +135,7 @@ final class BookPdfTest extends WebTestCase
             }
 
             $this->lastGotenbergBody = self::collectBody($options['body'] ?? '');
+            ++$this->gotenbergRenders;
 
             if (200 !== $convertStatus) {
                 return new MockResponse('render failed', ['http_code' => $convertStatus]);
@@ -164,7 +190,7 @@ final class BookPdfTest extends WebTestCase
         $editor = static::getContainer()->get(BookEditor::class);
         self::assertInstanceOf(BookEditor::class, $editor);
 
-        return $editor->create($title, null);
+        return $editor->create($title, null, BookType::Archetype, new Version(0, 1));
     }
 
     private function deleteBook(string $id): void
@@ -172,5 +198,15 @@ final class BookPdfTest extends WebTestCase
         $repository = static::getContainer()->get(BookRepository::class);
         self::assertInstanceOf(BookRepository::class, $repository);
         $repository->delete($id);
+
+        // Purge the cached PDFs this book generated so runs stay hermetic.
+        $projectDir = static::getContainer()->getParameter('kernel.project_dir');
+        if (!\is_string($projectDir)) {
+            return;
+        }
+        $pdfs = glob($projectDir.'/var/books-pdf/'.$id.'_*.pdf');
+        foreach (\is_array($pdfs) ? $pdfs : [] as $pdf) {
+            @unlink($pdf);
+        }
     }
 }

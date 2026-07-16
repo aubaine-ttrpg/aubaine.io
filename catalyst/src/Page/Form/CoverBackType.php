@@ -49,10 +49,6 @@ final class CoverBackType extends AbstractType
                 'required' => false,
                 'label' => 'page.cover_back.url',
             ])
-            ->add('copyright', TextType::class, [
-                'required' => false,
-                'label' => 'page.cover_back.copyright',
-            ])
             ->add('image', ChoiceType::class, [
                 'required' => false,
                 'choices' => $this->covers->choices(),

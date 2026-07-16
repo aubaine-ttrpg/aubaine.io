@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Page\Type;
 
+use App\Design\ImageSource;
 use App\Page\Form\CoverBackType;
 use App\Page\PageTypeInterface;
 
 /** Back cover (verso): full illustration, blurb, call to action, QR. */
 final class CoverBackPageType implements PageTypeInterface
 {
+    public function __construct(private readonly ImageSource $images)
+    {
+    }
+
     public function key(): string
     {
         return 'cover-back';
@@ -41,7 +46,6 @@ final class CoverBackPageType implements PageTypeInterface
                 ."Aventurez-vous dans les terres d'Éden, ou dans votre propre monde.",
             'cta' => 'Commencez votre aventure',
             'url' => 'aubaine.io',
-            'copyright' => '© Aubaine · v0.1',
             'image' => 'randome.png',
             'showQr' => true,
             'ornaments' => true,
@@ -74,5 +78,19 @@ final class CoverBackPageType implements PageTypeInterface
         $view['ornaments'] = ($data['ornaments'] ?? true) === true;
 
         return $view;
+    }
+
+    public function referencedContentPaths(array $data): array
+    {
+        $paths = [];
+        $image = \is_string($data['image'] ?? null) ? $data['image'] : '';
+        if ('' !== $image) {
+            $paths[] = $this->images->path('covers', $image);
+        }
+        if (($data['showQr'] ?? true) === true) {
+            $paths[] = $this->images->path('covers', 'qr-aubaine.png');
+        }
+
+        return $paths;
     }
 }

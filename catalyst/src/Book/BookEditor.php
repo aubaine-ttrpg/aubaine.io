@@ -28,19 +28,19 @@ final class BookEditor
     ) {
     }
 
-    public function create(string $title, ?string $subtitle = null): Book
+    public function create(string $title, ?string $subtitle, BookType $bookType, Version $version): Book
     {
         $now = $this->now();
         $id = $this->repository->nextId($this->slugger->slug($title)->lower()->toString());
-        $book = new Book($id, $title, $subtitle, $now, $now);
+        $book = new Book($id, $title, $subtitle, $bookType, $version, $now, $now);
         $this->repository->save($book);
 
         return $book;
     }
 
-    public function rename(Book $book, string $title, ?string $subtitle): void
+    public function updateMeta(Book $book, string $title, ?string $subtitle, BookType $bookType, Version $version): void
     {
-        $book->rename($title, $subtitle);
+        $book->updateMeta($title, $subtitle, $bookType, $version);
         $this->persist($book);
     }
 

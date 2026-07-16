@@ -41,10 +41,6 @@ final class CoverFrontType extends AbstractType
                 'required' => false,
                 'label' => 'page.cover_front.subtitle',
             ])
-            ->add('version', TextType::class, [
-                'required' => false,
-                'label' => 'page.cover_front.version',
-            ])
             ->add('image', ChoiceType::class, [
                 'required' => false,
                 'choices' => $this->covers->choices(),

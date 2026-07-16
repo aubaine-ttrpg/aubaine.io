@@ -16,8 +16,10 @@ use RuntimeException;
  */
 final class BookRepository
 {
-    public function __construct(private readonly string $booksDirectory)
-    {
+    public function __construct(
+        private readonly string $booksDirectory,
+        private readonly BookSerializer $serializer,
+    ) {
     }
 
     public function exists(string $id): bool
@@ -59,10 +61,7 @@ final class BookRepository
     {
         $this->ensureDirectory();
 
-        $json = json_encode(
-            $book->toArray(),
-            \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR,
-        )."\n";
+        $json = $this->serializer->toCanonicalJson($book);
 
         $target = $this->path($book->id());
         $tmp = $target.'.'.bin2hex(random_bytes(4)).'.tmp';

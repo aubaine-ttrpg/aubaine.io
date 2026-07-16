@@ -1,3 +1,4 @@
+{% import 'print/_macros.html.twig' as m %}
 {% set art = catalyst_image('covers', image) %}
 <div class="page cover cover--recto">
     <div class="cover__scaler">
@@ -16,7 +17,7 @@
                 <div class="cover__rule"></div>
                 {% if subtitle %}<div class="cover__subtitle">{{ subtitle }}</div>{% endif %}
             </div>
-            {% if version %}<div class="cover__version">{{ version }}</div>{% endif %}
+            <div class="cover__version">{{ m.hex_line([bookTypeLabel|trans, versionShort]) }}</div>
         </div>
     </div>
 </div>

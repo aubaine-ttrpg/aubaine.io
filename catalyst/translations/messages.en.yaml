@@ -11,6 +11,15 @@ action.save: Save
 
 book.title: Title
 book.subtitle: Subtitle
+book.type: Book type
+book.type.aventure: Adventure
+book.type.personnage: Character
+book.type.archetype: Archetype
+book.type.domaine: Domain
+book.type.fiche_personnage: Character sheet
+book.version.major: Major version
+book.version.minor: Minor version
+book.settings.title: Book settings
 book.print: Print
 book.view_pdf: View PDF
 book.download_pdf: Download PDF
@@ -41,7 +50,6 @@ page.cover_front.description: Dark cinematic cover with gold title and filigree.
 page.cover_front.eyebrow: Eyebrow
 page.cover_front.title: Title
 page.cover_front.subtitle: Subtitle
-page.cover_front.version: Edition line
 page.cover_front.image: Artwork
 page.cover_front.image_none: No artwork
 page.cover_front.ornaments: Show the gold frame
@@ -54,7 +62,6 @@ page.cover_back.body: Blurb
 page.cover_back.body_help: One line per row.
 page.cover_back.cta: Call to action
 page.cover_back.url: URL
-page.cover_back.copyright: Copyright line
 page.cover_back.image: Artwork
 page.cover_back.image_none: No artwork
 page.cover_back.show_qr: Show the QR code
@@ -70,6 +77,7 @@ page.skill_tree.paper: Paper
 page.skill_tree.legend: Show the legend
 
 flash.book_created: Book created.
+flash.book_saved: Book saved.
 flash.page_added: Page added.
 flash.page_saved: Page saved.
 flash.page_removed: Page removed.

@@ -282,7 +282,7 @@ body {
     left: 0;
     right: 0;
     text-align: center;
-    font-size: 10px;
+    font-size: 8px;
     letter-spacing: 0.32em;
     text-transform: uppercase;
     color: #8c7e5e;
@@ -379,10 +379,35 @@ body {
     position: absolute;
     left: 40px;
     bottom: 38px;
-    font-size: 9px;
+    font-size: 7px;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: #9a8e72;
+}
+
+/* Segments joined by a small hexagon icon (version stamp, épuré pitch),
+   inheriting the surrounding colour. */
+.hex-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7em;
+}
+
+.hex-line__sep {
+    width: 0.5em;
+    height: 0.5em;
+    opacity: 0.7;
+}
+
+/* The épuré pitch fills its text with a transparent gradient, so currentColor
+   would hide the hexagon: give it an explicit gold and a tighter gap. */
+.cover__pitch .hex-line {
+    gap: 0.5em;
+}
+
+.cover__pitch .hex-line__sep {
+    color: #e8c770;
+    opacity: 0.9;
 }
 
 .cover__qr {

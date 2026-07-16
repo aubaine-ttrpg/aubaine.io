@@ -1,5 +1,16 @@
 {# Reusable print pieces: a positioned tree node and a full ability entry. #}
 
+{# Segments joined by a hexagon icon, e.g. a version stamp
+   ["Archétype", "v0.1"] or a pitch ["Déchaînez…", "Commencez…"]. #}
+{% macro hex_line(segments) %}
+    <span class="hex-line">
+        {%- for seg in segments -%}
+            {%- if not loop.first %}{{ ux_icon('mdi:hexagon', {class: 'hex-line__sep'}) }}{% endif -%}
+            <span class="hex-line__seg">{{ seg }}</span>
+        {%- endfor -%}
+    </span>
+{% endmacro %}
+
 {% macro node_shape(node, extraClass) %}
     {% set icon = catalyst_image('icons', node.iconFile) %}
     <span class="node__shape node__shape--{{ node.type.shapeKey }} {{ extraClass }}"

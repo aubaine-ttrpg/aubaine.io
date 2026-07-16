@@ -8,18 +8,18 @@ use App\Book\BookEditor;
 use App\Book\BookRepository;
 use App\Book\Dto\BookMeta;
 use App\Book\Form\BookMetaType;
+use App\Book\Model\Book;
+use App\Book\Version;
 use App\Page\PageTypeRegistry;
 use App\Page\PageViewFactory;
-use App\Pdf\Exception\PdfRenderingException;
-use Psr\Log\LoggerInterface;
-use Sensiolabs\GotenbergBundle\Exception\ClientException;
-use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
+use App\Pdf\BookFingerprint;
+use App\Pdf\BookPdfLibrary;
+use App\Pdf\BookRelease;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\String\Slugger\AsciiSlugger;
 
 /**
  * The book creator: list, create, edit (add/customize/reorder/remove pages),
@@ -42,7 +42,12 @@ final class BookController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $book = $editor->create($meta->title, $meta->subtitle);
+            $book = $editor->create(
+                $meta->title,
+                $meta->subtitle,
+                $meta->bookType,
+                new Version($meta->versionMajor, $meta->versionMinor),
+            );
             $this->addFlash('success', 'flash.book_created');
 
             return $this->redirectToRoute('app_book_edit', ['id' => $book->id()]);
@@ -60,6 +65,30 @@ final class BookController extends AbstractController
             'book' => $book,
             'catalog' => $registry->byCategory(),
         ]);
+    }
+
+    #[Route('/books/{id}/settings', name: 'app_book_settings', methods: ['GET', 'POST'])]
+    public function settings(string $id, Request $request, BookRepository $books, BookEditor $editor): Response
+    {
+        $book = $books->find($id);
+        $meta = BookMeta::fromBook($book);
+        $form = $this->createForm(BookMetaType::class, $meta);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $editor->updateMeta(
+                $book,
+                $meta->title,
+                $meta->subtitle,
+                $meta->bookType,
+                new Version($meta->versionMajor, $meta->versionMinor),
+            );
+            $this->addFlash('success', 'flash.book_saved');
+
+            return $this->redirectToRoute('app_book_edit', ['id' => $id]);
+        }
+
+        return $this->render('book/settings.html.twig', ['book' => $book, 'form' => $form], $this->formResponse($form->isSubmitted()));
     }
 
     #[Route('/books/{id}/pages', name: 'app_book_page_add', methods: ['POST'])]
@@ -134,51 +163,56 @@ final class BookController extends AbstractController
     }
 
     #[Route('/books/{id}/print', name: 'app_book_print', methods: ['GET'])]
-    public function print(string $id, BookRepository $books, PageViewFactory $views): Response
+    public function print(string $id, Request $request, BookRepository $books, PageViewFactory $views, BookFingerprint $fingerprint): Response
     {
         $book = $books->find($id);
+        $release = $this->resolveRelease($request, $book, $fingerprint);
 
         return $this->render('print/book.html.twig', [
             'book' => $book,
-            'pages' => $views->forBook($book),
+            'pages' => $views->forBook($book, $release),
         ]);
     }
 
     /**
-     * Server-side PDF of the printable book, rendered by Gotenberg from the
-     * print route. `?download=1` forces a download; otherwise it opens inline.
+     * Server-side PDF of the printable book. The version stamp (webpack + book
+     * hashes) is computed first, then the PDF is served from the content-addressed
+     * cache (`bookName_webpack_book.pdf`) or built by Gotenberg if absent.
+     * `?download=1` forces a download; otherwise it opens inline.
      */
     #[Route('/books/{id}/pdf', name: 'app_book_pdf', methods: ['GET'])]
     public function pdf(
         string $id,
         Request $request,
         BookRepository $books,
-        GotenbergPdfInterface $gotenberg,
-        LoggerInterface $logger,
+        BookFingerprint $fingerprint,
+        BookPdfLibrary $library,
     ): Response {
         $book = $books->find($id);
+        $release = $fingerprint->release($book);
+        $path = $library->render($book, $release);
 
-        $slug = (new AsciiSlugger())->slug($book->title())->lower()->toString();
-        $filename = '' !== $slug ? $slug : 'book';
         $disposition = $request->query->getBoolean('download')
             ? HeaderUtils::DISPOSITION_ATTACHMENT
             : HeaderUtils::DISPOSITION_INLINE;
 
-        try {
-            return $gotenberg->url()
-                ->route('app_book_print', ['id' => $book->id()])
-                ->printBackground()      // cover art, paper textures, dark cover backgrounds
-                ->preferCssPageSize()    // honour the CSS @page A4 + margin:0 (full bleed)
-                ->waitForExpression('window.__abilitiesPaginated === true') // set after fonts load + ability pages reflow
-                ->waitDelay('300ms')     // settle margin for background-image paint
-                ->fileName($filename, $disposition)
-                ->generate()
-                ->stream();
-        } catch (ClientException $e) {
-            $logger->error('book.pdf_render_failed', ['event' => 'book.pdf_render_failed', 'book_id' => $id]);
+        return $this->file($path, $release->fileName($book->id()), $disposition);
+    }
 
-            throw PdfRenderingException::forBook($id, $e);
+    /**
+     * The release for the print route: trust the hashes the PDF action passed
+     * (so the printed cover matches the filename exactly), else recompute for a
+     * direct browser visit. Query hashes are validated before being trusted.
+     */
+    private function resolveRelease(Request $request, Book $book, BookFingerprint $fingerprint): BookRelease
+    {
+        $wp = (string) $request->query->get('wp', '');
+        $bk = (string) $request->query->get('bk', '');
+        if (1 === preg_match('/^[0-9a-f]{8}$/', $wp) && 1 === preg_match('/^[0-9a-f]{8}$/', $bk)) {
+            return new BookRelease($book->version(), $wp, $bk);
         }
+
+        return $fingerprint->release($book);
     }
 
     #[Route('/books/{id}/delete', name: 'app_book_delete', methods: ['POST'])]
@@ -200,7 +234,7 @@ final class BookController extends AbstractController
         }
     }
 
-    private function indexOfPage(\App\Book\Model\Book $book, string $pageId): int
+    private function indexOfPage(Book $book, string $pageId): int
     {
         foreach ($book->pages() as $index => $page) {
             if ($page->id() === $pageId) {

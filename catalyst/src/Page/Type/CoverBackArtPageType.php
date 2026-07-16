@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Page\Type;
 
+use App\Design\ImageSource;
 use App\Page\Form\CoverBackArtType;
 use App\Page\PageTypeInterface;
 
 /** Back cover (verso), épuré: full illustration front and center, tagline, call to action, QR. */
 final class CoverBackArtPageType implements PageTypeInterface
 {
+    public function __construct(private readonly ImageSource $images)
+    {
+    }
+
     public function key(): string
     {
         return 'cover-back-art';
@@ -37,7 +42,6 @@ final class CoverBackArtPageType implements PageTypeInterface
             'tagline' => 'Déchaînez votre imagination',
             'cta' => 'Commencez votre aventure',
             'url' => 'aubaine.io',
-            'copyright' => '© Aubaine · v0.1',
             'image' => 'randome.png',
             'showQr' => true,
         ];
@@ -59,5 +63,19 @@ final class CoverBackArtPageType implements PageTypeInterface
         $view['showQr'] = ($data['showQr'] ?? true) === true;
 
         return $view;
+    }
+
+    public function referencedContentPaths(array $data): array
+    {
+        $paths = [];
+        $image = \is_string($data['image'] ?? null) ? $data['image'] : '';
+        if ('' !== $image) {
+            $paths[] = $this->images->path('covers', $image);
+        }
+        if (($data['showQr'] ?? true) === true) {
+            $paths[] = $this->images->path('covers', 'qr-aubaine.png');
+        }
+
+        return $paths;
     }
 }

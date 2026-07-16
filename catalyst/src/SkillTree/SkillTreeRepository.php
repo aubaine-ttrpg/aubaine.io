@@ -13,6 +13,7 @@ use App\SkillTree\Model\Position;
 use App\SkillTree\Model\SkillNode;
 use App\SkillTree\Model\SkillTree;
 use App\SkillTree\Model\TreeCore;
+use JsonException;
 use Opis\JsonSchema\Errors\ErrorFormatter;
 use Opis\JsonSchema\Validator;
 use stdClass;
@@ -68,6 +69,52 @@ final class SkillTreeRepository
     public function has(string $id): bool
     {
         return 1 === preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $id) && is_file($this->path($id));
+    }
+
+    /** Absolute path of a tree's source JSON file (for content fingerprinting). */
+    public function pathFor(string $id): string
+    {
+        if (!$this->has($id)) {
+            throw SkillTreeNotFoundException::forId($id);
+        }
+
+        return $this->path($id);
+    }
+
+    /**
+     * Distinct icon filenames the tree's nodes reference (the shared placeholder
+     * included when a node has none). Read raw and defensively so fingerprinting
+     * a broken tree never throws; the tree JSON bytes are hashed regardless.
+     *
+     * @return list<string>
+     */
+    public function iconFiles(string $id): array
+    {
+        if (!$this->has($id)) {
+            return [];
+        }
+
+        $raw = file_get_contents($this->path($id));
+        if (false === $raw) {
+            return [];
+        }
+
+        try {
+            $data = json_decode($raw, true, 512, \JSON_THROW_ON_ERROR);
+        } catch (JsonException) {
+            return [];
+        }
+        if (!\is_array($data)) {
+            return [];
+        }
+
+        $files = [];
+        foreach ($this->toList($data['nodes'] ?? []) as $rawNode) {
+            $node = $this->toArray($rawNode);
+            $files[$this->toString($node['icon'] ?? null) ?? SkillNode::PLACEHOLDER_ICON] = true;
+        }
+
+        return array_keys($files);
     }
 
     public function load(string $id): SkillTree

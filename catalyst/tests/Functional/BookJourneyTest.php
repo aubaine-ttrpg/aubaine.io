@@ -6,6 +6,8 @@ namespace App\Tests\Functional;
 
 use App\Book\BookEditor;
 use App\Book\BookRepository;
+use App\Book\BookType;
+use App\Book\Version;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 final class BookJourneyTest extends WebTestCase
@@ -16,7 +18,7 @@ final class BookJourneyTest extends WebTestCase
         $editor = static::getContainer()->get(BookEditor::class);
         self::assertInstanceOf(BookEditor::class, $editor);
 
-        $book = $editor->create('Test Journey', 'Les forces de la nature');
+        $book = $editor->create('Test Journey', 'Les forces de la nature', BookType::Archetype, new Version(0, 1));
         $editor->addPage($book, 'cover-front');
         $editor->addPage($book, 'skill-tree');
         $editor->addPage($book, 'cover-back');

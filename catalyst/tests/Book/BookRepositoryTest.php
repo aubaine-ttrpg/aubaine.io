@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Tests\Book;
 
 use App\Book\BookRepository;
+use App\Book\BookSerializer;
+use App\Book\BookType;
 use App\Book\Exception\BookNotFoundException;
 use App\Book\Model\Book;
 use App\Book\Model\Page;
+use App\Book\Version;
 use DateTimeImmutable;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +23,7 @@ final class BookRepositoryTest extends TestCase
     protected function setUp(): void
     {
         $this->dir = sys_get_temp_dir().'/catalyst-books-'.bin2hex(random_bytes(4));
-        $this->repository = new BookRepository($this->dir);
+        $this->repository = new BookRepository($this->dir, new BookSerializer());
     }
 
     protected function tearDown(): void
@@ -38,7 +41,7 @@ final class BookRepositoryTest extends TestCase
     public function testSaveThenFindRoundTrips(): void
     {
         $at = new DateTimeImmutable('2026-01-02T03:04:05+00:00');
-        $book = new Book('parangon', 'Parangon', 'Les protecteurs', $at, $at, [
+        $book = new Book('parangon', 'Parangon', 'Les protecteurs', BookType::Domaine, new Version(2, 3), $at, $at, [
             new Page('p1', 'cover-front', ['title' => 'Parangon']),
         ]);
         $this->repository->save($book);
@@ -47,6 +50,9 @@ final class BookRepositoryTest extends TestCase
 
         self::assertSame('Parangon', $found->title());
         self::assertSame('Les protecteurs', $found->subtitle());
+        self::assertSame(BookType::Domaine, $found->bookType());
+        self::assertSame(2, $found->version()->major);
+        self::assertSame(3, $found->version()->minor);
         self::assertCount(1, $found->pages());
         self::assertSame('cover-front', $found->pages()[0]->type());
         self::assertSame(['title' => 'Parangon'], $found->pages()[0]->data());
@@ -64,7 +70,7 @@ final class BookRepositoryTest extends TestCase
         $at = new DateTimeImmutable('2026-01-01T00:00:00+00:00');
         self::assertFalse($this->repository->exists('x'));
 
-        $this->repository->save(new Book('x', 'X', null, $at, $at));
+        $this->repository->save(new Book('x', 'X', null, BookType::Archetype, new Version(0, 1), $at, $at));
         self::assertTrue($this->repository->exists('x'));
 
         $this->repository->delete('x');
@@ -76,7 +82,7 @@ final class BookRepositoryTest extends TestCase
         $at = new DateTimeImmutable('2026-01-01T00:00:00+00:00');
         self::assertSame('feu', $this->repository->nextId('Feu'));
 
-        $this->repository->save(new Book('feu', 'Feu', null, $at, $at));
+        $this->repository->save(new Book('feu', 'Feu', null, BookType::Archetype, new Version(0, 1), $at, $at));
         self::assertSame('feu-2', $this->repository->nextId('Feu'));
     }
 
@@ -84,8 +90,8 @@ final class BookRepositoryTest extends TestCase
     {
         $old = new DateTimeImmutable('2026-01-01T00:00:00+00:00');
         $new = new DateTimeImmutable('2026-02-01T00:00:00+00:00');
-        $this->repository->save(new Book('a', 'A', null, $old, $old));
-        $this->repository->save(new Book('b', 'B', null, $new, $new));
+        $this->repository->save(new Book('a', 'A', null, BookType::Archetype, new Version(0, 1), $old, $old));
+        $this->repository->save(new Book('b', 'B', null, BookType::Archetype, new Version(0, 1), $new, $new));
 
         $all = $this->repository->all();
         self::assertCount(2, $all);

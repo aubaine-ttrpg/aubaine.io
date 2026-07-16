@@ -11,6 +11,15 @@ action.save: Enregistrer
 
 book.title: Titre
 book.subtitle: Sous-titre
+book.type: Type de livre
+book.type.aventure: Aventure
+book.type.personnage: Personnage
+book.type.archetype: Archétype
+book.type.domaine: Domaine
+book.type.fiche_personnage: Fiche personnage
+book.version.major: Version majeure
+book.version.minor: Version mineure
+book.settings.title: Réglages du livre
 book.print: Imprimer
 book.view_pdf: Voir le PDF
 book.download_pdf: Télécharger le PDF
@@ -41,7 +50,6 @@ page.cover_front.description: Couverture sombre et cinématographique, titre et 
 page.cover_front.eyebrow: Surtitre
 page.cover_front.title: Titre
 page.cover_front.subtitle: Sous-titre
-page.cover_front.version: Ligne d''édition
 page.cover_front.image: Illustration
 page.cover_front.image_none: Aucune illustration
 page.cover_front.ornaments: Afficher le cadre doré
@@ -54,7 +62,6 @@ page.cover_back.body: Texte
 page.cover_back.body_help: Une ligne par entrée.
 page.cover_back.cta: Appel à l''action
 page.cover_back.url: URL
-page.cover_back.copyright: Ligne de copyright
 page.cover_back.image: Illustration
 page.cover_back.image_none: Aucune illustration
 page.cover_back.show_qr: Afficher le QR code
@@ -70,6 +77,7 @@ page.skill_tree.paper: Papier
 page.skill_tree.legend: Afficher la légende
 
 flash.book_created: Livre créé.
+flash.book_saved: Livre enregistré.
 flash.page_added: Page ajoutée.
 flash.page_saved: Page enregistrée.
 flash.page_removed: Page retirée.

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Page\Type;
 
 use App\Design\Domain;
+use App\Design\ImageSource;
 use App\Design\NodeType;
 use App\Design\Paper;
 use App\Page\Form\SkillTreeType;
@@ -25,8 +26,10 @@ final class SkillTreePageType implements PageTypeInterface
     private const int CANVAS_WIDTH = 960;
     private const int CANVAS_HEIGHT = 1358;
 
-    public function __construct(private readonly SkillTreeRepository $trees)
-    {
+    public function __construct(
+        private readonly SkillTreeRepository $trees,
+        private readonly ImageSource $images,
+    ) {
     }
 
     public function key(): string
@@ -115,6 +118,31 @@ final class SkillTreePageType implements PageTypeInterface
             'titles' => $titles,
             'abilities' => $ordered,
         ];
+    }
+
+    public function referencedContentPaths(array $data): array
+    {
+        $treeId = \is_string($data['tree'] ?? null) ? $data['tree'] : '';
+        if (!$this->trees->has($treeId)) {
+            $treeId = $this->trees->ids()[0] ?? '';
+        }
+        if ('' === $treeId || !$this->trees->has($treeId)) {
+            return [];
+        }
+
+        $paths = [$this->trees->pathFor($treeId)];
+
+        $paper = Paper::tryFrom(\is_string($data['paper'] ?? null) ? $data['paper'] : '') ?? Paper::Parchment;
+        $texture = $paper->textureFile();
+        if (null !== $texture) {
+            $paths[] = $this->images->path('paper', $texture);
+        }
+
+        foreach ($this->trees->iconFiles($treeId) as $icon) {
+            $paths[] = $this->images->path('icons', $icon);
+        }
+
+        return $paths;
     }
 
     /**
