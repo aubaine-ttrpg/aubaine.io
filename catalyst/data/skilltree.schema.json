@@ -77,9 +77,10 @@
         "range": { "type": "string", "description": "Ligne de stats (flèches)" },
         "duration": { "type": "string", "description": "Ligne de stats (sablier)" },
         "concentration": { "type": "boolean", "description": "→ rendue dans la durée : « Concentration · <durée> » (convention D&D). Pas un tag." },
-        "energy": { "type": "integer", "minimum": 0, "maximum": 5, "description": "→ pastille ÉNERGIE ; actives uniquement" },
+        "energy": { "type": "integer", "minimum": 0, "maximum": 5, "description": "→ pastille ÉNERGIE ; actives et spéciaux" },
         "tags": { "type": "array", "items": { "type": "string" }, "description": "→ chips en pied d'entrée" },
         "evolvesFrom": { "type": "string", "pattern": "^[A-Z0-9]{5}-[0-9]{2}$", "description": "Évolutions : id de la base → note « ▲ Évolution de <titre> »" },
+        "showXp": { "type": "boolean", "description": "→ pastille XP rendue ; absent = true. false pour une compétence octroyée par un autre nœud et non achetée directement" },
         "description": { "type": "string", "description": "Texte de règle. Quand une compétence fixe un DD, l'écrire « votre DD (15 + Caractéristique + Aptitude) »." }
       },
       "allOf": [
@@ -88,7 +89,7 @@
           "then": { "required": ["evolvesFrom"] }
         },
         {
-          "if": { "properties": { "type": { "enum": ["passive", "evolution", "special"] } }, "required": ["type"] },
+          "if": { "properties": { "type": { "enum": ["passive", "evolution"] } }, "required": ["type"] },
           "then": { "not": { "required": ["energy"] } }
         }
       ]

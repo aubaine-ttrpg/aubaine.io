@@ -18,6 +18,8 @@ final readonly class SkillNode
      * @param list<string>         $linked          ids of visual parents; "CORE" points at the tree core
      * @param list<string>         $tags
      * @param list<Characteristic> $characteristics zero, one, or several; drives the title icons
+     * @param bool                 $showXp          whether the XP coin renders; false for skills granted by
+     *                                              another node rather than bought directly
      */
     public function __construct(
         public string $id,
@@ -37,6 +39,7 @@ final readonly class SkillNode
         public array $tags,
         public ?string $evolvesFrom,
         public array $characteristics = [],
+        public bool $showXp = true,
     ) {
     }
 

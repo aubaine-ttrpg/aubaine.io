@@ -23,6 +23,18 @@ final readonly class SkillTree
     }
 
     /**
+     * Nodes that appear on the planche graph: those with a position. A
+     * position-less node is an entry-only skill (rendered in the ability list
+     * but not as a dot), e.g. a sub-skill granted by another node.
+     *
+     * @return list<SkillNode>
+     */
+    public function positionedNodes(): array
+    {
+        return array_values(array_filter($this->nodes, static fn (SkillNode $node): bool => null !== $node->pos));
+    }
+
+    /**
      * Straight links to draw behind the nodes, resolved from each node's
      * `linked` list to planche coordinates (percent).
      *

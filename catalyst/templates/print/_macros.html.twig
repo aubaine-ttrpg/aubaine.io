@@ -13,7 +13,7 @@
     <div class="node" style="left: {{ node.pos ? node.pos.x : 50 }}%; top: {{ node.pos ? node.pos.y : 50 }}%">
         {{ self.node_shape(node, 'node__shape--tree') }}
         <span class="nameplate">
-            <span class="nameplate__xp">{{ node.xp }}</span>
+            {% if node.showXp %}<span class="nameplate__xp">{{ node.xp }}</span>{% endif %}
             <span class="nameplate__text">
                 <span class="nameplate__title">{{ node.title }}</span>
                 <span class="nameplate__id">{{ node.id }}</span>
@@ -28,7 +28,7 @@
     {% set isSpecial = node.type.value == 'special' %}
     {% set parent = node.evolvesFrom ? (titles[node.evolvesFrom] | default(node.evolvesFrom)) : null %}
     {% set evoNote = isSpecial
-        ? ('Capacité spéciale' ~ (parent ? ' · suite de ' ~ parent : ''))
+        ? (parent ? parent : 'Capacité spéciale')
         : (parent ? 'Évolution de ' ~ parent : 'Évolution') %}
 
     <div class="ability">
@@ -48,7 +48,7 @@
             </span>
             <span class="ability__hd-meta">
                 <span class="ability__id">{{ node.id }}</span>
-                <span class="ability__xp">{{ node.xp }}<span class="ability__xp-u">XP</span></span>
+                {% if node.showXp %}<span class="ability__xp">{{ node.xp }}<span class="ability__xp-u">XP</span></span>{% endif %}
             </span>
         </div>
 

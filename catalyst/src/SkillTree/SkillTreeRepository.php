@@ -175,6 +175,7 @@ final class SkillTreeRepository
             $this->toStringList($node['tags'] ?? []),
             $this->toString($node['evolvesFrom'] ?? null),
             $this->mapCharacteristics($node['characteristics'] ?? []),
+            ($node['showXp'] ?? true) === true,
         );
     }
 

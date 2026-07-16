@@ -29,7 +29,9 @@
             </span>
         </div>
 
-        {% for node in tree.nodes %}{{ m.skill_node(node) }}{% endfor %}
+        {# positionedNodes drops entry-only skills (no position): they render in the
+           ability list but not as a dot on the planche (e.g. sub-skills of another node). #}
+        {% for node in tree.positionedNodes %}{{ m.skill_node(node) }}{% endfor %}
 
         {% if legend %}
             <div class="tree-legend">
