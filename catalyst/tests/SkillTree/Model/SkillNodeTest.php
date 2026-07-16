@@ -33,7 +33,6 @@ final class SkillNodeTest extends TestCase
             null,
             [],
             $icon,
-            false,
             null,
             null,
             null,
@@ -41,6 +40,7 @@ final class SkillNodeTest extends TestCase
             null,
             [],
             null,
+            [],
         );
     }
 }
