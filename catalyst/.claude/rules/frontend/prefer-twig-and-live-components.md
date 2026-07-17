@@ -20,6 +20,6 @@ severity: prefer
 <twig:PaymentsList :clientId="client.id" />
 ```
 
-**See also:** [[always-progressive-enhance-with-stimulus]].
+**See also:** [[always-progressive-enhance-with-stimulus]]; the live book editor is the first adoption of this stack (`docs/adr/0002-live-book-editor.md`).
 
 **Enforced by:** review.
