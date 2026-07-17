@@ -150,6 +150,11 @@ h3 {
     padding: 1.8rem 1.4rem 4rem;
 }
 
+/* The live editor needs room for three columns around the page preview. */
+.shell--wide {
+    max-width: 1440px;
+}
+
 .page-head {
     display: flex;
     justify-content: space-between;
@@ -358,27 +363,157 @@ h3 {
     margin-top: 1.4rem;
 }
 
-/* Editor layout */
+/* Editor layout: page list + catalog (left), live preview (center), properties (right) */
 .editor {
     display: grid;
-    grid-template-columns: 1fr 320px;
+    grid-template-columns: minmax(240px, 300px) minmax(0, 1fr) minmax(300px, 360px);
     gap: 1.4rem;
     align-items: start;
 }
 
-@media (max-width: 820px) {
-    .editor {
-        grid-template-columns: 1fr;
-    }
+.editor__rail {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
 }
 
 .editor__pages,
-.editor__catalog {
+.editor__catalog,
+.editor__properties {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 1.2rem;
     box-shadow: var(--shadow);
+}
+
+.editor__status {
+    min-height: 1.2em;
+    margin: -0.3rem 0 0.8rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+}
+
+.editor__status:empty {
+    margin: 0;
+}
+
+.editor__properties-sub {
+    margin: -0.3rem 0 1rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+/* Center preview: a grey canvas holding the scaled A4 sheets from the print iframe */
+.editor__preview {
+    position: sticky;
+    top: 1rem;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 2rem);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.editor__preview-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.editor__preview-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.editor__preview-pos {
+    font-size: 0.82rem;
+    color: var(--muted);
+    min-width: 3.5rem;
+    text-align: center;
+}
+
+.editor__preview-tools {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.editor__preview-stage {
+    flex: 1;
+    overflow: auto;
+    padding: 1.2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.editor__preview-wrapper {
+    /* Sized by the Stimulus controller to the scaled iframe box. */
+    flex: 0 0 auto;
+}
+
+.editor__preview-frame {
+    display: block;
+    border: 0;
+    background: transparent;
+}
+
+/* Full print view modal */
+.editor__modal {
+    width: min(92vw, 900px);
+    height: 92vh;
+    max-height: 92vh;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text);
+    overflow: hidden;
+}
+
+.editor__modal::backdrop {
+    background: rgba(20, 16, 12, 0.6);
+}
+
+.editor__modal[open] {
+    display: flex;
+    flex-direction: column;
+}
+
+.editor__modal-bar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 0.7rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.editor__modal-frame {
+    flex: 1;
+    width: 100%;
+    border: 0;
+}
+
+@media (max-width: 1080px) {
+    .editor {
+        grid-template-columns: 1fr;
+    }
+
+    .editor__preview {
+        position: static;
+        max-height: none;
+        order: -1;
+    }
+
+    .editor__preview-stage {
+        max-height: 70vh;
+    }
 }
 
 .page-strip {
@@ -397,6 +532,27 @@ h3 {
     background: var(--surface-2);
     border: 1px solid var(--border);
     border-radius: 8px;
+}
+
+.page-item--active {
+    border-color: var(--accent);
+    box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.page-item__select {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex: 1;
+    min-width: 0;
+    text-decoration: none;
+    color: inherit;
+}
+
+.page-item__select:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 6px;
 }
 
 .page-item__index {

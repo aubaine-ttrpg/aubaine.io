@@ -104,6 +104,20 @@ final class Book
         throw PageNotFoundException::forId($this->id, $pageId);
     }
 
+    /**
+     * Zero-based position of a page in the ordered list.
+     */
+    public function indexOf(string $pageId): int
+    {
+        foreach ($this->pages as $index => $page) {
+            if ($page->id() === $pageId) {
+                return $index;
+            }
+        }
+
+        throw PageNotFoundException::forId($this->id, $pageId);
+    }
+
     public function removePage(string $pageId): void
     {
         $this->findPage($pageId);

@@ -10,10 +10,12 @@
         {{ encore_entry_link_tags('print') }}
     </head>
     <body class="print-doc">
-        <div class="print-bar" data-controller="print">
-            <a class="btn btn--ghost" href="{{ path('app_book_edit', {id: book.id}) }}">← {{ book.title }}</a>
-            <button class="btn btn--primary" type="button" data-action="print#print">{{ 'book.print'|trans }}</button>
-        </div>
+        {% if showChrome ?? true %}
+            <div class="print-bar" data-controller="print">
+                <a class="btn btn--ghost" href="{{ path('app_book_edit', {id: book.id}) }}">← {{ book.title }}</a>
+                <button class="btn btn--primary" type="button" data-action="print#print">{{ 'book.print'|trans }}</button>
+            </div>
+        {% endif %}
 
         {% if pages is empty %}
             <p class="print-empty">{{ 'print.empty'|trans }}</p>

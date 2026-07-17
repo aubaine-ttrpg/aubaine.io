@@ -21,7 +21,6 @@ book.version.major: Major version
 book.version.minor: Minor version
 book.settings.title: Book settings
 book.print: Print
-book.view_pdf: View PDF
 book.download_pdf: Download PDF
 book.pages_count: '%count% page(s)'
 book.list.title: Books
@@ -41,6 +40,17 @@ editor.customize: 'Customize: %page%'
 editor.move_up: Move up
 editor.move_down: Move down
 editor.remove_page_confirm: Remove this page?
+editor.properties: Properties
+editor.properties_empty: Select a page to customize it.
+editor.preview: Preview
+editor.refresh_preview: Refresh preview
+editor.full_view: Full print view
+editor.full_view_close: Close
+editor.preview_prev: Previous page
+editor.preview_next: Next page
+editor.page_added: Page added.
+editor.page_saved: Page saved.
+editor.page_removed: Page removed.
 
 category.covers: Covers
 category.trees: Skill trees

@@ -1,0 +1,138 @@
+{% set book = this.book %}
+{% set selectedPage = this.selectedPage %}
+<div{{ attributes.defaults({
+    class: 'editor',
+    'data-controller': 'book-preview',
+    'data-book-preview-nonce-value': previewNonce,
+    'data-book-preview-selected-value': selectedPageId ?? '',
+    'data-book-preview-src-value': path('app_book_print', {id: book.id, chrome: 0}),
+}) }}>
+
+    <div class="editor__rail">
+        <section class="editor__pages" aria-labelledby="pages-heading">
+            <h2 id="pages-heading">{{ 'editor.pages'|trans }}</h2>
+            <p class="editor__status" role="status" aria-live="polite">{% if status %}{{ status|trans }}{% endif %}</p>
+
+            {% if book.pages is empty %}
+                <div class="empty">
+                    <p class="empty__title">{{ 'editor.pages_empty.title'|trans }}</p>
+                    <p class="empty__hint">{{ 'editor.pages_empty.hint'|trans }}</p>
+                </div>
+            {% else %}
+                <ol class="page-strip">
+                    {% for page in book.pages %}
+                        {% set type = page_type(page.type) %}
+                        <li class="page-item {{ page.id == selectedPageId ? 'page-item--active' }}">
+                            <a class="page-item__select" href="{{ path('app_book_edit', {id: book.id, page: page.id}) }}"
+                               data-action="live#action:prevent" data-live-action-param="selectPage" data-live-page-id-param="{{ page.id }}"
+                               {{ page.id == selectedPageId ? 'aria-current="true"' }}>
+                                <span class="page-item__index">{{ loop.index }}</span>
+                                <span class="page-item__body">
+                                    <span class="page-item__label">{{ type.labelKey|trans }}</span>
+                                    <span class="page-item__cat">{{ ('category.' ~ type.category)|trans }}</span>
+                                </span>
+                            </a>
+                            <span class="page-item__actions">
+                                <form method="post" action="{{ path('app_book_page_move', {id: book.id, pageId: page.id}) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('move-page') }}">
+                                    <button name="direction" value="up" class="icon-btn" {{ loop.first ? 'disabled' }}
+                                            data-action="live#action:prevent" data-live-action-param="movePage"
+                                            data-live-page-id-param="{{ page.id }}" data-live-direction-param="up"
+                                            aria-label="{{ 'editor.move_up'|trans }}">↑</button>
+                                    <button name="direction" value="down" class="icon-btn" {{ loop.last ? 'disabled' }}
+                                            data-action="live#action:prevent" data-live-action-param="movePage"
+                                            data-live-page-id-param="{{ page.id }}" data-live-direction-param="down"
+                                            aria-label="{{ 'editor.move_down'|trans }}">↓</button>
+                                </form>
+                                <form method="post" action="{{ path('app_book_page_delete', {id: book.id, pageId: page.id}) }}"
+                                      onsubmit="return confirm('{{ 'editor.remove_page_confirm'|trans|e('js') }}')">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete-page') }}">
+                                    <button class="icon-btn icon-btn--danger" type="submit"
+                                            data-action="book-preview#confirm live#action:prevent"
+                                            data-book-preview-message-param="{{ 'editor.remove_page_confirm'|trans }}"
+                                            data-live-action-param="deletePage" data-live-page-id-param="{{ page.id }}"
+                                            aria-label="{{ 'action.remove'|trans }}">✕</button>
+                                </form>
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ol>
+            {% endif %}
+        </section>
+
+        <section class="editor__catalog" aria-labelledby="catalog-heading">
+            <h2 id="catalog-heading">{{ 'editor.catalog'|trans }}</h2>
+            {% for category, types in this.catalog %}
+                <div class="catalog-group">
+                    <h3>{{ ('category.' ~ category)|trans }}</h3>
+                    <div class="catalog-tiles">
+                        {% for type in types %}
+                            <form method="post" action="{{ path('app_book_page_add', {id: book.id}) }}" class="tile">
+                                <input type="hidden" name="_token" value="{{ csrf_token('add-page') }}">
+                                <input type="hidden" name="type" value="{{ type.key }}">
+                                <button type="submit" class="tile__btn"
+                                        data-action="live#action:prevent" data-live-action-param="addPage" data-live-type-param="{{ type.key }}">
+                                    <span class="tile__title">{{ type.labelKey|trans }}</span>
+                                    <span class="tile__desc">{{ type.descriptionKey|trans }}</span>
+                                    <span class="tile__add">＋ {{ 'action.add'|trans }}</span>
+                                </button>
+                            </form>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </section>
+    </div>
+
+    <section class="editor__preview" aria-label="{{ 'editor.preview'|trans }}">
+        <div class="editor__preview-toolbar">
+            <div class="editor__preview-nav">
+                <button type="button" class="icon-btn" data-action="book-preview#prev" aria-label="{{ 'editor.preview_prev'|trans }}">‹</button>
+                <span class="editor__preview-pos" data-book-preview-target="position" role="status" aria-live="polite">–</span>
+                <button type="button" class="icon-btn" data-action="book-preview#next" aria-label="{{ 'editor.preview_next'|trans }}">›</button>
+            </div>
+            <div class="editor__preview-tools">
+                <button type="button" class="btn btn--ghost" data-action="book-preview#refresh">{{ 'editor.refresh_preview'|trans }}</button>
+                <a class="btn btn--ghost" href="{{ path('app_book_print', {id: book.id}) }}" target="_blank" rel="noopener"
+                   data-action="book-preview#openModal">{{ 'editor.full_view'|trans }}</a>
+            </div>
+        </div>
+        <div class="editor__preview-stage" data-book-preview-target="stage">
+            <div class="editor__preview-wrapper" data-book-preview-target="wrapper" data-live-ignore>
+                <iframe class="editor__preview-frame" data-book-preview-target="frame"
+                        src="{{ path('app_book_print', {id: book.id, chrome: 0}) }}"
+                        title="{{ 'editor.preview'|trans }}"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <aside class="editor__properties panel" aria-labelledby="props-heading">
+        <h2 id="props-heading">{{ 'editor.properties'|trans }}</h2>
+        {% if selectedPage %}
+            <p class="editor__properties-sub">{{ page_type(selectedPage.type).labelKey|trans }}</p>
+            {{ form_start(form, {
+                action: path('app_book_page_edit', {id: book.id, pageId: selectedPage.id}),
+                method: 'POST',
+                attr: {'data-action': 'live#action:prevent', 'data-live-action-param': 'save'},
+            }) }}
+                {{ form_widget(form) }}
+                <div class="form-actions">
+                    <button class="btn btn--primary" type="submit">{{ 'action.save'|trans }}</button>
+                </div>
+            {{ form_end(form) }}
+        {% else %}
+            <div class="empty">
+                <p class="empty__hint">{{ 'editor.properties_empty'|trans }}</p>
+            </div>
+        {% endif %}
+    </aside>
+
+    <dialog class="editor__modal" data-book-preview-target="dialog" aria-label="{{ 'editor.full_view'|trans }}"
+            data-action="click->book-preview#backdropClose">
+        <div class="editor__modal-bar">
+            <button type="button" class="btn btn--primary" data-action="book-preview#printModal">{{ 'book.print'|trans }}</button>
+            <button type="button" class="btn btn--ghost" data-action="book-preview#closeModal" autofocus>✕ {{ 'editor.full_view_close'|trans }}</button>
+        </div>
+        <iframe class="editor__modal-frame" data-book-preview-target="modalFrame" title="{{ 'editor.full_view'|trans }}"></iframe>
+    </dialog>
+</div>

@@ -57,13 +57,15 @@ final class BookController extends AbstractController
     }
 
     #[Route('/books/{id}', name: 'app_book_edit', methods: ['GET'])]
-    public function edit(string $id, BookRepository $books, PageTypeRegistry $registry): Response
+    public function edit(string $id, Request $request, BookRepository $books): Response
     {
         $book = $books->find($id);
 
+        // The live editor renders the catalog and the selected page's form itself;
+        // `?page` is the no-JS fallback that picks which page the panel shows.
         return $this->render('book/edit.html.twig', [
             'book' => $book,
-            'catalog' => $registry->byCategory(),
+            'selectedPageId' => $request->query->get('page'),
         ]);
     }
 
@@ -144,7 +146,7 @@ final class BookController extends AbstractController
         $this->assertCsrf('move-page', $request);
 
         $direction = (string) $request->request->get('direction', 'down');
-        $index = $this->indexOfPage($book, $pageId);
+        $index = $book->indexOf($pageId);
         $editor->movePage($book, $pageId, 'up' === $direction ? $index - 1 : $index + 1);
 
         return $this->redirectToRoute('app_book_edit', ['id' => $id]);
@@ -171,6 +173,9 @@ final class BookController extends AbstractController
         return $this->render('print/book.html.twig', [
             'book' => $book,
             'pages' => $views->forBook($book, $release),
+            // The live editor embeds this route with `?chrome=0` to drop the
+            // screen toolbar; a direct visit keeps it.
+            'showChrome' => '0' !== $request->query->get('chrome', '1'),
         ]);
     }
 
@@ -232,20 +237,6 @@ final class BookController extends AbstractController
         if (!$this->isCsrfTokenValid($id, (string) $request->request->get('_token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF token.');
         }
-    }
-
-    private function indexOfPage(Book $book, string $pageId): int
-    {
-        foreach ($book->pages() as $index => $page) {
-            if ($page->id() === $pageId) {
-                return $index;
-            }
-        }
-
-        // findPage throws the proper 404 if the page is gone.
-        $book->findPage($pageId);
-
-        return 0;
     }
 
     private function formResponse(bool $submitted): Response

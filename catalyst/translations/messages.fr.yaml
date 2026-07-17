@@ -21,7 +21,6 @@ book.version.major: Version majeure
 book.version.minor: Version mineure
 book.settings.title: Réglages du livre
 book.print: Imprimer
-book.view_pdf: Voir le PDF
 book.download_pdf: Télécharger le PDF
 book.pages_count: '%count% page(s)'
 book.list.title: Livres
@@ -41,6 +40,17 @@ editor.customize: 'Personnaliser : %page%'
 editor.move_up: Monter
 editor.move_down: Descendre
 editor.remove_page_confirm: Retirer cette page ?
+editor.properties: Propriétés
+editor.properties_empty: Sélectionnez une page pour la personnaliser.
+editor.preview: Aperçu
+editor.refresh_preview: Actualiser l''aperçu
+editor.full_view: Vue d''impression complète
+editor.full_view_close: Fermer
+editor.preview_prev: Page précédente
+editor.preview_next: Page suivante
+editor.page_added: Page ajoutée.
+editor.page_saved: Page enregistrée.
+editor.page_removed: Page retirée.
 
 category.covers: Couvertures
 category.trees: Arbres de compétences

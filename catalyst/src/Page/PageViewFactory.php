@@ -41,6 +41,8 @@ final class PageViewFactory
             if ('covers' === $type->category()) {
                 $view = array_merge($view, $coverContext);
             }
+            // Anchor each physical leaf so the live editor's preview can scroll to it.
+            $view['pageId'] = $page->id();
             $views[] = new PageView($page->id(), $type, $type->template(), $view);
         }
 

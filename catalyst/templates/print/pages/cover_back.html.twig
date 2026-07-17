@@ -1,7 +1,7 @@
 {% import 'print/_macros.html.twig' as m %}
 {% set art = catalyst_image('covers', image) %}
 {% set qr = catalyst_image('covers', 'qr-aubaine.png') %}
-<div class="page cover cover--verso">
+<div class="page cover cover--verso" data-page-id="{{ pageId }}">
     <div class="cover__scaler">
         <div class="cover__inner">
             {% if art %}<div class="cover__art" style="background-image: url('{{ art }}'); background-position: 50% 22%"></div>{% endif %}

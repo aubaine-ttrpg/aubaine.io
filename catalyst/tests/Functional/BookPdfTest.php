@@ -14,9 +14,9 @@ use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 
 /**
- * The "Download PDF" / "See PDF" journey. Gotenberg is faked at the transport
- * layer (the `gotenberg.client` scoped client), so the real controller and the
- * bundle's URL builder run without a live Gotenberg container.
+ * The "Download PDF" journey. Gotenberg is faked at the transport layer (the
+ * `gotenberg.client` scoped client), so the real controller and the bundle's
+ * URL builder run without a live Gotenberg container.
  */
 final class BookPdfTest extends WebTestCase
 {

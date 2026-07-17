@@ -27,9 +27,13 @@ final class BookJourneyTest extends WebTestCase
             $client->request('GET', '/');
             self::assertResponseIsSuccessful();
 
-            $client->request('GET', '/books/'.$book->id());
+            $crawler = $client->request('GET', '/books/'.$book->id());
             self::assertResponseIsSuccessful();
             self::assertSelectorExists('.editor__catalog');
+            // The center preview embeds the print route; the standalone See-PDF
+            // link is gone, so only the Download PDF action links to /pdf.
+            self::assertStringContainsString('/print', (string) $crawler->filter('.editor__preview-frame')->attr('src'));
+            self::assertCount(1, $crawler->filter('.page-head__actions a[href*="/pdf"]'));
 
             $client->request('GET', '/books/'.$book->id().'/print');
             self::assertResponseIsSuccessful();

@@ -4,7 +4,7 @@
 {% set paperStyle = '--paper: ' ~ paper.color ~ (paperTexture ? '; --paper-texture: url(\'' ~ paperTexture ~ '\')' : '') %}
 
 {# ---- Planche: the tree ---- #}
-<div class="page tree-leaf" style="{{ paperStyle }}">
+<div class="page tree-leaf" data-page-id="{{ pageId }}" style="{{ paperStyle }}">
     <div class="tree-planche">
         <svg class="tree-links" viewBox="0 0 {{ canvasWidth }} {{ canvasHeight }}" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <circle class="orbit" cx="480" cy="690" r="175"></circle>
@@ -59,7 +59,7 @@
    All entries render into one page; the print bundle measures their heights and
    paginates them (fill left column, then right, then a cloned page). #}
 {% if abilities is not empty %}
-    <div class="page tree-leaf" data-abilities-page style="{{ paperStyle }}">
+    <div class="page tree-leaf" data-page-id="{{ pageId }}" data-abilities-page style="{{ paperStyle }}">
         <div class="ability-planche">
             <header class="tree-head tree-head--interior">
                 <span class="tree-head__title">{{ 'tree.abilities'|trans }}</span>
