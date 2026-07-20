@@ -14,9 +14,9 @@
             <p class="editor__status" role="status" aria-live="polite">{% if status %}{{ status|trans }}{% endif %}</p>
 
             {% if book.pages is empty %}
-                <div class="empty">
-                    <p class="empty__title">{{ 'editor.pages_empty.title'|trans }}</p>
-                    <p class="empty__hint">{{ 'editor.pages_empty.hint'|trans }}</p>
+                <div class="empty-state">
+                    <p class="empty-state__title">{{ 'editor.pages_empty.title'|trans }}</p>
+                    <p class="empty-state__hint">{{ 'editor.pages_empty.hint'|trans }}</p>
                 </div>
             {% else %}
                 <ol class="page-strip">
@@ -121,8 +121,8 @@
                 </div>
             {{ form_end(form) }}
         {% else %}
-            <div class="empty">
-                <p class="empty__hint">{{ 'editor.properties_empty'|trans }}</p>
+            <div class="empty-state">
+                <p class="empty-state__hint">{{ 'editor.properties_empty'|trans }}</p>
             </div>
         {% endif %}
     </aside>

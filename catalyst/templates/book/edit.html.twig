@@ -2,7 +2,12 @@
 
 {% block title %}{{ book.title }} · {{ 'app.name'|trans }}{% endblock %}
 
-{% block main_class %}shell shell--wide{% endblock %}
+{% block crumb %}
+    <span class="topbar__crumb-sep">❯</span>
+    <span class="topbar__crumb topbar__crumb--current">{{ book.title }}</span>
+{% endblock %}
+
+{% block stage_class %}stage__inner--wide{% endblock %}
 
 {% block body %}
     <div class="page-head">
@@ -15,7 +20,7 @@
             <a class="btn btn--ghost" href="{{ path('app_book_settings', {id: book.id}) }}">
                 {{ 'book.settings.title'|trans }}
             </a>
-            <a class="btn btn--primary" href="{{ path('app_book_pdf', {id: book.id, download: 1}) }}">
+            <a class="btn btn--primary" href="{{ path('app_book_pdf', {id: book.id, download: 1}) }}" data-no-swup>
                 {{ 'book.download_pdf'|trans }}
             </a>
         </div>

@@ -2,6 +2,20 @@ app.name: Aubaine Catalyst
 
 nav.language: Language
 nav.toggle_theme: Toggle light and dark
+nav.sections: Sections
+nav.books: Books
+nav.skill_trees: Skill Trees
+nav.skills: Skills
+nav.species: Species
+nav.tags: Tags
+nav.archetypes: Archetypes
+nav.characters: Characters
+nav.soon: soon
+nav.breadcrumb: Breadcrumb
+landing.eyebrow: Authoring studio
+landing.title: Aubaine Catalyst
+landing.subtitle: The workshop where Aubaine's books are made. Compose, preview, export.
+landing.cta: Browse the books
 
 action.cancel: Cancel
 action.customize: Customize

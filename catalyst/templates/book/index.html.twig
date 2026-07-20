@@ -9,10 +9,12 @@
     </div>
 
     {% if books is empty %}
-        <div class="empty">
-            <p class="empty__title">{{ 'book.list.empty.title'|trans }}</p>
-            <p class="empty__hint">{{ 'book.list.empty.hint'|trans }}</p>
-            <a class="btn btn--primary" href="{{ path('app_book_new') }}">{{ 'book.list.new'|trans }}</a>
+        <div class="empty-state">
+            <p class="empty-state__title">{{ 'book.list.empty.title'|trans }}</p>
+            <p class="empty-state__hint">{{ 'book.list.empty.hint'|trans }}</p>
+            <div class="empty-state__actions">
+                <a class="btn btn--primary" href="{{ path('app_book_new') }}">{{ 'book.list.new'|trans }}</a>
+            </div>
         </div>
     {% else %}
         <ul class="book-list">
@@ -24,7 +26,7 @@
                         <span class="book-card__meta">{{ 'book.pages_count'|trans({'%count%': book.pageCount}) }}</span>
                     </a>
                     <div class="book-card__actions">
-                        <a class="btn btn--ghost" href="{{ path('app_book_pdf', {id: book.id, download: 1}) }}">{{ 'book.download_pdf'|trans }}</a>
+                        <a class="btn btn--ghost" href="{{ path('app_book_pdf', {id: book.id, download: 1}) }}" data-no-swup>{{ 'book.download_pdf'|trans }}</a>
                         <form method="post" action="{{ path('app_book_delete', {id: book.id}) }}"
                               onsubmit="return confirm('{{ 'book.delete.confirm'|trans }}')">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete-book') }}">

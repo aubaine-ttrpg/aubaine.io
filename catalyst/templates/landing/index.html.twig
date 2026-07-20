@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'app.name'|trans }}{% endblock %}
+
+{# Normal shell page (top bar + sidebar + footer stay); the hero is centred in
+   the full main stage. #}
+{% block crumbs %}{% endblock %}
+
+{% block stage %}
+    <div class="landing">
+        <div class="hero">
+            <span class="aubaine-logo aubaine-logo--xl" role="img" aria-label="Aubaine"></span>
+            <p class="hero__eyebrow">{{ 'landing.eyebrow'|trans }}</p>
+            <h1 class="hero__title">{{ 'landing.title'|trans }}</h1>
+            <p class="hero__subtitle">{{ 'landing.subtitle'|trans }}</p>
+            <div class="hero__actions">
+                <a class="btn btn--gold" href="{{ path('app_book_index') }}">{{ 'landing.cta'|trans }}</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

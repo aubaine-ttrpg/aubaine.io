@@ -61,6 +61,14 @@ Encore
         pattern: /\.(png|jpe?g|svg|webp)$/,
     })
 
+    // Brand logos live once in @aubaine/sigil; emit them so the favicon and any
+    // <img> can reference them by URL (the topbar mark is drawn via logo.css).
+    .copyFiles({
+        from: '../sigil/src/brand/logo',
+        to: 'images/brand/[name].[hash:8].[ext]',
+        pattern: /\.svg$/,
+    })
+
     // Configure JS and CSS minimizers
     // .configureJsMinimizerPlugin((options, MinimizerPlugin) => {
     //     options.minify = MinimizerPlugin.esbuildMinify
@@ -72,6 +80,12 @@ Encore
     // configure Babel
     .configureBabel((config) => {
         config.plugins.push(['polyfill-corejs3', { method: 'usage-global', version: '3.49' }]);
+    }, {
+        // @aubaine/sigil is a file: dependency: its realpath sits outside
+        // node_modules, so Babel would otherwise transpile it and inject core-js
+        // imports it can't resolve. It ships modern ESM for the same browsers, so
+        // skip it like any other dependency (this replaces the default exclude).
+        exclude: /node_modules|[/\\]sigil[/\\]/,
     })
 
     // enables Sass/SCSS support

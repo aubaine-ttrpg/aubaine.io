@@ -2,6 +2,20 @@ app.name: Aubaine Catalyst
 
 nav.language: Langue
 nav.toggle_theme: Basculer clair et sombre
+nav.sections: Sections
+nav.books: Livres
+nav.skill_trees: Arbres de compétences
+nav.skills: Compétences
+nav.species: Espèces
+nav.tags: Étiquettes
+nav.archetypes: Archétypes
+nav.characters: Personnages
+nav.soon: bientôt
+nav.breadcrumb: Fil d'Ariane
+landing.eyebrow: Atelier de création
+landing.title: Aubaine Catalyst
+landing.subtitle: L'atelier où naissent les livres d'Aubaine. Composez, prévisualisez, exportez.
+landing.cta: Parcourir les livres
 
 action.cancel: Annuler
 action.customize: Personnaliser

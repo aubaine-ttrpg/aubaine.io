@@ -2,20 +2,15 @@
  * Print document. A4 leaves scaled from the design's authoring canvases:
  * covers 460x650 (x1.7254), skill-tree planche 960x1358 (x0.82708).
  * Fonts are loaded in the print template <head>.
+ *
+ * The brand tokens (--gold, --edge, --ink, --frame-gold*, and the font roles)
+ * come from the shared design system. They carry the exact same values the PDF
+ * has always used, so the printed pages render identically; the shared lib is
+ * simply their single home now (see docs/adr/0001-shared-design-system-sigil.md).
  */
 
-:root {
-    --gold: #efbe04;
-    --edge: #7a5b1e;
-    --ink: #211c17;
-    --font-display: 'Cinzel', serif;
-    --font-body: 'Spectral', serif;
-    --font-ui: 'Barlow Semi Condensed', sans-serif;
-    --font-epic: Georgia, 'Times New Roman', serif;
-    --font-garamond: 'EB Garamond', Georgia, serif;
-    --frame-gold: rgba(206, 168, 84, 0.5);
-    --frame-gold-soft: rgba(206, 168, 84, 0.24);
-}
+@import '@aubaine/sigil/tokens/brand.css';
+@import '@aubaine/sigil/tokens/fonts.css';
 
 * {
     box-sizing: border-box;

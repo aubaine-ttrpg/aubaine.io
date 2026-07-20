@@ -1,0 +1,27 @@
+{# Theme-switch logo: one inline SVG carrying both states. CSS shows the gold
+   crest in light and the purple void mark in dark, and morphs between them on
+   toggle (see @aubaine/sigil brand/logo.css .aubaine-switch). #}
+<span class="aubaine-switch" aria-hidden="true">
+    <svg class="aubaine-switch__svg" viewBox="0 0 100 100">
+        <defs>
+            <radialGradient id="aubaine-switch-void" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#0a0710"></stop>
+                <stop offset="55%" stop-color="#0a0710"></stop>
+                <stop offset="78%" stop-color="#3a1f5c"></stop>
+                <stop offset="100%" stop-color="#12081e"></stop>
+            </radialGradient>
+        </defs>
+        <polygon class="aubaine-switch__frame" points="50,4 90,27 90,73 50,96 10,73 10,27"></polygon>
+        <polygon class="aubaine-switch__inner" points="50,13 82,31 82,69 50,87 18,69 18,31" fill="none"></polygon>
+        <path class="aubaine-switch__star" d="M50,24 L54.5,45.5 L76,50 L54.5,54.5 L50,76 L45.5,54.5 L24,50 L45.5,45.5 Z"></path>
+        <g class="aubaine-switch__void">
+            <g transform="rotate(-24 50 50)">
+                <ellipse cx="50" cy="50" rx="28" ry="9" fill="none" stroke="#b98fe0" stroke-width="2.2"></ellipse>
+                <ellipse cx="50" cy="50" rx="21" ry="6.5" fill="none" stroke="#7b4fb0" stroke-width="1.4"></ellipse>
+            </g>
+            <circle cx="50" cy="50" r="14" fill="url(#aubaine-switch-void)"></circle>
+            <circle cx="50" cy="50" r="14" fill="none" stroke="#c9a8f0" stroke-width="1.2"></circle>
+            <circle cx="50" cy="50" r="9" fill="#07040d"></circle>
+        </g>
+    </svg>
+</span>

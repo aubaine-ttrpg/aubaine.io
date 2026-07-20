@@ -1,0 +1,16 @@
+{# Icon rail: one shortcut per section. Enabled sections link; the rest are
+   disabled placeholders (the entity authoring is not built yet). #}
+{% import '_shell/_icons.html.twig' as ico %}
+<aside class="rail" id="rail">
+    {% for s in sections %}
+        {% if s.enabled %}
+            <a class="rail__btn {{ s.key == current ? 'is-active' }}" href="{{ path(s.route) }}"
+               title="{{ s.label }}" aria-label="{{ s.label }}"
+               {{ s.key == current ? 'aria-current="true"' }}>{{ ico.icon(s.key) }}</a>
+        {% else %}
+            <span class="rail__btn" aria-disabled="true" role="button"
+                  title="{{ s.label }} — {{ 'nav.soon'|trans }}"
+                  aria-label="{{ s.label }} ({{ 'nav.soon'|trans }})">{{ ico.icon(s.key) }}</span>
+        {% endif %}
+    {% endfor %}
+</aside>
