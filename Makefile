@@ -5,7 +5,7 @@
 # cross-project pipeline. Stack-specific targets live in
 # codex/, catalyst/, and almanach/.
 
-.PHONY: all help md autophony install dev build build-site preview test lint
+.PHONY: all help md autophony install dev build build-site preview storybook dump-design test lint
 
 all: help
 
@@ -26,11 +26,18 @@ autophony: ## Regenerate the .PHONY line from every rule in the Makefile.
 # ─────────────────────────────────────────────────────────────
 install: ## Install every project's dependencies.
 	@$(MAKE) -C codex install
+	@$(MAKE) -C sigil install
 	@$(MAKE) -C catalyst install
 	@$(MAKE) -C almanach install
 
 dev: ## Run the local dev server(s). Catalyst now; Almanach will join later.
 	@$(MAKE) -C catalyst dev
+
+storybook: ## Preview the shared design system (Sigil) in Storybook.
+	@$(MAKE) -C sigil storybook
+
+dump-design: ## Regenerate Sigil's Storybook fixtures from Catalyst (needs built assets).
+	@$(MAKE) -C catalyst dump-design
 
 test: ## Run the codex balancing-lab tests.
 	@$(MAKE) -C codex test
