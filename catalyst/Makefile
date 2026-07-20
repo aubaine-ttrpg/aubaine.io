@@ -2,7 +2,7 @@
 # Catalyst (Symfony authoring tool — dev-only, local)
 # ─────────────────────────────────────────────────────────────
 
-.PHONY: help install dev watch build test stan cs fix
+.PHONY: help install dev watch build dump-design test stan cs fix
 
 help: ## Show this help.
 	@grep "##" $(MAKEFILE_LIST) | grep -v "grep" | sed 's/:.*##\s*/:@\t/g' | column -t -s "@"
@@ -19,6 +19,9 @@ watch: ## Rebuild assets on change.
 
 build: ## Build optimized assets.
 	@npm run build
+
+dump-design: ## Render print fixtures + enum colours into sigil/fixtures for Storybook.
+	@php bin/console app:design:dump
 
 test: ## Run the PHPUnit suite.
 	@vendor/bin/phpunit
