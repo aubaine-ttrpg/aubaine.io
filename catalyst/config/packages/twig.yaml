@@ -1,5 +1,8 @@
 twig:
     file_name_pattern: '*.twig'
+    globals:
+        # Easter egg: SHINY_FORCE=1 forces the shiny logo on every load. Off by default.
+        shiny_force: '%env(bool:SHINY_FORCE)%'
 
 when@test:
     twig:
