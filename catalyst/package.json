@@ -2,6 +2,7 @@
     "dependencies": {
         "@aubaine/sigil": "file:../sigil",
         "@swup/head-plugin": "^2.3.0",
+        "canvas-confetti": "^1.9.4",
         "swup": "^4.8.0"
     },
     "devDependencies": {
