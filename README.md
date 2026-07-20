@@ -12,6 +12,7 @@ This repository is a **monorepo**. The game's data lives in the repo as the sour
 | **`content/`** | JSON | Structured game data (skills, tags, archetypes, and so on), exported from Catalyst. Committed as the persistent data of record. |
 | **Catalyst** | Symfony | Local-only authoring tool. Edits a local SQLite db, then exports to `content/`. |
 | **Almanach** | Astro | Public static site. CI builds it from `codex/` and `content/`. |
+| **`sigil/`** | CSS + Storybook | Shared design system (tokens, components, logos, the intro) that Catalyst and Almanach both consume. Previewed in Storybook. |
 
 ---
 
@@ -81,6 +82,23 @@ A static website built by CI from the committed `codex/` and `content/`.
 - **Read-only.** It reads `content/` and `codex/` at build time and does not write back to Catalyst or its db.
 - No backend and no database, just static files that host anywhere.
 
+## Sigil (the shared design system)
+
+One visual identity for both websites, extracted from the source of truth: the printed
+books. The `@aubaine/sigil` package holds the design tokens (a curated gold ramp from the
+book covers, a void/purple ramp from the logos, the font roles, and light/dark semantic
+tokens), the component CSS, the logo marks, and the light-to-void intro effect.
+
+- **The PDF is the token source of truth, and it renders unchanged.** Catalyst's print
+  stylesheet imports Sigil's brand and font tokens (the exact values the PDFs have always
+  used); the pages do not move.
+- **Consumed by both sites** via a `file:` dependency and `@import '@aubaine/sigil/...'`.
+- **Previewed in Storybook** (`make storybook`), light and dark, with the PDF-component
+  stories generated from Catalyst (`make dump-design`) so they never drift from the Twig
+  macros or the game-data enums.
+- Cross-cutting decisions are recorded in `docs/adr/`; Catalyst-internal ones in
+  `catalyst/docs/adr/`.
+
 ---
 
 ## Repository layout
@@ -91,7 +109,8 @@ aubaine.io/
 ├── content/          # structured game data (committed)
 ├── catalyst/         # Symfony, local authoring tool
 ├── almanach/         # Astro, public static site, built in CI
-└── docs/             # code and contributor documentation
+├── sigil/            # shared design system + Storybook
+└── docs/             # contributor documentation + cross-cutting ADRs (docs/adr/)
 ```
 
 Conventions that keep it clean:
@@ -108,6 +127,7 @@ Conventions that keep it clean:
 make install    # install every project's dependencies
 make dev        # run Almanach locally
 make build      # export from Catalyst, then build the static site
+make storybook  # preview the shared design system (Sigil)
 ```
 
 Run `make help` for all tasks.
