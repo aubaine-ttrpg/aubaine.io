@@ -1,0 +1,30 @@
+{
+    "name": "@aubaine/sigil",
+    "version": "0.1.0",
+    "description": "Aubaine shared design system: tokens, components, logos, and the light-to-void intro. Consumed by Catalyst and Almanach; previewed in Storybook.",
+    "license": "MIT",
+    "private": true,
+    "type": "module",
+    "exports": {
+        "./web.css": "./src/web.css",
+        "./tokens/brand.css": "./src/tokens/brand.css",
+        "./tokens/fonts.css": "./src/tokens/fonts.css",
+        "./tokens/semantic.css": "./src/tokens/semantic.css",
+        "./brand/logo.css": "./src/brand/logo.css",
+        "./fx/blackhole.css": "./src/fx/blackhole.css",
+        "./fx/blackhole.js": "./src/fx/blackhole.js",
+        "./fx/page-transition.css": "./src/fx/page-transition.css",
+        "./logo/*": "./src/brand/logo/*"
+    },
+    "scripts": {
+        "storybook": "storybook dev -p 6006 --no-open",
+        "build-storybook": "storybook build"
+    },
+    "devDependencies": {
+        "@storybook/addon-a11y": "^10.5.2",
+        "@storybook/addon-docs": "^10.5.2",
+        "@storybook/html-vite": "^10.5.2",
+        "storybook": "^10.5.2",
+        "vite": "^8.1.5"
+    }
+}

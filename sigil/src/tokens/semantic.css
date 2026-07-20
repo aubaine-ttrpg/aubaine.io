@@ -1,0 +1,163 @@
+/*
+ * Web semantic tokens. Components style only through these (never a raw colour),
+ * so a theme is a token swap. Two themes: light (parchment + ink) and dark (the
+ * warm near-black "void"). The default follows the OS (prefers-color-scheme);
+ * an explicit choice sets data-theme on <html> (see catalyst theme_controller.js).
+ *
+ * Each colour value is authored once, in the private light and dark value-sets
+ * below; the public --color-* tokens only point at them, so the two themes cannot
+ * drift. Non-colour scales (space, radius, type) are theme-agnostic.
+ */
+
+:root {
+    /* ── Theme-agnostic scales ─────────────────────────────────────────── */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+
+    /* aubaine-v1's defining hard edge */
+    --radius: 2px;
+    --radius-lg: 4px;
+    --radius-round: 999px;
+
+    --text-xs: 0.72rem;
+    --text-sm: 0.85rem;
+    --text-base: 1rem;
+    --text-lg: 1.15rem;
+    --text-xl: 1.4rem;
+    --text-2xl: 1.9rem;
+    --text-3xl: 2.6rem;
+
+    --tracking: 0.02em;
+    --tracking-wide: 0.15em;
+    --tracking-wider: 0.22em;
+    --tracking-widest: 0.3em;
+
+    --ring-width: 2px;
+    --ring-offset: 2px;
+
+    /* ── Private light value-set (parchment + ink + void-purple accent) ─── */
+    --light-bg: oklch(0.93 0.018 80);
+    --light-surface: oklch(0.975 0.012 82);
+    --light-surface-2: oklch(0.9 0.022 80);
+    --light-surface-3: oklch(0.86 0.028 78);
+    --light-text: #211c17;                 /* PDF ink */
+    --light-text-muted: oklch(0.46 0.028 60);
+    --light-text-faint: oklch(0.58 0.03 62);
+    --light-border: oklch(0.82 0.03 78);
+    --light-border-soft: oklch(0.87 0.025 76);
+    --light-accent: #2e1a4a;               /* deep void purple */
+    --light-accent-ink: #f4eefb;
+    --light-accent-dim: #6a4a8f;
+    --light-gold: #b08a2e;                 /* brand gold darkened for AA on paper */
+    --light-danger: #9a2f24;
+    --light-success: #2e7d32;
+    --light-shadow-1: 0 1px 2px rgba(20, 16, 12, 0.08);
+    --light-shadow-2: 0 8px 24px rgba(20, 16, 12, 0.08);
+    --light-grain-blend: multiply;
+    --light-grain-opacity: 0.05;
+
+    /* ── Private dark value-set (warm near-black "void") ───────────────── */
+    --dark-bg: oklch(0.13 0.008 45);
+    --dark-surface: oklch(0.16 0.01 45);
+    --dark-surface-2: oklch(0.19 0.012 48);
+    --dark-surface-3: oklch(0.23 0.014 48);
+    --dark-text: oklch(0.92 0.022 82);     /* warm off-white */
+    --dark-text-muted: oklch(0.72 0.035 76);
+    --dark-text-faint: oklch(0.55 0.03 72);
+    --dark-border: oklch(0.34 0.016 60 / 0.7);
+    --dark-border-soft: oklch(0.28 0.012 55 / 0.5);
+    --dark-accent: var(--void-200);        /* luminous void purple */
+    --dark-accent-ink: oklch(0.15 0.02 300);
+    --dark-accent-dim: var(--void-500);
+    --dark-gold: var(--gold);              /* vivid PDF gold reads well on dark */
+    --dark-danger: #e0796b;
+    --dark-success: #7bbf7f;
+    --dark-shadow-1: 0 1px 3px rgba(0, 0, 0, 0.5);
+    --dark-shadow-2: 0 10px 28px rgba(0, 0, 0, 0.45);
+    --dark-grain-blend: overlay;
+    --dark-grain-opacity: 0.05;
+
+    /* ── Public tokens (default: light) ────────────────────────────────── */
+    --color-bg: var(--light-bg);
+    --color-surface: var(--light-surface);
+    --color-surface-2: var(--light-surface-2);
+    --color-surface-3: var(--light-surface-3);
+    --color-text: var(--light-text);
+    --color-text-muted: var(--light-text-muted);
+    --color-text-faint: var(--light-text-faint);
+    --color-border: var(--light-border);
+    --color-border-soft: var(--light-border-soft);
+    --color-accent: var(--light-accent);
+    --color-accent-ink: var(--light-accent-ink);
+    --color-accent-dim: var(--light-accent-dim);
+    --color-gold: var(--light-gold);
+    --color-link: var(--light-accent);
+    --color-focus-ring: var(--light-accent);
+    --color-danger: var(--light-danger);
+    --color-success: var(--light-success);
+    --shadow-1: var(--light-shadow-1);
+    --shadow-2: var(--light-shadow-2);
+    --grain-blend: var(--light-grain-blend);
+    --grain-opacity: var(--light-grain-opacity);
+
+    color-scheme: light dark;
+}
+
+/* Dark tokens point at the dark value-set. Applied when the OS prefers dark and
+   the user has not forced light, or when data-theme='dark' is set explicitly. */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+        --color-bg: var(--dark-bg);
+        --color-surface: var(--dark-surface);
+        --color-surface-2: var(--dark-surface-2);
+        --color-surface-3: var(--dark-surface-3);
+        --color-text: var(--dark-text);
+        --color-text-muted: var(--dark-text-muted);
+        --color-text-faint: var(--dark-text-faint);
+        --color-border: var(--dark-border);
+        --color-border-soft: var(--dark-border-soft);
+        --color-accent: var(--dark-accent);
+        --color-accent-ink: var(--dark-accent-ink);
+        --color-accent-dim: var(--dark-accent-dim);
+        --color-gold: var(--dark-gold);
+        --color-link: var(--dark-accent);
+        --color-focus-ring: var(--dark-accent);
+        --color-danger: var(--dark-danger);
+        --color-success: var(--dark-success);
+        --shadow-1: var(--dark-shadow-1);
+        --shadow-2: var(--dark-shadow-2);
+        --grain-blend: var(--dark-grain-blend);
+        --grain-opacity: var(--dark-grain-opacity);
+    }
+}
+
+:root[data-theme='dark'] {
+    --color-bg: var(--dark-bg);
+    --color-surface: var(--dark-surface);
+    --color-surface-2: var(--dark-surface-2);
+    --color-surface-3: var(--dark-surface-3);
+    --color-text: var(--dark-text);
+    --color-text-muted: var(--dark-text-muted);
+    --color-text-faint: var(--dark-text-faint);
+    --color-border: var(--dark-border);
+    --color-border-soft: var(--dark-border-soft);
+    --color-accent: var(--dark-accent);
+    --color-accent-ink: var(--dark-accent-ink);
+    --color-accent-dim: var(--dark-accent-dim);
+    --color-gold: var(--dark-gold);
+    --color-link: var(--dark-accent);
+    --color-focus-ring: var(--dark-accent);
+    --color-danger: var(--dark-danger);
+    --color-success: var(--dark-success);
+    --shadow-1: var(--dark-shadow-1);
+    --shadow-2: var(--dark-shadow-2);
+    --grain-blend: var(--dark-grain-blend);
+    --grain-opacity: var(--dark-grain-opacity);
+}

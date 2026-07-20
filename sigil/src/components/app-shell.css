@@ -1,0 +1,74 @@
+/*
+ * The application shell (adapted from the aubaine-v1 "Emberhold Codex" reader):
+ * a fixed top bar, a 64px icon rail, a 260px section sidebar, the main stage,
+ * and a status ticker. Desktop-first; below 1024px it unfolds into normal flow
+ * so nothing is trapped. Consumers put page content in .stage (see also
+ * rail.css, sidenav.css, topbar.css, status-bar.css).
+ */
+
+.app {
+    display: grid;
+    grid-template-columns: 64px 260px minmax(0, 1fr);
+    grid-template-rows: 52px minmax(0, 1fr) 28px;
+    height: 100dvh;
+    background: var(--color-bg);
+}
+
+.app > .topbar {
+    grid-column: 1 / -1;
+    grid-row: 1;
+}
+
+.app > .rail {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.app > .sidenav {
+    grid-column: 2;
+    grid-row: 2;
+    overflow-y: auto;
+}
+
+.app > .stage {
+    grid-column: 3;
+    grid-row: 2;
+    overflow: auto;
+}
+
+.app > .status-bar {
+    grid-column: 1 / -1;
+    grid-row: 3;
+}
+
+/* The scrolling content area. .stage__inner caps reading width; --wide fills it. */
+.stage__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: var(--space-8) var(--space-8) var(--space-12);
+}
+
+.stage__inner--wide {
+    max-width: none;
+}
+
+@media (max-width: 1024px) {
+    .app {
+        display: block;
+        height: auto;
+    }
+
+    .app > .rail {
+        display: none;
+    }
+
+    .app > .sidenav {
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+        max-height: 40vh;
+    }
+
+    .stage__inner {
+        padding: var(--space-6) var(--space-4) var(--space-10);
+    }
+}

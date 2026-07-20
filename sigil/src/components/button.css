@@ -1,0 +1,69 @@
+/* Buttons. Modifiers: --primary (void accent), --gold, --ghost, --danger. */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    font-family: var(--font-ui);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    letter-spacing: 0.03em;
+    line-height: 1;
+    padding: var(--space-3) var(--space-5);
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.14s ease, border-color 0.14s ease, color 0.14s ease;
+}
+
+.btn:disabled,
+.btn[aria-disabled='true'] {
+    opacity: 0.5;
+    cursor: default;
+    pointer-events: none;
+}
+
+.btn--primary {
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+}
+
+.btn--primary:hover {
+    background: var(--color-accent-dim);
+}
+
+.btn--gold {
+    background: var(--color-gold);
+    color: #2a1e05;
+}
+
+.btn--gold:hover {
+    background: color-mix(in srgb, var(--color-gold) 85%, #fff);
+}
+
+.btn--ghost {
+    background: transparent;
+    border-color: var(--color-border);
+    color: var(--color-text);
+}
+
+.btn--ghost:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+}
+
+.btn--danger {
+    background: transparent;
+    border-color: color-mix(in srgb, var(--color-danger) 45%, transparent);
+    color: var(--color-danger);
+}
+
+.btn--danger:hover {
+    background: color-mix(in srgb, var(--color-danger) 12%, transparent);
+}
+
+.btn--block {
+    width: 100%;
+}

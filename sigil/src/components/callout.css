@@ -1,0 +1,32 @@
+/* Aside / callout (upcast note, tip). --gold for a rules highlight. */
+
+.callout {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-left: 2px solid var(--color-accent);
+    border-radius: var(--radius);
+    padding: var(--space-4) var(--space-5);
+}
+
+.callout__title {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin: 0 0 var(--space-2);
+}
+
+.callout__body {
+    margin: 0;
+    color: var(--color-text);
+}
+
+.callout--gold {
+    border-left-color: var(--color-gold);
+}
+
+.callout--gold .callout__title {
+    color: var(--color-gold);
+}

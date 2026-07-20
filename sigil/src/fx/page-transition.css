@@ -1,0 +1,33 @@
+/*
+ * Swup page transitions. The intro plays once per full load; between pages Swup
+ * swaps the content container and we cross-fade it with a short veil/dissipate,
+ * so navigation feels continuous without replaying the blackhole.
+ *
+ * Give the swapped container class="transition-veil" (Swup's default
+ * animationSelector matches [class*="transition-"]). Swup toggles the
+ * html.is-animating / is-changing classes around the swap.
+ */
+
+.transition-veil {
+    transition: opacity 0.28s ease, transform 0.28s ease, filter 0.28s ease;
+}
+
+html.is-changing .transition-veil {
+    will-change: opacity, transform, filter;
+}
+
+html.is-animating .transition-veil {
+    opacity: 0;
+    transform: translateY(6px);
+    filter: blur(1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .transition-veil,
+    html.is-animating .transition-veil {
+        transition: none;
+        transform: none;
+        filter: none;
+        opacity: 1;
+    }
+}

@@ -1,0 +1,151 @@
+/*
+ * Aubaine marks.
+ *
+ * .aubaine-logo  — a theme-aware display mark (background image): the gold crest
+ *   in light, the purple void mark in dark. Used wherever the logo is just shown.
+ *
+ * .aubaine-switch — an inline SVG that morphs between the two states in place;
+ *   it is the header theme switch. Toggling data-theme fades the gold star out /
+ *   the void mark in and recolours the frame; the .is-morphing class adds a spin
+ *   flourish. aubaine-logo.svg is the master mark and the favicon.
+ */
+
+.aubaine-logo {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    flex: 0 0 auto;
+    background: center / contain no-repeat;
+    background-image: url('./logo/aubaine-logo-light.svg');
+}
+
+.aubaine-logo--lg {
+    width: 4rem;
+    height: 4rem;
+}
+
+.aubaine-logo--xl {
+    width: 6rem;
+    height: 6rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) .aubaine-logo {
+        background-image: url('./logo/aubaine-logo-void.svg');
+    }
+}
+
+:root[data-theme='dark'] .aubaine-logo {
+    background-image: url('./logo/aubaine-logo-void.svg');
+}
+
+:root[data-theme='light'] .aubaine-logo {
+    background-image: url('./logo/aubaine-logo-light.svg');
+}
+
+/* ── Inline morphing switch ─────────────────────────────────────────────── */
+.aubaine-switch {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    flex: 0 0 auto;
+}
+
+.aubaine-switch__svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.aubaine-switch__frame {
+    fill: #101417;
+    stroke: #b08a57;
+    stroke-width: 3;
+    transition: stroke 0.5s ease, fill 0.5s ease;
+}
+
+.aubaine-switch__inner {
+    stroke: #5b4a34;
+    stroke-width: 1.5;
+    transition: stroke 0.5s ease;
+}
+
+.aubaine-switch__star {
+    fill: #e1c47b;
+    transform-origin: center;
+    transform-box: fill-box;
+    opacity: 1;
+    transition: opacity 0.4s ease, transform 0.5s ease;
+}
+
+.aubaine-switch__void {
+    opacity: 0;
+    transform-origin: center;
+    transform-box: fill-box;
+    transform: scale(0.35);
+    transition: opacity 0.4s ease, transform 0.5s ease;
+}
+
+/* Dark = void: frame purple, star gone, void mark bloomed. */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) .aubaine-switch__frame { stroke: #9d6fd1; }
+    :root:not([data-theme='light']) .aubaine-switch__inner { stroke: #4a2c6f; }
+    :root:not([data-theme='light']) .aubaine-switch__star { opacity: 0; transform: scale(0.3) rotate(55deg); }
+    :root:not([data-theme='light']) .aubaine-switch__void { opacity: 1; transform: scale(1); }
+}
+
+:root[data-theme='dark'] .aubaine-switch__frame { stroke: #9d6fd1; }
+:root[data-theme='dark'] .aubaine-switch__inner { stroke: #4a2c6f; }
+:root[data-theme='dark'] .aubaine-switch__star { opacity: 0; transform: scale(0.3) rotate(55deg); }
+:root[data-theme='dark'] .aubaine-switch__void { opacity: 1; transform: scale(1); }
+
+:root[data-theme='light'] .aubaine-switch__frame { stroke: #b08a57; }
+:root[data-theme='light'] .aubaine-switch__inner { stroke: #5b4a34; }
+:root[data-theme='light'] .aubaine-switch__star { opacity: 1; transform: none; }
+:root[data-theme='light'] .aubaine-switch__void { opacity: 0; transform: scale(0.35); }
+
+/* Spin flourish while switching. */
+.aubaine-switch.is-morphing .aubaine-switch__svg {
+    animation: aubaine-switch-spin 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes aubaine-switch-spin {
+    0% { transform: rotate(0deg) scale(1); }
+    45% { transform: rotate(90deg) scale(0.82); }
+    100% { transform: rotate(180deg) scale(1); }
+}
+
+.aubaine-wordmark {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-text);
+}
+
+/* ── Smooth global colour ease while a theme swap is in flight ───────────── */
+html.theme-changing,
+html.theme-changing * {
+    transition:
+        background-color 0.5s ease,
+        color 0.5s ease,
+        border-color 0.5s ease,
+        fill 0.5s ease,
+        stroke 0.5s ease !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .aubaine-switch__frame,
+    .aubaine-switch__inner,
+    .aubaine-switch__star,
+    .aubaine-switch__void {
+        transition: none;
+    }
+    .aubaine-switch.is-morphing .aubaine-switch__svg {
+        animation: none;
+    }
+    html.theme-changing,
+    html.theme-changing * {
+        transition: none !important;
+    }
+}

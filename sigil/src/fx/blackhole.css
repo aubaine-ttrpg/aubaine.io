@@ -1,0 +1,325 @@
+/*
+ * The light <-> void morph overlay. One set of visuals, driven by blackhole.js
+ * through data-dir (to-void | to-light), data-phase, and --ab-speed (a duration
+ * multiplier; the theme switch runs it faster than the intro).
+ *
+ * The frame/orbit colours are the logo marks' own strokes, kept literal here the
+ * way the covers keep their gilt gradient literal.
+ */
+
+/* ── keyframes ──────────────────────────────────────────────────────────── */
+@keyframes ab-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.04); opacity: 0.85; }
+}
+@keyframes ab-collapse {
+    0%   { transform: scale(1) rotate(0deg); opacity: 1; }
+    38%  { transform: scale(1.12) rotate(8deg); opacity: 1; filter: drop-shadow(0 0 7px rgba(255, 233, 168, 0.85)); }
+    100% { transform: scale(0) rotate(70deg); opacity: 0; filter: drop-shadow(0 0 12px rgba(217, 179, 255, 0.9)); }
+}
+@keyframes ab-bloom {
+    0%   { transform: scale(0.12) rotate(-46deg); opacity: 0; filter: drop-shadow(0 0 10px rgba(217, 179, 255, 0.9)); }
+    60%  { opacity: 1; filter: drop-shadow(0 0 7px rgba(255, 233, 168, 0.85)); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+@keyframes ab-singularity {
+    0% { transform: scale(0.05); opacity: 0; }
+    46% { opacity: 0; }
+    62% { transform: scale(0.22); opacity: 0.9; }
+    100% { transform: scale(2.3); opacity: 0; }
+}
+@keyframes ab-holein {
+    0% { transform: scale(0.18); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+@keyframes ab-glow {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.92; }
+}
+@keyframes ab-glint1 { to { stroke-dashoffset: -124; } }
+@keyframes ab-glint2 { to { stroke-dashoffset: -92.5; } }
+@keyframes ab-corehalo {
+    0%, 100% { box-shadow: 0 0 14px 2px rgba(123, 79, 176, 0.4), 0 0 30px 6px rgba(123, 79, 176, 0.18); }
+    50% { box-shadow: 0 0 22px 5px rgba(184, 143, 224, 0.62), 0 0 46px 12px rgba(123, 79, 176, 0.3); }
+}
+@keyframes ab-corespin { to { transform: rotate(360deg); } }
+@keyframes ab-dissipate {
+    0%   { transform: scale(1); opacity: 1; filter: blur(0); }
+    100% { transform: scale(1.9); opacity: 0; filter: blur(9px); }
+}
+@keyframes ab-veilout {
+    0%, 25% { opacity: 1; }
+    100% { opacity: 0; }
+}
+@keyframes ab-spark {
+    0% { transform: translate(0, 0) scale(1); opacity: 0; }
+    18% { opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0.2); opacity: 0; }
+}
+@keyframes ab-shock {
+    0% { transform: translate(-50%, -50%) scale(0.2); opacity: 0.8; }
+    100% { transform: translate(-50%, -50%) scale(3.2); opacity: 0; }
+}
+
+/* ── overlay + stage ────────────────────────────────────────────────────── */
+.ab-intro {
+    --ab-speed: 1;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: radial-gradient(90% 90% at 50% 45%, #120a1e, #07050b 70%);
+}
+
+.ab-intro[data-dir='to-light'] {
+    background: radial-gradient(90% 90% at 50% 45%, #f6eeda, #efe6d5 70%);
+}
+
+.ab-intro[data-phase='entered'] {
+    display: none;
+}
+
+/* The host locks scroll while the overlay is on screen. */
+.intro-active {
+    overflow: hidden;
+}
+
+.ab-intro__stage-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-8, 2rem);
+}
+
+.ab-intro[data-phase='entering'] {
+    animation: ab-veilout calc(0.2s * var(--ab-speed)) ease forwards;
+}
+
+.ab-intro[data-phase='entering'] .ab-intro__stage-inner {
+    animation: ab-dissipate calc(0.2s * var(--ab-speed)) cubic-bezier(0.5, 0, 0.75, 0) forwards;
+}
+
+.ab-intro__scene {
+    position: relative;
+    width: 320px;
+    height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ab-intro__halo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    transition: background 0.4s ease, opacity 0.4s ease;
+    background: radial-gradient(circle, rgba(198, 164, 91, 0.18), transparent 62%);
+    opacity: 0;
+}
+.ab-intro[data-dir='to-void'][data-phase='loading'] .ab-intro__halo { opacity: 1; }
+.ab-intro[data-dir='to-void'][data-phase='void'] .ab-intro__halo {
+    background: radial-gradient(circle, rgba(123, 79, 176, 0.4), transparent 62%);
+    opacity: 1;
+}
+
+.ab-intro__mark {
+    position: relative;
+    width: 300px;
+    height: 300px;
+}
+
+.ab-intro__hex {
+    transform-origin: center;
+    transform-box: fill-box;
+}
+
+.ab-intro__frame {
+    fill: #0e0a16;
+    stroke: #b08a57;
+    stroke-width: 2.6;
+    transition: stroke calc(0.4s * var(--ab-speed)) ease;
+}
+.ab-intro__inner {
+    fill: none;
+    stroke: #5b4a34;
+    stroke-width: 1.2;
+    transition: stroke calc(0.4s * var(--ab-speed)) ease;
+}
+/* to-void: gold crest while loading, purple once collapsing. */
+.ab-intro[data-dir='to-void']:not([data-phase='loading']) .ab-intro__frame { stroke: #9d6fd1; }
+.ab-intro[data-dir='to-void']:not([data-phase='loading']) .ab-intro__inner { stroke: #4a2c6f; }
+/* to-light: purple void, warming to gold as it blooms. */
+.ab-intro[data-dir='to-light'] .ab-intro__frame { stroke: #9d6fd1; }
+.ab-intro[data-dir='to-light'] .ab-intro__inner { stroke: #4a2c6f; }
+.ab-intro[data-dir='to-light'][data-phase='bloom'] .ab-intro__frame,
+.ab-intro[data-dir='to-light'][data-phase='entering'] .ab-intro__frame { stroke: #b08a57; }
+.ab-intro[data-dir='to-light'][data-phase='bloom'] .ab-intro__inner,
+.ab-intro[data-dir='to-light'][data-phase='entering'] .ab-intro__inner { stroke: #5b4a34; }
+
+.ab-intro__star {
+    fill: #e1c47b;
+    transform-origin: center;
+    transform-box: fill-box;
+    display: none;
+}
+.ab-intro[data-dir='to-void'][data-phase='loading'] .ab-intro__star {
+    display: block;
+    animation: ab-pulse 2.4s ease-in-out infinite;
+}
+.ab-intro[data-dir='to-void'][data-phase='collapse'] .ab-intro__star {
+    display: block;
+    animation: ab-collapse calc(0.4s * var(--ab-speed)) cubic-bezier(0.55, 0, 0.9, 0.35) both;
+}
+.ab-intro[data-dir='to-light'][data-phase='bloom'] .ab-intro__star,
+.ab-intro[data-dir='to-light'][data-phase='entering'] .ab-intro__star {
+    display: block;
+}
+.ab-intro[data-dir='to-light'][data-phase='bloom'] .ab-intro__star {
+    animation: ab-bloom calc(0.4s * var(--ab-speed)) ease both;
+}
+
+.ab-intro__flash {
+    fill: none;
+    stroke: #e4ccff;
+    stroke-width: 1.6;
+    transform-origin: center;
+    transform-box: fill-box;
+    display: none;
+}
+.ab-intro[data-dir='to-void'][data-phase='collapse'] .ab-intro__flash,
+.ab-intro[data-dir='to-void'][data-phase='void'] .ab-intro__flash {
+    display: block;
+    animation: ab-singularity calc(0.4s * var(--ab-speed)) cubic-bezier(0.3, 0.1, 0.2, 1) both;
+}
+
+/* Orbits + event horizon = the black hole; shown whenever the hole is present. */
+.ab-intro__orbits {
+    display: none;
+    transform-origin: center;
+    transform-box: fill-box;
+}
+.ab-intro[data-dir='to-void'][data-phase='void'] .ab-intro__orbits,
+.ab-intro[data-dir='to-void'][data-phase='entering'] .ab-intro__orbits,
+.ab-intro[data-dir='to-light'][data-phase='void'] .ab-intro__orbits {
+    display: block;
+    animation: ab-holein calc(0.14s * var(--ab-speed)) cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.ab-intro__glint1 {
+    stroke-dasharray: 9 115;
+    filter: drop-shadow(0 0 2px rgba(201, 168, 240, 0.7));
+    animation: ab-glint1 3.6s linear infinite;
+}
+.ab-intro__glint2 {
+    stroke-dasharray: 7 85.5;
+    filter: drop-shadow(0 0 1.5px rgba(201, 168, 240, 0.6));
+    animation: ab-glint2 2.7s linear infinite;
+}
+
+.ab-intro__horizon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 82px;
+    height: 82px;
+    transform: translate(-50%, -50%);
+    display: none;
+}
+.ab-intro[data-dir='to-void'][data-phase='void'] .ab-intro__horizon,
+.ab-intro[data-dir='to-void'][data-phase='entering'] .ab-intro__horizon,
+.ab-intro[data-dir='to-light'][data-phase='void'] .ab-intro__horizon {
+    display: block;
+}
+.ab-intro__horizon-in {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    animation: ab-holein calc(0.14s * var(--ab-speed)) cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.ab-intro__bloom {
+    position: absolute;
+    inset: 16%;
+    border-radius: 50%;
+    animation: ab-corehalo 5s ease-in-out infinite;
+}
+.ab-intro__sheen {
+    position: absolute;
+    inset: 20%;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, rgba(255, 255, 255, 0) 0deg, rgba(230, 214, 255, 0.35) 60deg, rgba(255, 255, 255, 0.95) 96deg, rgba(230, 214, 255, 0.35) 132deg, rgba(255, 255, 255, 0) 200deg, rgba(255, 255, 255, 0) 360deg);
+    -webkit-mask: radial-gradient(circle, transparent 62%, #000 70%, #000 84%, transparent 92%);
+    mask: radial-gradient(circle, transparent 62%, #000 70%, #000 84%, transparent 92%);
+    filter: blur(2px);
+    animation: ab-corespin 6s linear infinite;
+}
+.ab-intro__photon {
+    position: absolute;
+    inset: 24%;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1.3px rgba(248, 242, 255, 0.9), 0 0 9px 1px rgba(196, 156, 232, 0.5), 0 0 20px 4px rgba(123, 79, 176, 0.28);
+}
+.ab-intro__core {
+    position: absolute;
+    inset: 25%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 44%, #040207 60%, #000 100%);
+    box-shadow: inset 0 1px 7px rgba(0, 0, 0, 1);
+}
+
+/* sparks + shockwave on reveal */
+.ab-intro__fxburst { display: none; }
+.ab-intro[data-phase='entering'] .ab-intro__fxburst { display: block; }
+.ab-intro__shock {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 2px solid #b98fe0;
+    animation: ab-shock calc(0.4s * var(--ab-speed)) ease-out both;
+}
+.ab-intro__spark {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border-radius: 50%;
+    animation: ab-spark calc(0.4s * var(--ab-speed)) cubic-bezier(0.2, 0.6, 0.3, 1) both;
+}
+
+.ab-intro__actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    min-height: 40px;
+}
+.ab-intro__enter {
+    display: none;
+    cursor: pointer;
+    padding: 12px 28px;
+    font-family: var(--font-ui, sans-serif);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #f3ecdb;
+    background: linear-gradient(180deg, #7b4fb0, #4a2c6f);
+    border: 1px solid #a67fd8;
+    border-radius: 3px;
+    box-shadow: inset 0 1px 0 rgba(230, 210, 255, 0.4), 0 0 16px rgba(123, 79, 176, 0.35);
+}
+.ab-intro__enter:hover { background: linear-gradient(180deg, #8c5ec2, #57347f); }
+.ab-intro[data-phase='void'] .ab-intro__enter { display: inline-block; }
+
+@media (prefers-reduced-motion: reduce) {
+    .ab-intro,
+    .ab-intro * {
+        animation: none !important;
+        transition: none !important;
+    }
+}

@@ -1,0 +1,17 @@
+/*
+ * Font role tokens. The five serif/UI families are the PDF's source of truth
+ * (catalyst print.css imports this file), so the printed pages and the websites
+ * share one definition. --font-mono is web-only (aubaine-v1 micro-labels).
+ *
+ * The @font-face loading itself stays where each surface owns it: the PDF and the
+ * websites each link the same Google Fonts stylesheet in their <head>.
+ */
+
+:root {
+    --font-display: 'Cinzel', serif;                     /* headings, titles, brand */
+    --font-body: 'Spectral', serif;                      /* body copy, descriptions */
+    --font-ui: 'Barlow Semi Condensed', sans-serif;      /* UI labels, meta */
+    --font-epic: Georgia, 'Times New Roman', serif;      /* cover titles (system serif) */
+    --font-garamond: 'EB Garamond', Georgia, serif;      /* cover flavour, quotes */
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace; /* web micro-labels */
+}

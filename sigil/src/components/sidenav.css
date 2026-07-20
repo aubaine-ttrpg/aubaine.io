@@ -1,0 +1,161 @@
+/* Section sidebar (the "chapters" list): grouped items, each a dot + serif label
+   + mono tag. Active item gets a 2px accent left-border and accent text. */
+
+.sidenav {
+    padding: var(--space-5) 0;
+    background: var(--color-surface);
+    border-right: 1px solid var(--color-border);
+}
+
+.sidenav__group + .sidenav__group {
+    margin-top: var(--space-5);
+}
+
+.sidenav__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--space-5) var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+}
+
+.sidenav__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-5);
+    border-left: 2px solid transparent;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease;
+}
+
+.sidenav__item:hover {
+    background: var(--color-surface-2);
+    color: var(--color-text);
+}
+
+.sidenav__item[aria-current='true'],
+.sidenav__item.is-active {
+    background: var(--color-surface-2);
+    color: var(--color-accent);
+    border-left-color: var(--color-accent);
+}
+
+.sidenav__item[aria-disabled='true'] {
+    opacity: 0.55;
+    cursor: default;
+    pointer-events: none;
+}
+
+.sidenav__dot {
+    flex: 0 0 auto;
+    width: 6px;
+    height: 6px;
+    border-radius: var(--radius-round);
+    background: var(--color-text-faint);
+}
+
+.sidenav__item:hover .sidenav__dot,
+.sidenav__item[aria-current='true'] .sidenav__dot {
+    background: var(--color-accent);
+}
+
+.sidenav__label {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidenav__tag {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+}
+
+.sidenav__empty {
+    padding: var(--space-2) var(--space-5);
+    color: var(--color-text-faint);
+    font-size: var(--text-sm);
+}
+
+/* "New" reads like a book item, with a + where the dot would be. */
+.sidenav__item--new {
+    color: var(--color-accent);
+}
+
+.sidenav__item--new .sidenav__label {
+    font-family: var(--font-ui);
+    font-weight: 600;
+}
+
+.sidenav__plus {
+    flex: 0 0 auto;
+    width: 6px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--text-sm);
+    line-height: 1;
+    color: var(--color-accent);
+}
+
+/* Collapsible group per book type. */
+.sidenav__collapse-summary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-5);
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    transition: color 0.14s ease;
+}
+
+.sidenav__collapse-summary::-webkit-details-marker {
+    display: none;
+}
+
+.sidenav__collapse-summary::before {
+    content: '';
+    flex: 0 0 auto;
+    width: 0;
+    height: 0;
+    border-left: 4px solid currentColor;
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    transition: transform 0.15s ease;
+}
+
+.sidenav__collapse[open] > .sidenav__collapse-summary::before {
+    transform: rotate(90deg);
+}
+
+.sidenav__collapse-summary:hover {
+    color: var(--color-text);
+}
+
+.sidenav__collapse-label {
+    flex: 1;
+}
+
+/* Books nested under a type sit slightly indented. */
+.sidenav__collapse .sidenav__item {
+    padding-left: calc(var(--space-5) + var(--space-4));
+}

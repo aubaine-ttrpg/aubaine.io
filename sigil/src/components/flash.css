@@ -1,0 +1,24 @@
+/* Flash / inline alert. A 2px accent left-border carries the status colour. */
+
+.flash {
+    padding: var(--space-3) var(--space-4);
+    margin-bottom: var(--space-4);
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-left: 2px solid var(--color-accent);
+    border-radius: var(--radius);
+    color: var(--color-text);
+}
+
+.flash--success {
+    border-left-color: var(--color-success);
+}
+
+.flash--error,
+.flash--danger {
+    border-left-color: var(--color-danger);
+}
+
+.flash--warning {
+    border-left-color: var(--color-gold);
+}

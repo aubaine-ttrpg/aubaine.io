@@ -1,0 +1,95 @@
+/* Form controls. BEM .field classes, plus element-level styling scoped to
+   .panel / .form so server-rendered forms are styled without extra classes. */
+
+.field {
+    margin-bottom: var(--space-4);
+}
+
+.field__label {
+    display: block;
+    font-family: var(--font-ui);
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+}
+
+.field__help {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    margin-top: var(--space-1);
+}
+
+.field__error {
+    color: var(--color-danger);
+    font-size: var(--text-sm);
+    margin-top: var(--space-1);
+}
+
+.field__input,
+.field__select,
+.field__textarea,
+.panel input[type='text'],
+.panel input[type='url'],
+.panel input[type='email'],
+.panel input[type='number'],
+.panel input[type='search'],
+.panel select,
+.panel textarea,
+.form input[type='text'],
+.form input[type='url'],
+.form input[type='email'],
+.form input[type='number'],
+.form input[type='search'],
+.form select,
+.form textarea {
+    width: 100%;
+    padding: var(--space-3);
+    background: var(--color-surface-2);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    transition: border-color 0.14s ease;
+}
+
+.field__input:focus,
+.panel input:focus,
+.panel select:focus,
+.panel textarea:focus,
+.form input:focus,
+.form select:focus,
+.form textarea:focus {
+    border-color: var(--color-accent);
+}
+
+.field__textarea,
+.panel textarea,
+.form textarea {
+    min-height: 7rem;
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+}
+
+/* Framework form output (e.g. Symfony form_row) rendered inside a .panel/.form:
+   a labelled row per field, without needing the BEM classes on generated markup. */
+.panel form > div,
+.form > div {
+    margin-bottom: var(--space-4);
+}
+
+.panel form label,
+.form label {
+    display: block;
+    font-family: var(--font-ui);
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+}
+
+.panel .help-text,
+.form .help-text {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}

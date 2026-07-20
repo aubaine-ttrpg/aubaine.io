@@ -1,0 +1,13 @@
+/* Framed content panel (forms, settings). --narrow caps the reading width. */
+
+.panel {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-1);
+}
+
+.panel--narrow {
+    max-width: 560px;
+}

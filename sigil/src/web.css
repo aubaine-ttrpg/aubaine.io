@@ -1,0 +1,39 @@
+/*
+ * @aubaine/sigil web entry. The single stylesheet Catalyst and Almanach import.
+ * (print.css imports only tokens/brand.css + tokens/fonts.css, never this file.)
+ */
+
+/* Tokens */
+@import './tokens/brand.css';
+@import './tokens/fonts.css';
+@import './tokens/semantic.css';
+
+/* Base */
+@import './base/reset.css';
+@import './base/typography.css';
+
+/* Components */
+@import './components/app-shell.css';
+@import './components/rail.css';
+@import './components/sidenav.css';
+@import './components/topbar.css';
+@import './components/button.css';
+@import './components/icon-button.css';
+@import './components/flash.css';
+@import './components/empty-state.css';
+@import './components/card.css';
+@import './components/panel.css';
+@import './components/form.css';
+@import './components/chip.css';
+@import './components/badge.css';
+@import './components/section-head.css';
+@import './components/prose.css';
+@import './components/callout.css';
+@import './components/status-bar.css';
+@import './components/hero.css';
+@import './components/ambient.css';
+
+/* Brand + effects */
+@import './brand/logo.css';
+@import './fx/blackhole.css';
+@import './fx/page-transition.css';

@@ -1,0 +1,25 @@
+/* In-content section heading: a rotated gold diamond + a wide-tracked label. */
+
+.section-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding-bottom: var(--space-3);
+    margin: 0 0 var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.section-head::before {
+    content: '';
+    flex: 0 0 auto;
+    width: 6px;
+    height: 6px;
+    background: var(--color-gold);
+    transform: rotate(45deg);
+}

@@ -1,0 +1,45 @@
+/* Thin footer status ticker (aubaine-v1). Mono, wide-tracked, a pulsing dot. */
+
+.status-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    height: 28px;
+    padding: 0 var(--space-4);
+    background: var(--color-surface-2);
+    border-top: 1px solid var(--color-border);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+}
+
+.status-bar__pulse {
+    width: 0.5em;
+    height: 0.5em;
+    border-radius: var(--radius-round);
+    background: var(--color-gold);
+    animation: sigil-pulse 2s ease-in-out infinite;
+}
+
+.status-bar__sep {
+    color: var(--color-text-faint);
+}
+
+.status-bar b {
+    color: var(--color-text);
+    font-weight: 500;
+}
+
+@keyframes sigil-pulse {
+    0%,
+    100% {
+        opacity: 0.4;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.15);
+    }
+}

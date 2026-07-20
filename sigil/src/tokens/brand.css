@@ -1,0 +1,48 @@
+/*
+ * Brand primitives: the identity colours that do not change with the theme.
+ *
+ * The gold and ink values are the PDF's source of truth (catalyst print.css);
+ * print.css imports this file so the printed pages keep rendering identically.
+ * The void/purple ramp comes from the Aubaine logo marks and drives the dark
+ * theme, the theme-aware logo, and the light-to-void intro.
+ *
+ * Per-theme surface/text/border/accent mappings live in semantic.css; game data
+ * colours (domains, characteristics, papers) stay owned by the PHP enums and are
+ * never copied here.
+ */
+
+:root {
+    /* ── Gold ─────────────────────────────────────────────────────────────
+       One brand gold plus the metallic ramp the covers gild their titles with.
+       Keep the website on --gold; reserve the metallic ramp for gilt headings. */
+    --gold: #efbe04;              /* brand primary (PDF --gold) */
+    --gold-metallic-hi: #faeab2;  /* highlight  */
+    --gold-metallic-1: #e8c770;
+    --gold-metallic-2: #bd8c35;
+    --gold-metallic-lo: #8e611f;  /* shadow */
+    --gold-muted: #dcbd6f;        /* eyebrow / quiet gold */
+    --gold-antique: #c9a24a;
+    --gold-edge: #7a5b1e;         /* darkest gold rule */
+
+    /* Ink and frame hairlines (PDF source of truth). */
+    --ink: #211c17;
+    --frame-gold: rgba(206, 168, 84, 0.5);
+    --frame-gold-soft: rgba(206, 168, 84, 0.24);
+
+    /* Aliases the PDF rules reference verbatim. Redefining these with identical
+       values is what lets print.css drop its own :root and import this file. */
+    --edge: var(--gold-edge);
+
+    /* ── Void (purple) ────────────────────────────────────────────────────
+       Sourced from the logo marks and the blackhole intro. Light -> dark. */
+    --void-100: #c9a8f0;   /* photon ring */
+    --void-200: #b98fe0;   /* outer orbit */
+    --void-300: #a67fd8;   /* enter-button border */
+    --void-400: #9d6fd1;   /* frame stroke, brand void */
+    --void-500: #7b4fb0;   /* inner orbit */
+    --void-600: #4a2c6f;   /* dark inner stroke */
+    --void-700: #3a1f5c;   /* event-horizon ring */
+    --void-800: #2a1642;   /* core gradient */
+    --void-900: #12081e;   /* deep void */
+    --void-950: #07040d;   /* singularity black */
+}
