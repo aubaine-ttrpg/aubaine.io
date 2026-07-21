@@ -2,6 +2,13 @@
 
 {% block title %}{{ type.labelKey|trans }} · {{ book.title }}{% endblock %}
 
+{% block crumb %}
+    <span class="topbar__crumb-sep">❯</span>
+    <a class="topbar__crumb" href="{{ path('app_book_edit', {id: book.id}) }}">{{ book.title }}</a>
+    <span class="topbar__crumb-sep">❯</span>
+    <span class="topbar__crumb topbar__crumb--current">{{ type.labelKey|trans }}</span>
+{% endblock %}
+
 {% block body %}
     <div class="page-head">
         <div>

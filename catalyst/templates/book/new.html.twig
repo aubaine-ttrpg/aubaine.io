@@ -2,6 +2,11 @@
 
 {% block title %}{{ 'book.new.title'|trans }} · {{ 'app.name'|trans }}{% endblock %}
 
+{% block crumb %}
+    <span class="topbar__crumb-sep">❯</span>
+    <span class="topbar__crumb topbar__crumb--current">{{ 'book.new.title'|trans }}</span>
+{% endblock %}
+
 {% block body %}
     <div class="page-head">
         <h1>{{ 'book.new.title'|trans }}</h1>
