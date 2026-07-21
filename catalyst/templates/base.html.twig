@@ -11,7 +11,7 @@
     { key: 'archetypes', label: 'nav.archetypes'|trans,   enabled: false },
     { key: 'characters', label: 'nav.characters'|trans,   enabled: false },
 ] %}
-<html lang="{{ app.request.locale|default('fr') }}" data-controller="transitions intro theme shiny"
+<html lang="{{ app.request.locale|default('fr') }}" data-controller="transitions intro theme shiny sidebar"
       data-shiny-url-value="{{ asset('build/images/brand/aubaine-logo-shiny.svg') }}"
       data-shiny-force-value="{{ shiny_force ? 'true' : 'false' }}">
     <head>

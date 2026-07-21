@@ -2,6 +2,7 @@ app.name: Aubaine Catalyst
 
 nav.language: Langue
 nav.toggle_theme: Basculer clair et sombre
+nav.toggle_sidebar: Afficher ou masquer la barre latérale
 nav.sections: Sections
 nav.books: Livres
 nav.skill_trees: Arbres de compétences

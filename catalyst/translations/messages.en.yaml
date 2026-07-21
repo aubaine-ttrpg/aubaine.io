@@ -2,6 +2,7 @@ app.name: Aubaine Catalyst
 
 nav.language: Language
 nav.toggle_theme: Toggle light and dark
+nav.toggle_sidebar: Toggle sidebar
 nav.sections: Sections
 nav.books: Books
 nav.skill_trees: Skill Trees

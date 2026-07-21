@@ -2,6 +2,16 @@
    disabled placeholders (the entity authoring is not built yet). #}
 {% import '_shell/_icons.html.twig' as ico %}
 <aside class="rail" id="rail">
+    <button type="button" class="icon-btn rail__toggle"
+            data-action="sidebar#toggle" data-sidebar-target="toggle"
+            aria-controls="sidenav" aria-expanded="true"
+            aria-label="{{ 'nav.toggle_sidebar'|trans }}">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <rect x="2" y="3" width="12" height="10" rx="1" stroke="currentColor" stroke-width="1.2"/>
+            <path d="M6 3v10" stroke="currentColor" stroke-width="1.2"/>
+        </svg>
+    </button>
+    <span class="rail__sep"></span>
     {% for s in sections %}
         {% if s.enabled %}
             <a class="rail__btn {{ s.key == current ? 'is-active' }}" href="{{ path(s.route) }}"
