@@ -32,6 +32,94 @@
     font-weight: 500;
 }
 
+/* Language switcher: a compact flag + name dropdown pinned to the right of the
+   bar. The bar sits at the viewport bottom, so its menu opens upward. */
+.status-bar__lang {
+    margin-left: auto;
+    position: relative;
+}
+
+.status-bar__lang-summary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    color: var(--color-text-muted);
+    transition: color 0.14s ease;
+}
+
+.status-bar__lang-summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Caret points up (the menu opens upward) and flips when the details is open. */
+.status-bar__lang-summary::after {
+    content: '';
+    flex: 0 0 auto;
+    width: 0;
+    height: 0;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-bottom: 4px solid currentColor;
+    transition: transform 0.15s ease;
+}
+
+.status-bar__lang[open] > .status-bar__lang-summary::after {
+    transform: rotate(180deg);
+}
+
+.status-bar__lang-summary:hover,
+.status-bar__lang[open] > .status-bar__lang-summary {
+    color: var(--color-accent);
+}
+
+.status-bar__lang-menu {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + var(--space-2));
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: max-content;
+    padding: var(--space-2);
+    font-size: var(--text-xs);
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-2);
+    z-index: 20;
+}
+
+.status-bar__lang-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.14s ease, background-color 0.14s ease;
+}
+
+.status-bar__lang-item:hover {
+    color: var(--color-text);
+    background: var(--color-surface-3);
+}
+
+.status-bar__lang-item[aria-current='true'] {
+    color: var(--color-accent);
+}
+
+.status-bar__flag {
+    flex: 0 0 auto;
+    height: 1.5em;
+    width: auto;
+    border-radius: 1px;
+}
+
 @keyframes sigil-pulse {
     0%,
     100% {

@@ -1,5 +1,5 @@
 /* App/site top bar. A fixed-width brand block (logo + wordmark) with a right
-   divider, then breadcrumbs, then actions. The logo doubles as the theme switch. */
+   divider, then breadcrumbs. The logo doubles as the theme switch. */
 
 .topbar {
     display: flex;
@@ -110,28 +110,6 @@
 .topbar__crumb-sep {
     color: var(--color-text-faint);
     opacity: 0.6;
-}
-
-.topbar__actions {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-}
-
-.topbar__actions a {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    font-weight: 500;
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    text-decoration: none;
-    color: var(--color-text-muted);
-    transition: color 0.14s ease;
-}
-
-.topbar__actions a:hover,
-.topbar__actions a[aria-current='true'] {
-    color: var(--color-accent);
 }
 
 @media (max-width: 1024px) {

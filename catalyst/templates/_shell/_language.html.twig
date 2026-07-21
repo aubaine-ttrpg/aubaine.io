@@ -1,0 +1,25 @@
+{#
+    Language switcher: a native <details> collapsible in the status bar. #lang is a
+    Swup swap container (transitions_controller.js), so the summary (current flag +
+    name) and the menu's aria-current re-render from the server on each visit, keeping
+    the active language correct after a switch. Locales come from enabled_locales
+    (framework config); the flag map is the only per-locale display metadata, because
+    English uses the GB flag rather than a locale-code match.
+#}
+{% set flags = { fr: 'flagpack:fr', en: 'flagpack:gb-ukm' } %}
+{% set currentLocale = app.request.locale %}
+<details id="lang" class="status-bar__lang">
+    <summary class="status-bar__lang-summary">
+        {{ ux_icon(flags[currentLocale]|default('flagpack:' ~ currentLocale), { class: 'status-bar__flag', 'aria-hidden': 'true' }) }}
+        <span class="status-bar__lang-name">{{ ('language.' ~ currentLocale)|trans }}</span>
+    </summary>
+    <nav class="status-bar__lang-menu" aria-label="{{ 'nav.language'|trans }}">
+        {% for locale in enabled_locales %}
+            <a class="status-bar__lang-item" href="{{ path('app_set_locale', { locale: locale }) }}"
+               hreflang="{{ locale }}"{{ locale == currentLocale ? ' aria-current="true"' : '' }}>
+                {{ ux_icon(flags[locale]|default('flagpack:' ~ locale), { class: 'status-bar__flag', 'aria-hidden': 'true' }) }}
+                <span class="status-bar__lang-name">{{ ('language.' ~ locale)|trans }}</span>
+            </a>
+        {% endfor %}
+    </nav>
+</details>

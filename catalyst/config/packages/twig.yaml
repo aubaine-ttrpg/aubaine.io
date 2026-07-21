@@ -3,6 +3,8 @@ twig:
     globals:
         # Easter egg: SHINY_FORCE=1 forces the shiny logo on every load. Off by default.
         shiny_force: '%env(bool:SHINY_FORCE)%'
+        # The locales offered by the language switcher, owned by framework.enabled_locales.
+        enabled_locales: '%kernel.enabled_locales%'
 
 when@test:
     twig:

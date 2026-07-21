@@ -45,12 +45,6 @@
                             {% block crumb %}{% endblock %}
                         {% endblock %}
                     </nav>
-                    <nav class="topbar__actions" aria-label="{{ 'nav.language'|trans }}">
-                        <a href="{{ path('app_set_locale', {locale: 'en'}) }}" hreflang="en"
-                           {{ app.request.locale == 'en' ? 'aria-current="true"' : '' }}>EN</a>
-                        <a href="{{ path('app_set_locale', {locale: 'fr'}) }}" hreflang="fr"
-                           {{ app.request.locale == 'fr' ? 'aria-current="true"' : '' }}>FR</a>
-                    </nav>
                 </div>
             </header>
 
@@ -74,6 +68,7 @@
             <footer class="status-bar">
                 <span class="status-bar__pulse"></span>
                 <span>Aubaine Catalyst</span>
+                {{ include('_shell/_language.html.twig') }}
             </footer>
         </div>
     </body>
