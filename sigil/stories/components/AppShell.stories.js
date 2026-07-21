@@ -63,8 +63,18 @@ export const Shell = () => {
           <div class="topbar__actions"><a href="#" aria-current="true" onclick="return false">EN</a><a href="#" onclick="return false">FR</a></div>
         </div>
       </header>
-      <aside class="rail">${rail}</aside>
-      <nav class="sidenav">
+      <aside class="rail">
+        <button type="button" class="icon-btn rail__toggle" id="sb-sidebar"
+                aria-controls="sidenav" aria-expanded="true" aria-label="Toggle sidebar">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <rect x="2" y="3" width="12" height="10" rx="1" stroke="currentColor" stroke-width="1.2"/>
+            <path d="M6 3v10" stroke="currentColor" stroke-width="1.2"/>
+          </svg>
+        </button>
+        <span class="rail__sep"></span>
+        ${rail}
+      </aside>
+      <nav class="sidenav" id="sidenav">
         <div class="sidenav__group">
           <div class="sidenav__head"><span>Books</span><span>3</span></div>
           <a class="sidenav__item sidenav__item--new" href="#" onclick="return false"><span class="sidenav__plus">+</span><span class="sidenav__label">New book</span></a>
@@ -101,6 +111,14 @@ export const Shell = () => {
         badge.classList.add('is-morphing');
         root.dataset.theme = next;
         setTimeout(() => { root.classList.remove('theme-changing'); badge.classList.remove('is-morphing'); }, 600);
+    });
+
+    // Sidebar collapse toggle: flip <html data-sidebar>, mirroring sidebar_controller.
+    const sidebarBtn = wrap.querySelector('#sb-sidebar');
+    sidebarBtn.addEventListener('click', () => {
+        const collapsed = document.documentElement.dataset.sidebar === 'collapsed';
+        document.documentElement.dataset.sidebar = collapsed ? 'expanded' : 'collapsed';
+        sidebarBtn.setAttribute('aria-expanded', String(collapsed));
     });
 
     return wrap;

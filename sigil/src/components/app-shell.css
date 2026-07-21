@@ -12,6 +12,7 @@
     grid-template-rows: 52px minmax(0, 1fr) 28px;
     height: 100dvh;
     background: var(--color-bg);
+    transition: grid-template-columns 0.2s ease;
 }
 
 .app > .topbar {
@@ -52,6 +53,23 @@
     max-width: none;
 }
 
+/* Collapsed (desktop only, where the rail carries the toggle): the sidenav
+   track shrinks to 0 and the stage (minmax(0,1fr)) claims the width. The 64px
+   rail is untouched. visibility is delayed so the panel stays painted through
+   the shrink, then drops out of the tab order. */
+@media (min-width: 1025px) {
+    :root[data-sidebar='collapsed'] .app {
+        grid-template-columns: 64px 0 minmax(0, 1fr);
+    }
+
+    :root[data-sidebar='collapsed'] .app > .sidenav {
+        overflow: hidden;
+        border-right-width: 0;
+        visibility: hidden;
+        transition: visibility 0s linear 0.2s;
+    }
+}
+
 @media (max-width: 1024px) {
     .app {
         display: block;
@@ -70,5 +88,13 @@
 
     .stage__inner {
         padding: var(--space-6) var(--space-4) var(--space-10);
+    }
+}
+
+/* The global reduced-motion reset zeroes transition-duration but not the
+   visibility delay above; drop it so the hide is instant, not lagging. */
+@media (prefers-reduced-motion: reduce) {
+    :root[data-sidebar='collapsed'] .app > .sidenav {
+        transition: none;
     }
 }
