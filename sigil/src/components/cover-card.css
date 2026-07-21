@@ -1,10 +1,10 @@
 /*
- * Cover card: a poster-style card fronted by artwork, with the title laid over
- * the foot of the cover (title --long/--xlong/--xxlong step the size down for
- * long names), a control row (type badge + icon actions), and an updated/pages
- * line. Both foot rows are 2-item space-between so they align. The whole card is
- * a link (stretched __link); the controls layer above it. Glass surface + soft
- * --radius-xl. Reused by Catalyst (books) and Almanach (entries).
+ * Cover card: a poster-style card fronted by artwork. The page count sits top
+ * right on a light scrim; the title, a hairline rule, and the "last updated"
+ * line sit over a taller bottom scrim. The foot is a single control row (type
+ * badge + icon actions). The whole card is a link (stretched __link); the
+ * controls layer above it. Glass surface + soft --radius-xl. Reused by Catalyst
+ * (books) and Almanach (entries).
  */
 
 .cover-card {
@@ -72,15 +72,36 @@
     color: var(--void-100);
 }
 
-/* Title over the foot of the cover, on a scrim that fades the art into the card
-   below. Takes the full width; the size classes only kick in for long names. */
+/* Page count, top right. The top scrim is as dark as the bottom one but shallow,
+   so the art stays visible below it. */
+.cover-card__topbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: flex-end;
+    padding: var(--space-2) var(--space-3) var(--space-5);
+    background: linear-gradient(to bottom, color-mix(in srgb, var(--void-950) 94%, transparent), transparent);
+}
+
+.cover-card__pages {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--gold-muted);
+}
+
+/* Title + rule + updated over a taller bottom scrim that fades well up the art. */
 .cover-card__overlay {
     position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
-    padding: var(--space-8) var(--space-3) var(--space-3);
-    background: linear-gradient(to top, color-mix(in srgb, var(--void-950) 85%, transparent), transparent);
+    padding: var(--space-10) var(--space-3) var(--space-3);
+    background: linear-gradient(to top, color-mix(in srgb, var(--void-950) 94%, transparent), transparent);
 }
 
 .cover-card__title {
@@ -106,25 +127,32 @@
     font-size: var(--text-xs);
 }
 
-/* Foot block: the control row (type badge + icon actions) stacked over the
-   updated/pages line, as one padded flex column. */
-.cover-card__body {
-    margin-top: auto;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    padding: var(--space-2) var(--space-3);
+.cover-card__rule {
+    border: 0;
+    border-top: 1px solid var(--frame-gold-soft);
+    margin: var(--space-2) 0;
 }
 
-/* Control row: type badge + icon actions, edge to edge. Layers above the
-   stretched link so the buttons stay clickable. */
-.cover-card__controls {
+.cover-card__meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--gold-muted);
+    margin: 0;
+}
+
+/* Foot: a single control row (type badge + icon actions), edge to edge. Layers
+   above the stretched link so the buttons stay clickable. */
+.cover-card__body {
+    margin-top: auto;
     position: relative;
     z-index: 2;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
 }
 
 /* Type badge sized and centred to match the icon buttons beside it. */
@@ -139,34 +167,6 @@
     display: flex;
     align-items: center;
     gap: var(--space-2);
-}
-
-/* Updated / pages: very small, edge to edge so they align under the row above,
-   with a small round separator between them. */
-.cover-card__meta {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-2);
-    font-family: var(--font-mono);
-    font-size: var(--text-2xs);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--color-text-faint);
-    margin: 0;
-}
-
-.cover-card__sep {
-    flex: 0 0 auto;
-    width: 2px;
-    height: 2px;
-    border-radius: var(--radius-round);
-    background: currentColor;
-}
-
-.cover-card__pages {
-    flex: 0 0 auto;
-    white-space: nowrap;
 }
 
 /* Whole card is a link to the target; the controls layer above it. */

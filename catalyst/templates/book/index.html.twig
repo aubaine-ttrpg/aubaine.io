@@ -30,31 +30,31 @@
                                     <span class="cover-card__monogram">{{ card.monogram }}</span>
                                 </div>
                             {% endif %}
+                            <div class="cover-card__topbar">
+                                <span class="cover-card__pages">{{ 'book.pages_count'|trans({'%count%': card.pageCount}) }}</span>
+                            </div>
                             <div class="cover-card__overlay">
                                 <h2 class="cover-card__title {{ card.titleSizeClass }}">{{ card.title }}</h2>
+                                <hr class="cover-card__rule">
+                                <p class="cover-card__meta">
+                                    <time datetime="{{ card.updatedIso }}" title="{{ card.updatedTooltip }}">{{ 'book.card.updated'|trans({'%relative%': card.updatedRelative}) }}</time>
+                                </p>
                             </div>
                         </div>
                         <div class="cover-card__body">
-                            <div class="cover-card__controls">
-                                <span class="badge cover-card__type">{{ card.typeLabelKey|trans }}</span>
-                                <div class="cover-card__actions">
-                                    <a class="icon-btn" href="{{ path('app_book_settings', {id: card.id}) }}"
-                                       aria-label="{{ 'book.settings.title'|trans }}" title="{{ 'book.settings.title'|trans }}">{{ ux_icon('mdi:cog-outline') }}</a>
-                                    <a class="icon-btn" href="{{ path('app_book_pdf', {id: card.id, download: 1}) }}" data-no-swup
-                                       aria-label="{{ 'book.download_pdf'|trans }}" title="{{ 'book.download_pdf'|trans }}">{{ ux_icon('mdi:download') }}</a>
-                                    <form method="post" action="{{ path('app_book_delete', {id: card.id}) }}"
-                                          onsubmit="return confirm('{{ 'book.delete.confirm'|trans }}')">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('delete-book') }}">
-                                        <button class="icon-btn icon-btn--danger" type="submit"
-                                                aria-label="{{ 'book.delete.action'|trans }}" title="{{ 'book.delete.action'|trans }}">{{ ux_icon('mdi:trash-can-outline') }}</button>
-                                    </form>
-                                </div>
+                            <span class="badge cover-card__type">{{ card.typeLabelKey|trans }}</span>
+                            <div class="cover-card__actions">
+                                <a class="icon-btn" href="{{ path('app_book_settings', {id: card.id}) }}"
+                                   aria-label="{{ 'book.settings.title'|trans }}" title="{{ 'book.settings.title'|trans }}">{{ ux_icon('mdi:cog-outline') }}</a>
+                                <a class="icon-btn" href="{{ path('app_book_pdf', {id: card.id, download: 1}) }}" data-no-swup
+                                   aria-label="{{ 'book.download_pdf'|trans }}" title="{{ 'book.download_pdf'|trans }}">{{ ux_icon('mdi:download') }}</a>
+                                <form method="post" action="{{ path('app_book_delete', {id: card.id}) }}"
+                                      onsubmit="return confirm('{{ 'book.delete.confirm'|trans }}')">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete-book') }}">
+                                    <button class="icon-btn icon-btn--danger" type="submit"
+                                            aria-label="{{ 'book.delete.action'|trans }}" title="{{ 'book.delete.action'|trans }}">{{ ux_icon('mdi:trash-can-outline') }}</button>
+                                </form>
                             </div>
-                            <p class="cover-card__meta">
-                                <time datetime="{{ card.updatedIso }}" title="{{ card.updatedTooltip }}">{{ 'book.card.updated'|trans({'%relative%': card.updatedRelative}) }}</time>
-                                <span class="cover-card__sep" aria-hidden="true"></span>
-                                <span class="cover-card__pages">{{ 'book.pages_count'|trans({'%count%': card.pageCount}) }}</span>
-                            </p>
                         </div>
                     </article>
                 </li>
