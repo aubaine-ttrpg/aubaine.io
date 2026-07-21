@@ -39,7 +39,7 @@
                     </a>
                 </div>
                 <div class="topbar__nav">
-                    <nav class="topbar__crumbs" aria-label="{{ 'nav.breadcrumb'|trans }}">
+                    <nav class="topbar__crumbs" id="crumbs" aria-label="{{ 'nav.breadcrumb'|trans }}">
                         {% block crumbs %}
                             <a class="topbar__crumb" href="{{ path('app_book_index') }}">{{ 'nav.books'|trans }}</a>
                             {% block crumb %}{% endblock %}

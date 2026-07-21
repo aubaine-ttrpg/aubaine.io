@@ -19,7 +19,7 @@ export default class extends Controller {
             return;
         }
         this.swup = new Swup({
-            containers: ['#rail', '#sidenav', '#stage'],
+            containers: ['#crumbs', '#rail', '#sidenav', '#stage'],
             animationSelector: '[class*="transition-"]',
             ignoreVisit: (url, { el } = {}) => Boolean(el?.closest('[data-no-swup]')),
             plugins: [new SwupHeadPlugin()],
