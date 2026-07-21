@@ -10,6 +10,7 @@ use App\Book\Dto\BookMeta;
 use App\Book\Form\BookMetaType;
 use App\Book\Model\Book;
 use App\Book\Version;
+use App\Book\View\BookCardViewFactory;
 use App\Page\PageTypeRegistry;
 use App\Page\PageViewFactory;
 use App\Pdf\BookFingerprint;
@@ -29,9 +30,9 @@ use Symfony\Component\Routing\Attribute\Route;
 final class BookController extends AbstractController
 {
     #[Route('/books', name: 'app_book_index', methods: ['GET'])]
-    public function index(BookRepository $books): Response
+    public function index(BookRepository $books, BookCardViewFactory $cards): Response
     {
-        return $this->render('book/index.html.twig', ['books' => $books->all()]);
+        return $this->render('book/index.html.twig', ['cards' => $cards->forList($books->all())]);
     }
 
     #[Route('/books/new', name: 'app_book_new', methods: ['GET', 'POST'])]

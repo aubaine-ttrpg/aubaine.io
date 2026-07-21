@@ -8,7 +8,7 @@
         <a class="btn btn--primary" href="{{ path('app_book_new') }}">{{ 'book.list.new'|trans }}</a>
     </div>
 
-    {% if books is empty %}
+    {% if cards is empty %}
         <div class="empty-state">
             <p class="empty-state__title">{{ 'book.list.empty.title'|trans }}</p>
             <p class="empty-state__hint">{{ 'book.list.empty.hint'|trans }}</p>
@@ -17,22 +17,46 @@
             </div>
         </div>
     {% else %}
-        <ul class="book-list">
-            {% for book in books %}
-                <li class="book-card">
-                    <a class="book-card__link" href="{{ path('app_book_edit', {id: book.id}) }}">
-                        <span class="book-card__title">{{ book.title }}</span>
-                        {% if book.subtitle %}<span class="book-card__subtitle">{{ book.subtitle }}</span>{% endif %}
-                        <span class="book-card__meta">{{ 'book.pages_count'|trans({'%count%': book.pageCount}) }}</span>
-                    </a>
-                    <div class="book-card__actions">
-                        <a class="btn btn--ghost" href="{{ path('app_book_pdf', {id: book.id, download: 1}) }}" data-no-swup>{{ 'book.download_pdf'|trans }}</a>
-                        <form method="post" action="{{ path('app_book_delete', {id: book.id}) }}"
-                              onsubmit="return confirm('{{ 'book.delete.confirm'|trans }}')">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete-book') }}">
-                            <button class="btn btn--danger" type="submit">{{ 'book.delete.action'|trans }}</button>
-                        </form>
-                    </div>
+        <ul class="card-grid">
+            {% for card in cards %}
+                <li>
+                    <article class="cover-card">
+                        <a class="cover-card__link" href="{{ path('app_book_edit', {id: card.id}) }}" aria-label="{{ card.title }}"></a>
+                        <div class="cover-card__cover">
+                            {% if card.coverImage %}
+                                <img class="cover-card__art" src="{{ catalyst_image('covers', card.coverImage) }}" alt="" loading="lazy">
+                            {% else %}
+                                <div class="cover-card__placeholder" aria-hidden="true">
+                                    <span class="cover-card__monogram">{{ card.monogram }}</span>
+                                </div>
+                            {% endif %}
+                            <div class="cover-card__overlay">
+                                <h2 class="cover-card__title {{ card.titleSizeClass }}">{{ card.title }}</h2>
+                            </div>
+                        </div>
+                        <div class="cover-card__body">
+                            <div class="cover-card__controls">
+                                <span class="badge cover-card__type">{{ card.typeLabelKey|trans }}</span>
+                                <div class="cover-card__actions">
+                                    <a class="icon-btn" href="{{ path('app_book_settings', {id: card.id}) }}"
+                                       aria-label="{{ 'book.settings.title'|trans }}" title="{{ 'book.settings.title'|trans }}">{{ ux_icon('mdi:cog-outline') }}</a>
+                                    <a class="icon-btn" href="{{ path('app_book_pdf', {id: card.id, download: 1}) }}" data-no-swup
+                                       aria-label="{{ 'book.download_pdf'|trans }}" title="{{ 'book.download_pdf'|trans }}">{{ ux_icon('mdi:download') }}</a>
+                                    <form method="post" action="{{ path('app_book_delete', {id: card.id}) }}"
+                                          onsubmit="return confirm('{{ 'book.delete.confirm'|trans }}')">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete-book') }}">
+                                        <button class="icon-btn icon-btn--danger" type="submit"
+                                                aria-label="{{ 'book.delete.action'|trans }}" title="{{ 'book.delete.action'|trans }}">{{ ux_icon('mdi:trash-can-outline') }}</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <p class="cover-card__meta">
+                                <time datetime="{{ card.updatedIso }}" title="{{ card.updatedTooltip }}">{{ 'book.card.updated'|trans({'%relative%': card.updatedRelative}) }}</time>
+                                <span class="cover-card__sep" aria-hidden="true"></span>
+                                <span class="cover-card__pages">{{ 'book.pages_count'|trans({'%count%': card.pageCount}) }}</span>
+                            </p>
+                        </div>
+                    </article>
                 </li>
             {% endfor %}
         </ul>

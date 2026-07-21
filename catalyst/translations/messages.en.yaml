@@ -37,7 +37,8 @@ book.version.minor: Minor version
 book.settings.title: Book settings
 book.print: Print
 book.download_pdf: Download PDF
-book.pages_count: '%count% page(s)'
+book.pages_count: ']-Inf,1] %count% page|]1,Inf[ %count% pages'
+book.card.updated: 'Updated %relative%'
 book.list.title: Books
 book.list.new: New book
 book.list.empty.title: No books yet
@@ -46,6 +47,20 @@ book.new.title: New book
 book.new.submit: Create book
 book.delete.action: Delete
 book.delete.confirm: Delete this book?
+
+time.ago.just_now: just now
+time.ago.minutes_one: '%count% minute ago'
+time.ago.minutes_other: '%count% minutes ago'
+time.ago.hours_one: '%count% hour ago'
+time.ago.hours_other: '%count% hours ago'
+time.ago.days_one: '%count% day ago'
+time.ago.days_other: '%count% days ago'
+time.ago.weeks_one: '%count% week ago'
+time.ago.weeks_other: '%count% weeks ago'
+time.ago.months_one: '%count% month ago'
+time.ago.months_other: '%count% months ago'
+time.ago.years_one: '%count% year ago'
+time.ago.years_other: '%count% years ago'
 
 editor.pages: Pages
 editor.pages_empty.title: This book has no pages yet

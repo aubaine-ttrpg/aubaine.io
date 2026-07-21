@@ -11,13 +11,16 @@ use App\Page\PageTypeInterface;
 /** Front cover (recto): dark cinematic art, gold title and filigree. */
 final class CoverFrontPageType implements PageTypeInterface
 {
+    /** Page-type key, stored in the book JSON and used to find a book's cover. */
+    public const KEY = 'cover-front';
+
     public function __construct(private readonly ImageSource $images)
     {
     }
 
     public function key(): string
     {
-        return 'cover-front';
+        return self::KEY;
     }
 
     public function category(): string

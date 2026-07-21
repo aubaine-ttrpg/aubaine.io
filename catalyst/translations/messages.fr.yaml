@@ -37,7 +37,8 @@ book.version.minor: Version mineure
 book.settings.title: Réglages du livre
 book.print: Imprimer
 book.download_pdf: Télécharger le PDF
-book.pages_count: '%count% page(s)'
+book.pages_count: ']-Inf,1] %count% page|]1,Inf[ %count% pages'
+book.card.updated: 'Modifié %relative%'
 book.list.title: Livres
 book.list.new: Nouveau livre
 book.list.empty.title: Aucun livre pour le moment
@@ -46,6 +47,20 @@ book.new.title: Nouveau livre
 book.new.submit: Créer le livre
 book.delete.action: Supprimer
 book.delete.confirm: Supprimer ce livre ?
+
+time.ago.just_now: à l'instant
+time.ago.minutes_one: 'il y a %count% minute'
+time.ago.minutes_other: 'il y a %count% minutes'
+time.ago.hours_one: 'il y a %count% heure'
+time.ago.hours_other: 'il y a %count% heures'
+time.ago.days_one: 'il y a %count% jour'
+time.ago.days_other: 'il y a %count% jours'
+time.ago.weeks_one: 'il y a %count% semaine'
+time.ago.weeks_other: 'il y a %count% semaines'
+time.ago.months_one: 'il y a %count% mois'
+time.ago.months_other: 'il y a %count% mois'
+time.ago.years_one: 'il y a %count% an'
+time.ago.years_other: 'il y a %count% ans'
 
 editor.pages: Pages
 editor.pages_empty.title: Ce livre n''a pas encore de page

@@ -62,66 +62,6 @@ body {
     margin: var(--space-1) 0 0;
 }
 
-/* ── Book list ── */
-.book-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: var(--space-3);
-}
-
-.book-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--space-4);
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: var(--space-4) var(--space-5);
-    box-shadow: var(--shadow-1);
-    transition: border-color 0.18s ease, transform 0.18s ease;
-}
-
-.book-card:hover {
-    border-color: var(--color-accent-dim);
-    transform: translateY(-2px);
-}
-
-.book-card__link {
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    flex: 1;
-    color: inherit;
-}
-
-.book-card__title {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: var(--text-lg);
-}
-
-.book-card__subtitle {
-    color: var(--color-text-muted);
-}
-
-.book-card__meta {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--color-text-faint);
-}
-
-.book-card__actions {
-    display: flex;
-    gap: var(--space-2);
-    align-items: center;
-}
-
 /* ── Editor: page list + catalog (left), live preview (center), properties (right) ── */
 .editor {
     display: grid;
