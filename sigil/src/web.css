@@ -22,6 +22,8 @@
 @import './components/flash.css';
 @import './components/empty-state.css';
 @import './components/card.css';
+@import './components/cover-card.css';
+@import './components/card-grid.css';
 @import './components/panel.css';
 @import './components/form.css';
 @import './components/chip.css';

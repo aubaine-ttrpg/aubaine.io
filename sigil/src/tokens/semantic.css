@@ -24,8 +24,12 @@
     /* aubaine-v1's defining hard edge */
     --radius: 2px;
     --radius-lg: 4px;
+    --radius-xl: 10px;         /* soft edge, opt-in for glass surfaces (cover-card) */
     --radius-round: 999px;
 
+    --blur-glass: 12px;        /* backdrop blur for translucent glass surfaces */
+
+    --text-2xs: 0.6rem;
     --text-xs: 0.72rem;
     --text-sm: 0.85rem;
     --text-base: 1rem;
@@ -52,6 +56,8 @@
     --light-text-faint: oklch(0.58 0.03 62);
     --light-border: oklch(0.82 0.03 78);
     --light-border-soft: oklch(0.87 0.025 76);
+    --light-surface-glass: oklch(0.975 0.012 82 / 0.72);   /* translucent parchment */
+    --light-border-glass: oklch(1 0 0 / 0.55);             /* bright top edge */
     --light-accent: #2e1a4a;               /* deep void purple */
     --light-accent-ink: #f4eefb;
     --light-accent-dim: #6a4a8f;
@@ -73,6 +79,8 @@
     --dark-text-faint: oklch(0.55 0.03 72);
     --dark-border: oklch(0.34 0.016 60 / 0.7);
     --dark-border-soft: oklch(0.28 0.012 55 / 0.5);
+    --dark-surface-glass: oklch(0.18 0.012 46 / 0.62);     /* translucent void */
+    --dark-border-glass: oklch(0.85 0.03 300 / 0.16);      /* faint void-purple edge */
     --dark-accent: var(--void-200);        /* luminous void purple */
     --dark-accent-ink: oklch(0.15 0.02 300);
     --dark-accent-dim: var(--void-500);
@@ -94,6 +102,8 @@
     --color-text-faint: var(--light-text-faint);
     --color-border: var(--light-border);
     --color-border-soft: var(--light-border-soft);
+    --color-surface-glass: var(--light-surface-glass);
+    --color-border-glass: var(--light-border-glass);
     --color-accent: var(--light-accent);
     --color-accent-ink: var(--light-accent-ink);
     --color-accent-dim: var(--light-accent-dim);
@@ -123,6 +133,8 @@
         --color-text-faint: var(--dark-text-faint);
         --color-border: var(--dark-border);
         --color-border-soft: var(--dark-border-soft);
+        --color-surface-glass: var(--dark-surface-glass);
+        --color-border-glass: var(--dark-border-glass);
         --color-accent: var(--dark-accent);
         --color-accent-ink: var(--dark-accent-ink);
         --color-accent-dim: var(--dark-accent-dim);
@@ -148,6 +160,8 @@
     --color-text-faint: var(--dark-text-faint);
     --color-border: var(--dark-border);
     --color-border-soft: var(--dark-border-soft);
+    --color-surface-glass: var(--dark-surface-glass);
+    --color-border-glass: var(--dark-border-glass);
     --color-accent: var(--dark-accent);
     --color-accent-ink: var(--dark-accent-ink);
     --color-accent-dim: var(--dark-accent-dim);

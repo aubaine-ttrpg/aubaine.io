@@ -1,0 +1,193 @@
+/*
+ * Cover card: a poster-style card fronted by artwork, with the title laid over
+ * the foot of the cover (title --long/--xlong/--xxlong step the size down for
+ * long names), a control row (type badge + icon actions), and an updated/pages
+ * line. Both foot rows are 2-item space-between so they align. The whole card is
+ * a link (stretched __link); the controls layer above it. Glass surface + soft
+ * --radius-xl. Reused by Catalyst (books) and Almanach (entries).
+ */
+
+.cover-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-surface-glass);
+    backdrop-filter: blur(var(--blur-glass));
+    border: 1px solid var(--color-border-glass);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-1);
+    overflow: hidden;
+    transition:
+        transform 0.12s cubic-bezier(0.22, 0.61, 0.36, 1),
+        box-shadow 0.12s cubic-bezier(0.22, 0.61, 0.36, 1),
+        border-color 0.12s ease;
+}
+
+.cover-card:hover,
+.cover-card:focus-within {
+    border-color: var(--color-accent-dim);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-2);
+}
+
+/* Artwork region: a 3:4 poster frame. */
+.cover-card__cover {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background: var(--color-surface-2);
+}
+
+.cover-card__art,
+.cover-card__placeholder {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.cover-card__art {
+    object-fit: cover;
+    display: block;
+}
+
+.cover-card:hover .cover-card__art,
+.cover-card:focus-within .cover-card__art,
+.cover-card:hover .cover-card__placeholder,
+.cover-card:focus-within .cover-card__placeholder {
+    transform: scale(1.05);
+}
+
+/* Fallback for books with no artwork: a void gradient + a large monogram. */
+.cover-card__placeholder {
+    display: grid;
+    place-items: center;
+    background: linear-gradient(160deg, var(--void-700), var(--void-950));
+}
+
+.cover-card__monogram {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    color: var(--void-100);
+}
+
+/* Title over the foot of the cover, on a scrim that fades the art into the card
+   below. Takes the full width; the size classes only kick in for long names. */
+.cover-card__overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: var(--space-8) var(--space-3) var(--space-3);
+    background: linear-gradient(to top, color-mix(in srgb, var(--void-950) 85%, transparent), transparent);
+}
+
+.cover-card__title {
+    overflow-wrap: break-word;
+    hyphens: none;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-lg);
+    line-height: 1.1;
+    margin: 0;
+    color: var(--gold-metallic-hi);
+}
+
+.cover-card__title--long {
+    font-size: var(--text-base);
+}
+
+.cover-card__title--xlong {
+    font-size: var(--text-sm);
+}
+
+.cover-card__title--xxlong {
+    font-size: var(--text-xs);
+}
+
+/* Foot block: the control row (type badge + icon actions) stacked over the
+   updated/pages line, as one padded flex column. */
+.cover-card__body {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-2) var(--space-3);
+}
+
+/* Control row: type badge + icon actions, edge to edge. Layers above the
+   stretched link so the buttons stay clickable. */
+.cover-card__controls {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+}
+
+/* Type badge sized and centred to match the icon buttons beside it. */
+.cover-card__type {
+    height: 2rem;
+    justify-content: center;
+    padding: 0 var(--space-3);
+    line-height: 1;
+}
+
+.cover-card__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+/* Updated / pages: very small, edge to edge so they align under the row above,
+   with a small round separator between them. */
+.cover-card__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    margin: 0;
+}
+
+.cover-card__sep {
+    flex: 0 0 auto;
+    width: 2px;
+    height: 2px;
+    border-radius: var(--radius-round);
+    background: currentColor;
+}
+
+.cover-card__pages {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+/* Whole card is a link to the target; the controls layer above it. */
+.cover-card__link {
+    position: static;
+    text-decoration: none;
+    color: inherit;
+}
+
+.cover-card__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.cover-card__link:focus-visible {
+    outline: none;
+}
+
+.cover-card:has(.cover-card__link:focus-visible) {
+    outline: var(--ring-width) solid var(--color-focus-ring);
+    outline-offset: var(--ring-offset);
+}
